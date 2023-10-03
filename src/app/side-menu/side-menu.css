@@ -1,0 +1,35 @@
+.side-menu {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.side-menu__content {
+    width: 16em;
+}
+
+::ng-deep .side-menu__content .mat-drawer-inner-container {
+    overflow-x: hidden !important;
+}
+
+.side-menu__list__option {
+    cursor: pointer !important;
+    margin-left: 0.3em;
+}
+
+.side-menu__list__option:hover {
+    background-color: var(--hover-color);
+    color: var(--accent-color);
+}
+
+.side-menu__list__option--active {
+    border-left: 0.3em solid var(--accent-color);
+    margin-left: 0;
+}
+
+.side-menu__list__option__content--active {
+    color: var(--accent-color) !important;
+}

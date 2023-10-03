@@ -1,0 +1,12 @@
+.home__bottom-bar {
+  height: 100vh;
+  width: 100vw;
+}
+
+.home__bottom-bar--hidden ::ng-deep mat-tab-header {
+  display: none !important;
+}
+
+.home__bottom-bar__icon {
+  margin-right: 0.5em;
+}

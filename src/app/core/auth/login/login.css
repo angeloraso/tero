@@ -1,0 +1,48 @@
+.login-component {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5em;
+}
+
+.login__logo {
+  height: 6em;
+  width: 6em;
+  margin-bottom: 2em;
+  transition: height 500ms, width 500ms;
+}
+
+.shrink-logo {
+  height: 3em;
+  width: 3em;
+}
+
+.form-holder {
+  background-color: #fff;
+  border-radius: 0.5em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1em;
+}
+
+.login-item {
+  min-width: 16em;
+  width: 100%;
+}
+
+.submit-btn {
+  display: flex;
+  justify-content: center;
+  min-height: 3.5em;
+  margin: 1em 0;
+}

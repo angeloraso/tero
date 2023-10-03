@@ -1,0 +1,20 @@
+html:root {
+    --primary-color: #FDC921;
+    --light-primary-color: #eed37c;
+    --dark-primary-color: #cca00e;
+    --secondary-color: #6798C0;
+    --light-secondary-color: #98c2e4;
+    --dark-secondary-color: #34648b;
+    --accent-color: #008375;
+    --light-accent-color: #12B9A8;
+    --dark-accent-color: #004D45;
+
+    --hover-color: #f3f3f3;
+    --background-color: #c1d6fe;
+
+    --success-color: #5fbc5a;
+    --default-color: #666666;
+    --info-color: #2b94f4;
+    --warning-color: #f7a64c;
+    --danger-color: #e76565;
+}

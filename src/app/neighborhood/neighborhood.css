@@ -1,0 +1,27 @@
+.neighborhood__table__income {
+    font-weight: bold;
+    color: var(--success-color);
+}
+
+.neighborhood__table__expense {
+    font-weight: bold;
+    color: var(--danger-color);
+}
+
+.neighborhood__table__balance {
+    font-weight: bold;
+    color: var(--info-color);
+}
+
+.neighborhood__table__actions__delete {
+    color: var(--danger-color);
+}
+
+.neighborhood__table--empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20em;
+    width: 100%;
+    text-align: center;
+}

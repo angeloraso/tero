@@ -1,0 +1,38 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2em;
+}
+
+.dashboard__summary-card {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard__summary-card__total {
+    display: flex;
+    align-items: center;
+    column-gap: 1em;
+    height: fit-content;
+}
+
+.dashboard__summary-card__total__label {
+    font-size: 1.2em;
+    color: var(--default-color);
+}
+
+.dashboard__summary-card__total__value {
+    font-size: 2em;
+}
+
+.dashboard__summary-card__total__value--positive {
+    color: var(--success-color);
+}
+
+.dashboard__summary-card__total__value--negative {
+    color: var(--danger-color);
+}

@@ -1,0 +1,31 @@
+<mat-tab-group 
+  headerPosition="below"
+  class="home__bottom-bar"
+  [animationDuration]="sideMenuIsOpen ? '0' : '300'"
+  [selectedIndex]="selectedIndex"
+  [ngClass]="{'home__bottom-bar--hidden': sideMenuIsOpen}"
+  (selectedTabChange)="showOption($event)">
+  
+  <mat-tab>
+
+    <tero-neighborhood *ngIf="selectedIndex === 0"></tero-neighborhood>
+
+    <ng-template mat-tab-label>
+      <mat-icon class="home__bottom-bar__icon">{{options[0].icon}}</mat-icon>
+      {{options[0].title | translate}}
+    </ng-template>
+
+  </mat-tab>
+
+  <mat-tab>
+
+    <tero-dashboard *ngIf="selectedIndex === 1"></tero-dashboard>
+    
+    <ng-template mat-tab-label>
+      <mat-icon class="home__bottom-bar__icon">{{options[1].icon}}</mat-icon>
+      {{options[1].title | translate}}
+    </ng-template>
+
+  </mat-tab>
+
+</mat-tab-group>

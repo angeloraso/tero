@@ -1,0 +1,11 @@
+<div>
+
+  <h1 mat-dialog-title>{{_title || 'CONFIRM_ALERT.TITLE' | translate}}</h1>
+
+  <span mat-dialog-content>{{_msg || 'CONFIRM_ALERT.MSG' | translate}}</span>
+
+  <tero-confirm-footer
+      (cancel)="cancel()"
+      (confirm)="confirm()">
+  </tero-confirm-footer>
+</div>

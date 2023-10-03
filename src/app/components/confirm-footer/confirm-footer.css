@@ -1,0 +1,37 @@
+.confirm-footer {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  column-gap: 0.5em;
+  padding: 0 1em;
+  height: 70px;
+  width: 100%;
+}
+
+.confirm-footer__link {
+  flex: 1;
+  text-align: center;
+  color: var(--light-primary-color);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.confirm-footer__button {
+  flex: 2;
+  font-weight: bold;
+  width: 100%;
+  background-color: var(--accent-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-footer__button__label {
+  color: #fff;
+  height: fit-content;
+  margin: 0;
+}
+
+.confirm-footer__button__icon {
+  color: #fff;
+}
