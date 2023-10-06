@@ -3,10 +3,15 @@ import { AfterViewInit, Component, Inject, OnDestroy, ViewChild } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { ConfirmAlertComponent } from '@components/confirm-alert';
 import { INeighbor } from '@core/model';
-import { NeighborhoodService } from '@neighborhood/neighborhood.service';
+import { RouterService } from '@core/services';
+import { PATH as HOME_PATH } from '@home/home.routing';
+import { PATH as MENU_PATH } from '@menu/side-menu.routing';
 import { Subscription } from 'rxjs';
+import { PATH as NEIGHBORHOOD_PATH } from './neighborhood.routing';
+import { NeighborhoodService } from './neighborhood.service';
 
 @Component({
   selector: 'tero-neighborhood',
@@ -15,14 +20,15 @@ import { Subscription } from 'rxjs';
 })
 export class NeighborhoodComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort | null = null;
-  readonly DISPLAYED_COLUMNS = ['date', 'amount', 'balance', 'actions'];
+  readonly DISPLAYED_COLUMNS = ['lot', 'surname', 'name', 'actions'];
   dataSource = new MatTableDataSource<INeighbor>();
 
   private _subscription = new Subscription();
 
   constructor(
     @Inject(MatDialog) private dialog: MatDialog,
-    @Inject(NeighborhoodService) private neighborhood: NeighborhoodService
+    @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
+    @Inject(RouterService) private router: RouterService
   ) {}
 
   async ngAfterViewInit() {
@@ -30,7 +36,7 @@ export class NeighborhoodComponent implements AfterViewInit, OnDestroy {
       const data = await this.neighborhood.getNeighbors();
       if (this.sort) {
         this.dataSource.sort = this.sort;
-        this.dataSource.sort.active = 'date';
+        this.dataSource.sort.active = 'lot';
         this.dataSource.sort.direction = 'desc';
       }
       this.dataSource.data = data;
@@ -39,8 +45,16 @@ export class NeighborhoodComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  goToNeighbor(neighbor: INeighbor) {
-    console.log(neighbor);
+  addNeighbor() {
+    this.router.goTo({
+      path: `/${APP_PATH.MENU}/${MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}/${NEIGHBORHOOD_PATH.ADD}`
+    });
+  }
+
+  editNeighbor(neighbor: INeighbor) {
+    this.router.goTo({
+      path: `/${APP_PATH.MENU}/${MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}/${neighbor.id}`
+    });
   }
 
   openAlertDialog(neighbor: INeighbor) {

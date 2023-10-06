@@ -1,34 +1,36 @@
 import uuid4 from 'uuid4';
+import { DEFAULT_PICTURE } from './constants';
 
 export interface INeighbor {
   id: string;
-  date: number;
-  amount: number;
-  balance: number;
+  lot: number;
+  surname: number;
+  name: number;
+  picture: string;
+  phones: Array<IPhone>;
 }
+
+export interface IPhone {
+  number: string;
+  description: string;
+}
+
+export type Empty = undefined | null;
 
 export class Neighbor implements INeighbor {
   id: string;
-  date: number;
-  amount: number;
-  balance: number;
+  lot: number;
+  surname: number;
+  name: number;
+  picture: string;
+  phones: Array<IPhone>;
 
-  constructor(record: Omit<INeighbor, 'id'>) {
+  constructor(neighbor: Omit<INeighbor, 'id' | 'timestamp'>) {
     this.id = uuid4();
-    this.date = record.date;
-    this.amount = record.amount;
-    this.balance = record.balance;
+    this.lot = neighbor.lot;
+    this.surname = neighbor.surname ?? '';
+    this.name = neighbor.name ?? '';
+    this.picture = neighbor.picture ?? DEFAULT_PICTURE;
+    this.phones = neighbor.phones ?? [];
   }
-}
-
-export enum COUNTRY_CODE {
-  ARGENTINA = 'AR'
-}
-
-export interface IInflation {
-  country: COUNTRY_CODE;
-  from: number;
-  to: number;
-  value: number;
-  fixedRate: number;
 }

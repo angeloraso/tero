@@ -9,11 +9,26 @@ export class NeighborhoodService {
   getNeighbors() {
     return new Promise<Array<INeighbor>>(async (resolve, reject) => {
       try {
-        const history = await this.database.getNeighbors();
-        if (history) {
-          resolve(history as Array<INeighbor>);
+        const neighbors = await this.database.getNeighbors();
+        if (neighbors) {
+          resolve(neighbors as Array<INeighbor>);
         } else {
           resolve([]);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getNeighbor(id: string) {
+    return new Promise<INeighbor | null>(async (resolve, reject) => {
+      try {
+        const neighbor = await this.database.getNeighbor(id);
+        if (neighbor) {
+          resolve(neighbor as INeighbor);
+        } else {
+          resolve(null);
         }
       } catch (error) {
         reject(error);

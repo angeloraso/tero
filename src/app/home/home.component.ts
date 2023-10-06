@@ -61,18 +61,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     const option = this.options[event.index];
 
-    this.options.forEach(option => {
-      option.active = false;
-    });
-
-    option.active = true;
-
     this.goTo(option);
   }
 
   goTo(option: IMenuOption) {
     this.router.goTo({
-      path: `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${this.paths.get(option.id)}`
+      path: `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.TABS}/${this.paths.get(
+        option.id
+      )}`
     });
   }
 

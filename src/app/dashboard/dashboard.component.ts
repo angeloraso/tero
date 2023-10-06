@@ -1,5 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { NeighborhoodService } from '@neighborhood/neighborhood.service';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -7,7 +6,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnDestroy {
   private _subscription = new Subscription();
   total: number = 0.0;
 
@@ -22,17 +21,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   fixedRatesLabels: Array<string> = [];
   fixedRatesSeries: Array<Array<number>> = [];
-
-  constructor(@Inject(NeighborhoodService) private neighborhood: NeighborhoodService) {}
-
-  async ngOnInit() {
-    try {
-      const neighbors = await this.neighborhood.getNeighbors();
-      console.log(neighbors);
-    } catch (error) {
-      console.debug(error);
-    }
-  }
 
   ngOnDestroy() {
     this._subscription.unsubscribe();

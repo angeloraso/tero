@@ -1,19 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from '@dashboard/dashboard.component';
-import { NeighborhoodComponent } from '@neighborhood/neighborhood.component';
 import { HomeComponent } from './home.component';
 
 export enum PATH {
   EMPTY = '',
+  TABS = 'tabs',
   DASHBOARD = 'dashboard',
-  NEIGHBORHOOD = 'neighborhood',
+  NEIGHBORHOOD = 'neighboorhood',
   ANY = '**'
 }
 
 const routes: Routes = [
   {
     path: PATH.EMPTY,
+    pathMatch: 'full',
+    redirectTo: PATH.TABS
+  },
+  {
+    path: PATH.TABS,
     component: HomeComponent,
     children: [
       {
@@ -23,15 +27,12 @@ const routes: Routes = [
       },
       {
         path: PATH.DASHBOARD,
-        component: DashboardComponent
+        loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path: PATH.NEIGHBORHOOD,
-        component: NeighborhoodComponent
-      },
-      {
-        path: PATH.ANY,
-        redirectTo: PATH.DASHBOARD
+        loadChildren: () =>
+          import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule)
       }
     ]
   }

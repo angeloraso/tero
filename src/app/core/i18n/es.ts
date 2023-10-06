@@ -7,7 +7,7 @@ export const locale = {
       EMPTY: 'Sin elementos',
       MENU: {
         DASHBOARD: 'Panel',
-        SECURITY: 'Seguridad'
+        NEIGHBORHOOD: 'Vecinos'
       },
       BUTTON: {
         CANCEL: 'Cancelar',
@@ -16,9 +16,9 @@ export const locale = {
       },
       FORM: {
         FIELD: {
-          DATE: 'Fecha',
-          AMOUNT: 'Monto',
-          BALANCE: 'Balance',
+          LOT: 'Lote',
+          SURNAME: 'Apellido',
+          NAME: 'Nombre',
           EMAIL: 'Email',
           PASSWORD: 'Contraseña'
         },

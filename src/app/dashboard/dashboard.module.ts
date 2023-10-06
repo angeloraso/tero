@@ -8,8 +8,7 @@ import { es } from './i18n';
 
 @NgModule({
   imports: [SharedModule, DashboardRoutingModule, LineChartModule, BarChartModule],
-  declarations: [DashboardRoutingModule.COMPONENTS],
-  exports: [DashboardRoutingModule.COMPONENTS]
+  declarations: DashboardRoutingModule.COMPONENTS
 })
 export class DashboardModule {
   constructor(@Inject(TeroTranslateService) private translate: TeroTranslateService) {

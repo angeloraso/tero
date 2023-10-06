@@ -1,3 +1,7 @@
+<span class="wrapper">
+  <router-outlet></router-outlet>
+</span>
+
 <mat-tab-group 
   headerPosition="below"
   class="home__bottom-bar"
@@ -6,24 +10,11 @@
   [ngClass]="{'home__bottom-bar--hidden': sideMenuIsOpen}"
   (selectedTabChange)="showOption($event)">
   
-  <mat-tab>
-
-    <tero-neighborhood *ngIf="selectedIndex === 0"></tero-neighborhood>
+  <mat-tab *ngFor="let option of options">
 
     <ng-template mat-tab-label>
-      <mat-icon class="home__bottom-bar__icon">{{options[0].icon}}</mat-icon>
-      {{options[0].title | translate}}
-    </ng-template>
-
-  </mat-tab>
-
-  <mat-tab>
-
-    <tero-dashboard *ngIf="selectedIndex === 1"></tero-dashboard>
-    
-    <ng-template mat-tab-label>
-      <mat-icon class="home__bottom-bar__icon">{{options[1].icon}}</mat-icon>
-      {{options[1].title | translate}}
+      <mat-icon class="home__bottom-bar__icon">{{option.icon}}</mat-icon>
+      {{option.title | translate}}
     </ng-template>
 
   </mat-tab>

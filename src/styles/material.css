@@ -11,7 +11,7 @@
 
 .mat-mdc-fab.mat-primary,
 .mat-mdc-mini-fab.mat-primary {
-    --mdc-fab-container-color: var(--accent-color) !important;
+    --mdc-fab-container-color: var(--primary-color) !important;
 }
 
 .mat-mdc-slide-toggle.mat-accent {
@@ -29,7 +29,7 @@
 }
 
 .mat-mdc-header-row {
-    color: var(--primary-color) !important;
+    color: var(--accent-color) !important;
 }
 
 .mdc-data-table__cell,

@@ -9,6 +9,8 @@ export enum LANGUAGE {
   SPANISH = 'es'
 }
 
+export const DEFAULT_PICTURE = 'picture_male.svg';
+
 export const MENU_OPTIONS: Array<IMenuOption> = [
   {
     id: MENU_OPTION_ID.NEIGHBORHOOD,

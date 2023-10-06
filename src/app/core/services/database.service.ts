@@ -6,6 +6,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   orderBy,
@@ -41,7 +42,7 @@ export class DatabaseService {
     return new Promise<Array<unknown>>(async (resolve, reject) => {
       try {
         const snap = await getDocs(
-          query(collection(this.DB!, DB.NEIGHBORHOOD), orderBy('date', 'asc'))
+          query(collection(this.DB!, DB.NEIGHBORHOOD), orderBy('lot', 'asc'))
         );
         if (snap.empty) {
           resolve([]);
@@ -58,10 +59,22 @@ export class DatabaseService {
     });
   }
 
-  postNeighbor(record: INeighbor): Promise<void> {
+  getNeighbor(id: string): Promise<unknown> {
+    return new Promise<unknown>(async (resolve, reject) => {
+      try {
+        const docRef = doc(this.DB!, DB.NEIGHBORHOOD, id);
+        const snap = await getDoc(docRef);
+        resolve(snap.exists() ? snap.data() : null);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postNeighbor(neighbor: INeighbor): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await setDoc(doc(this.DB!, DB.NEIGHBORHOOD, record.id), Object.assign({}, record));
+        await setDoc(doc(this.DB!, DB.NEIGHBORHOOD, neighbor.id), Object.assign({}, neighbor));
         resolve();
       } catch (error) {
         reject(error);
@@ -69,10 +82,10 @@ export class DatabaseService {
     });
   }
 
-  putNeighbor(record: INeighbor): Promise<void> {
+  putNeighbor(neighbor: INeighbor): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await setDoc(doc(this.DB!, DB.NEIGHBORHOOD, record.id), Object.assign({}, record));
+        await setDoc(doc(this.DB!, DB.NEIGHBORHOOD, neighbor.id), Object.assign({}, neighbor));
         resolve();
       } catch (error) {
         reject(error);

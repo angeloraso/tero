@@ -1,6 +1,15 @@
+.wrapper {
+  min-height: 100vh;
+  height: auto;
+  width: 100%;
+}
+
 .home__bottom-bar {
-  height: 100vh;
   width: 100vw;
+  height: auto;
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
 }
 
 .home__bottom-bar--hidden ::ng-deep mat-tab-header {
