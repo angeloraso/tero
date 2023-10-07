@@ -107,8 +107,8 @@ export class NeighborFormComponent {
     this.confirm.emit({
       id: this._id.value,
       picture: this._picture.value,
-      surname: this._surname.value,
-      name: this._name.value,
+      surname: this._surname.value.trim(),
+      name: this._name.value.trim(),
       security: this._security.value,
       lot: this._lot.value,
       phones: []
