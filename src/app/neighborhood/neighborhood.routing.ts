@@ -12,30 +12,16 @@ export enum PATH {
 const routes: Routes = [
   {
     path: PATH.EMPTY,
-    pathMatch: 'full',
     component: NeighborhoodComponent,
-    children: [
-      {
-        path: PATH.ADD,
-        children: [
-          {
-            path: PATH.EMPTY,
-            component: AddNeighborComponent,
-            pathMatch: 'full'
-          }
-        ]
-      },
-      {
-        path: ':neighborId',
-        children: [
-          {
-            path: PATH.EMPTY,
-            component: EditNeighborComponent,
-            pathMatch: 'full'
-          }
-        ]
-      }
-    ]
+    pathMatch: 'full'
+  },
+  {
+    path: PATH.ADD,
+    component: AddNeighborComponent
+  },
+  {
+    path: ':neighborId',
+    component: EditNeighborComponent
   }
 ];
 

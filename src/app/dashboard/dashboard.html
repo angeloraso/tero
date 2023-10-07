@@ -1,43 +1,4 @@
 <div class="tero-wrapper dashboard">
 
-    <span class="tero-card dashboard__summary-card">
 
-        <span class="dashboard__summary-card__total">
-
-            <h1 class="dashboard__summary-card__total__label">Total: </h1>
-
-            <h2 class="dashboard__summary-card__total__value" [ngClass]="{'dashboard__summary-card__total__value--negative': total < 0, 'dashboard__summary-card__total__value--positive': total > 0}">{{total}} %</h2>
-
-        </span>
-
-    </span>
-
-    <tero-line-chart 
-        id="general-profit-dashboard"
-        title="{{'DASHBOARD.GENERAL_PROFIT.TITLE' | translate}}"
-        [labels]="generalProfitLabels"
-        [series]="generalProfitSeries">
-    </tero-line-chart>
-
-    <tero-bar-chart 
-        id="month-profit-dashboard"
-        title="{{'DASHBOARD.MONTH_PROFIT.TITLE' | translate}}"
-        [low]="-10"
-        [labels]="monthProfitLabels"
-        [series]="monthProfitSeries">
-    </tero-bar-chart>
-
-    <tero-bar-chart 
-        id="inflation-dashboard"
-        title="{{'DASHBOARD.INFLATION.TITLE' | translate}}"
-        [labels]="inflationLabels"
-        [series]="inflationSeries">
-    </tero-bar-chart>
-
-    <tero-bar-chart 
-        id="fixed-rates-dashboard"
-        title="{{'DASHBOARD.FIXED_RATES.TITLE' | translate}}"
-        [labels]="fixedRatesLabels"
-        [series]="fixedRatesSeries">
-    </tero-bar-chart>
 </div>

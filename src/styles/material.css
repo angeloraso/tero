@@ -1,12 +1,16 @@
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-    --mdc-tab-indicator-active-indicator-color: var(--accent-color) !important;
-    --mat-tab-header-active-label-text-color: var(--accent-color) !important;
-    --mat-tab-header-active-ripple-color: var(--accent-color) !important;
-    --mat-tab-header-inactive-ripple-color: var(--accent-color) !important;
-    --mat-tab-header-active-focus-label-text-color: var(--accent-color) !important;
-    --mat-tab-header-active-focus-indicator-color: var(--accent-color) !important;
-    --mat-tab-header-active-hover-indicator-color: var(--accent-color) !important;
+    --mdc-tab-indicator-active-indicator-color: var(--text-color) !important;
+    --mat-tab-header-active-label-text-color: var(--primary-color) !important;
+    --mat-tab-header-active-ripple-color: var(--primary-color) !important;
+    --mat-tab-header-inactive-ripple-color: var(--text-color) !important;
+    --mat-tab-header-active-focus-label-text-color: var(--primary-color) !important;
+    --mat-tab-header-active-focus-indicator-color: var(--primary-color) !important;
+    --mat-tab-header-active-hover-indicator-color: var(--primary-color) !important;
+}
+
+.mat-mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
+    --mat-tab-header-active-hover-indicator-color: var(--primary-color) !important;
 }
 
 .mat-mdc-fab.mat-primary,
@@ -34,7 +38,11 @@
 
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
-    padding: 0 0.2em !important;
+    padding: 0 0 0 0.6em !important
+}
+
+.mdc-data-table__row:first-child .mat-mdc-cell {
+    padding-left: 0.6em !important;
 }
 
 .mdc-list {
@@ -49,6 +57,11 @@
 
 .mat-mdc-tab-header {
     --mdc-secondary-navigation-tab-container-height: var(--bottom-bar-height) !important;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+    height: var(--top-bar-height) !important;
 }
 
 .tero-material-dialog {
@@ -89,4 +102,9 @@ mat-form-field {
 
 .mat-mdc-form-field-icon-suffix {
     padding-right: 0.5em !important;
+}
+
+.mat-mdc-form-field-hint-wrapper,
+.mat-mdc-form-field-error-wrapper {
+    padding: 0 !important;
 }

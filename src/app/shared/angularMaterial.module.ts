@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   exports: [
@@ -27,7 +28,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSlideToggleModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSortModule
+    MatSortModule,
+    MatToolbarModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' } // Change date picker format to dd/MM/yyyy

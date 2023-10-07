@@ -1,5 +1,8 @@
 .confirm-footer {
-  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
   display: flex;
   align-items: center;
   column-gap: 0.5em;
@@ -11,7 +14,7 @@
 .confirm-footer__link {
   flex: 1;
   text-align: center;
-  color: var(--light-primary-color);
+  color: var(--secondary-color);
   cursor: pointer;
   font-weight: bold;
 }

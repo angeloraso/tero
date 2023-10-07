@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DEFAULT_PICTURE } from '@core/constants';
-import { INeighbor } from '@core/model';
+import { Empty, INeighbor } from '@core/model';
 
 @Component({
   selector: 'tero-neighbor-form',
@@ -15,7 +15,7 @@ export class NeighborFormComponent {
 
   readonly MIN_VALUE = 0;
 
-  @Input() set id(id: string) {
+  @Input() set id(id: string | Empty) {
     if (!id) {
       return;
     }
@@ -23,15 +23,16 @@ export class NeighborFormComponent {
     this._id.setValue(id);
   }
 
-  @Input() set picture(picture: string) {
+  @Input() set picture(picture: string | Empty) {
     if (!picture) {
+      this._picture.setValue(DEFAULT_PICTURE);
       return;
     }
 
     this._picture.setValue(picture);
   }
 
-  @Input() set surname(surname: string) {
+  @Input() set surname(surname: string | Empty) {
     if (!surname) {
       return;
     }
@@ -39,7 +40,7 @@ export class NeighborFormComponent {
     this._surname.setValue(surname);
   }
 
-  @Input() set name(name: string) {
+  @Input() set name(name: string | Empty) {
     if (!name) {
       return;
     }
@@ -47,12 +48,20 @@ export class NeighborFormComponent {
     this._name.setValue(name);
   }
 
-  @Input() set lot(lot: string) {
+  @Input() set lot(lot: number | Empty) {
     if (!lot) {
       return;
     }
 
     this._lot.setValue(lot);
+  }
+
+  @Input() set security(security: boolean | Empty) {
+    if (typeof security === 'undefined' || security === null) {
+      return;
+    }
+
+    this._security.setValue(security);
   }
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
@@ -61,6 +70,7 @@ export class NeighborFormComponent {
       picture: [DEFAULT_PICTURE, [Validators.required]],
       surname: [null, [Validators.required]],
       name: [null, [Validators.required]],
+      security: [true, [Validators.required]],
       lot: [null, [Validators.min(this.MIN_VALUE), Validators.required]]
     });
   }
@@ -81,6 +91,10 @@ export class NeighborFormComponent {
     return this.form.get('name') as AbstractControl;
   }
 
+  get _security() {
+    return this.form.get('security') as AbstractControl;
+  }
+
   get _lot() {
     return this.form.get('lot') as AbstractControl;
   }
@@ -95,6 +109,7 @@ export class NeighborFormComponent {
       picture: this._picture.value,
       surname: this._surname.value,
       name: this._name.value,
+      security: this._security.value,
       lot: this._lot.value,
       phones: []
     });

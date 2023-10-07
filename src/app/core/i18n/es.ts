@@ -19,6 +19,8 @@ export const locale = {
           LOT: 'Lote',
           SURNAME: 'Apellido',
           NAME: 'Nombre',
+          GROUP: 'Grupo',
+          SECURITY: 'Seguridad',
           EMAIL: 'Email',
           PASSWORD: 'Contraseña'
         },

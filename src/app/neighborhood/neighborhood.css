@@ -13,6 +13,10 @@
     color: var(--info-color);
 }
 
+.neighborhood__table__security {
+    color: var(--primary-color);
+}
+
 .neighborhood__table__actions__delete {
     color: var(--danger-color);
 }
@@ -24,4 +28,28 @@
     height: 20em;
     width: 100%;
     text-align: center;
+}
+
+.neighborhood__table__row--group-1 {
+    background-color: var(--group-1-color);
+}
+
+.neighborhood__table__row--group-2 {
+    background-color: var(--group-2-color);
+}
+
+.neighborhood__table__row--group-3 {
+    background-color: var(--group-3-color);
+}
+
+.neighborhood__table__row--group-4 {
+    background-color: var(--group-4-color);
+}
+
+.neighborhood__table__row--group-5 {
+    background-color: var(--group-5-color);
+}
+
+.neighborhood__table__row--group-6 {
+    background-color: var(--group-6-color);
 }

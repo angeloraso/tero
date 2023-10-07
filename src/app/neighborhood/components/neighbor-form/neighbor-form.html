@@ -1,36 +1,35 @@
-<form [formGroup]="form">
+<form class="tero-form" [formGroup]="form">
 
-    <span class="neighbor-form__header">
-
-        <img class="neighbor-form__picture" [src]="_picture.value" alt="Neighbor picture">
-
-        <span class="neighbot-form__surname-name">
-
-            <mat-form-field floatLabel="always" appearance="fill">
-                <mat-label>{{'CORE.FORM.FIELD.SURNAME' | translate}}</mat-label>
-                <input matInput type="text" formControlName="surname">
-            </mat-form-field>
-
-            <mat-form-field floatLabel="always" appearance="fill">
-                <mat-label>{{'CORE.FORM.FIELD.NAME' | translate}}</mat-label>
-                <input matInput type="text" formControlName="name">
-            </mat-form-field>
-
-        </span>
+    <tero-img [src]="_picture.value" alt="Neighbor picture"></tero-img>
 
 
-    </span>
+    <mat-form-field floatLabel="always" appearance="fill">
+        <mat-label>{{'CORE.FORM.FIELD.NAME' | translate}}</mat-label>
+        <input matInput type="text" formControlName="name">
+        <mat-error *ngIf="_name.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field floatLabel="always" appearance="fill">
+        <mat-label>{{'CORE.FORM.FIELD.SURNAME' | translate}}</mat-label>
+        <input matInput type="text" formControlName="surname">
+        <mat-error *ngIf="_surname.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
+    </mat-form-field>
 
     <mat-form-field floatLabel="always" appearance="fill">
         <mat-label>{{'CORE.FORM.FIELD.LOT' | translate}}</mat-label>
         <input matInput type="text" formControlName="lot">
+        <mat-error *ngIf="_lot.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
+        <mat-error *ngIf="_lot.hasError('min')">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</mat-error>
     </mat-form-field>
 
-
+    <span class="tero-form__toggle-field">
+        <h4 class="tero-form__toggle-field__label">{{'CORE.FORM.FIELD.SECURITY' | translate}}</h4>
+        <mat-slide-toggle formControlName="security"></mat-slide-toggle>
+    </span>
+    
     <tero-confirm-footer
         (cancel)="_cancel()"
         (confirm)="_confirm()">
     </tero-confirm-footer>
-
-
 </form>
+

@@ -16,23 +16,19 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: PATH.AUTH,
-    loadChildren: () => import('@auth/auth.module').then(m => m.AuthModule),
-    canLoad: [autoLoginCanLoadGuard]
-  },
-  {
     path: PATH.MENU,
     loadChildren: () => import('@menu/side-menu.module').then(m => m.SideMenuModule),
     canLoad: [authCanLoadGuard]
   },
   {
-    path: PATH.ANY,
-    redirectTo: PATH.AUTH
+    path: PATH.AUTH,
+    loadChildren: () => import('@auth/auth.module').then(m => m.AuthModule),
+    canLoad: [autoLoginCanLoadGuard]
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { INeighbor } from '@core/model';
 import { RouterService } from '@core/services';
+import { HomeService } from '@home/home.service';
 import { NeighborhoodService } from '@neighborhood/neighborhood.service';
 
 @Component({
@@ -11,9 +12,10 @@ import { NeighborhoodService } from '@neighborhood/neighborhood.service';
 export class AddNeighborComponent {
   constructor(
     @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
-    @Inject(RouterService) private router: RouterService
+    @Inject(RouterService) private router: RouterService,
+    @Inject(HomeService) private home: HomeService
   ) {
-    console.log('test');
+    this.home.updateTitle('NEIGHBORHOOD.ADD_NEIGHBOR.TITLE');
   }
 
   goBack() {
@@ -26,7 +28,8 @@ export class AddNeighborComponent {
         return;
       }
 
-      this.neighborhood.postNeighbor(neighbor);
+      await this.neighborhood.postNeighbor(neighbor);
+      this.goBack();
     } catch (error) {
       console.error(error);
     }

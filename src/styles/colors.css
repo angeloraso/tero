@@ -11,10 +11,18 @@ html:root {
 
     --hover-color: #f3f3f3;
     --background-color: #c1d6fe;
+    --text-color: #5a4500;
 
     --success-color: #5fbc5a;
     --default-color: #666666;
     --info-color: #2b94f4;
     --warning-color: #f7a64c;
     --danger-color: #e76565;
+
+    --group-1-color: #d7ebfe;
+    --group-2-color: #ffd1ee;
+    --group-3-color: #ffe3be;
+    --group-4-color: #fffec6;
+    --group-5-color: #e6c1ff;
+    --group-6-color: #d5fece;
 }

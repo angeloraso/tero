@@ -8,6 +8,7 @@ import { IMenuOption } from '@menu/model';
 import { PATH as SIDE_MENU_PATH } from '@menu/side-menu.routing';
 import { SideMenuService } from '@menu/side-menu.service';
 import { Subscription } from 'rxjs';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'home',
@@ -28,7 +29,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(RouterService) private router: RouterService,
-    @Inject(SideMenuService) private sideMenu: SideMenuService
+    @Inject(SideMenuService) private sideMenu: SideMenuService,
+    @Inject(HomeService) public home: HomeService
   ) {}
 
   ngOnInit() {
@@ -66,9 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goTo(option: IMenuOption) {
     this.router.goTo({
-      path: `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.TABS}/${this.paths.get(
-        option.id
-      )}`
+      path: `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${this.paths.get(option.id)}`
     });
   }
 

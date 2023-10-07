@@ -4,20 +4,14 @@ import { HomeComponent } from './home.component';
 
 export enum PATH {
   EMPTY = '',
-  TABS = 'tabs',
   DASHBOARD = 'dashboard',
-  NEIGHBORHOOD = 'neighboorhood',
+  NEIGHBORHOOD = 'neighborhood',
   ANY = '**'
 }
 
 const routes: Routes = [
   {
     path: PATH.EMPTY,
-    pathMatch: 'full',
-    redirectTo: PATH.TABS
-  },
-  {
-    path: PATH.TABS,
     component: HomeComponent,
     children: [
       {

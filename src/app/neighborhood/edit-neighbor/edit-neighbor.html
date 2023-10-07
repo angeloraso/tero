@@ -1,8 +1,12 @@
-<div class="edit-neighbor">
-
-    <tero-title title="{{'NEIGHBORHOOD.EDIT_NEIGHBOR.TITLE' | translate}}"></tero-title>
+<div class="tero-wrapper">
 
     <tero-neighbor-form
+        [id]="neighbor?.id"
+        [picture]="neighbor?.picture"
+        [name]="neighbor?.name"
+        [surname]="neighbor?.surname"
+        [lot]="neighbor?.lot"
+        [security]="neighbor?.security"
         (cancel)="goBack()"
         (confirm)="save($event)">
     </tero-neighbor-form>

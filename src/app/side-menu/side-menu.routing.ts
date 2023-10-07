@@ -11,7 +11,6 @@ const routes: Routes = [
   {
     path: PATH.EMPTY,
     component: SideMenuComponent,
-    pathMatch: 'full',
     children: [
       {
         path: PATH.EMPTY,

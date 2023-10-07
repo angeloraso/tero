@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Empty, INeighbor } from '@core/model';
 import { RouterService } from '@core/services';
+import { HomeService } from '@home/home.service';
 import { NeighborhoodService } from '@neighborhood/neighborhood.service';
 
 @Component({
@@ -16,8 +17,11 @@ export class EditNeighborComponent implements OnInit {
   constructor(
     @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
     @Inject(RouterService) private router: RouterService,
-    @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute
-  ) {}
+    @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
+    @Inject(HomeService) private home: HomeService
+  ) {
+    this.home.updateTitle('NEIGHBORHOOD.ADD_NEIGHBOR.TITLE');
+  }
 
   async ngOnInit() {
     try {
