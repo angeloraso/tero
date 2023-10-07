@@ -45,7 +45,7 @@ export class NeighborhoodComponent implements AfterViewInit, OnDestroy {
       if (this.sort) {
         this.dataSource.sort = this.sort;
         this.dataSource.sort.active = 'lot';
-        this.dataSource.sort.direction = 'desc';
+        this.dataSource.sort.direction = 'asc';
       }
       this.dataSource.data = neighborhood.map(_neighbor => {
         return { ..._neighbor, group: this._getGroup(_neighbor) };
