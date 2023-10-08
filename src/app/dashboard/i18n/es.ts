@@ -4,7 +4,10 @@ export const locale = {
   lang: LANGUAGE.SPANISH,
   translations: {
     DASHBOARD: {
-      TITLE: 'Panel'
+      TITLE: 'Panel',
+      SECURITY: {
+        TITLE: 'Seguridad'
+      }
     }
   }
 };

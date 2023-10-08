@@ -6,8 +6,10 @@ import { LANGUAGE } from './constants';
 import { es } from './i18n';
 import {
   DatabaseService,
+  NeighborhoodService,
   RouterService,
   ServiceWorkerService,
+  SettingsService,
   TeroTranslateService,
   UtilsService,
   ViewportService
@@ -21,7 +23,9 @@ import {
     ViewportService,
     DatabaseService,
     UtilsService,
-    ServiceWorkerService
+    ServiceWorkerService,
+    SettingsService,
+    NeighborhoodService
   ]
 })
 export class CoreModule {

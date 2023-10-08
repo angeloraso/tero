@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { INeighbor } from '@core/model';
-import { RouterService } from '@core/services';
+import { NeighborhoodService, RouterService } from '@core/services';
 import { HomeService } from '@home/home.service';
-import { NeighborhoodService } from '@neighborhood/neighborhood.service';
 
 @Component({
   selector: 'tero-add-neighbor',

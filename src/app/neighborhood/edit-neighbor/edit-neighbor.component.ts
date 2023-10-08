@@ -4,9 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmAlertComponent } from '@components/confirm-alert';
 import { Empty, INeighbor } from '@core/model';
-import { RouterService } from '@core/services';
+import { NeighborhoodService, RouterService } from '@core/services';
 import { HomeService } from '@home/home.service';
-import { NeighborhoodService } from '@neighborhood/neighborhood.service';
 import { Subscription } from 'rxjs';
 
 @Component({

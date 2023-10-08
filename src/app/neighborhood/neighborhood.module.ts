@@ -7,7 +7,6 @@ import { SharedModule } from '@shared/shared.module';
 import { NeighborFormComponent } from './components';
 import { es } from './i18n';
 import { NeighborhoodRoutingModule } from './neighborhood.routing';
-import { NeighborhoodService } from './neighborhood.service';
 
 const COMPONENTS: Array<any> = [NeighborFormComponent];
 @NgModule({
@@ -18,8 +17,7 @@ const COMPONENTS: Array<any> = [NeighborFormComponent];
     ConfirmFooterModule,
     ImageModule
   ],
-  declarations: NeighborhoodRoutingModule.COMPONENTS.concat(COMPONENTS),
-  providers: [NeighborhoodService]
+  declarations: NeighborhoodRoutingModule.COMPONENTS.concat(COMPONENTS)
 })
 export class NeighborhoodModule {
   constructor(@Inject(TeroTranslateService) private translate: TeroTranslateService) {

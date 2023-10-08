@@ -1,4 +1,45 @@
-<div class="tero-wrapper dashboard">
+<tero-loading [show]="showLoading">
+    <div class="tero-wrapper">
+    
+        <span class="tero-card dashboard__security">
 
+            <span class="dashboard__security__header">
 
-</div>
+                <span class="dashboard__security__header__title">
+                    
+                    <mat-icon class="dashboard__security__header__icon">security</mat-icon>
+    
+                    <tero-title title="{{'DASHBOARD.SECURITY.TITLE' | translate}}"></tero-title>
+
+                    <h4>({{contributors}})</h4>
+
+                </span>
+
+                <h1 class="dashboard__security__header__fee">$ {{securityFee}}</h1>
+
+            </span>
+
+            <span class="dashboard__security__content">
+
+                <ng-container *ngFor="let group of groups">
+                    <span class="dashboard__security__content__group" *ngIf="group">
+    
+                        <span class="dashboard__security__content__group__name">
+    
+                            <span class="dashboard__security__content__group__name-color--{{group.value}}"></span>
+    
+                            <h4 class="dashboard__security__content__group__name-value">{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}} ({{group.lots.size}}):</h4>
+    
+                        </span>
+    
+                        <span class="dashboard__security__content__group__fee">$ {{group.fee}}</span>
+    
+                    </span>
+                </ng-container>
+
+            </span>
+
+        </span>
+    
+    </div>
+</tero-loading>

@@ -16,7 +16,11 @@ import {
 
 enum DB {
   NEIGHBORHOOD = 'NEIGHBORHOOD',
-  INFLATION = 'INFLATION'
+  SETTINGS = 'SETTINGS'
+}
+
+enum SETTINGS_ID {
+  SECURITY = 'SECURITY'
 }
 
 enum OPERATOR {
@@ -98,6 +102,18 @@ export class DatabaseService {
       try {
         await deleteDoc(doc(this.DB!, DB.NEIGHBORHOOD, id));
         resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getSecuritySettings() {
+    return new Promise<unknown>(async (resolve, reject) => {
+      try {
+        const docRef = doc(this.DB!, DB.SETTINGS, SETTINGS_ID.SECURITY);
+        const snap = await getDoc(docRef);
+        resolve(snap.exists() ? snap.data() : null);
       } catch (error) {
         reject(error);
       }

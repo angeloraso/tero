@@ -1,38 +1,97 @@
-.dashboard {
+.dashboard__security {
     display: flex;
     flex-direction: column;
-    row-gap: 2em;
+    row-gap: 0.5em;
 }
 
-.dashboard__summary-card {
+.dashboard__security__header {
     display: flex;
-    flex-direction: column;
-    row-gap: 1em;
-    height: fit-content;
-    justify-content: center;
-    align-items: center;
-}
-
-.dashboard__summary-card__total {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
     column-gap: 1em;
-    height: fit-content;
 }
 
-.dashboard__summary-card__total__label {
-    font-size: 1.2em;
-    color: var(--default-color);
+.dashboard__security__header__title {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5em;
 }
 
-.dashboard__summary-card__total__value {
-    font-size: 2em;
+.dashboard__security__header__icon {
+    color: var(--primary-color);
 }
 
-.dashboard__summary-card__total__value--positive {
-    color: var(--success-color);
+.dashboard__security__header__fee {
+    color: var(--accent-color);
 }
 
-.dashboard__summary-card__total__value--negative {
-    color: var(--danger-color);
+.dashboard__security__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard__security__content__group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1em;
+}
+
+.dashboard__security__content__group__name {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3em;
+}
+
+.dashboard__security__content__group__name-value {
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard__security__content__group__name-color--1 {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    background-color: var(--group-1-color);
+}
+
+.dashboard__security__content__group__name-color--2 {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    background-color: var(--group-2-color);
+}
+
+.dashboard__security__content__group__name-color--3 {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    background-color: var(--group-3-color);
+}
+
+.dashboard__security__content__group__name-color--4 {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    background-color: var(--group-4-color);
+}
+
+.dashboard__security__content__group__name-color--5 {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    background-color: var(--group-5-color);
+}
+
+.dashboard__security__content__group__name-color--6 {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    background-color: var(--group-6-color);
+}
+
+.dashboard__security__content__group__fee {
+    font-size: 0.8em;
+    color: var(--info-color);
 }

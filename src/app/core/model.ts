@@ -37,3 +37,7 @@ export class Neighbor implements INeighbor {
     this.phones = neighbor.phones ?? [];
   }
 }
+
+export interface ISecuritySettings {
+  fee: number;
+}
