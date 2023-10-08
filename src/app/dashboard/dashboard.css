@@ -30,6 +30,20 @@
     flex-direction: column;
 }
 
+.dashboard__security__content__contributor-fee {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.2em;
+    border-bottom: 0.1em solid var(--default-color);
+}
+
+.dashboard__security__content__contributor-fee__value {
+    font-size: 1em;
+    color: var(--accent-color);
+}
+
 .dashboard__security__content__group {
     display: flex;
     justify-content: space-between;

@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   securityFee: number | Empty;
   groups: Array<IGroup> = [];
   contributors = 0;
+  contributorFee = 0;
 
   constructor(
     @Inject(HomeService) private home: HomeService,
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit {
       this.showLoading = true;
       this.groups.length = 0;
       this.contributors = 0;
+      this.contributorFee = 0;
       const [neighborhood, security] = await Promise.all([
         this.neighborhood.getNeighbors(),
         this.settings.getSecurity()
@@ -62,9 +64,9 @@ export class DashboardComponent implements OnInit {
           this.contributors += _group.lots.size;
         });
 
-        const neighborFee = this.utils.roundNumber(security.fee / this.contributors);
+        this.contributorFee = this.utils.roundNumber(security.fee / this.contributors);
         this.groups = groups.map(_group => {
-          return { ..._group, fee: this.utils.roundNumber(neighborFee * _group.lots.size) };
+          return { ..._group, fee: this.utils.roundNumber(this.contributorFee * _group.lots.size) };
         });
       }
     } catch (error) {

@@ -15,11 +15,16 @@
 
                 </span>
 
-                <h1 class="dashboard__security__header__fee">$ {{securityFee}}</h1>
+                <h1 class="dashboard__security__header__fee">${{securityFee}}</h1>
 
             </span>
 
             <span class="dashboard__security__content">
+
+                <span class="dashboard__security__content__contributor-fee">
+                    <h4>{{'DASHBOARD.SECURITY.EACH_CONTRIBUTOR' | translate}}:</h4>
+                    <h2 class="dashboard__security__content__contributor-fee__value">${{contributorFee}}</h2>
+                </span>
 
                 <ng-container *ngFor="let group of groups">
                     <span class="dashboard__security__content__group" *ngIf="group">

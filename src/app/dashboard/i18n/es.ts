@@ -6,7 +6,8 @@ export const locale = {
     DASHBOARD: {
       TITLE: 'Panel',
       SECURITY: {
-        TITLE: 'Seguridad'
+        TITLE: 'Seguridad',
+        EACH_CONTRIBUTOR: 'Cada vecino'
       }
     }
   }
