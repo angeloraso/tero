@@ -3,7 +3,7 @@
         <table mat-table [dataSource]="dataSource" matSort>
     
             <ng-container matColumnDef="group">
-                <th mat-header-cell *matHeaderCellDef>{{'CORE.FORM.FIELD.GROUP' | translate}}</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by group">{{'CORE.FORM.FIELD.GROUP' | translate}}</th>
                 <td mat-cell *matCellDef="let element">{{element.group}}</td>
             </ng-container>
     
