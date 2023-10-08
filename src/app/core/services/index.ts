@@ -1,5 +1,7 @@
 export { DatabaseService } from './database.service';
+export { MobileService } from './mobile.service';
 export { NeighborhoodService } from './neighborhood.service';
+export { PopupService } from './popup.service';
 export { RouterService } from './router.service';
 export { ServiceWorkerService } from './service-worker.service';
 export { SettingsService } from './settings.service';

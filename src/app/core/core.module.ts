@@ -6,7 +6,9 @@ import { LANGUAGE } from './constants';
 import { es } from './i18n';
 import {
   DatabaseService,
+  MobileService,
   NeighborhoodService,
+  PopupService,
   RouterService,
   ServiceWorkerService,
   SettingsService,
@@ -25,7 +27,9 @@ import {
     UtilsService,
     ServiceWorkerService,
     SettingsService,
-    NeighborhoodService
+    NeighborhoodService,
+    MobileService,
+    PopupService
   ]
 })
 export class CoreModule {

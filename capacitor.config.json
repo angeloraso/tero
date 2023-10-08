@@ -1,0 +1,14 @@
+{
+  "appId": "ar.com.tero",
+  "appName": "Tero",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "splashFullScreen": true
+    }
+  },
+  "cordova": {}
+}

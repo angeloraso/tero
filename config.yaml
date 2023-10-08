@@ -1,0 +1,39 @@
+vars:
+  BUNDLE_ID:
+    default: ar.com.tero
+  PACKAGE_NAME:
+    default: ar.com.tero
+  VERSION_NAME:
+  VERSION_CODE:
+    default: 1
+  MIN_SDK:
+    default: '= 29'
+  SDK:
+    default: '= 33'
+
+platforms:
+  android:
+    packageName: $PACKAGE_NAME
+    versionName: $VERSION_NAME
+    versionCode: $VERSION_CODE
+    manifest:
+      - file: AndroidManifest.xml
+        target: manifest/application/activity
+        attrs:
+          android:screenOrientation: portrait
+
+    gradle:
+      - file: variables.gradle
+        target:
+          ext:
+            minSdkVersion:
+        replace:
+          - minSdkVersion: $MIN_SDK
+
+    res:
+      - path: mipmap-anydpi-v26
+        file: ic_launcher.xml
+        source: resources/ic_launcher.xml
+      - path: mipmap-anydpi-v26
+        file: ic_launcher_round.xml
+        source: resources/ic_launcher.xml
