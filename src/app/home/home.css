@@ -13,3 +13,20 @@
 .home__bottom-bar__icon {
   margin-right: 0.5em;
 }
+
+.home__toolbar {
+  position: sticky;
+  right: 0;
+  top: 0;
+  z-index: var(--top-bar-index);
+  box-shadow: 1px 8px 15px -9px rgba(0, 0, 0, 0.57);
+  -webkit-box-shadow: 1px 8px 15px -9px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 1px 8px 15px -9px rgba(0, 0, 0, 0.57);
+}
+
+.home__toolbar__delete {
+  color: var(--danger-color);
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+}

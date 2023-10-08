@@ -17,10 +17,6 @@
     color: var(--primary-color);
 }
 
-.neighborhood__table__actions__delete {
-    color: var(--danger-color);
-}
-
 .neighborhood__table--empty {
     display: flex;
     justify-content: center;

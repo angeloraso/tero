@@ -1,6 +1,7 @@
-<mat-toolbar>
+<mat-toolbar class="home__toolbar">
   <img height="20" src="/assets/tero.png" alt="Tero logo"/>
   <h1>{{(home.title | async)! | translate}}</h1>
+  <mat-icon *ngIf="(home.deleteFn | async)" (click)="home.delete()" class="home__toolbar__delete">delete</mat-icon>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

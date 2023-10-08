@@ -38,7 +38,7 @@
 
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
-    padding: 0 0 0 0.6em !important
+    padding: 0 0.6em !important
 }
 
 .mdc-data-table__row:first-child .mat-mdc-cell {
@@ -73,6 +73,7 @@
     width: fit-content;
     max-width: 95vw !important;
     height: fit-content;
+    min-height: 12em;
 }
 
 .tero-material-dialog::-webkit-scrollbar {

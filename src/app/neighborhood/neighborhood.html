@@ -28,13 +28,6 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td center mat-cell *matCellDef="let element">
-                <mat-icon class="neighborhood__table__actions__delete" (click)="openAlertDialog(element); $event.stopPropagation();">delete</mat-icon>
-            </td>
-        </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="DISPLAYED_COLUMNS"></tr>
         <tr 
             mat-row
