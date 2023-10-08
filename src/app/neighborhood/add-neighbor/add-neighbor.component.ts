@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { INeighbor } from '@core/model';
 import { NeighborhoodService, RouterService } from '@core/services';
 import { HomeService } from '@home/home.service';
@@ -8,13 +8,14 @@ import { HomeService } from '@home/home.service';
   templateUrl: './add-neighbor.html',
   styleUrls: ['./add-neighbor.css']
 })
-export class AddNeighborComponent {
+export class AddNeighborComponent implements OnDestroy {
   constructor(
     @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
     @Inject(RouterService) private router: RouterService,
     @Inject(HomeService) private home: HomeService
   ) {
     this.home.updateTitle('NEIGHBORHOOD.ADD_NEIGHBOR.TITLE');
+    this.home.hideBottomBar(true);
   }
 
   goBack() {
@@ -32,5 +33,9 @@ export class AddNeighborComponent {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.home.hideBottomBar(false);
   }
 }

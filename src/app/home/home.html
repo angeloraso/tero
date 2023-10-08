@@ -11,7 +11,7 @@
   class="home__bottom-bar"
   [animationDuration]="sideMenuIsOpen ? '0' : '300'"
   [selectedIndex]="selectedIndex"
-  [ngClass]="{'home__bottom-bar--hidden': sideMenuIsOpen}"
+  [ngClass]="{'home__bottom-bar--hidden': sideMenuIsOpen || (home.bottomBar | async)}"
   (selectedTabChange)="showOption($event)">
   
   <mat-tab *ngFor="let option of options">

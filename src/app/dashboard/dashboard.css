@@ -40,7 +40,6 @@
 }
 
 .dashboard__security__content__contributor-fee__value {
-    font-size: 1em;
     color: var(--accent-color);
 }
 
@@ -49,6 +48,7 @@
     justify-content: space-between;
     align-items: center;
     column-gap: 1em;
+    margin-bottom: 0.3em;
 }
 
 .dashboard__security__content__group__name {
@@ -58,7 +58,7 @@
 }
 
 .dashboard__security__content__group__name-value {
-    font-size: 0.8em;
+    font-size: 0.9em;
     display: flex;
     align-items: center;
 }
@@ -106,6 +106,5 @@
 }
 
 .dashboard__security__content__group__fee {
-    font-size: 0.8em;
     color: var(--info-color);
 }

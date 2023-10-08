@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class HomeService {
   #title = new BehaviorSubject<string>('');
   #deleteFn = new BehaviorSubject<{ (): void } | null>(null);
+  #hideBottomBar = new BehaviorSubject<boolean>(false);
 
   get title(): Observable<string> {
     return this.#title.asObservable();
@@ -12,6 +13,10 @@ export class HomeService {
 
   get deleteFn(): Observable<{ (): void } | null> {
     return this.#deleteFn.asObservable();
+  }
+
+  get bottomBar(): Observable<boolean> {
+    return this.#hideBottomBar.asObservable();
   }
 
   updateTitle(title: string) {
@@ -30,5 +35,9 @@ export class HomeService {
     }
 
     this.#deleteFn.value();
+  }
+
+  hideBottomBar(value: boolean) {
+    this.#hideBottomBar.next(value);
   }
 }

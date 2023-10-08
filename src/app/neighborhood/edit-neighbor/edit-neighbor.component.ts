@@ -27,7 +27,8 @@ export class EditNeighborComponent implements OnInit, OnDestroy {
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(HomeService) private home: HomeService
   ) {
-    this.home.updateTitle('NEIGHBORHOOD.ADD_NEIGHBOR.TITLE');
+    this.home.updateTitle('NEIGHBORHOOD.EDIT_NEIGHBOR.TITLE');
+    this.home.hideBottomBar(true);
   }
 
   async ngOnInit() {
@@ -97,5 +98,6 @@ export class EditNeighborComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.#subscription.unsubscribe();
     this.home.setDeleteFn(null);
+    this.home.hideBottomBar(false);
   }
 }
