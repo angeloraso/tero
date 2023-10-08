@@ -105,7 +105,3 @@ button {
         0 3px 6px rgb(0 0 0 / 8%);
     transform: translateY(-1px);
 }
-
-td[center] {
-    text-align: center;
-}
