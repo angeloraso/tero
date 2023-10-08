@@ -23,6 +23,7 @@ export class NeighborhoodComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort | null = null;
   readonly DISPLAYED_COLUMNS = ['group', 'lot', 'surname', 'name', 'security'];
   dataSource = new MatTableDataSource<INeighborRow>();
+  showLoading: boolean = false;
 
   constructor(
     @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
@@ -34,6 +35,7 @@ export class NeighborhoodComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
     try {
+      this.showLoading = true;
       const neighborhood = await this.neighborhood.getNeighbors();
       if (this.sort) {
         this.dataSource.sort = this.sort;
@@ -45,6 +47,8 @@ export class NeighborhoodComponent implements AfterViewInit {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      this.showLoading = false;
     }
   }
 

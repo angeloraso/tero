@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AngularMaterialModule } from './angularMaterial.module';
 import { ComponentsModule } from './components/components.module';
+import { DirectivesModule } from './directives/directives.module';
 import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
@@ -14,7 +15,8 @@ import { PipesModule } from './pipes/pipes.module';
     AngularMaterialModule,
     TranslateModule,
     PipesModule,
-    ComponentsModule
+    ComponentsModule,
+    DirectivesModule
   ]
 })
 export class SharedModule {}

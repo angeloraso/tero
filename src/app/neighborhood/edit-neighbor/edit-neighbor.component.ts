@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 export class EditNeighborComponent implements OnInit, OnDestroy {
   neighbor: INeighbor | Empty;
   neighborId: string | Empty;
+  showLoading = false;
 
   #subscription = new Subscription();
 
@@ -28,11 +29,11 @@ export class EditNeighborComponent implements OnInit, OnDestroy {
     @Inject(HomeService) private home: HomeService
   ) {
     this.home.updateTitle('NEIGHBORHOOD.ADD_NEIGHBOR.TITLE');
-    this.home.setDeleteFn(this.openAlertDialog);
   }
 
   async ngOnInit() {
     try {
+      this.showLoading = true;
       this.neighborId = this.router.getId(this.activatedRoute, 'neighborId');
       if (!this.neighborId) {
         this.goBack();
@@ -42,6 +43,9 @@ export class EditNeighborComponent implements OnInit, OnDestroy {
       this.neighbor = await this.neighborhood.getNeighbor(this.neighborId);
     } catch (error) {
       console.error(error);
+    } finally {
+      this.showLoading = false;
+      this.home.setDeleteFn(this.openAlertDialog);
     }
   }
 

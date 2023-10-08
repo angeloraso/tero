@@ -62,7 +62,7 @@ button {
 
 @media only screen and (max-width: 768px) {
     .tero-wrapper {
-        min-height: calc(97vh - var(--bottom-bar-height) - var(--top-bar-height));
+        min-height: calc(97.8vh - var(--bottom-bar-height) - var(--top-bar-height));
     }
 }
 

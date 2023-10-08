@@ -1,0 +1,7 @@
+<div class="loading" *ngIf="show">
+  <div class="loading__spinner"></div>
+</div>
+
+<div [ngStyle]="{'visibility': show ? 'hidden' : 'visible' }">
+  <ng-content></ng-content>
+</div>

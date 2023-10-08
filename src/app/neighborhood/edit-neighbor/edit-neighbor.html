@@ -1,14 +1,16 @@
-<div class="tero-wrapper">
-
-    <tero-neighbor-form
-        [id]="neighbor?.id"
-        [picture]="neighbor?.picture"
-        [name]="neighbor?.name"
-        [surname]="neighbor?.surname"
-        [lot]="neighbor?.lot"
-        [security]="neighbor?.security"
-        (cancel)="goBack()"
-        (confirm)="save($event)">
-    </tero-neighbor-form>
-
-</div>
+<tero-loading [show]="showLoading">
+    <div class="tero-wrapper">
+    
+        <tero-neighbor-form
+            [id]="neighbor?.id"
+            [picture]="neighbor?.picture"
+            [name]="neighbor?.name"
+            [surname]="neighbor?.surname"
+            [lot]="neighbor?.lot"
+            [security]="neighbor?.security"
+            (cancel)="goBack()"
+            (confirm)="save($event)">
+        </tero-neighbor-form>
+    
+    </div>
+</tero-loading>
