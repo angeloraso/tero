@@ -1,6 +1,5 @@
 .confirm-footer {
   background-color: #fff;
-  position: fixed;
   bottom: 0;
   right: 0;
   left: 0;
@@ -10,6 +9,10 @@
   padding: 0 1em;
   height: 70px;
   width: 100%;
+}
+
+.confirm-footer--fixed {
+  position: fixed;
 }
 
 .confirm-footer__link {

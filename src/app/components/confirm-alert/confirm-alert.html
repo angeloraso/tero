@@ -5,6 +5,7 @@
   <span mat-dialog-content>{{_msg || 'CONFIRM_ALERT.MSG' | translate}}</span>
 
   <tero-confirm-footer
+      [fixed]="false"
       (cancel)="cancel()"
       (confirm)="confirm()">
   </tero-confirm-footer>

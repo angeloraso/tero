@@ -1,4 +1,4 @@
-<div class="confirm-footer">
+<div class="confirm-footer" [ngClass]="{'confirm-footer--fixed': fixed}">
 
   <a class="confirm-footer__link" (click)="cancel.emit()">{{cancelText | translate}}</a>
 

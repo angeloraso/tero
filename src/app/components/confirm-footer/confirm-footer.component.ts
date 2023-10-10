@@ -9,6 +9,7 @@ export class ConfirmFooterComponent {
   @Input() cancelText = 'CORE.BUTTON.CANCEL';
   @Input() confirmText = 'CORE.BUTTON.SAVE';
   @Input() icon = false;
+  @Input() fixed = true;
   @Output() cancel = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
 }
