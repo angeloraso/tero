@@ -9,6 +9,8 @@ import { HomeService } from '@home/home.service';
   styleUrls: ['./add-neighbor.css']
 })
 export class AddNeighborComponent implements OnDestroy {
+  showLoading = false;
+
   constructor(
     @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
     @Inject(RouterService) private router: RouterService,
@@ -28,10 +30,13 @@ export class AddNeighborComponent implements OnDestroy {
         return;
       }
 
+      this.showLoading = true;
       await this.neighborhood.postNeighbor(neighbor);
       this.goBack();
     } catch (error) {
       console.error(error);
+    } finally {
+      this.showLoading = false;
     }
   }
 

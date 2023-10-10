@@ -1,8 +1,10 @@
-<div class="tero-wrapper">
-
-    <tero-neighbor-form
-        (cancel)="goBack()"
-        (confirm)="save($event)">
-    </tero-neighbor-form>
-
-</div>
+<tero-loading [show]="showLoading">
+    <div class="tero-wrapper">
+    
+        <tero-neighbor-form
+            (cancel)="goBack()"
+            (confirm)="save($event)">
+        </tero-neighbor-form>
+    
+    </div>
+</tero-loading>

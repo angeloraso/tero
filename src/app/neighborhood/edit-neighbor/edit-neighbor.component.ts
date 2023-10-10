@@ -79,19 +79,29 @@ export class EditNeighborComponent implements OnInit, OnDestroy {
         return;
       }
 
+      this.showLoading = true;
+      this.home.setDeleteFn(null);
       await this.neighborhood.putNeighbor(neighbor);
       this.goBack();
     } catch (error) {
+      this.home.setDeleteFn(this.openAlertDialog);
       console.error(error);
+    } finally {
+      this.showLoading = false;
     }
   }
 
   private async _deleteNeighbor(neighbor: INeighbor) {
     try {
+      this.showLoading = true;
+      this.home.setDeleteFn(null);
       await this.neighborhood.deleteNeighbor(neighbor);
       this.goBack();
     } catch (error) {
+      this.home.setDeleteFn(this.openAlertDialog);
       console.log(error);
+    } finally {
+      this.showLoading = false;
     }
   }
 
