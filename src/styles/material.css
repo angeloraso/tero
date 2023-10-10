@@ -7,6 +7,7 @@
     --mat-tab-header-active-focus-label-text-color: var(--primary-color) !important;
     --mat-tab-header-active-focus-indicator-color: var(--primary-color) !important;
     --mat-tab-header-active-hover-indicator-color: var(--primary-color) !important;
+    --mat-tab-header-active-hover-label-text-color: var(--primary-color) !important;
 }
 
 .mat-mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
