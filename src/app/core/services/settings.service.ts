@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ISecuritySettings } from '@core/model';
-import { DatabaseService } from './database.service';
+import { DatabaseService, SETTINGS_ID } from './database.service';
 
 @Injectable()
 export class SettingsService {
@@ -9,12 +9,8 @@ export class SettingsService {
   getSecurity() {
     return new Promise<ISecuritySettings | null>(async (resolve, reject) => {
       try {
-        const settings = await this.database.getSecuritySettings();
-        if (settings) {
-          resolve(settings as ISecuritySettings);
-        } else {
-          resolve(null);
-        }
+        const settings = await this.database.getSettings(SETTINGS_ID.SECURITY);
+        resolve(<ISecuritySettings | null>settings);
       } catch (error) {
         reject(error);
       }

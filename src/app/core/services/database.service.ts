@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { INeighbor } from '@core/model';
 import { FirebaseApp } from 'firebase/app';
 import {
   Firestore,
+  Unsubscribe,
   collection,
   deleteDoc,
   doc,
   getDoc,
-  getDocs,
   getFirestore,
+  onSnapshot,
   orderBy,
   query,
   setDoc
 } from 'firebase/firestore';
+import { fromEvent, take } from 'rxjs';
 
 enum DB {
   NEIGHBORHOOD = 'NEIGHBORHOOD',
   SETTINGS = 'SETTINGS'
 }
 
-enum SETTINGS_ID {
+export enum SETTINGS_ID {
   SECURITY = 'SECURITY'
 }
 
@@ -34,29 +36,33 @@ enum OPERATOR {
 }
 
 @Injectable()
-export class DatabaseService {
+export class DatabaseService implements OnDestroy {
   DB: Firestore | null = null;
+  #subscriptions = new Set<Unsubscribe>();
 
   start(app: FirebaseApp) {
     this.DB = getFirestore(app);
     console.log(OPERATOR);
+    fromEvent(window, 'beforeunload')
+      .pipe(take(1))
+      .subscribe(() => {
+        this.ngOnDestroy();
+      });
   }
 
   getNeighbors(): Promise<Array<unknown>> {
     return new Promise<Array<unknown>>(async (resolve, reject) => {
       try {
-        const snap = await getDocs(
-          query(collection(this.DB!, DB.NEIGHBORHOOD), orderBy('lot', 'asc'))
-        );
-        if (snap.empty) {
-          resolve([]);
-        } else {
+        const q = query(collection(this.DB!, DB.NEIGHBORHOOD), orderBy('lot', 'asc'));
+        const unsubscribe = onSnapshot(q, querySnapshot => {
           const docs: Array<unknown> = [];
-          snap.forEach(doc => {
+          querySnapshot.forEach(doc => {
             docs.push(doc.data());
           });
           resolve(docs);
-        }
+        });
+
+        this.#subscriptions.add(unsubscribe);
       } catch (error) {
         reject(error);
       }
@@ -108,15 +114,34 @@ export class DatabaseService {
     });
   }
 
-  getSecuritySettings() {
+  getSettings(id: SETTINGS_ID) {
     return new Promise<unknown>(async (resolve, reject) => {
       try {
-        const docRef = doc(this.DB!, DB.SETTINGS, SETTINGS_ID.SECURITY);
-        const snap = await getDoc(docRef);
-        resolve(snap.exists() ? snap.data() : null);
+        try {
+          const unsubscribe = onSnapshot(collection(this.DB!, DB.SETTINGS), querySnapshot => {
+            const setting = querySnapshot.docs.find(_setting => _setting.id === id);
+            if (setting) {
+              resolve(setting.data());
+            } else {
+              resolve(null);
+            }
+          });
+
+          this.#subscriptions.add(unsubscribe);
+        } catch (error) {
+          reject(error);
+        }
       } catch (error) {
         reject(error);
       }
     });
+  }
+
+  ngOnDestroy() {
+    const subscriptions = Array.from(this.#subscriptions);
+    subscriptions.forEach(unsubscribe => {
+      unsubscribe();
+    });
+    this.#subscriptions.clear();
   }
 }
