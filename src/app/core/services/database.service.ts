@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { INeighbor } from '@core/model';
+import { Empty, INeighbor, ISecuritySettings } from '@core/model';
 import { FirebaseApp } from 'firebase/app';
 import {
   Firestore,
@@ -14,7 +14,7 @@ import {
   query,
   setDoc
 } from 'firebase/firestore';
-import { fromEvent, take } from 'rxjs';
+import { BehaviorSubject, fromEvent, take } from 'rxjs';
 
 enum DB {
   NEIGHBORHOOD = 'NEIGHBORHOOD',
@@ -39,6 +39,8 @@ enum OPERATOR {
 export class DatabaseService implements OnDestroy {
   DB: Firestore | null = null;
   #subscriptions = new Set<Unsubscribe>();
+  #neighborhood = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
+  #securitySettings = new BehaviorSubject<ISecuritySettings | Empty>(undefined);
 
   start(app: FirebaseApp) {
     this.DB = getFirestore(app);
@@ -50,16 +52,22 @@ export class DatabaseService implements OnDestroy {
       });
   }
 
-  getNeighbors(): Promise<Array<unknown>> {
-    return new Promise<Array<unknown>>(async (resolve, reject) => {
+  getNeighborhood(): Promise<Array<INeighbor>> {
+    return new Promise<Array<INeighbor>>((resolve, reject) => {
       try {
+        if (typeof this.#neighborhood.value !== 'undefined') {
+          resolve(this.#neighborhood.value);
+          return;
+        }
+
         const q = query(collection(this.DB!, DB.NEIGHBORHOOD), orderBy('lot', 'asc'));
         const unsubscribe = onSnapshot(q, querySnapshot => {
           const docs: Array<unknown> = [];
           querySnapshot.forEach(doc => {
             docs.push(doc.data());
           });
-          resolve(docs);
+          this.#neighborhood.next(docs as Array<INeighbor>);
+          resolve(this.#neighborhood.value as Array<INeighbor>);
         });
 
         this.#subscriptions.add(unsubscribe);
@@ -114,23 +122,23 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  getSettings(id: SETTINGS_ID) {
-    return new Promise<unknown>(async (resolve, reject) => {
+  getSecuritySettings() {
+    return new Promise<ISecuritySettings | null>((resolve, reject) => {
       try {
-        try {
-          const unsubscribe = onSnapshot(collection(this.DB!, DB.SETTINGS), querySnapshot => {
-            const setting = querySnapshot.docs.find(_setting => _setting.id === id);
-            if (setting) {
-              resolve(setting.data());
-            } else {
-              resolve(null);
-            }
-          });
-
-          this.#subscriptions.add(unsubscribe);
-        } catch (error) {
-          reject(error);
+        if (typeof this.#securitySettings.value !== 'undefined') {
+          resolve(this.#securitySettings.value);
+          return;
         }
+
+        const unsubscribe = onSnapshot(collection(this.DB!, DB.SETTINGS), querySnapshot => {
+          const setting = querySnapshot.docs.find(_setting => _setting.id === SETTINGS_ID.SECURITY);
+          if (setting) {
+            this.#securitySettings.next(setting.data() as ISecuritySettings);
+            resolve(this.#securitySettings.value as ISecuritySettings);
+          }
+        });
+
+        this.#subscriptions.add(unsubscribe);
       } catch (error) {
         reject(error);
       }

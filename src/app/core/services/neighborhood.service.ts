@@ -9,12 +9,8 @@ export class NeighborhoodService {
   getNeighbors() {
     return new Promise<Array<INeighbor>>(async (resolve, reject) => {
       try {
-        const neighbors = await this.database.getNeighbors();
-        if (neighbors) {
-          resolve(neighbors as Array<INeighbor>);
-        } else {
-          resolve([]);
-        }
+        const neighbors = await this.database.getNeighborhood();
+        resolve(neighbors);
       } catch (error) {
         reject(error);
       }
