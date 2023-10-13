@@ -12,6 +12,8 @@ html:root {
     --hover-color: #f3f3f3;
     --background-color: #c1d6fe;
     --text-color: #413202;
+    --border-color: #eee;
+    --free-color: #b0cfaf;
 
     --success-color: #5fbc5a;
     --default-color: #666666;

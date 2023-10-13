@@ -1,0 +1,47 @@
+.map {
+    overflow: scroll;
+}
+
+.map__block-row {
+    display: flex;
+}
+
+.map__block {
+    padding: 0.3rem;
+    background-color: var(--hover-color);
+    border-radius: 0.3rem;
+    display: flex;
+    height: fit-content;
+}
+
+.map__block__column--free {
+    background-color: var(--free-color);
+    width: 6rem;
+}
+
+.map__block__column {
+    display: flex;
+    flex-direction: column;
+}
+
+.map__block__column__lot {
+    border: 0.1rem solid var(--default-color);
+    height: 2rem;
+    width: 6rem;
+    text-align: center;
+    display: grid;
+    place-items: center;
+}
+
+.map__vertical-street {
+    display: block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    text-align: center;
+}
+
+.map__horizontal-street {
+    display: block;
+    text-align: center;
+}

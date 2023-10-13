@@ -34,6 +34,7 @@
       "@menu/*": ["src/app/side-menu/*"],
       "@dashboard/*": ["src/app/dashboard/*"],
       "@neighborhood/*": ["src/app/neighborhood/*"],
+      "@map/*": ["src/app/map/*"]
     }
   },
   "angularCompilerOptions": {

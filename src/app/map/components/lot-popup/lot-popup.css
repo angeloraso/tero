@@ -1,0 +1,30 @@
+.lot-popup {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.lot-popup__neighbors {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.lot-popup__neighbors__neighbor {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+}
+
+.lot-popup__neighbors__neighbor__icon {
+    color: var(--accent-color);
+}
+
+.lot-popup__neighbors__neighbor__name {
+    font-size: 1rem;
+    position: relative;
+    top: 0.1rem;
+}

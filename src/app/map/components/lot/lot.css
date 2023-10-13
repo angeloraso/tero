@@ -1,0 +1,14 @@
+.lot {
+    border: 0.1rem solid var(--default-color);
+    background-color: #fff;
+    height: 2rem;
+    width: 6rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lot__security {
+    color: var(--primary-color);
+}

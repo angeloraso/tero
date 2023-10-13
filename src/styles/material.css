@@ -10,6 +10,10 @@
     --mat-tab-header-active-hover-label-text-color: var(--primary-color) !important;
 }
 
+.mat-mdc-tab {
+    padding: 0 !important;
+}
+
 .mat-mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
     --mat-tab-header-active-hover-indicator-color: var(--primary-color) !important;
 }
@@ -66,15 +70,13 @@
 }
 
 .tero-material-dialog {
-    font-size: 1em;
+    font-size: 1rem;
     display: flex;
     flex-direction: column;
-    row-gap: 1em;
-    min-width: 36em;
+    row-gap: 1rem;
     width: fit-content;
     max-width: 95vw !important;
     height: fit-content;
-    min-height: 12em;
 }
 
 .tero-material-dialog::-webkit-scrollbar {
@@ -84,13 +86,9 @@
     /* Optional: just make scrollbar invisible */
 }
 
-.tero-material-dialog .mat-dialog-container {
-    padding: 1em 1.5em !important;
-}
-
 @media only screen and (max-width: 576px) {
     .tero-material-dialog {
-        min-width: 26em;
+        min-width: 22rem;
     }
 }
 

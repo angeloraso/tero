@@ -10,8 +10,14 @@
   display: none !important;
 }
 
-.home__bottom-bar__icon {
-  margin-right: 0.5em;
+.home__bottom-bar__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home__bottom-bar__tab__icon {
+  font-size: 1.2rem;
 }
 
 .home__toolbar {

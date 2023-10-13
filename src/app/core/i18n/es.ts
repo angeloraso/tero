@@ -4,10 +4,11 @@ export const locale = {
   lang: LANGUAGE.SPANISH,
   translations: {
     CORE: {
-      EMPTY: 'Sin elementos',
+      EMPTY: 'Sin información',
       MENU: {
         DASHBOARD: 'Panel',
-        NEIGHBORHOOD: 'Vecinos'
+        NEIGHBORHOOD: 'Vecinos',
+        MAP: 'Plano'
       },
       BUTTON: {
         CANCEL: 'Cancelar',

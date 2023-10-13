@@ -3,9 +3,12 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { IMenuOption } from '@menu/model';
 import { PATH as SIDE_MENU_PATH } from '@menu/side-menu.routing';
 
+export const AVAILABLE_LOTS = 224;
+
 export enum MENU_OPTION_ID {
   DASHBOARD = 'DASHBOARD',
-  NEIGHBORHOOD = 'NEIGHBORHOOD'
+  NEIGHBORHOOD = 'NEIGHBORHOOD',
+  MAP = 'MAP'
 }
 
 export enum LANGUAGE {
@@ -15,6 +18,7 @@ export enum LANGUAGE {
 export const ROOT_PATHS = [
   `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
   `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
+  `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.MAP}`,
   `/${APP_PATH.AUTH}`
 ];
 
@@ -31,6 +35,12 @@ export const MENU_OPTIONS: Array<IMenuOption> = [
     id: MENU_OPTION_ID.DASHBOARD,
     title: 'CORE.MENU.DASHBOARD',
     icon: 'dashboard',
+    active: false
+  },
+  {
+    id: MENU_OPTION_ID.MAP,
+    title: 'CORE.MENU.MAP',
+    icon: 'map',
     active: false
   }
 ];
