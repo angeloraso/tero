@@ -116,3 +116,9 @@ mat-form-field {
 .mdc-data-table__row .mat-mdc-cell[padding-right] {
     padding-right: 0.6em !important;
 }
+
+.mat-icon {
+    font-size: 1.2rem !important;
+    height: 1.2rem !important;
+    width: 1.2rem !important;
+}

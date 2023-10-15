@@ -34,14 +34,41 @@
 }
 
 .map__vertical-street {
-    display: block;
+    background-color: var(--street-color);
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     white-space: nowrap;
+    min-width: 2rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+}
+
+.map__vertical-street--main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.street__icon {
+    color: var(--info-color);
+    background-color: #fff;
+    padding: 0.3rem;
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+    border: 0.1rem solid var(--info-color);
+    transform: rotate(90deg);
 }
 
 .map__horizontal-street {
-    display: block;
+    background-color: var(--street-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    min-height: 2rem;
+    border-radius: 0.3rem;
 }

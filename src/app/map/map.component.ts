@@ -1,7 +1,8 @@
 import { NoopScrollStrategy } from '@angular/cdk/overlay';
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AVAILABLE_LOTS } from '@core/constants';
+import { Empty } from '@core/model';
 import { NeighborhoodService } from '@core/services';
 import { HomeService } from '@home/home.service';
 import { LotPopupComponent } from './components';
@@ -12,7 +13,8 @@ import { ILot } from './map.model';
   templateUrl: './map.html',
   styleUrls: ['./map.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, AfterViewInit {
+  @ViewChild('mainEntrance') mainEntrance: ElementRef | Empty;
   showLoading = false;
   lots: Array<ILot> = Array.from({ length: AVAILABLE_LOTS + 1 }, (_, index) => ({
     number: index,
@@ -43,6 +45,16 @@ export class MapComponent implements OnInit {
     } finally {
       this.showLoading = false;
     }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.mainEntrance) {
+        this.mainEntrance.nativeElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   }
 
   showLot(lot: ILot) {
