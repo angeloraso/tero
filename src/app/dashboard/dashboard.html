@@ -11,7 +11,7 @@
     
                     <tero-title title="{{'DASHBOARD.SECURITY.TITLE' | translate}}"></tero-title>
 
-                    <h4>({{contributors}})</h4>
+                    <h5>({{contributors}})</h5>
 
                 </span>
 
@@ -22,7 +22,7 @@
             <span class="dashboard__security__content">
 
                 <span class="dashboard__security__content__title">
-                    <h2>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}:</h2>
+                    <h3>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}:</h3>
                     <h1 class="dashboard__security__content__title__value">${{contributorFee}}</h1>
                 </span>
 
@@ -33,11 +33,11 @@
     
                             <span class="dashboard__security__content__group__name-color--{{group.value}}"></span>
     
-                            <h4 class="dashboard__security__content__group__name-value">{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}} ({{group.lots.size}}):</h4>
+                            <h5 class="dashboard__security__content__group__name-value">{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}} ({{group.lots.size}}):</h5>
     
                         </span>
     
-                        <span class="dashboard__security__content__group__fee">$ {{group.fee}}</span>
+                        <h6 class="dashboard__security__content__group__fee">$ {{group.fee}}</h6>
     
                     </span>
                 </ng-container>
@@ -47,14 +47,14 @@
             <span class="dashboard__security__content">
 
                 <span class="dashboard__security__content__title">
-                    <h2>{{'DASHBOARD.SECURITY.STAFF' | translate}}</h2>
+                    <h3>{{'DASHBOARD.SECURITY.STAFF' | translate}}</h3>
                 </span>
 
                 <span class="dashboard__security__content__guard" *ngFor="let guard of securityStaff">
 
                     <mat-icon class="dashboard__security__content__guard__icon">admin_panel_settings</mat-icon>
 
-                    <h4><strong>{{guard.name}}:</strong> {{guard.description}}</h4>
+                    <h5><strong>{{guard.name}}:</strong> {{guard.description}}</h5>
 
                 </span>
 

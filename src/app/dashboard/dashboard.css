@@ -48,7 +48,7 @@
     justify-content: space-between;
     align-items: center;
     column-gap: 1rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .dashboard__security__content__group__name {
@@ -113,7 +113,7 @@
     display: flex;
     align-items: center;
     column-gap: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .dashboard__security__content__guard__icon {
