@@ -30,7 +30,7 @@
     flex-direction: column;
 }
 
-.dashboard__security__content__contributor-fee {
+.dashboard__security__content__title {
     display: flex;
     align-items: center;
     column-gap: 0.5em;
@@ -39,7 +39,7 @@
     border-bottom: 0.1em solid var(--default-color);
 }
 
-.dashboard__security__content__contributor-fee__value {
+.dashboard__security__content__title__value {
     color: var(--accent-color);
 }
 
@@ -107,4 +107,15 @@
 
 .dashboard__security__content__group__fee {
     color: var(--info-color);
+}
+
+.dashboard__security__content__guard {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+}
+
+.dashboard__security__content__guard__icon {
+    color: var(--info-color);
+    min-width: 1.6rem;
 }

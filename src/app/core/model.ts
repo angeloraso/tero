@@ -38,6 +38,13 @@ export class Neighbor implements INeighbor {
   }
 }
 
+export interface ISecurityGuard {
+  name: string;
+  picture: string;
+  description: string;
+}
+
 export interface ISecuritySettings {
   fee: number;
+  staff: Array<ISecurityGuard>;
 }

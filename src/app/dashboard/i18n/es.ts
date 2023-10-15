@@ -7,7 +7,8 @@ export const locale = {
       TITLE: 'Panel',
       SECURITY: {
         TITLE: 'Seguridad',
-        EACH_CONTRIBUTOR: 'Cada vecino'
+        MEMBERSHIP_FEE: 'Valor de cuota',
+        STAFF: 'Personal'
       }
     }
   }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Empty } from '@core/model';
+import { Empty, ISecurityGuard } from '@core/model';
 import { NeighborhoodService, SettingsService, UtilsService } from '@core/services';
 import { HomeService } from '@home/home.service';
 
@@ -15,6 +15,7 @@ interface IGroup {
 })
 export class DashboardComponent implements OnInit {
   showLoading = false;
+  securityStaff: Array<ISecurityGuard> = [];
   securityFee: number | Empty;
   groups: Array<IGroup> = [];
   contributors = 0;
@@ -58,7 +59,8 @@ export class DashboardComponent implements OnInit {
         }
       });
 
-      if (security && security.fee) {
+      if (security) {
+        this.securityStaff = security.staff;
         this.securityFee = security.fee;
         groups.forEach(_group => {
           this.contributors += _group.lots.size;
