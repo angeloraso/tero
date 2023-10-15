@@ -28,7 +28,7 @@ h6 {
 }
 
 p {
-    line-height: 1em;
+    line-height: 1rem;
 }
 
 ul {
@@ -37,12 +37,12 @@ ul {
 }
 
 label {
-    font-size: 1em;
+    font-size: 1rem;
     margin-bottom: 0;
 }
 
 button {
-    font-size: 1em;
+    font-size: 1rem;
     padding: 0;
     margin: 0;
 }
@@ -59,7 +59,7 @@ button {
     min-width: 100%;
     height: 100%;
     min-height: calc(100vh - var(--top-bar-height));
-    padding: 0.5em;
+    padding: 0.5rem;
 }
 
 @media only screen and (max-width: 768px) {
@@ -72,7 +72,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 0.2em;
+    row-gap: 0.2rem;
     overflow: hidden;
 }
 
@@ -80,7 +80,7 @@ button {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    column-gap: 0.5em;
+    column-gap: 0.5rem;
 }
 
 .tero-form__toggle-field__label {
@@ -90,11 +90,11 @@ button {
 
 .tero-card {
     background-color: #fff;
-    border-radius: 0.5em;
+    border-radius: 0.5rem;
     box-shadow:
         0 4px 6px rgb(50 50 93 / 11%),
         0 1px 3px rgb(0 0 0 / 8%);
-    padding: 0.5em;
+    padding: 0.5rem;
     transition: transform 250ms ease-in-out;
     height: 100%;
     width: 100%;

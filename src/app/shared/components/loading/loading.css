@@ -1,7 +1,7 @@
 .loading {
   position: relative;
   width: 100%;
-  min-height: 20em;
+  min-height: 20rem;
   height: fit-content;
 }
 
