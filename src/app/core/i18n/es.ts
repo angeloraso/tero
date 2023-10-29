@@ -23,7 +23,8 @@ export const locale = {
           GROUP: 'Grupo',
           SECURITY: 'Seguridad',
           EMAIL: 'Email',
-          PASSWORD: 'Contraseña'
+          PASSWORD: 'Contraseña',
+          SEARCH: 'Buscar'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

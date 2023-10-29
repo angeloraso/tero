@@ -1,6 +1,12 @@
 <tero-loading [show]="showLoading">
     <div class="tero-wrapper">
-        <table mat-table [dataSource]="dataSource" matSort>
+        <mat-form-field appearance="fill">
+            <mat-label>{{'CORE.FORM.FIELD.SEARCH' | translate}}</mat-label>
+            <mat-icon class="neighborhood__table__security__icon" matPrefix>search</mat-icon>
+            <input matInput (keyup)="onSearch($event)" #input>
+        </mat-form-field>
+
+        <table mat-table recycleRows [dataSource]="dataSource" matSort>
     
             <ng-container matColumnDef="group">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header padding-left sortActionDescription="Sort by group">{{'CORE.FORM.FIELD.GROUP' | translate}}</th>

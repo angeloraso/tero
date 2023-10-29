@@ -42,9 +42,14 @@ export class NeighborhoodComponent implements OnInit {
         this.dataSource.sort.active = 'lot';
         this.dataSource.sort.direction = 'asc';
       }
-      this.dataSource.data = neighborhood.map(_neighbor => {
+      const data = neighborhood.map(_neighbor => {
         return { ..._neighbor, group: this.utils.getGroup(_neighbor) };
       });
+
+      this.dataSource.data = data.slice(0, 20);
+      setTimeout(() => {
+        this.dataSource.data = data;
+      }, 500);
     } catch (error) {
       console.log(error);
     } finally {
@@ -62,5 +67,10 @@ export class NeighborhoodComponent implements OnInit {
     this.router.goTo({
       path: `/${APP_PATH.MENU}/${MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}/${neighbor.id}`
     });
+  }
+
+  onSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = value.trim().toLowerCase();
   }
 }
