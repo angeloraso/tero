@@ -14,6 +14,13 @@
 }
 
 .neighborhood__table__security {
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    padding: 0.15rem;
+}
+
+.neighborhood__table__security__icon {
     color: var(--primary-color);
 }
 

@@ -25,7 +25,9 @@
             <ng-container matColumnDef="security">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell padding-right *matCellDef="let element">
-                    <mat-icon *ngIf="element.security" class="neighborhood__table__security">security</mat-icon>
+                    <span class="neighborhood__table__security">
+                        <mat-icon *ngIf="element.security" class="neighborhood__table__security__icon">security</mat-icon>
+                    </span>
                 </td>
             </ng-container>
     
