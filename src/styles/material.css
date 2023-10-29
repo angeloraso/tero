@@ -43,7 +43,7 @@
 
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
-    padding: 0 0.6em !important
+    padding: 0 0.3rem 0 0 !important
 }
 
 .mdc-data-table__row .mat-mdc-cell {
@@ -107,6 +107,10 @@ mat-form-field {
 .mat-mdc-form-field-hint-wrapper,
 .mat-mdc-form-field-error-wrapper {
     padding: 0 !important;
+}
+
+.mat-mdc-header-cell[padding-left] {
+    padding-left: 0.6em !important;
 }
 
 .mdc-data-table__row .mat-mdc-cell[padding-left] {
