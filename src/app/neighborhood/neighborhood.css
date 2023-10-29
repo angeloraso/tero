@@ -1,3 +1,11 @@
+.neighborhood__search {
+    margin-bottom: 0.5rem;
+}
+
+.neighborhood__search__icon {
+    color: var(--primary-color);
+}
+
 .neighborhood__table__income {
     font-weight: bold;
     color: var(--success-color);
@@ -14,15 +22,6 @@
 }
 
 .neighborhood__table__security {
-    background-color: #fff;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    padding: 0.2rem;
-    width: fit-content;
-}
-
-.neighborhood__table__security__icon {
     color: var(--primary-color);
 }
 

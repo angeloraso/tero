@@ -152,3 +152,7 @@ mat-form-field {
     color: var(--dark-primary-color) !important;
     font-weight: 600;
 }
+
+.mat-mdc-form-field-subscript-wrapper {
+    height: 0 !important;
+}
