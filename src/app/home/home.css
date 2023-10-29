@@ -33,6 +33,6 @@
 .home__toolbar__delete {
   color: var(--danger-color);
   position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
+  right: 0.8rem;
+  top: 0.8rem;
 }
