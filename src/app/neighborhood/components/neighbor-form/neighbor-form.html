@@ -20,6 +20,7 @@
         <input teroOnlyNumber matInput type="number" formControlName="lot">
         <mat-error *ngIf="_lot.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
         <mat-error *ngIf="_lot.hasError('min')">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</mat-error>
+        <mat-error *ngIf="_lot.hasError('max')">{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_VALUE}}</mat-error>
     </mat-form-field>
 
     <span class="tero-form__toggle-field">

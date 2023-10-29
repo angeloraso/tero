@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DEFAULT_PICTURE } from '@core/constants';
+import { AVAILABLE_LOTS, DEFAULT_PICTURE } from '@core/constants';
 import { Empty, INeighbor } from '@core/model';
 
 @Component({
@@ -14,6 +14,7 @@ export class NeighborFormComponent {
   form: FormGroup;
 
   readonly MIN_VALUE = 0;
+  readonly MAX_VALUE = AVAILABLE_LOTS;
 
   @Input() set id(id: string | Empty) {
     if (!id) {
@@ -71,7 +72,10 @@ export class NeighborFormComponent {
       surname: [null, [Validators.required]],
       name: [null, [Validators.required]],
       security: [true, [Validators.required]],
-      lot: [null, [Validators.min(this.MIN_VALUE), Validators.required]]
+      lot: [
+        null,
+        [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_VALUE), Validators.required]
+      ]
     });
   }
 

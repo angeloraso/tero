@@ -28,6 +28,7 @@ export const locale = {
         ERROR: {
           REQUIRED: 'Este campo es requerido',
           MIN: 'El valor debe ser mayor a ',
+          MAX: 'El valor debe ser menor a ',
           EMAIL: 'Email inválido'
         }
       }
