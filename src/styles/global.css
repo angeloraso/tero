@@ -29,37 +29,37 @@ h6 {
 
 h1 {
     font-size: 1.4rem !important;
-    line-height: 1.4rem !important;
+    line-height: 1.6rem !important;
 }
 
 h2 {
     font-size: 1.3rem !important;
-    line-height: 1.3rem !important;
+    line-height: 1.5rem !important;
 }
 
 h3 {
     font-size: 1.2rem !important;
-    line-height: 1.2rem !important;
+    line-height: 1.4rem !important;
 }
 
 h4 {
     font-size: 1.1rem !important;
-    line-height: 1.1rem !important;
+    line-height: 1.3rem !important;
 }
 
 h5 {
     font-size: 0.9rem !important;
-    line-height: 0.9rem !important;
+    line-height: 1.1rem !important;
 }
 
 h6 {
     font-size: 0.8rem !important;
-    line-height: 0.8rem !important;
+    line-height: 1rem !important;
 }
 
 p {
     font-size: 0.8rem !important;
-    line-height: 0.8rem !important;
+    line-height: 1rem !important;
 }
 
 ul {

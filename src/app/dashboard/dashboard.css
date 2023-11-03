@@ -116,6 +116,11 @@
     margin-bottom: 0.5rem;
 }
 
+.dashboard__security__content__guard h5 {
+    position: relative;
+    top: 0.1rem;
+}
+
 .dashboard__security__content__guard__icon {
     color: var(--info-color);
     min-width: 1.6rem;
