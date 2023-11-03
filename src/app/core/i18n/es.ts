@@ -8,7 +8,8 @@ export const locale = {
       MENU: {
         DASHBOARD: 'Panel',
         NEIGHBORHOOD: 'Vecinos',
-        MAP: 'Plano'
+        MAP: 'Plano',
+        CONTACTS: 'Contactos'
       },
       BUTTON: {
         CANCEL: 'Cancelar',
@@ -24,7 +25,9 @@ export const locale = {
           SECURITY: 'Seguridad',
           EMAIL: 'Email',
           PASSWORD: 'Contraseña',
-          SEARCH: 'Buscar'
+          SEARCH: 'Buscar',
+          SCORE: 'Puntuación',
+          DESCRIPTION: 'Descripción'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

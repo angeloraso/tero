@@ -1,0 +1,16 @@
+<tero-loading [show]="showLoading">
+    <div class="tero-wrapper">
+    
+        <tero-contact-form
+            [id]="contact?.id"
+            [picture]="contact?.picture"
+            [name]="contact?.name"
+            [surname]="contact?.surname"
+            [score]="contact?.score"
+            [description]="contact?.description"
+            (cancel)="goBack()"
+            (confirm)="save($event)">
+        </tero-contact-form>
+    
+    </div>
+</tero-loading>

@@ -22,7 +22,7 @@ export class NeighborhoodService {
       try {
         const neighbor = await this.database.getNeighbor(id);
         if (neighbor) {
-          resolve(neighbor as INeighbor);
+          resolve(neighbor);
         } else {
           resolve(null);
         }

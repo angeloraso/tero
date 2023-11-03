@@ -7,6 +7,7 @@ export enum PATH {
   DASHBOARD = 'dashboard',
   NEIGHBORHOOD = 'neighborhood',
   MAP = 'map',
+  CONTACTS = 'contacts',
   ANY = '**'
 }
 
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: PATH.MAP,
         loadChildren: () => import('@map/map.module').then(m => m.MapModule)
+      },
+      {
+        path: PATH.CONTACTS,
+        loadChildren: () => import('@contacts/contacts.module').then(m => m.ContactsModule)
       }
     ]
   }

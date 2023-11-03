@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Empty, INeighbor, ISecuritySettings } from '@core/model';
+import { Empty, IContact, INeighbor, ISecuritySettings } from '@core/model';
 import { FirebaseApp } from 'firebase/app';
 import {
   Firestore,
@@ -18,7 +18,8 @@ import { BehaviorSubject, fromEvent, take } from 'rxjs';
 
 enum DB {
   NEIGHBORHOOD = 'NEIGHBORHOOD',
-  SETTINGS = 'SETTINGS'
+  SETTINGS = 'SETTINGS',
+  CONTACTS = 'CONTACTS'
 }
 
 export enum SETTINGS_ID {
@@ -41,6 +42,7 @@ export class DatabaseService implements OnDestroy {
   #subscriptions = new Set<Unsubscribe>();
   #neighborhood = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
   #securitySettings = new BehaviorSubject<ISecuritySettings | Empty>(undefined);
+  #contacts = new BehaviorSubject<Array<IContact> | undefined>(undefined);
 
   start(app: FirebaseApp) {
     this.DB = getFirestore(app);
@@ -77,12 +79,12 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  getNeighbor(id: string): Promise<unknown> {
-    return new Promise<unknown>(async (resolve, reject) => {
+  getNeighbor(id: string): Promise<INeighbor | null> {
+    return new Promise<INeighbor | null>(async (resolve, reject) => {
       try {
         const docRef = doc(this.DB!, DB.NEIGHBORHOOD, id);
         const snap = await getDoc(docRef);
-        resolve(snap.exists() ? snap.data() : null);
+        resolve(snap.exists() ? (snap.data() as INeighbor) : null);
       } catch (error) {
         reject(error);
       }
@@ -139,6 +141,76 @@ export class DatabaseService implements OnDestroy {
         });
 
         this.#subscriptions.add(unsubscribe);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getContacts(): Promise<Array<IContact>> {
+    return new Promise<Array<IContact>>((resolve, reject) => {
+      try {
+        if (typeof this.#contacts.value !== 'undefined') {
+          resolve(this.#contacts.value);
+          return;
+        }
+
+        const q = query(collection(this.DB!, DB.CONTACTS), orderBy('score', 'desc'));
+        const unsubscribe = onSnapshot(q, querySnapshot => {
+          const docs: Array<unknown> = [];
+          querySnapshot.forEach(doc => {
+            docs.push(doc.data());
+          });
+          this.#contacts.next(docs as Array<IContact>);
+          resolve(this.#contacts.value as Array<IContact>);
+        });
+
+        this.#subscriptions.add(unsubscribe);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getContact(id: string): Promise<IContact | null> {
+    return new Promise<IContact | null>(async (resolve, reject) => {
+      try {
+        const docRef = doc(this.DB!, DB.CONTACTS, id);
+        const snap = await getDoc(docRef);
+        resolve(snap.exists() ? (snap.data() as IContact) : null);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postContact(contact: IContact): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await setDoc(doc(this.DB!, DB.CONTACTS, contact.id), Object.assign({}, contact));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  putContact(contact: IContact): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await setDoc(doc(this.DB!, DB.CONTACTS, contact.id), Object.assign({}, contact));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  deleteContact(id: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await deleteDoc(doc(this.DB!, DB.CONTACTS, id));
+        resolve();
       } catch (error) {
         reject(error);
       }

@@ -1,0 +1,7 @@
+.contacts__search {
+    margin-bottom: 1rem;
+}
+
+.contacts__search__icon {
+    color: var(--primary-color);
+}

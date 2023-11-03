@@ -25,7 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   paths = new Map<MENU_OPTION_ID, string>([
     [MENU_OPTION_ID.DASHBOARD, HOME_PATH.DASHBOARD],
     [MENU_OPTION_ID.NEIGHBORHOOD, HOME_PATH.NEIGHBORHOOD],
-    [MENU_OPTION_ID.MAP, HOME_PATH.MAP]
+    [MENU_OPTION_ID.MAP, HOME_PATH.MAP],
+    [MENU_OPTION_ID.CONTACTS, HOME_PATH.CONTACTS]
   ]);
 
   constructor(

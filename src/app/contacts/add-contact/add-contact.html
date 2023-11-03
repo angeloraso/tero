@@ -1,0 +1,10 @@
+<tero-loading [show]="showLoading">
+    <div class="tero-wrapper">
+    
+        <tero-contact-form
+            (cancel)="goBack()"
+            (confirm)="save($event)">
+        </tero-contact-form>
+    
+    </div>
+</tero-loading>

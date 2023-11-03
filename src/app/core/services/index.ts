@@ -1,3 +1,4 @@
+export { ContactsService } from './contacts.service';
 export { DatabaseService } from './database.service';
 export { MobileService } from './mobile.service';
 export { NeighborhoodService } from './neighborhood.service';

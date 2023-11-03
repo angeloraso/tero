@@ -1,0 +1,28 @@
+<form class="tero-form" [formGroup]="form">
+
+    <tero-img [src]="_picture.value" alt="Contact picture"></tero-img>
+
+
+    <mat-form-field floatLabel="always" appearance="fill">
+        <mat-label>{{'CORE.FORM.FIELD.NAME' | translate}}</mat-label>
+        <input [teroAutoFocus]="true" matInput type="text" formControlName="name">
+        <mat-error *ngIf="_name.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field floatLabel="always" appearance="fill">
+        <mat-label>{{'CORE.FORM.FIELD.SURNAME' | translate}}</mat-label>
+        <input matInput type="text" formControlName="surname">
+        <mat-error *ngIf="_surname.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field floatLabel="always" appearance="fill">
+        <mat-label>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</mat-label>
+        <input matInput type="text" formControlName="description">
+    </mat-form-field>
+
+    <tero-confirm-footer
+        (cancel)="_cancel()"
+        (confirm)="_confirm()">
+    </tero-confirm-footer>
+</form>
+

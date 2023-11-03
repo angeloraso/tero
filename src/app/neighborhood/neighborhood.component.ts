@@ -64,6 +64,10 @@ export class NeighborhoodComponent implements OnInit {
   }
 
   editNeighbor(neighbor: INeighborRow) {
+    if (!neighbor) {
+      return;
+    }
+
     this.router.goTo({
       path: `/${APP_PATH.MENU}/${MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}/${neighbor.id}`
     });

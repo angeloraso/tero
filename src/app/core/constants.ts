@@ -8,7 +8,8 @@ export const AVAILABLE_LOTS = 224;
 export enum MENU_OPTION_ID {
   DASHBOARD = 'DASHBOARD',
   NEIGHBORHOOD = 'NEIGHBORHOOD',
-  MAP = 'MAP'
+  MAP = 'MAP',
+  CONTACTS = 'CONTACTS'
 }
 
 export enum LANGUAGE {
@@ -19,6 +20,7 @@ export const ROOT_PATHS = [
   `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
   `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
   `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.MAP}`,
+  `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${HOME_PATH.CONTACTS}`,
   `/${APP_PATH.AUTH}`
 ];
 
@@ -41,6 +43,12 @@ export const MENU_OPTIONS: Array<IMenuOption> = [
     id: MENU_OPTION_ID.MAP,
     title: 'CORE.MENU.MAP',
     icon: 'map',
+    active: false
+  },
+  {
+    id: MENU_OPTION_ID.CONTACTS,
+    title: 'CORE.MENU.CONTACTS',
+    icon: 'contacts',
     active: false
   }
 ];

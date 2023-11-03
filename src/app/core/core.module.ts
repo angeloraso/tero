@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LANGUAGE } from './constants';
 import { es } from './i18n';
 import {
+  ContactsService,
   DatabaseService,
   MobileService,
   NeighborhoodService,
@@ -29,7 +30,8 @@ import {
     SettingsService,
     NeighborhoodService,
     MobileService,
-    PopupService
+    PopupService,
+    ContactsService
   ]
 })
 export class CoreModule {
