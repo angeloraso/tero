@@ -53,28 +53,37 @@ export interface IContact {
   id: string;
   name: string;
   surname: string;
-  description: string;
+  comments: string;
   picture: string;
   phones: Array<IPhone>;
   score: number;
+  tags: Array<string>;
 }
 
 export class Contact implements IContact {
   id: string;
   name: string;
   surname: string;
-  description: string;
+  comments: string;
   picture: string;
   phones: Array<IPhone>;
   score: number;
+  tags: Array<string>;
 
   constructor(contact: Omit<IContact, 'id' | 'score'>) {
     this.id = uuid4();
     this.name = contact.name ?? '';
     this.surname = contact.surname ?? '';
-    this.description = contact.description ?? false;
+    this.comments = contact.comments ?? '';
     this.picture = contact.picture ?? DEFAULT_PICTURE;
     this.phones = contact.phones ?? [];
+    this.tags = contact.tags ?? [];
     this.score = 0;
   }
+}
+
+export interface ITag {
+  id: string;
+  value: string;
+  selected: boolean;
 }

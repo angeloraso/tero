@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Inject, NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { LANGUAGE } from './constants';
 import { es } from './i18n';
 import {
@@ -31,7 +32,8 @@ import {
     NeighborhoodService,
     MobileService,
     PopupService,
-    ContactsService
+    ContactsService,
+    CallNumber
   ]
 })
 export class CoreModule {

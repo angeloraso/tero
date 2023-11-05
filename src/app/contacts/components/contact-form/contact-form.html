@@ -12,13 +12,22 @@
     <mat-form-field floatLabel="always" appearance="fill">
         <mat-label>{{'CORE.FORM.FIELD.SURNAME' | translate}}</mat-label>
         <input matInput type="text" formControlName="surname">
-        <mat-error *ngIf="_surname.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
+     </mat-form-field>
+
+    <mat-form-field floatLabel="always" appearance="fill">
+        <mat-label>{{'CORE.FORM.FIELD.PHONE' | translate}}</mat-label>
+        <input matInput type="text" formControlName="phone">
+        <mat-error *ngIf="_phone.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
     </mat-form-field>
 
     <mat-form-field floatLabel="always" appearance="fill">
-        <mat-label>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</mat-label>
-        <input matInput type="text" formControlName="description">
+        <mat-label>{{'CORE.FORM.FIELD.COMMENTS' | translate}}</mat-label>
+        <input matInput type="text" formControlName="comments">
     </mat-form-field>
+
+    <mat-chip-listbox [multiple]="true" [required]="true" (change)="selectTag($event.value)">
+        <mat-chip-option *ngFor="let tag of TAGS" [value]="tag.id" [selected]="tag.selected">{{tag.value | translate}}</mat-chip-option>
+    </mat-chip-listbox>
 
     <tero-confirm-footer
         (cancel)="_cancel()"

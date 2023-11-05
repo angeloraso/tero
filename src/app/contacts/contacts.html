@@ -1,11 +1,51 @@
 <tero-loading [show]="showLoading">
     <div class="tero-wrapper">
     
-        <mat-form-field appearance="fill" class="neighborhood__search">
+        <mat-form-field appearance="fill" class="contacts__search">
             <mat-label>{{'CORE.FORM.FIELD.SEARCH' | translate}}</mat-label>
-            <mat-icon class="neighborhood__search__icon" matPrefix>search</mat-icon>
+            <mat-icon class="tero-icon contacts__search__icon" matPrefix>search</mat-icon>
             <input matInput (keyup)="onSearch($event)" #input>
         </mat-form-field>
+
+        <cdk-virtual-scroll-viewport itemSize="360" class="contacts__card-list">
+            <button *cdkVirtualFor="let contact of contacts | teroSearch : search : ['name', 'surname', '_tags._value', 'comments']" class="tero-card contacts__contact-card" (click)="editContact(contact)" (keypress)="editContact(contact)">
+                <span class="contacts__contact-card__header">
+
+                    <span class="contacts__contact-card__header__first-column">
+                        
+                        <tero-img [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
+
+                        <span class="contacts__contact-card__header__first-column__data">
+
+                            <h2><strong>{{contact.name}} {{contact.surname}}</strong></h2>
+
+                            <h4>{{contact.phones[0]?.number}}</h4>
+
+                            <h6 class="contacts__contact-card__header__first-column__data__comments" *ngIf="contact.comments">{{contact.comments}}</h6>
+
+                        </span>
+
+                    </span>
+                    
+                </span>
+
+                <mat-chip-listbox *ngFor="let tag of contact._tags">
+                    <mat-chip>{{tag.value | translate}}</mat-chip>
+                </mat-chip-listbox>
+
+                <span class="contacts__contact-card__footer">
+
+                    <button class="tero-icon-button" type="button" (click)="onCall(contact); $event.stopPropagation()" (keypress)="onCall(contact); $event.stopPropagation()">
+                        <mat-icon>call</mat-icon>
+                    </button>
+
+                    <button class="tero-icon-button" type="button" (click)="onWhatsapp(contact); $event.stopPropagation()" (keypress)="onWhatsapp(contact); $event.stopPropagation()">
+                        <i class="tero-icon fa-brands fa-whatsapp"></i>
+                    </button>
+
+                </span>
+            </button>
+        </cdk-virtual-scroll-viewport>
 
 
         <button mat-fab color="primary" (click)="addContact()">

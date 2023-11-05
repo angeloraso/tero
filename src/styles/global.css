@@ -105,6 +105,7 @@ button {
     align-items: center;
     row-gap: 1.6rem;
     overflow: hidden;
+    padding-bottom: 5rem;
 }
 
 .tero-form__toggle-field {
@@ -121,6 +122,7 @@ button {
 
 .tero-card {
     background-color: #fff;
+    border: none;
     border-radius: 0.5rem;
     box-shadow:
         0 4px 6px rgb(50 50 93 / 11%),
@@ -136,4 +138,15 @@ button {
         0 7px 14px rgb(50 50 93 / 10%),
         0 3px 6px rgb(0 0 0 / 8%);
     transform: translateY(-1px);
+}
+
+.tero-icon {
+    font-size: 1.2rem;
+}
+
+.tero-icon-button {
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    display: flex;
 }

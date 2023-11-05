@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { App } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar } from '@capacitor/status-bar';
@@ -8,15 +9,12 @@ import { Observable, Subject } from 'rxjs';
 @Injectable()
 export class MobileService {
   private _backButton = new Subject<void>();
-  private _browserData = new Subject<any>();
 
   get backButton$(): Observable<void> {
     return this._backButton.asObservable();
   }
 
-  get browserData$(): Observable<any> {
-    return this._browserData.asObservable();
-  }
+  constructor(@Inject(CallNumber) private callNumber: CallNumber) {}
 
   isMobile() {
     return ENV.mobile;
@@ -33,11 +31,7 @@ export class MobileService {
           this._backButton.next();
         });
 
-        App.addListener('appUrlOpen', data => {
-          this._browserData.next(data);
-        });
-
-        await StatusBar.setBackgroundColor({ color: '#f5f5f5' });
+        await StatusBar.setBackgroundColor({ color: '#666666' });
         resolve();
       } catch {
         resolve();
@@ -51,5 +45,9 @@ export class MobileService {
 
   exit(): Promise<void> {
     return App.exitApp();
+  }
+
+  call(number: string) {
+    return this.callNumber.callNumber(number, false);
   }
 }

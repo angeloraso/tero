@@ -27,7 +27,8 @@ export const locale = {
           PASSWORD: 'Contraseña',
           SEARCH: 'Buscar',
           SCORE: 'Puntuación',
-          DESCRIPTION: 'Descripción'
+          COMMENTS: 'Comentarios',
+          PHONE: 'Teléfono'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',
@@ -35,6 +36,20 @@ export const locale = {
           MAX: 'El valor debe ser menor a ',
           EMAIL: 'Email inválido'
         }
+      },
+      TAG: {
+        BLACKSMITH: 'Herrero',
+        GARDENER: 'Jardinero',
+        CARPENTER: 'Carpintero',
+        MASON: 'Albañil',
+        MASTER_BUILDER: 'Maestro mayor de obra',
+        AIR_CONDITIONING: 'Aire acondicionado',
+        ARCHITECT: 'Arquitecto',
+        SOIL: 'Tierra',
+        ELECTRICIAN: 'Electricista',
+        GAS_FITTER: 'Gasista',
+        PLUMBER: 'Plomero',
+        INTERNET: 'Internet'
       }
     }
   }

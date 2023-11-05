@@ -156,3 +156,9 @@ mat-form-field {
 .mat-mdc-form-field-subscript-wrapper {
     height: 0 !important;
 }
+
+.mat-mdc-standard-chip.mat-mdc-chip-selected.mat-primary,
+.mat-mdc-standard-chip.mat-mdc-chip-highlighted.mat-primary {
+    --mdc-chip-elevated-container-color: var(--primary-color);
+    --mdc-chip-elevated-disabled-container-color: var(--primary-color);
+}
