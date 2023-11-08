@@ -82,7 +82,7 @@ export class Contact implements IContact {
   }
 }
 
-export interface ITag {
+export interface IContactTag {
   id: string;
   value: string;
   selected: boolean;

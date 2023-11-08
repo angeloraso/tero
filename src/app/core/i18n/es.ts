@@ -49,7 +49,17 @@ export const locale = {
         ELECTRICIAN: 'Electricista',
         GAS_FITTER: 'Gasista',
         PLUMBER: 'Plomero',
-        INTERNET: 'Internet'
+        INTERNET: 'Internet',
+        SECURITY: 'Seguridad',
+        MUNICIPALITY: 'Municipal',
+        FOOD: 'Comida',
+        DESSERT: 'Dulce',
+        WIRE_FENCE: 'Alambrados',
+        CEMENT_FENCE: 'Premoldeados',
+        CONTAINERS: 'Contenedores',
+        FREIGHT: 'Flete',
+        PAINTER: 'Pintor',
+        BANK: 'Banco'
       }
     }
   }

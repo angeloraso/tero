@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DEFAULT_PICTURE, TAGS } from '@core/constants';
-import { Empty, IContact, IPhone } from '@core/model';
+import { Empty, IContact, IContactTag, IPhone } from '@core/model';
+import { TeroTranslateService } from '@core/services';
 
 @Component({
   selector: 'tero-contact-form',
@@ -15,7 +16,7 @@ export class ContactFormComponent {
 
   readonly MIN_VALUE = 0;
   readonly MAX_VALUE = 5;
-  readonly TAGS = TAGS;
+  TAGS: Array<IContactTag> = [];
 
   @Input() set id(id: string | Empty) {
     if (!id) {
@@ -87,7 +88,10 @@ export class ContactFormComponent {
     });
   }
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(
+    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(TeroTranslateService) private translate: TeroTranslateService
+  ) {
     this.form = this.fb.group({
       id: [null],
       picture: [DEFAULT_PICTURE, [Validators.required]],
@@ -100,6 +104,10 @@ export class ContactFormComponent {
         0,
         [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_VALUE), Validators.required]
       ]
+    });
+
+    this.TAGS = TAGS.map(_tag => {
+      return { ..._tag, _value: this.translate.get(_tag.value) };
     });
   }
 

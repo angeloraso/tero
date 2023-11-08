@@ -7,7 +7,7 @@
 }
 
 .contacts__card-list {
-    height: 30rem;
+    height: calc(100vh - var(--top-bar-height) - var(--bottom-bar-height) - 6rem);
 }
 
 .contacts__contact-card {

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { HomeService } from '@app/home/home.service';
 import { TAGS, WHATSAPP_URL } from '@core/constants';
-import { IContact, ITag } from '@core/model';
+import { IContact, IContactTag } from '@core/model';
 import {
   ContactsService,
   MobileService,
@@ -14,7 +14,7 @@ import { PATH as MENU_PATH } from '@menu/side-menu.routing';
 import { PATH as CONTACTS_PATH } from './contacts.routing';
 
 interface IContactCard extends IContact {
-  _tags: Array<ITag & { _value: string }>;
+  _tags: Array<IContactTag & { _value: string }>;
 }
 @Component({
   selector: 'tero-contacts',
@@ -41,12 +41,12 @@ export class ContactsComponent implements OnInit {
       this.showLoading = true;
       const contacts = await this.contactsService.getContacts();
       this.contacts = contacts.map(_contact => {
-        const tags: Array<ITag & { _value: string }> = [];
+        const tags: Array<IContactTag & { _value: string }> = [];
         _contact.tags.forEach(_tagId => {
           const tag = TAGS.find(_tag => _tag.id === _tagId);
           if (tag) {
-            (<ITag & { _value: string }>tag)._value = this.translate.get(tag.value);
-            tags.push(tag as ITag & { _value: string });
+            (<IContactTag & { _value: string }>tag)._value = this.translate.get(tag.value);
+            tags.push(tag as IContactTag & { _value: string });
           }
         });
 

@@ -26,7 +26,7 @@
     </mat-form-field>
 
     <mat-chip-listbox [multiple]="true" [required]="true" (change)="selectTag($event.value)">
-        <mat-chip-option *ngFor="let tag of TAGS" [value]="tag.id" [selected]="tag.selected">{{tag.value | translate}}</mat-chip-option>
+        <mat-chip-option *ngFor="let tag of TAGS | teroOderAlphabetically: '_value'" [value]="tag.id" [selected]="tag.selected">{{tag.value | translate}}</mat-chip-option>
     </mat-chip-listbox>
 
     <tero-confirm-footer

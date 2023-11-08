@@ -7,8 +7,8 @@
             <input matInput (keyup)="onSearch($event)" #input>
         </mat-form-field>
 
-        <cdk-virtual-scroll-viewport itemSize="360" class="contacts__card-list">
-            <button *cdkVirtualFor="let contact of contacts | teroSearch : search : ['name', 'surname', '_tags._value', 'comments']" class="tero-card contacts__contact-card" (click)="editContact(contact)" (keypress)="editContact(contact)">
+        <cdk-virtual-scroll-viewport itemSize="100" class="contacts__card-list">
+            <button *cdkVirtualFor="let contact of contacts | teroSearch : search : ['name', 'surname', '_tags._value', 'comments'] | teroOderAlphabetically: 'name'" class="tero-card contacts__contact-card" (click)="editContact(contact)" (keypress)="editContact(contact)">
                 <span class="contacts__contact-card__header">
 
                     <span class="contacts__contact-card__header__first-column">
