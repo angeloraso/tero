@@ -36,7 +36,9 @@ export class MapComponent implements OnInit, AfterViewInit {
       const neighbors = await this.neighborhood.getNeighbors();
       neighbors.forEach(_neighbor => {
         if (this.lots[_neighbor.lot]) {
-          this.lots[_neighbor.lot].security = _neighbor.security;
+          if (!this.lots[_neighbor.lot].security) {
+            this.lots[_neighbor.lot].security = _neighbor.security;
+          }
           this.lots[_neighbor.lot].neighbors.push(_neighbor);
         }
       });

@@ -9,8 +9,8 @@
     "amplify/backend/awscloudformation": true
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": false,
-    "source.organizeImports": true
+    "source.fixAll.eslint": "never",
+    "source.organizeImports": "explicit"
   },
   "javascript.updateImportsOnFileMove.enabled": "never",
   "typescript.updateImportsOnFileMove.enabled": "never",
@@ -24,28 +24,28 @@
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
     "editor.formatOnSave": false
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
     "editor.formatOnSave": false
   },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
     "editor.formatOnSave": true
   },
   "[json]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
     "editor.formatOnSave": false
   },
@@ -54,5 +54,10 @@
   },
   "cSpell.words": [
     "unlistening"
-  ]
+  ],
+  "[css][javascript][json][typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }

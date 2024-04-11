@@ -5,8 +5,6 @@
     "ng": "ng",
     "start": "ng serve -o",
     "start:pwa": "npm run build && http-server -o -p 4200 -c-1 dist",
-    "pwa:add-assets": "node src/scripts/pwa-assets.ts",
-    "pwa:rm-assets": "node src/scripts/pwa-assets.ts",
     "build": "ng build --configuration=production",
     "build:mobile": "ng build --configuration=mobile",
     "android:resources": "capacitor-assets generate --android",

@@ -45,17 +45,15 @@ export class DashboardComponent implements OnInit {
 
       neighborhood.forEach(_neighbor => {
         if (_neighbor.security) {
-          if (groups[this.utils.getGroup(_neighbor)]) {
-            groups[this.utils.getGroup(_neighbor)].lots.add(_neighbor.lot);
-          } else {
+          if (!groups[this.utils.getGroup(_neighbor)]) {
             groups[this.utils.getGroup(_neighbor)] = {
               value: this.utils.getGroup(_neighbor),
               lots: new Set(),
               fee: 0
             };
-
-            groups[this.utils.getGroup(_neighbor)].lots.add(_neighbor.lot);
           }
+
+          groups[this.utils.getGroup(_neighbor)].lots.add(_neighbor.lot);
         }
       });
 
