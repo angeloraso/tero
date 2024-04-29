@@ -1,59 +1,74 @@
-.neighborhood__search {
-    margin-bottom: 0.5rem;
+.map {
+    overflow: scroll;
 }
 
-.neighborhood__search__icon {
-    color: var(--primary-color);
+.map__block-row {
+    display: flex;
 }
 
-.neighborhood__table__income {
-    font-weight: bold;
-    color: var(--success-color);
+.map__block {
+    padding: 0.3rem;
+    background-color: var(--hover-color);
+    border-radius: 0.3rem;
+    display: flex;
+    height: fit-content;
 }
 
-.neighborhood__table__expense {
-    font-weight: bold;
-    color: var(--danger-color);
+.map__block__column--free {
+    background-color: var(--free-color);
+    width: 6rem;
 }
 
-.neighborhood__table__balance {
-    font-weight: bold;
-    color: var(--info-color);
+.map__block__column {
+    display: flex;
+    flex-direction: column;
 }
 
-.neighborhood__table__security {
-    color: var(--primary-color);
+.map__block__column__lot {
+    border: 0.1rem solid var(--default-color);
+    height: 2rem;
+    width: 6rem;
+    text-align: center;
+    display: grid;
+    place-items: center;
 }
 
-.neighborhood__table--empty {
+.map__vertical-street {
+    background-color: var(--street-color);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    min-width: 2rem;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20rem;
-    width: 100%;
+    border-radius: 0.3rem;
+}
+
+.map__vertical-street--main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.street__icon {
+    color: var(--info-color);
+    background-color: #fff;
+    padding: 0.3rem;
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+    border: 0.1rem solid var(--info-color);
+    transform: rotate(90deg);
+}
+
+.map__horizontal-street {
+    background-color: var(--street-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-}
-
-.neighborhood__table__row--group-1 {
-    background-color: var(--group-1-color);
-}
-
-.neighborhood__table__row--group-2 {
-    background-color: var(--group-2-color);
-}
-
-.neighborhood__table__row--group-3 {
-    background-color: var(--group-3-color);
-}
-
-.neighborhood__table__row--group-4 {
-    background-color: var(--group-4-color);
-}
-
-.neighborhood__table__row--group-5 {
-    background-color: var(--group-5-color);
-}
-
-.neighborhood__table__row--group-6 {
-    background-color: var(--group-6-color);
+    min-height: 2rem;
+    border-radius: 0.3rem;
 }

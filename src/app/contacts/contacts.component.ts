@@ -1,16 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { HomeService } from '@app/home/home.service';
+import { BizyRouterService, BizyTranslateService } from '@bizy/services';
 import { TAGS, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactTag } from '@core/model';
-import {
-  ContactsService,
-  MobileService,
-  RouterService,
-  TeroTranslateService
-} from '@core/services';
+import { ContactsService, MobileService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PATH as MENU_PATH } from '@menu/side-menu.routing';
 import { PATH as CONTACTS_PATH } from './contacts.routing';
 
 interface IContactCard extends IContact {
@@ -27,14 +21,11 @@ export class ContactsComponent implements OnInit {
   search: string = '';
 
   constructor(
-    @Inject(RouterService) private router: RouterService,
-    @Inject(HomeService) private home: HomeService,
+    @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(MobileService) private mobile: MobileService,
-    @Inject(TeroTranslateService) private translate: TeroTranslateService,
+    @Inject(BizyTranslateService) private translate: BizyTranslateService,
     @Inject(ContactsService) private contactsService: ContactsService
-  ) {
-    this.home.updateTitle('CONTACTS.TITLE');
-  }
+  ) {}
 
   async ngOnInit() {
     try {

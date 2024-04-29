@@ -1,5 +1,5 @@
 import { Inject, NgModule } from '@angular/core';
-import { TeroTranslateService } from '@core/services';
+import { BizyTranslateService } from '@bizy/services';
 import { SharedModule } from '@shared/shared.module';
 import { DashboardRoutingModule } from './dashboard.routing';
 import { es } from './i18n';
@@ -9,7 +9,7 @@ import { es } from './i18n';
   declarations: DashboardRoutingModule.COMPONENTS
 })
 export class DashboardModule {
-  constructor(@Inject(TeroTranslateService) private translate: TeroTranslateService) {
+  constructor(@Inject(BizyTranslateService) private translate: BizyTranslateService) {
     this.translate.loadTranslations(es);
   }
 }

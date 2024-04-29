@@ -1,80 +1,115 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { MENU_OPTIONS, MENU_OPTION_ID } from '@core/constants';
-import { RouterService } from '@core/services';
+import { BizyRouterService, BizyStorageService } from '@bizy/services';
+import { AuthService } from '@core/auth/auth.service';
+import { LOGO_PATH } from '@core/constants';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { IMenuOption } from '@menu/model';
-import { PATH as SIDE_MENU_PATH } from '@menu/side-menu.routing';
-import { SideMenuService } from '@menu/side-menu.service';
 import { Subscription } from 'rxjs';
-import { HomeService } from './home.service';
-
+interface IOption {
+  icon: string;
+  label: string;
+  path: string;
+  selected: boolean;
+}
 @Component({
-  selector: 'home',
+  selector: 'tero-home',
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  private subscription = new Subscription();
-  showBottomBar = true;
-  sideMenuIsOpen: boolean = false;
-  options: Array<IMenuOption> = [];
-  selectedIndex: number = 0;
+export class HomeComponent implements OnDestroy {
+  closedSidebar: boolean = false;
+  profilePic: string = '';
+  email: string = '';
+  options: Array<IOption> = [
+    {
+      path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}`,
+      label: 'CORE.MENU.NEIGHBORS',
+      icon: 'diversity_3',
+      selected: false
+    },
+    {
+      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
+      label: 'CORE.MENU.DASHBOARD',
+      icon: 'dashboard',
+      selected: false
+    },
+    {
+      path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
+      label: 'CORE.MENU.NEIGHBORHOOD',
+      icon: 'map',
+      selected: false
+    },
+    {
+      path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}`,
+      label: 'CORE.MENU.CONTACTS',
+      icon: 'contacts',
+      selected: false
+    }
+  ];
 
-  paths = new Map<MENU_OPTION_ID, string>([
-    [MENU_OPTION_ID.DASHBOARD, HOME_PATH.DASHBOARD],
-    [MENU_OPTION_ID.NEIGHBORHOOD, HOME_PATH.NEIGHBORHOOD],
-    [MENU_OPTION_ID.MAP, HOME_PATH.MAP],
-    [MENU_OPTION_ID.CONTACTS, HOME_PATH.CONTACTS]
-  ]);
+  #subscription = new Subscription();
+  readonly #CLOSED_SIDEBAR = 'CLOSED_SIDEBAR';
+  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
-    @Inject(RouterService) private router: RouterService,
-    @Inject(SideMenuService) private sideMenu: SideMenuService,
-    @Inject(HomeService) public home: HomeService
-  ) {}
+    @Inject(BizyRouterService) private router: BizyRouterService,
+    @Inject(BizyStorageService) private storage: BizyStorageService,
+    @Inject(AuthService) private auth: AuthService
+  ) {
+    this.closedSidebar = this.storage.get<boolean>(this.#CLOSED_SIDEBAR) ?? true;
+    const profilePic = this.auth.getProfilePicture();
+    if (profilePic) {
+      this.profilePic = profilePic;
+    }
 
-  ngOnInit() {
-    this.options = MENU_OPTIONS;
+    const email = this.auth.getEmail();
+    if (email) {
+      this.email = email;
+    }
 
-    this.selectedIndex = this.options.findIndex(
-      _option => this.router.getURL().indexOf(this.paths.get(_option.id)!) !== -1
-    );
-
-    this.subscription.add(
-      this.sideMenu.open$.subscribe(opened => {
-        this.sideMenuIsOpen = opened;
-      })
-    );
-
-    this.subscription.add(
-      this.sideMenu.option$.subscribe(option => {
-        this.selectedIndex = this.options.findIndex(_option => _option.id === option.id);
-        this.goTo(option);
+    this.#subscription.add(
+      this.router.transitionsEnd$.subscribe(() => {
+        const option = this.#getURLOption(this.options, this.router.getURL());
+        if (option) {
+          option.selected = true;
+          this.onSelect(option);
+        }
       })
     );
   }
 
-  showOption(event: MatTabChangeEvent) {
-    if (this.sideMenuIsOpen) {
+  onSelect(option: IOption) {
+    if (!option) {
       return;
     }
 
-    this.selectedIndex = event.index;
-
-    const option = this.options[event.index];
-
-    this.goTo(option);
+    if (option.path) {
+      this.goTo(option.path);
+    }
   }
 
-  goTo(option: IMenuOption) {
-    this.router.goTo({
-      path: `/${APP_PATH.MENU}/${SIDE_MENU_PATH.HOME}/${this.paths.get(option.id)}`
+  onToggle(closed: boolean) {
+    this.closedSidebar = closed;
+    this.storage.set(this.#CLOSED_SIDEBAR, closed);
+  }
+
+  goTo(path: string) {
+    this.router.goTo({ path });
+  }
+
+  #getURLOption = (options: Array<IOption>, path: string): IOption | null => {
+    let urlOption: IOption | null = null;
+    options.forEach(_option => {
+      if (_option && _option.path === path) {
+        urlOption = _option;
+        return;
+      }
     });
-  }
+
+    return urlOption;
+  };
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.#subscription.unsubscribe();
   }
 }

@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { AuthService } from '@auth/auth.service';
-import { config } from '@core/firebase.config';
-import { DatabaseService, ServiceWorkerService } from '@core/services';
+import { ServiceWorkerService } from '@core/services';
 import { initializeApp } from 'firebase/app';
-
+import { config } from '../firebase.config';
 @Injectable()
 export class AppInitService {
   constructor(
-    @Inject(DatabaseService) private database: DatabaseService,
     @Inject(AuthService) private auth: AuthService,
     @Inject(ServiceWorkerService) private serviceWorker: ServiceWorkerService
   ) {}
@@ -16,8 +14,8 @@ export class AppInitService {
     return new Promise<void>(async (resolve, reject) => {
       try {
         this.serviceWorker.start();
-        const app = initializeApp(config);
-        await Promise.all([this.database.start(app), this.auth.start(app)]);
+        await initializeApp(config);
+        await this.auth.start();
         resolve();
       } catch (error) {
         reject(error);

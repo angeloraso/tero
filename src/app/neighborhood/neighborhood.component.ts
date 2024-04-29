@@ -1,80 +1,73 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { PATH as APP_PATH } from '@app/app.routing';
-import { INeighbor } from '@core/model';
-import { NeighborhoodService, RouterService, UtilsService } from '@core/services';
-import { PATH as HOME_PATH } from '@home/home.routing';
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AVAILABLE_LOTS } from '@core/constants';
+import { Empty } from '@core/model';
+import { NeighborhoodService } from '@core/services';
 import { HomeService } from '@home/home.service';
-import { PATH as MENU_PATH } from '@menu/side-menu.routing';
-import { PATH as NEIGHBORHOOD_PATH } from './neighborhood.routing';
-
-interface INeighborRow extends INeighbor {
-  group?: number;
-}
+import { LotPopupComponent } from './components';
+import { ILot } from './map.model';
 
 @Component({
   selector: 'tero-neighborhood',
   templateUrl: './neighborhood.html',
   styleUrls: ['./neighborhood.css']
 })
-export class NeighborhoodComponent implements OnInit {
-  @ViewChild(MatSort) sort: MatSort | null = null;
-  readonly DISPLAYED_COLUMNS = ['group', 'lot', 'surname', 'name', 'security'];
-  dataSource = new MatTableDataSource<INeighborRow>();
-  showLoading: boolean = false;
+export class NeighborhoodComponent implements OnInit, AfterViewInit {
+  @ViewChild('mainEntrance') mainEntrance: ElementRef | Empty;
+  showLoading = false;
+  lots: Array<ILot> = Array.from({ length: AVAILABLE_LOTS + 1 }, (_, index) => ({
+    number: index,
+    security: false,
+    neighbors: []
+  }));
 
   constructor(
-    @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
-    @Inject(RouterService) private router: RouterService,
     @Inject(HomeService) private home: HomeService,
-    @Inject(UtilsService) private utils: UtilsService
+    @Inject(MatDialog) private dialog: MatDialog,
+    @Inject(NeighborhoodService) private neighborhood: NeighborhoodService
   ) {
-    this.home.updateTitle('NEIGHBORHOOD.TITLE');
+    this.home.updateTitle('MAP.TITLE');
   }
 
   async ngOnInit() {
     try {
       this.showLoading = true;
-      const neighborhood = await this.neighborhood.getNeighbors();
-      if (this.sort) {
-        this.dataSource.sort = this.sort;
-        this.dataSource.sort.active = 'lot';
-        this.dataSource.sort.direction = 'asc';
-      }
-      const data = neighborhood.map(_neighbor => {
-        return { ..._neighbor, group: this.utils.getGroup(_neighbor) };
+      const neighbors = await this.neighborhood.getNeighbors();
+      neighbors.forEach(_neighbor => {
+        if (this.lots[_neighbor.lot]) {
+          if (!this.lots[_neighbor.lot].security) {
+            this.lots[_neighbor.lot].security = _neighbor.security;
+          }
+          this.lots[_neighbor.lot].neighbors.push(_neighbor);
+        }
       });
-
-      this.dataSource.data = data.slice(0, 20);
-      setTimeout(() => {
-        this.dataSource.data = data;
-      }, 500);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       this.showLoading = false;
     }
   }
 
-  addNeighbor() {
-    this.router.goTo({
-      path: `/${APP_PATH.MENU}/${MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}/${NEIGHBORHOOD_PATH.ADD}`
-    });
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.mainEntrance) {
+        this.mainEntrance.nativeElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   }
 
-  editNeighbor(neighbor: INeighborRow) {
-    if (!neighbor) {
+  showLot(lot: ILot) {
+    if (!lot) {
       return;
     }
 
-    this.router.goTo({
-      path: `/${APP_PATH.MENU}/${MENU_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}/${neighbor.id}`
+    this.dialog.open(LotPopupComponent, {
+      data: lot,
+      scrollStrategy: new NoopScrollStrategy(),
+      panelClass: 'tero-material-dialog'
     });
-  }
-
-  onSearch(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = value.trim().toLowerCase();
   }
 }

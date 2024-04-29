@@ -1,32 +1,24 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Empty, IContact, INeighbor, ISecuritySettings } from '@core/model';
-import { FirebaseApp } from 'firebase/app';
-import {
-  Firestore,
-  Unsubscribe,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getFirestore,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc
-} from 'firebase/firestore';
-import { BehaviorSubject, fromEvent, take } from 'rxjs';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { FirebaseFirestore } from '@capacitor-firebase/firestore';
+import { AuthService } from '@core/auth/auth.service';
+import { IContact, INeighbor, ISecurity, IUserSettings, ROLE } from '@core/model';
+import { BehaviorSubject } from 'rxjs';
 
-enum DB {
-  NEIGHBORHOOD = 'NEIGHBORHOOD',
-  SETTINGS = 'SETTINGS',
-  CONTACTS = 'CONTACTS'
+enum COLLECTION {
+  CORE = 'core'
 }
 
-export enum SETTINGS_ID {
-  SECURITY = 'SECURITY'
+enum CORE_DOCUMENT {
+  NEIGHBORS = 'neighbors',
+  CONTACTS = 'contacts',
+  SECURITY = 'security'
 }
 
-enum OPERATOR {
+enum USER_DOCUMENT {
+  SETTINGS = 'settings'
+}
+
+/* enum OPERATOR {
   EQUAL = '==',
   NOT_EQUAL = '!=',
   LESS = '<',
@@ -34,57 +26,56 @@ enum OPERATOR {
   GREATER = '>',
   GREATER_OR_EQUAL = '>=',
   CONTAINS = 'array-contains'
-}
+} */
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DatabaseService implements OnDestroy {
-  DB: Firestore | null = null;
-  #subscriptions = new Set<Unsubscribe>();
-  #neighborhood = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
-  #securitySettings = new BehaviorSubject<ISecuritySettings | Empty>(undefined);
+  #neighbors = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
   #contacts = new BehaviorSubject<Array<IContact> | undefined>(undefined);
+  #security = new BehaviorSubject<ISecurity | undefined>(undefined);
+  #userSettings = new BehaviorSubject<IUserSettings | undefined>(undefined);
 
-  start(app: FirebaseApp) {
-    this.DB = getFirestore(app);
-    console.log(OPERATOR);
-    fromEvent(window, 'beforeunload')
-      .pipe(take(1))
-      .subscribe(() => {
-        this.ngOnDestroy();
-      });
-  }
+  constructor(@Inject(AuthService) private auth: AuthService) {}
 
-  getNeighborhood(): Promise<Array<INeighbor>> {
-    return new Promise<Array<INeighbor>>((resolve, reject) => {
+  getNeighbors() {
+    return new Promise<Array<INeighbor>>(async (resolve, reject) => {
       try {
-        if (typeof this.#neighborhood.value !== 'undefined') {
-          resolve(this.#neighborhood.value);
+        if (typeof this.#neighbors.value !== 'undefined') {
+          resolve(this.#neighbors.value);
           return;
         }
 
-        const q = query(collection(this.DB!, DB.NEIGHBORHOOD), orderBy('lot', 'asc'));
-        const unsubscribe = onSnapshot(q, querySnapshot => {
-          const docs: Array<unknown> = [];
-          querySnapshot.forEach(doc => {
-            docs.push(doc.data());
-          });
-          this.#neighborhood.next(docs as Array<INeighbor>);
-          resolve(this.#neighborhood.value as Array<INeighbor>);
-        });
-
-        this.#subscriptions.add(unsubscribe);
+        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<INeighbor> }>(
+          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}` },
+          (event, error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              const neighbors = event && event.snapshot.data ? event.snapshot.data.data : [];
+              this.#neighbors.next(neighbors);
+              resolve(neighbors);
+            }
+          }
+        );
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  getNeighbor(id: string): Promise<INeighbor | null> {
+  getNeighbor(id: string) {
     return new Promise<INeighbor | null>(async (resolve, reject) => {
       try {
-        const docRef = doc(this.DB!, DB.NEIGHBORHOOD, id);
-        const snap = await getDoc(docRef);
-        resolve(snap.exists() ? (snap.data() as INeighbor) : null);
+        if (typeof this.#neighbors.value !== 'undefined') {
+          resolve(this.#neighbors.value.find(_neighbor => _neighbor.id === id) || null);
+          return;
+        }
+
+        const neighbors = await this.getNeighbors();
+        const neighbor = neighbors.find(_neighbor => _neighbor.id === id) || null;
+        resolve(neighbor as INeighbor);
       } catch (error) {
         reject(error);
       }
@@ -94,7 +85,20 @@ export class DatabaseService implements OnDestroy {
   postNeighbor(neighbor: INeighbor): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await setDoc(doc(this.DB!, DB.NEIGHBORHOOD, neighbor.id), Object.assign({}, neighbor));
+        const neighbors = await this.getNeighbors();
+        const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
+        if (index !== -1) {
+          neighbors[index] = neighbor;
+        } else {
+          neighbors.push(neighbor);
+        }
+
+        const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
+          data: neighborsDocument
+        });
         resolve();
       } catch (error) {
         reject(error);
@@ -105,7 +109,18 @@ export class DatabaseService implements OnDestroy {
   putNeighbor(neighbor: INeighbor): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await setDoc(doc(this.DB!, DB.NEIGHBORHOOD, neighbor.id), Object.assign({}, neighbor));
+        const neighbors = await this.getNeighbors();
+        const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
+        if (index !== -1) {
+          neighbors[index] = neighbor;
+
+          const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
+          await FirebaseFirestore.setDocument({
+            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
+            data: neighborsDocument
+          });
+        }
+
         resolve();
       } catch (error) {
         reject(error);
@@ -116,7 +131,15 @@ export class DatabaseService implements OnDestroy {
   deleteNeighbor(id: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await deleteDoc(doc(this.DB!, DB.NEIGHBORHOOD, id));
+        let neighbors = await this.getNeighbors();
+        neighbors = neighbors.filter(_neighbor => _neighbor.id !== id);
+
+        const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
+          data: neighborsDocument
+        });
         resolve();
       } catch (error) {
         reject(error);
@@ -124,60 +147,43 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  getSecuritySettings() {
-    return new Promise<ISecuritySettings | null>((resolve, reject) => {
-      try {
-        if (typeof this.#securitySettings.value !== 'undefined') {
-          resolve(this.#securitySettings.value);
-          return;
-        }
-
-        const unsubscribe = onSnapshot(collection(this.DB!, DB.SETTINGS), querySnapshot => {
-          const setting = querySnapshot.docs.find(_setting => _setting.id === SETTINGS_ID.SECURITY);
-          if (setting) {
-            this.#securitySettings.next(setting.data() as ISecuritySettings);
-            resolve(this.#securitySettings.value as ISecuritySettings);
-          }
-        });
-
-        this.#subscriptions.add(unsubscribe);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getContacts(): Promise<Array<IContact>> {
-    return new Promise<Array<IContact>>((resolve, reject) => {
+  getContacts() {
+    return new Promise<Array<IContact>>(async (resolve, reject) => {
       try {
         if (typeof this.#contacts.value !== 'undefined') {
           resolve(this.#contacts.value);
           return;
         }
 
-        const q = query(collection(this.DB!, DB.CONTACTS), orderBy('score', 'desc'));
-        const unsubscribe = onSnapshot(q, querySnapshot => {
-          const docs: Array<unknown> = [];
-          querySnapshot.forEach(doc => {
-            docs.push(doc.data());
-          });
-          this.#contacts.next(docs as Array<IContact>);
-          resolve(this.#contacts.value as Array<IContact>);
-        });
-
-        this.#subscriptions.add(unsubscribe);
+        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<IContact> }>(
+          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` },
+          (event, error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              const contacts = event && event.snapshot.data ? event.snapshot.data.data : [];
+              this.#contacts.next(contacts);
+              resolve(contacts);
+            }
+          }
+        );
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  getContact(id: string): Promise<IContact | null> {
+  getContact(id: string) {
     return new Promise<IContact | null>(async (resolve, reject) => {
       try {
-        const docRef = doc(this.DB!, DB.CONTACTS, id);
-        const snap = await getDoc(docRef);
-        resolve(snap.exists() ? (snap.data() as IContact) : null);
+        if (typeof this.#contacts.value !== 'undefined') {
+          resolve(this.#contacts.value.find(_contact => _contact.id === id) || null);
+          return;
+        }
+
+        const contacts = await this.getContacts();
+        const contact = contacts.find(_contact => _contact.id === id) || null;
+        resolve(contact as IContact);
       } catch (error) {
         reject(error);
       }
@@ -187,7 +193,20 @@ export class DatabaseService implements OnDestroy {
   postContact(contact: IContact): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await setDoc(doc(this.DB!, DB.CONTACTS, contact.id), Object.assign({}, contact));
+        const contacts = await this.getContacts();
+        const index = contacts.findIndex(_contact => _contact.id === contact.id);
+        if (index !== -1) {
+          contacts[index] = contact;
+        } else {
+          contacts.push(contact);
+        }
+
+        const contactsDocument = JSON.parse(JSON.stringify({ data: contacts }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
+          data: contactsDocument
+        });
         resolve();
       } catch (error) {
         reject(error);
@@ -198,7 +217,18 @@ export class DatabaseService implements OnDestroy {
   putContact(contact: IContact): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await setDoc(doc(this.DB!, DB.CONTACTS, contact.id), Object.assign({}, contact));
+        const contacts = await this.getContacts();
+        const index = contacts.findIndex(_contact => _contact.id === contact.id);
+        if (index !== -1) {
+          contacts[index] = contact;
+
+          const contactsDocument = JSON.parse(JSON.stringify({ data: contacts }));
+          await FirebaseFirestore.setDocument({
+            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
+            data: contactsDocument
+          });
+        }
+
         resolve();
       } catch (error) {
         reject(error);
@@ -209,7 +239,15 @@ export class DatabaseService implements OnDestroy {
   deleteContact(id: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await deleteDoc(doc(this.DB!, DB.CONTACTS, id));
+        let contacts = await this.getContacts();
+        contacts = contacts.filter(_contact => _contact.id !== id);
+
+        const contactsDocument = JSON.parse(JSON.stringify({ data: contacts }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
+          data: contactsDocument
+        });
         resolve();
       } catch (error) {
         reject(error);
@@ -217,11 +255,89 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    const subscriptions = Array.from(this.#subscriptions);
-    subscriptions.forEach(unsubscribe => {
-      unsubscribe();
+  getSecurity() {
+    return new Promise<ISecurity | null>(async (resolve, reject) => {
+      try {
+        if (typeof this.#security.value !== 'undefined') {
+          resolve(this.#security.value);
+          return;
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<ISecurity>(
+          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}` },
+          (event, error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              const preferences = event && event.snapshot.data ? event.snapshot.data : undefined;
+              this.#security.next(preferences);
+              resolve(preferences ?? null);
+            }
+          }
+        );
+      } catch (error) {
+        reject(error);
+      }
     });
-    this.#subscriptions.clear();
+  }
+
+  getUserSettings() {
+    return new Promise<IUserSettings | null>(async (resolve, reject) => {
+      try {
+        if (typeof this.#userSettings.value !== 'undefined') {
+          resolve(this.#userSettings.value);
+          return;
+        }
+
+        const userEmail = this.auth.getEmail();
+        if (!userEmail) {
+          throw new Error('No user email');
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<IUserSettings>(
+          { reference: `${userEmail}/${USER_DOCUMENT.SETTINGS}` },
+          (event, error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              const settings = event && event.snapshot.data ? event.snapshot.data : undefined;
+              this.#userSettings.next(settings);
+              resolve(settings ?? null);
+            }
+          }
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getUserRoles() {
+    return new Promise<Array<ROLE>>(async (resolve, reject) => {
+      try {
+        if (typeof this.#userSettings.value !== 'undefined') {
+          resolve(this.#userSettings.value.roles ?? []);
+          return;
+        }
+
+        const settings = await this.getUserSettings();
+
+        if (settings && settings.roles) {
+          resolve(settings.roles);
+        } else {
+          resolve([]);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  destroy = () => {
+    return FirebaseFirestore.removeAllListeners();
+  };
+
+  ngOnDestroy() {
+    this.destroy();
   }
 }

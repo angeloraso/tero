@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { authCanLoadGuard, autoLoginCanLoadGuard } from '@core/guards';
+import { authGuard, autoSignInGuard } from '@core/guards';
 
 export enum PATH {
   EMPTY = '',
-  MENU = '-',
+  HOME = 'home',
   AUTH = 'auth',
   ANY = '**'
 }
@@ -16,14 +16,19 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: PATH.MENU,
-    loadChildren: () => import('@menu/side-menu.module').then(m => m.SideMenuModule),
-    canLoad: [authCanLoadGuard]
-  },
-  {
     path: PATH.AUTH,
     loadChildren: () => import('@auth/auth.module').then(m => m.AuthModule),
-    canLoad: [autoLoginCanLoadGuard]
+    canLoad: [autoSignInGuard],
+    canActivate: [autoSignInGuard]
+  },
+  {
+    path: PATH.HOME,
+    loadChildren: () => import('@home/home.module').then(m => m.HomeModule),
+    canLoad: [authGuard]
+  },
+  {
+    path: PATH.ANY,
+    redirectTo: PATH.AUTH
   }
 ];
 

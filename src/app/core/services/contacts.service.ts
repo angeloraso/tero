@@ -2,7 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { Contact, IContact } from '@core/model';
 import { DatabaseService } from '@core/services';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ContactsService {
   constructor(@Inject(DatabaseService) private database: DatabaseService) {}
 
@@ -10,21 +12,21 @@ export class ContactsService {
     return new Promise<Array<IContact>>(async (resolve, reject) => {
       try {
         const contacts = await this.database.getContacts();
-        resolve(contacts);
+        resolve(contacts ?? []);
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  getContact(id: string) {
-    return new Promise<IContact | null>(async (resolve, reject) => {
+  getContact(contactId: string) {
+    return new Promise<IContact>(async (resolve, reject) => {
       try {
-        const contact = await this.database.getContact(id);
+        const contact = await this.database.getContact(contactId);
         if (contact) {
           resolve(contact);
         } else {
-          resolve(null);
+          throw new Error('Not exists');
         }
       } catch (error) {
         reject(error);
@@ -32,12 +34,23 @@ export class ContactsService {
     });
   }
 
-  postContact(contact: Omit<IContact, 'id' | 'score'>): Promise<void> {
+  postContact(contact: Omit<IContact, 'id'>): Promise<void> {
     return this.database.postContact(new Contact(contact));
   }
 
   putContact(contact: IContact): Promise<void> {
-    return this.database.putContact(contact);
+    return this.database.putContact({
+      id: contact.id,
+      name: contact.name,
+      surname: contact.surname,
+      comments: contact.comments,
+      picture: contact.picture,
+      phones: contact.phones,
+      score: contact.score,
+      tags: contact.tags,
+      created: Number(contact.created) || Date.now(),
+      updated: Date.now()
+    });
   }
 
   deleteContact(contact: IContact): Promise<void> {

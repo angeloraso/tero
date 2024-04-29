@@ -30,6 +30,13 @@ platforms:
         replace:
           - minSdkVersion: $MIN_SDK
 
+      - file: variables.gradle
+        target:
+          ext:
+        insertType: 'variable'
+        insert:
+          - rgcfaIncludeGoogle: 'true'
+
     res:
       - path: mipmap-anydpi-v26
         file: ic_launcher.xml
@@ -37,3 +44,7 @@ platforms:
       - path: mipmap-anydpi-v26
         file: ic_launcher_round.xml
         source: resources/ic_launcher.xml
+
+    copy:
+      - src: ../google-services.json
+        dest: app/google-services.json

@@ -1,10 +1,10 @@
-import { LANGUAGE } from '@core/constants';
+import { LANGUAGE } from '@bizy/services';
 
 export const locale = {
   lang: LANGUAGE.SPANISH,
   translations: {
     AUTH: {
-      LOGIN: 'Iniciar sesión'
+      SIGN_IN: 'Iniciar sesión'
     }
   }
 };

@@ -1,16 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-html,
-body {
-    height: 100%;
-}
-
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: clamp(12px, 1vmax, 16px) !important;
-}
-
 p,
 h1,
 h2,
@@ -19,115 +6,293 @@ h4,
 h5,
 h6 {
     color: var(--text-color);
-    margin: 0 !important;
-    font-weight: normal;
-    margin-block-start: 0;
-    margin-block-end: 0;
-    margin-inline-start: 0;
-    margin-inline-end: 0;
 }
 
-h1 {
-    font-size: 1.4rem !important;
-    line-height: 1.6rem !important;
+.anura-table-row h5,
+.anura-table-row h6,
+.anura-table-footer h5,
+.anura-table-footer h6 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
-h2 {
-    font-size: 1.3rem !important;
-    line-height: 1.5rem !important;
+.anura-table-row h5:hover,
+.anura-table-row h6:hover,
+.anura-table-footer h5:hover,
+.anura-table-footer h6:hover {
+    -webkit-line-clamp: unset !important;
 }
 
-h3 {
-    font-size: 1.2rem !important;
-    line-height: 1.4rem !important;
+.tero-card {
+    background-color: #ffffff;
 }
 
-h4 {
-    font-size: 1.1rem !important;
-    line-height: 1.3rem !important;
+.tero-card--dark {
+    background-color: var(--background-color) !important;
 }
 
-h5 {
-    font-size: 0.9rem !important;
-    line-height: 1.1rem !important;
+.tero-card__icon {
+    font-size: 1.4rem;
+    color: var(--info-color);
 }
 
-h6 {
-    font-size: 0.8rem !important;
-    line-height: 1rem !important;
+.tero-action {
+    background-color: transparent !important;
+    border: none;
+    cursor: pointer;
+    transition: all 100ms ease;
 }
 
-p {
-    font-size: 0.8rem !important;
-    line-height: 1rem !important;
+.tero-action:hover {
+    transform: translateY(-0.1rem);
+    font-size: 1.1rem;
 }
 
-ul {
-    margin-block-start: 0;
-    margin-block-end: 0;
+.tero-action--apply {
+    color: var(--apply-color) !important;
 }
 
-label {
-    font-size: 1rem;
-    margin-bottom: 0;
+.tero-action--primary {
+    color: var(--primary-color) !important;
 }
 
-button {
-    font-size: 1rem;
-    padding: 0;
-    margin: 0;
+.tero-action--success {
+    color: var(--success-color) !important;
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+.tero-action--default {
+    color: var(--default-color) !important;
+}
+
+.tero-action--info {
+    color: var(--info-color) !important;
+}
+
+.tero-action--warning {
+    color: var(--warning-color) !important;
+}
+
+.tero-action--error {
+    color: var(--error-color) !important;
+}
+
+.tero-card-tag--success {
+    color: var(--dark-success-color) !important;
+    background-color: var(--light-success-color) !important;
+}
+
+.tero-card-tag--default {
+    color: var(--dark-default-color) !important;
+    background-color: var(--light-default-color) !important;
+}
+
+.tero-card-tag--info {
+    color: var(--dark-info-color) !important;
+    background-color: var(--light-info-color) !important;
+}
+
+.tero-card-tag--warning {
+    color: var(--dark-warning-color) !important;
+    background-color: var(--light-warning-color) !important;
+}
+
+.tero-card-tag--error {
+    color: var(--dark-error-color) !important;
+    background-color: var(--light-error-color) !important;
+}
+
+.tero-table__header__title {
+    color: var(--info-color);
+}
+
+.tero-table-row--success {
+    color: var(--dark-success-color) !important;
+    background-color: var(--light-success-color) !important;
+}
+
+.tero-table-row--default {
+    color: var(--primary) !important;
+    background-color: #ddd !important;
+}
+
+.tero-table-row--info {
+    color: var(--dark-info-color) !important;
+    background-color: var(--light-info-color) !important;
+}
+
+.tero-table-row--alert {
+    color: var(--dark-alert-color) !important;
+    background-color: var(--light-alert-color) !important;
+}
+
+.tero-table-row--warning {
+    color: var(--dark-warning-color) !important;
+    background-color: var(--light-warning-color) !important;
+}
+
+.tero-table-row--error {
+    color: var(--dark-error-color) !important;
+    background-color: var(--light-error-color) !important;
+}
+
+.tero-button--apply {
+    background-color: var(--apply-color) !important;
+}
+
+.tero-button--primary {
+    background-color: var(--primary-color) !important;
+}
+
+.tero-button--secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.tero-button--accent {
+    background-color: var(--accent-color) !important;
+}
+
+.tero-button--success {
+    background-color: var(--success-color) !important;
+}
+
+.tero-button--info {
+    background-color: var(--info-color) !important;
+}
+
+.tero-button--warning {
+    background-color: var(--warning-color) !important;
+}
+
+.tero-button--error {
+    background-color: var(--error-color) !important;
+}
+
+.tero-no-padding {
+    padding: 0 !important;
 }
 
 .tero-wrapper {
-    background-color: var(--background-color);
-    position: relative;
-    min-width: 100%;
-    height: 100%;
-    min-height: calc(100vh - var(--top-bar-height));
+    padding: 0.5rem;
+    flex: 1;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tero-wrapper--light {
+    padding: 0.5rem;
+    flex: 1;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.tero-content {
     padding: 0.5rem;
 }
 
-@media only screen and (max-width: 768px) {
-    .tero-wrapper {
-        min-height: calc(100vh - var(--bottom-bar-height) - var(--top-bar-height));
+.tero-form {
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.tero-form anura-title {
+    margin-bottom: 1rem;
+}
+
+.tero-form__field-section {
+    display: flex;
+    column-gap: 1rem;
+}
+
+.tero-form__field {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    flex: 1;
+}
+
+.tero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.tero-section__start {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tero-section__end {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tero-section__end anura-search-input {
+    flex: 1;
+}
+
+.hidden-xs {
+    @media only screen and (max-width: 576px) {
+        visibility: hidden;
+        display: none;
     }
 }
 
-.tero-form {
+.hidden-xl {
+    @media only screen and (max-width: 1200px) {
+        visibility: hidden;
+        display: none;
+    }
+}
+
+.tero-counter {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    row-gap: 1.6rem;
-    overflow: hidden;
-    padding-bottom: 5rem;
+    row-gap: 0.3rem;
 }
 
-.tero-form__toggle-field {
+.tero-counter__section {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    column-gap: 0.5rem;
+    align-items: 0.5rem;
 }
 
-.tero-form__toggle-field__label {
+.tero-counter__section__title {
+    padding-right: 0.3rem;
+}
+
+.tero-title {
+    color: var(--info-color);
     font-weight: bold;
-    color: var(--default-color);
 }
 
 .tero-card {
     background-color: #fff;
-    border: none;
-    border-radius: 0.5rem;
+    border-radius: 0.5em;
     box-shadow:
         0 4px 6px rgb(50 50 93 / 11%),
         0 1px 3px rgb(0 0 0 / 8%);
-    padding: 0.5rem;
+    padding: 0.5em;
     transition: transform 250ms ease-in-out;
     height: 100%;
     width: 100%;
@@ -138,15 +303,4 @@ button {
         0 7px 14px rgb(50 50 93 / 10%),
         0 3px 6px rgb(0 0 0 / 8%);
     transform: translateY(-1px);
-}
-
-.tero-icon {
-    font-size: 1.2rem;
-}
-
-.tero-icon-button {
-    border: none;
-    background-color: transparent;
-    color: inherit;
-    display: flex;
 }

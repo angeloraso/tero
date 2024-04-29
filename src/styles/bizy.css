@@ -1,0 +1,26 @@
+@import '/node_modules/@bizy/directives/styles/loading.css';
+@import '/node_modules/@bizy/directives/styles/variables.css';
+@import '/node_modules/@bizy/services/styles/popup.css';
+@import '/node_modules/@bizy/services/styles/variables.css';
+@import '/node_modules/@bizy/components/styles/variables.css';
+@import '/node_modules/@bizy/components/styles/normalize.css';
+@import '/node_modules/@bizy/components/styles/animations.css';
+@import '/node_modules/@bizy/components/styles/overlay.css';
+
+:root {
+    --bizy-loading-color-1st-line: var(--light-primary-color);
+    --bizy-loading-color-2nd-line: var(--primary-color);
+    --bizy-loading-color-3rd-line: var(--dark-primary-color);
+
+    --bizy-table-column-min-width: 5rem;
+    --bizy-table-background-color: var(--background-color);
+    --bizy-table-header-background-color: var(--hover-color);
+
+    --bizy-sidebar-shrinked-width: 3rem;
+    --bizy-sidebar-width: 14rem;
+    --bizy-sidebar-option-hover-color: var(--light-info-color);
+
+    @media only screen and (max-width: 768px) {
+        --bizy-toolbar-padding: 0 0.5rem !important;
+    }
+}

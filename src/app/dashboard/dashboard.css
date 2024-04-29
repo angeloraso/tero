@@ -123,5 +123,5 @@
 
 .dashboard__security__content__guard__icon {
     color: var(--info-color);
-    min-width: 1.6rem;
+    font-size: 1.2rem;
 }

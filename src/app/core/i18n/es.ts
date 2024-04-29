@@ -1,4 +1,4 @@
-import { LANGUAGE } from '@core/constants';
+import { LANGUAGE } from '@bizy/services';
 
 export const locale = {
   lang: LANGUAGE.SPANISH,
@@ -7,8 +7,8 @@ export const locale = {
       EMPTY: 'Sin información',
       MENU: {
         DASHBOARD: 'Panel',
-        NEIGHBORHOOD: 'Vecinos',
-        MAP: 'Plano',
+        NEIGHBORHOOD: 'Barrio',
+        NEIGHBORS: 'Vecinos',
         CONTACTS: 'Contactos'
       },
       BUTTON: {
@@ -32,8 +32,8 @@ export const locale = {
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',
-          MIN: 'El valor debe ser mayor a ',
-          MAX: 'El valor debe ser menor a ',
+          MIN: 'El valor debe ser mayor o igual a ',
+          MAX: 'El valor debe ser menor o igual a ',
           EMAIL: 'Email inválido'
         }
       },

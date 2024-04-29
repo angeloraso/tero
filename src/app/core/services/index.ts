@@ -1,11 +1,8 @@
 export { ContactsService } from './contacts.service';
 export { DatabaseService } from './database.service';
 export { MobileService } from './mobile.service';
-export { NeighborhoodService } from './neighborhood.service';
-export { PopupService } from './popup.service';
-export { RouterService } from './router.service';
+export { NeighborsService } from './neighbors.service';
+export { SecurityService } from './security.service';
 export { ServiceWorkerService } from './service-worker.service';
-export { SettingsService } from './settings.service';
-export { TeroTranslateService } from './tero-translate.service';
+export { UserSettingsService } from './user-settings.service';
 export { UtilsService } from './utils.service';
-export { ViewportService } from './viewport.service';

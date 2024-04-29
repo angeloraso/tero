@@ -1,6 +1,24 @@
 import uuid4 from 'uuid4';
 import { DEFAULT_PICTURE } from './constants';
 
+export interface IPhone {
+  number: string;
+  description: string;
+}
+
+export enum ROLE {
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  NEIGHBOR = 'NEIGHBOR',
+  INVITED = 'INVITED'
+}
+
+export interface IUserSettings {
+  roles: Array<ROLE>;
+}
+
+export type Empty = undefined | null;
+
 export interface INeighbor {
   id: string;
   lot: number;
@@ -9,14 +27,9 @@ export interface INeighbor {
   security: boolean;
   picture: string;
   phones: Array<IPhone>;
+  created: number;
+  updated: number;
 }
-
-export interface IPhone {
-  number: string;
-  description: string;
-}
-
-export type Empty = undefined | null;
 
 export class Neighbor implements INeighbor {
   id: string;
@@ -26,6 +39,8 @@ export class Neighbor implements INeighbor {
   security: boolean;
   picture: string;
   phones: Array<IPhone>;
+  created: number;
+  updated: number;
 
   constructor(neighbor: Omit<INeighbor, 'id'>) {
     this.id = uuid4();
@@ -35,6 +50,8 @@ export class Neighbor implements INeighbor {
     this.security = neighbor.security ?? false;
     this.picture = neighbor.picture ?? DEFAULT_PICTURE;
     this.phones = neighbor.phones ?? [];
+    this.created = Date.now();
+    this.updated = Date.now();
   }
 }
 
@@ -44,7 +61,7 @@ export interface ISecurityGuard {
   description: string;
 }
 
-export interface ISecuritySettings {
+export interface ISecurity {
   fee: number;
   staff: Array<ISecurityGuard>;
 }
@@ -53,32 +70,38 @@ export interface IContact {
   id: string;
   name: string;
   surname: string;
-  comments: string;
+  comments: Array<string>;
   picture: string;
   phones: Array<IPhone>;
-  score: number;
+  score: Array<number>;
   tags: Array<string>;
+  created: number;
+  updated: number;
 }
 
 export class Contact implements IContact {
   id: string;
   name: string;
   surname: string;
-  comments: string;
+  comments: Array<string>;
   picture: string;
   phones: Array<IPhone>;
-  score: number;
+  score: Array<number>;
   tags: Array<string>;
+  created: number;
+  updated: number;
 
   constructor(contact: Omit<IContact, 'id' | 'score'>) {
     this.id = uuid4();
     this.name = contact.name ?? '';
     this.surname = contact.surname ?? '';
-    this.comments = contact.comments ?? '';
+    this.comments = contact.comments ?? [];
     this.picture = contact.picture ?? DEFAULT_PICTURE;
     this.phones = contact.phones ?? [];
     this.tags = contact.tags ?? [];
-    this.score = 0;
+    this.score = [];
+    this.created = Date.now();
+    this.updated = Date.now();
   }
 }
 

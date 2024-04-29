@@ -1,37 +1,56 @@
-import { Injectable } from '@angular/core';
-import { FirebaseApp } from 'firebase/app';
-import {
-  Auth,
-  User,
-  getAuth,
-  indexedDBLocalPersistence,
-  setPersistence,
-  signInWithEmailAndPassword
-} from 'firebase/auth';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { FirebaseAuthentication, Persistence, User } from '@capacitor-firebase/authentication';
+import { MobileService } from '@core/services';
+import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private AUTH: Auth | null = null;
-  private _user: User | null = null;
-  private _isLoggedIn = new BehaviorSubject<boolean>(false);
+  #USER: User | null = null;
+  #signedIn = new BehaviorSubject<boolean>(false);
 
-  get isLoggedIn$(): Observable<boolean> {
-    return this._isLoggedIn.asObservable();
+  get signedIn$(): Observable<boolean> {
+    return this.#signedIn.asObservable().pipe(distinctUntilChanged());
   }
 
-  start(app: FirebaseApp) {
+  constructor(@Inject(MobileService) private mobile: MobileService) {}
+
+  start() {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        this.AUTH = getAuth(app);
-        await setPersistence(this.AUTH!, indexedDBLocalPersistence);
-        this._user = this.AUTH.currentUser;
-        this._isLoggedIn.next(Boolean(this.AUTH.currentUser));
-        if (!this._user) {
-          await setPersistence(this.AUTH!, indexedDBLocalPersistence);
+        if (!this.mobile.isMobile()) {
+          await FirebaseAuthentication.setPersistence({
+            persistence: Persistence.IndexedDbLocal
+          });
+          const result = await FirebaseAuthentication.getRedirectResult();
+          if (result && result.user) {
+            this.#USER = result.user;
+            this.#signedIn.next(Boolean(this.#USER));
+            await FirebaseAuthentication.setPersistence({
+              persistence: Persistence.IndexedDbLocal
+            });
+          } else {
+            const res = await FirebaseAuthentication.getCurrentUser();
+            this.#USER = res.user;
+            if (res.user) {
+              this.#signedIn.next(true);
+            }
+          }
+        } else {
+          const res = await FirebaseAuthentication.getCurrentUser();
+          this.#USER = res.user;
+          if (res.user) {
+            this.#signedIn.next(true);
+          }
         }
+
+        await FirebaseAuthentication.removeAllListeners();
+        FirebaseAuthentication.addListener('authStateChange', async change => {
+          this.#USER = change ? change.user : null;
+          const signedIn = Boolean(change.user);
+          this.#signedIn.next(signedIn);
+        });
         resolve();
       } catch (error) {
         reject(error);
@@ -39,24 +58,46 @@ export class AuthService {
     });
   }
 
-  login(credentials: { email: string; password: string }) {
+  async signIn() {
+    return FirebaseAuthentication.signInWithGoogle({
+      mode: 'redirect'
+    });
+  }
+
+  getEmail(): string | null {
+    if (this.#USER && this.#USER.providerData[0]) {
+      return this.#USER.providerData[0].email;
+    }
+
+    return null;
+  }
+
+  getId(): string | null {
+    if (this.#USER && this.#USER.providerData[0]) {
+      return this.#USER.providerData[0].uid;
+    }
+
+    return null;
+  }
+
+  getProfilePicture(): string | null {
+    if (this.#USER && this.#USER.providerData[0]) {
+      return this.#USER.providerData[0].photoUrl;
+    }
+
+    return null;
+  }
+
+  signOut() {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const userCredential = await signInWithEmailAndPassword(
-          this.AUTH!,
-          credentials.email,
-          credentials.password
-        );
-        this._user = userCredential.user;
-        this._isLoggedIn.next(true);
+        await FirebaseAuthentication.signOut();
+        this.#USER = null;
+        this.#signedIn.next(false);
         resolve();
       } catch (error) {
         reject(error);
       }
     });
-  }
-
-  getUserInfo() {
-    return this._user?.providerData;
   }
 }

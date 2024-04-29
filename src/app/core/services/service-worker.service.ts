@@ -9,16 +9,22 @@ enum VERSION_TYPE {
   VERSION_INSTALLATION_FAILED = 'VERSION_INSTALLATION_FAILED'
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ServiceWorkerService implements OnDestroy {
   private _subscription = new Subscription();
 
   constructor(@Inject(SwUpdate) private swUpdate: SwUpdate) {}
 
   start() {
-    if (!ENV.production) {
+    if (!ENV.production || ENV.mobile) {
       return;
     }
+
+    this.checkForUpdate();
+    const everyHour$ = interval(1 * 60 * 60 * 1000);
+    this._subscription.add(everyHour$.subscribe(() => this.checkForUpdate()));
 
     this._subscription.add(
       this.swUpdate.versionUpdates
@@ -31,10 +37,6 @@ export class ServiceWorkerService implements OnDestroy {
           window.location.reload();
         })
     );
-
-    this.checkForUpdate();
-    const everyHour$ = interval(1 * 60 * 60 * 1000);
-    this._subscription.add(everyHour$.subscribe(() => this.checkForUpdate()));
   }
 
   async checkForUpdate() {

@@ -1,28 +1,65 @@
-<mat-toolbar class="home__toolbar">
-  <img height="20" src="/assets/tero.png" alt="Tero logo"/>
-  <h1>{{(home.title | async)! | translate}}</h1>
-  <mat-icon *ngIf="(home.deleteFn | async)" (click)="home.delete()" class="home__toolbar__delete">delete</mat-icon>
-</mat-toolbar>
+<div class="home">
 
-<router-outlet></router-outlet>
+  <bizy-sidebar class="home__sidebar" [toggle]="closedSidebar" (onToggle)="onToggle($event)">
 
-<mat-tab-group 
-  headerPosition="below"
-  class="home__bottom-bar"
-  [animationDuration]="sideMenuIsOpen ? '0' : '300'"
-  [selectedIndex]="selectedIndex"
-  [ngClass]="{'home__bottom-bar--hidden': sideMenuIsOpen || (home.bottomBar | async)}"
-  (selectedTabChange)="showOption($event)">
-  
-  <mat-tab *ngFor="let option of options">
+    <bizy-sidebar-option slot="start" [disabled]="true">
 
-    <ng-template mat-tab-label>
-      <span class="home__bottom-bar__tab">
-        <mat-icon class="home__bottom-bar__tab__icon">{{option.icon}}</mat-icon>
-        <span>{{option.title | translate}}</span>
+      <span class="home__sidebar__header" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
+        <img class="home__sidebar__header__logo" src="{{LOGO_PATH}}" alt="logo"/>
+
+        <h1 class="home__sidebar__header__name" *ngIf="!closedSidebar">Bizy</h1>
       </span>
-    </ng-template>
 
-  </mat-tab>
+    </bizy-sidebar-option>
 
-</mat-tab-group>
+    <bizy-sidebar-option 
+      *ngFor="let option of options"
+      [(selected)]="option.selected"
+      (onSelect)="onSelect(option)">
+
+      <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
+        <span class="material-symbols-outlined home__sidebar__option__icon" [ngClass]="{'home__sidebar__option--selected': option.selected}">{{option.icon}}</span>
+
+        <h4 class="home__sidebar__option__label" [ngClass]="{'home__sidebar__option--selected': option.selected}" *ngIf="!closedSidebar">{{option.label | translate}}</h4>
+      </span>
+
+    </bizy-sidebar-option>
+
+    <bizy-sidebar-option slot="end" [disabled]="true">
+  
+      <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
+        <i *ngIf="!profilePic" class="fa-solid fa-user-circle"></i>
+        <img *ngIf="profilePic" class="home__sidebar__option__profile-pic" src="{{profilePic}}" alt="profile_pic"/>
+  
+        <h6 class="home__sidebar__option__label" *ngIf="!closedSidebar">{{email}}</h6>
+      </span>
+
+    </bizy-sidebar-option>
+
+  </bizy-sidebar>
+    
+  <div class="home__content">
+
+      <span class="home__content__router-outlet">
+          <router-outlet></router-outlet>
+      </span>
+
+      <bizy-tabs class="home__tabs">
+
+          <bizy-tab 
+            class="home__tabs__tab"
+            *ngFor="let option of options"
+            [(selected)]="option.selected"
+            (onSelect)="onSelect(option)">
+        
+            <span class="material-symbols-outlined" [ngClass]="{'home__tabs__tab--selected': option.selected}">{{option.icon}}</span>
+
+            <h5 [ngClass]="{'home__tabs__tab--selected': option.selected}">{{option.label | translate}}</h5>
+        
+          </bizy-tab>
+        
+      </bizy-tabs>
+  
+  </div>
+
+</div>

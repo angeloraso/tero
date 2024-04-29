@@ -1,26 +1,18 @@
 import { Inject, NgModule } from '@angular/core';
-import { ConfirmAlertModule } from '@components/confirm-alert';
-import { ConfirmFooterModule } from '@components/confirm-footer';
-import { ImageModule } from '@components/image';
-import { TeroTranslateService } from '@core/services';
+import { BizyTranslateService } from '@bizy/services';
 import { SharedModule } from '@shared/shared.module';
-import { NeighborFormComponent } from './components';
+import { LotComponent, LotPopupComponent } from './components';
 import { es } from './i18n';
 import { NeighborhoodRoutingModule } from './neighborhood.routing';
 
-const COMPONENTS: Array<any> = [NeighborFormComponent];
+const COMPONENTS: Array<any> = [LotComponent, LotPopupComponent];
+
 @NgModule({
-  imports: [
-    SharedModule,
-    NeighborhoodRoutingModule,
-    ConfirmAlertModule,
-    ConfirmFooterModule,
-    ImageModule
-  ],
+  imports: [SharedModule, NeighborhoodRoutingModule],
   declarations: NeighborhoodRoutingModule.COMPONENTS.concat(COMPONENTS)
 })
 export class NeighborhoodModule {
-  constructor(@Inject(TeroTranslateService) private translate: TeroTranslateService) {
+  constructor(@Inject(BizyTranslateService) private translate: BizyTranslateService) {
     this.translate.loadTranslations(es);
   }
 }

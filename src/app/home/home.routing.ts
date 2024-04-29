@@ -4,10 +4,11 @@ import { HomeComponent } from './home.component';
 
 export enum PATH {
   EMPTY = '',
+  NEIGHBORS = 'neighbors',
   DASHBOARD = 'dashboard',
   NEIGHBORHOOD = 'neighborhood',
-  MAP = 'map',
   CONTACTS = 'contacts',
+  CONFIG = 'config',
   ANY = '**'
 }
 
@@ -26,17 +27,8 @@ const routes: Routes = [
         loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
-        path: PATH.NEIGHBORHOOD,
-        loadChildren: () =>
-          import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule)
-      },
-      {
-        path: PATH.MAP,
-        loadChildren: () => import('@map/map.module').then(m => m.MapModule)
-      },
-      {
-        path: PATH.CONTACTS,
-        loadChildren: () => import('@contacts/contacts.module').then(m => m.ContactsModule)
+        path: PATH.ANY,
+        redirectTo: PATH.DASHBOARD
       }
     ]
   }

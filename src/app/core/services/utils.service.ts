@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { INeighbor } from '@core/model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UtilsService {
   roundNumber(num: number) {
     return Math.round((num + Number.EPSILON) * 100) / 100;

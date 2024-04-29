@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -32,10 +33,7 @@
                 "output": "."
               }
             ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles/index.css"
-            ],
+            "styles": ["src/styles/index.css"],
             "scripts": [],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json"

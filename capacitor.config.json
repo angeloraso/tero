@@ -8,6 +8,10 @@
     "SplashScreen": {
       "launchAutoHide": false,
       "splashFullScreen": true
+    },
+    "FirebaseAuthentication": {
+      "skipNativeAuth": false,
+      "providers": ["google.com"]
     }
   },
   "cordova": {}

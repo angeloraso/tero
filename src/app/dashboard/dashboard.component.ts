@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Empty, ISecurityGuard } from '@core/model';
-import { NeighborhoodService, SettingsService, UtilsService } from '@core/services';
-import { HomeService } from '@home/home.service';
+import { NeighborsService, SecurityService, UtilsService } from '@core/services';
 
 interface IGroup {
   value: number;
@@ -22,13 +21,10 @@ export class DashboardComponent implements OnInit {
   contributorFee = 0;
 
   constructor(
-    @Inject(HomeService) private home: HomeService,
-    @Inject(NeighborhoodService) private neighborhood: NeighborhoodService,
-    @Inject(SettingsService) private settings: SettingsService,
+    @Inject(NeighborsService) private neighbors: NeighborsService,
+    @Inject(SecurityService) private security: SecurityService,
     @Inject(UtilsService) private utils: UtilsService
-  ) {
-    this.home.updateTitle('DASHBOARD.TITLE');
-  }
+  ) {}
 
   async ngOnInit() {
     try {
@@ -36,14 +32,14 @@ export class DashboardComponent implements OnInit {
       this.groups.length = 0;
       this.contributors = 0;
       this.contributorFee = 0;
-      const [neighborhood, security] = await Promise.all([
-        this.neighborhood.getNeighbors(),
-        this.settings.getSecurity()
+      const [neighbors, security] = await Promise.all([
+        this.neighbors.getNeighbors(),
+        this.security.getSecurity()
       ]);
 
       const groups: Array<IGroup> = [];
 
-      neighborhood.forEach(_neighbor => {
+      neighbors.forEach(_neighbor => {
         if (_neighbor.security) {
           if (!groups[this.utils.getGroup(_neighbor)]) {
             groups[this.utils.getGroup(_neighbor)] = {
@@ -64,7 +60,7 @@ export class DashboardComponent implements OnInit {
           this.contributors += _group.lots.size;
         });
 
-        this.contributorFee = this.utils.roundNumber(security.fee / this.contributors);
+        this.contributorFee = this.utils.roundNumber(security.fee / this.contributors) ?? 0;
         this.groups = groups.map(_group => {
           return { ..._group, fee: this.utils.roundNumber(this.contributorFee * _group.lots.size) };
         });

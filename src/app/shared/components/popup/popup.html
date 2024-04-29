@@ -1,0 +1,21 @@
+<span class="cauquen-wrapper--light">
+
+    <span class="popup__header">
+    
+        <span class="cauquen-section">
+            <h1 class="cauquen-title">{{title}}</h1>
+        </span>
+
+        <h3 class="popup__header__msg">{{msg}}</h3>
+    
+    </span>
+    
+    
+    <bizy-confirm-buttons
+        confirmLabel="{{'CORE.BUTTON.APPLY' | translate}}"
+        cancelLabel="{{'CORE.BUTTON.CANCEL' | translate}}"
+        (cancel)="close()"
+        (confirm)="apply()">
+    </bizy-confirm-buttons>
+
+</span>
