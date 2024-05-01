@@ -20,7 +20,5 @@
     --bizy-sidebar-width: 14rem;
     --bizy-sidebar-option-hover-color: var(--light-info-color);
 
-    @media only screen and (max-width: 768px) {
-        --bizy-toolbar-padding: 0 0.5rem !important;
-    }
+    --bizy-toolbar-padding: 0 0.7rem;
 }

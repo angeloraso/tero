@@ -27,6 +27,11 @@ const routes: Routes = [
         loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
+        path: PATH.NEIGHBORHOOD,
+        loadChildren: () =>
+          import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule)
+      },
+      {
         path: PATH.ANY,
         redirectTo: PATH.DASHBOARD
       }

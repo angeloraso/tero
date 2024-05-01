@@ -1,4 +1,4 @@
-<span class="lot" (click)="onClick.emit()">
+<button type="button" class="lot" (click)="onClick.emit()" (keyup.enter)="onClick.emit()">
     <h4>{{lot?.number}}</h4>
-    <mat-icon *ngIf="lot?.security" class="lot__security">security</mat-icon>
-</span>
+    <i *ngIf="lot?.security" class="fa-solid fa-shield-halved lot__security"></i>
+</button>

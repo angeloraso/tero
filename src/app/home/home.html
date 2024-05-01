@@ -5,7 +5,8 @@
     <bizy-sidebar-option slot="start" [disabled]="true">
 
       <span class="home__sidebar__header" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
-        <img class="home__sidebar__header__logo" src="{{LOGO_PATH}}" alt="logo"/>
+
+        <img class="home__sidebar__header__logo" [src]="LOGO_PATH" alt="logo"/>
 
         <h1 class="home__sidebar__header__name" *ngIf="!closedSidebar">Bizy</h1>
       </span>

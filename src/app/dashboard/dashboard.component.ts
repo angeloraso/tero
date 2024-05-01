@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { LOGO_PATH } from '@core/constants';
 import { Empty, ISecurityGuard } from '@core/model';
 import { NeighborsService, SecurityService, UtilsService } from '@core/services';
-
 interface IGroup {
   value: number;
   lots: Set<number>;
@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   groups: Array<IGroup> = [];
   contributors = 0;
   contributorFee = 0;
+  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
     @Inject(NeighborsService) private neighbors: NeighborsService,

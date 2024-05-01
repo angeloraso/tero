@@ -1,3 +1,5 @@
+/* You can add global styles to this file, and also import other style files */
+
 p,
 h1,
 h2,
@@ -8,10 +10,131 @@ h6 {
     color: var(--text-color);
 }
 
-.anura-table-row h5,
-.anura-table-row h6,
-.anura-table-footer h5,
-.anura-table-footer h6 {
+.tero-card {
+    background-color: #fff;
+    border-radius: 0.5em;
+    box-shadow:
+        0 4px 6px rgb(50 50 93 / 11%),
+        0 1px 3px rgb(0 0 0 / 8%);
+    padding: 0.5em;
+    transition: transform 250ms ease-in-out;
+    height: 100%;
+    width: 100%;
+}
+
+.tero-card:hover {
+    box-shadow:
+        0 7px 14px rgb(50 50 93 / 10%),
+        0 3px 6px rgb(0 0 0 / 8%);
+    transform: translateY(-1px);
+}
+
+.tero__table--empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20em;
+    width: 100%;
+    text-align: center;
+}
+
+.tero-action {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 100ms ease;
+}
+
+.tero-action:hover {
+    transform: translateY(-0.1rem);
+    font-size: 1.1rem;
+}
+
+.tero-action--primary {
+    color: var(--primary-color) !important;
+}
+
+.tero-action--success {
+    color: var(--success-color) !important;
+}
+
+.tero-action--default {
+    color: var(--default-color) !important;
+}
+
+.tero-action--info {
+    color: var(--info-color) !important;
+}
+
+.tero-action--warning {
+    color: var(--warning-color) !important;
+}
+
+.tero-action--danger {
+    color: var(--danger-color) !important;
+}
+
+.tero-table-column-center {
+    justify-content: center;
+}
+
+.tero-button--accent {
+    background-color: var(--accent-color) !important;
+}
+
+.tero-button--success {
+    background-color: var(--success-color) !important;
+}
+
+.tero-button--default {
+    background-color: var(--primary-color) !important;
+}
+
+.tero-button--info {
+    background-color: var(--info-color) !important;
+}
+
+.tero-button--warning {
+    background-color: var(--warning-color) !important;
+}
+
+.tero-button--danger {
+    background-color: var(--danger-color) !important;
+}
+
+.tero-logo {
+    height: 2rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .tero-logo {
+        visibility: hidden;
+        pointer-events: none;
+        width: 0.5rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .tero-logo {
+        visibility: visible;
+        pointer-events: all;
+        width: 2rem;
+    }
+}
+
+
+@media only screen and (max-width: 576px) {
+    .hidden-xs {
+        visibility: hidden !important;
+        display: none !important;
+    }
+}
+
+
+.bizy-table-row h5,
+.bizy-table-row h6,
+.bizy-table-footer h5,
+.bizy-table-footer h6 {
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2em !important;
@@ -23,24 +146,11 @@ h6 {
     word-break: break-word;
 }
 
-.anura-table-row h5:hover,
-.anura-table-row h6:hover,
-.anura-table-footer h5:hover,
-.anura-table-footer h6:hover {
+.bizy-table-row h5:hover,
+.bizy-table-row h6:hover,
+.bizy-table-footer h5:hover,
+.bizy-table-footer h6:hover {
     -webkit-line-clamp: unset !important;
-}
-
-.tero-card {
-    background-color: #ffffff;
-}
-
-.tero-card--dark {
-    background-color: var(--background-color) !important;
-}
-
-.tero-card__icon {
-    font-size: 1.4rem;
-    color: var(--info-color);
 }
 
 .tero-action {
@@ -83,27 +193,27 @@ h6 {
     color: var(--error-color) !important;
 }
 
-.tero-card-tag--success {
+.tero-tag--success {
     color: var(--dark-success-color) !important;
     background-color: var(--light-success-color) !important;
 }
 
-.tero-card-tag--default {
+.tero-tag--default {
     color: var(--dark-default-color) !important;
     background-color: var(--light-default-color) !important;
 }
 
-.tero-card-tag--info {
+.tero-tag--info {
     color: var(--dark-info-color) !important;
     background-color: var(--light-info-color) !important;
 }
 
-.tero-card-tag--warning {
+.tero-tag--warning {
     color: var(--dark-warning-color) !important;
     background-color: var(--light-warning-color) !important;
 }
 
-.tero-card-tag--error {
+.tero-tag--error {
     color: var(--dark-error-color) !important;
     background-color: var(--light-error-color) !important;
 }
@@ -140,6 +250,10 @@ h6 {
 .tero-table-row--error {
     color: var(--dark-error-color) !important;
     background-color: var(--light-error-color) !important;
+}
+
+.tero-table-actions {
+    padding: 0 0.5rem;
 }
 
 .tero-button--apply {
@@ -205,10 +319,6 @@ h6 {
     flex-direction: column;
 }
 
-.tero-form anura-title {
-    margin-bottom: 1rem;
-}
-
 .tero-form__field-section {
     display: flex;
     column-gap: 1rem;
@@ -248,7 +358,7 @@ h6 {
     flex-wrap: wrap;
 }
 
-.tero-section__end anura-search-input {
+.tero-section__end bizy-search-input {
     flex: 1;
 }
 
@@ -284,23 +394,4 @@ h6 {
 .tero-title {
     color: var(--info-color);
     font-weight: bold;
-}
-
-.tero-card {
-    background-color: #fff;
-    border-radius: 0.5em;
-    box-shadow:
-        0 4px 6px rgb(50 50 93 / 11%),
-        0 1px 3px rgb(0 0 0 / 8%);
-    padding: 0.5em;
-    transition: transform 250ms ease-in-out;
-    height: 100%;
-    width: 100%;
-}
-
-.tero-card:hover {
-    box-shadow:
-        0 7px 14px rgb(50 50 93 / 10%),
-        0 3px 6px rgb(0 0 0 / 8%);
-    transform: translateY(-1px);
 }

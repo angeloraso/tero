@@ -55,12 +55,13 @@
 .street__icon {
     color: var(--info-color);
     background-color: #fff;
-    padding: 0.3rem;
     border-radius: 50%;
-    height: 2rem;
-    width: 2rem;
+    display: grid;
+    place-items: center;
+    height: 2.2rem;
+    width: 2.2rem;
     border: 0.1rem solid var(--info-color);
-    transform: rotate(90deg);
+    transform: rotate(180deg);
 }
 
 .map__horizontal-street {

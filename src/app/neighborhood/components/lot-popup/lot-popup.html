@@ -1,19 +1,21 @@
 <span class="lot-popup">
 
-    <tero-title title="{{'CORE.FORM.FIELD.LOT' | translate}} {{data.number}}"></tero-title>
+    <span class="tero-section">
+        <h1 class="tero-title">{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</h1>
+    </span>
 
     <span class="lot-popup__neighbors">
 
-        <span class="lot-popup__neighbors__neighbor" *ngFor="let neighbor of data.neighbors">
+        <span class="lot-popup__neighbors__neighbor" *ngFor="let neighbor of data?.neighbors">
 
-            <mat-icon class="lot-popup__neighbors__neighbor__icon">person</mat-icon>
+            <h2><i class="fa-solid fa-user lot-popup__neighbors__neighbor__icon"></i></h2>
     
-            <h1 class="lot-popup__neighbors__neighbor__name">{{neighbor.surname}} {{neighbor.name}}</h1>
+            <h2 class="lot-popup__neighbors__neighbor__name">{{neighbor.surname}} {{neighbor.name}}</h2>
     
         </span>
 
     </span>
 
-    <span *ngIf="!data.neighbors || data.neighbors.length === 0">{{'CORE.EMPTY' | translate}}</span>
+    <span *ngIf="!data?.neighbors || data?.neighbors?.length === 0">{{'CORE.EMPTY' | translate}}</span>
 
 </span>

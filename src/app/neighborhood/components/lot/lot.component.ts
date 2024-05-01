@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Empty } from '@core/model';
-import { ILot } from '@map/map.model';
+import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
   selector: 'tero-lot',
