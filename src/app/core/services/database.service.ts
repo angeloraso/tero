@@ -269,9 +269,9 @@ export class DatabaseService implements OnDestroy {
             if (error) {
               console.log(error);
             } else {
-              const preferences = event && event.snapshot.data ? event.snapshot.data : undefined;
-              this.#security.next(preferences);
-              resolve(preferences ?? null);
+              const security = event && event.snapshot.data ? event.snapshot.data : undefined;
+              this.#security.next(security);
+              resolve(security ?? null);
             }
           }
         );

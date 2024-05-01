@@ -1,6 +1,7 @@
 {
   "name": "tero",
   "version": "1.5.2",
+  "description": "Tero",
   "scripts": {
     "start": "ng serve -o --configuration=development",
     "start:pwa": "npm run build && http-server -o -p 4200 -c-1 dist",

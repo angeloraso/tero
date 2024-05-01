@@ -24,25 +24,31 @@ export class HomeComponent implements OnDestroy {
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}`,
       label: 'CORE.MENU.NEIGHBORS',
-      icon: 'diversity_3',
-      selected: false
-    },
-    {
-      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
-      label: 'CORE.MENU.DASHBOARD',
-      icon: 'dashboard',
+      icon: 'fa-users',
       selected: false
     },
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
       label: 'CORE.MENU.NEIGHBORHOOD',
-      icon: 'map',
+      icon: 'fa-map',
+      selected: false
+    },
+    {
+      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
+      label: 'CORE.MENU.DASHBOARD',
+      icon: 'fa-table-columns',
       selected: false
     },
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}`,
       label: 'CORE.MENU.CONTACTS',
-      icon: 'contacts',
+      icon: 'fa-address-book',
+      selected: false
+    },
+    {
+      path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}`,
+      label: 'CORE.MENU.CONFIG',
+      icon: 'fa-gears',
       selected: false
     }
   ];

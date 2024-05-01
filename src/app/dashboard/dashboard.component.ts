@@ -13,7 +13,7 @@ interface IGroup {
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  showLoading = false;
+  loading = false;
   securityStaff: Array<ISecurityGuard> = [];
   securityFee: number | Empty;
   groups: Array<IGroup> = [];
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.showLoading = true;
+      this.loading = true;
       this.groups.length = 0;
       this.contributors = 0;
       this.contributorFee = 0;
@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       console.error(error);
     } finally {
-      this.showLoading = false;
+      this.loading = false;
     }
   }
 }

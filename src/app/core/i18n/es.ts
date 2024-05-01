@@ -9,7 +9,8 @@ export const locale = {
         DASHBOARD: 'Panel',
         NEIGHBORHOOD: 'Barrio',
         NEIGHBORS: 'Vecinos',
-        CONTACTS: 'Contactos'
+        CONTACTS: 'Agenda',
+        CONFIG: 'Config'
       },
       BUTTON: {
         CANCEL: 'Cancelar',

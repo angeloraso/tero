@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from '@core/guards';
 import { HomeComponent } from './home.component';
 
 export enum PATH {
@@ -24,12 +25,19 @@ const routes: Routes = [
       },
       {
         path: PATH.DASHBOARD,
-        loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule),
+        canActivate: [authGuard]
       },
       {
         path: PATH.NEIGHBORHOOD,
         loadChildren: () =>
-          import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule)
+          import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule),
+        canActivate: [authGuard]
+      },
+      {
+        path: PATH.CONFIG,
+        loadChildren: () => import('@config/config.module').then(m => m.ConfigModule),
+        canActivate: [authGuard]
       },
       {
         path: PATH.ANY,

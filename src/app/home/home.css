@@ -93,6 +93,7 @@ bizy-sidebar-option[slot=start] {
 
 .home__tabs__tab {
   flex: 1;
+  overflow: hidden;
 }
 
 .home__tabs__tab--selected {

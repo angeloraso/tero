@@ -4,12 +4,6 @@
     row-gap: 2rem;
 }
 
-.config__header__icon {
-    font-size: 1.2rem;
-    margin-left: 1rem;
-    color: var(--primary-color);
-}
-
 .config__cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

@@ -1,56 +1,16 @@
 <bizy-toolbar>
 
-    <img slot=start class="tero-logo" src="{{profilePic}}" alt="logo"/>
+    <img slot=start class="tero-logo" [src]="profilePic" alt="logo"/>
 
     <h1 slot=start>{{'CONFIG.TITLE' | translate}}</h1>
 
-    <i slot="end" class="fa-solid fa-circle-info config__header__icon" (click)="openPopup()"></i>
+    <h2 slot="end" (click)="openPopup()"><i class="fa-solid fa-circle-info tero-toolbar__icon"></i></h2>
 
-    <i slot="end" class="fa-solid fa-right-from-bracket config__header__icon" (click)="onSignOut()"></i>
+    <h2 slot="end" (click)="onSignOut()"><i class="fa-solid fa-right-from-bracket tero-toolbar__icon"></i></h2>
 
 </bizy-toolbar>
 
 <div class="tero-wrapper config" [bizyLoading]="loading">
 
-    <form class="tero-form" [formGroup]="form">
-
-        <bizy-select label="{{'CORE.FORM.FIELD.COUNTRY' | translate}}">
-            <bizy-select-option 
-                *ngFor="let c of COUNTRIES"
-                [selected]="userCountry.value === c.id"
-                (onSelect)="userCountry.setValue(c.id)">
-                {{c.value | translate}}
-            </bizy-select-option>
-        </bizy-select>
-
-    </form>
-
-    <span class="config__cards">
-
-        <a class="config__cards__card" href="https://datosmacro.expansion.com/ipc-paises/argentina?sc=IPC-IG" target="_blank">
-
-            <i class="fa-solid fa-chart-line config__cards__card__icon"></i>
-
-            <h4 class="config__cards__card__label">{{'CORE.FORM.FIELD.INFLATION' | translate}}</h4>
-
-        </a>
-
-        <a class="config__cards__card" href="https://www.dolarito.ar/cotizaciones-historicas/dolar/ccl/2023/cotizacion-historica-del-dolar-ccl-a%C3%B1o-2023" target="_blank">
-
-            <i class="fa-solid fa-dollar-sign config__cards__card__icon"></i>
-
-            <h4 class="config__cards__card__label">{{'CORE.FORM.FIELD.DOLLAR' | translate}}</h4>
-
-        </a>
-
-        <a class="config__cards__card" href="https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables_datos.asp?serie=1212&detalle=Tasas%20de%20inter%E9s%20por%20dep%F3sitos%20a%2030%20d%EDas%20de%20plazo%20en%20entidades%20financieras%A0(en%20%%20n.a.)" target="_blank">
-
-            <i class="fa-solid fa-building-columns config__cards__card__icon"></i>
-
-            <h4 class="config__cards__card__label">{{'CORE.FORM.FIELD.FIXED_RATE' | translate}}</h4>
-
-        </a>
-
-    </span>
 
 </div>

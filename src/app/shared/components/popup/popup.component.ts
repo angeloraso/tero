@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BizyPopupService } from '@bizy/services';
 @Component({
-  selector: 'cauquen-popup',
+  selector: 'tero-popup',
   templateUrl: 'popup.html',
   styleUrls: ['popup.css']
 })

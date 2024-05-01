@@ -19,7 +19,8 @@
       (onSelect)="onSelect(option)">
 
       <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
-        <span class="material-symbols-outlined home__sidebar__option__icon" [ngClass]="{'home__sidebar__option--selected': option.selected}">{{option.icon}}</span>
+
+        <h4 [ngClass]="{'home__sidebar__option--selected': option.selected}"><i class="fa-solid {{option.icon}} home__sidebar__option__icon"></i></h4>
 
         <h4 class="home__sidebar__option__label" [ngClass]="{'home__sidebar__option--selected': option.selected}" *ngIf="!closedSidebar">{{option.label | translate}}</h4>
       </span>
@@ -52,9 +53,9 @@
             *ngFor="let option of options"
             [(selected)]="option.selected"
             (onSelect)="onSelect(option)">
-        
-            <span class="material-symbols-outlined" [ngClass]="{'home__tabs__tab--selected': option.selected}">{{option.icon}}</span>
 
+            <h5 [ngClass]="{'home__tabs__tab--selected': option.selected}"><i class="fa-solid {{option.icon}}"></i></h5>
+        
             <h5 [ngClass]="{'home__tabs__tab--selected': option.selected}">{{option.label | translate}}</h5>
         
           </bizy-tab>
