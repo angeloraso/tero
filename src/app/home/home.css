@@ -42,10 +42,6 @@ bizy-sidebar-option[slot=start] {
   height: 1.2rem;
 }
 
-.home__sidebar__option__icon {
-  color: var(--text-color);
-}
-
 .home__sidebar__option__label {
   opacity: 1;
   text-align: start;

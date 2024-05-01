@@ -20,7 +20,7 @@
 
       <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
 
-        <h4 [ngClass]="{'home__sidebar__option--selected': option.selected}"><i class="fa-solid {{option.icon}} home__sidebar__option__icon"></i></h4>
+        <h4 [ngClass]="{'home__sidebar__option--selected': option.selected}"><i class="fa-solid {{option.icon}}"></i></h4>
 
         <h4 class="home__sidebar__option__label" [ngClass]="{'home__sidebar__option--selected': option.selected}" *ngIf="!closedSidebar">{{option.label | translate}}</h4>
       </span>

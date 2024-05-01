@@ -19,6 +19,7 @@
     --bizy-sidebar-shrinked-width: 3rem;
     --bizy-sidebar-width: 14rem;
     --bizy-sidebar-option-hover-color: var(--light-info-color);
+    --bizy-sidebar-option-selected-color: var(--accent-color);
 
     --bizy-toolbar-padding: 0 0.7rem;
 }
