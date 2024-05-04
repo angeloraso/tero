@@ -4,7 +4,7 @@ import { ImageModule } from '@components/image';
 import { SharedModule } from '@shared/shared.module';
 import { NeighborFormComponent } from './components';
 import { es } from './i18n';
-import { NeighborsRoutingModule } from './neighborhood.routing';
+import { NeighborsRoutingModule } from './neighbors.routing';
 
 const COMPONENTS: Array<any> = [NeighborFormComponent];
 @NgModule({

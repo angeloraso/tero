@@ -5,12 +5,14 @@ import {
   BizyConfirmButtonsModule,
   BizyErrorModule,
   BizyFabButtonModule,
+  BizyFilterModule,
   BizyInputModule,
   BizyLineChartModule,
   BizySelectModule,
   BizySidebarModule,
   BizyTableModule,
   BizyTabsModule,
+  BizyTagModule,
   BizyToggleModule,
   BizyToolbarModule,
   BizyVirtualScrollModule
@@ -40,7 +42,9 @@ import { BizyPopupModule, BizyToastModule, BizyTranslatePipeModule } from '@bizy
     BizySelectModule,
     BizyTranslatePipeModule,
     BizyLineChartModule,
-    BizyBarChartModule
+    BizyBarChartModule,
+    BizyFilterModule,
+    BizyTagModule
   ]
 })
 export class BizyModule {}

@@ -12,7 +12,7 @@
     --bizy-loading-color-2nd-line: var(--primary-color);
     --bizy-loading-color-3rd-line: var(--dark-primary-color);
 
-    --bizy-table-column-min-width: 5rem;
+    --bizy-table-column-min-width: 4.3rem;
     --bizy-table-background-color: var(--background-color);
     --bizy-table-header-background-color: var(--hover-color);
 

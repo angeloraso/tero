@@ -24,14 +24,19 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: PATH.DASHBOARD,
-        loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule),
+        path: PATH.NEIGHBORS,
+        loadChildren: () => import('@neighbors/neighbors.module').then(m => m.NeighborsModule),
         canActivate: [authGuard]
       },
       {
         path: PATH.NEIGHBORHOOD,
         loadChildren: () =>
           import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule),
+        canActivate: [authGuard]
+      },
+      {
+        path: PATH.DASHBOARD,
+        loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [authGuard]
       },
       {

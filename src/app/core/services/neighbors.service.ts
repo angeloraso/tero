@@ -42,6 +42,7 @@ export class NeighborsService {
     return this.database.putNeighbor({
       id: neighbor.id,
       lot: neighbor.lot,
+      group: neighbor.group,
       name: neighbor.name,
       surname: neighbor.surname,
       security: neighbor.security,

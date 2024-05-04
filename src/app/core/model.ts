@@ -26,6 +26,7 @@ export interface INeighbor {
   name: string;
   security: boolean;
   picture: string;
+  group: number;
   phones: Array<IPhone>;
   created: number;
   updated: number;
@@ -36,6 +37,7 @@ export class Neighbor implements INeighbor {
   lot: number;
   surname: string;
   name: string;
+  group: number;
   security: boolean;
   picture: string;
   phones: Array<IPhone>;
@@ -45,6 +47,7 @@ export class Neighbor implements INeighbor {
   constructor(neighbor: Omit<INeighbor, 'id'>) {
     this.id = uuid4();
     this.lot = neighbor.lot;
+    this.group = neighbor.group;
     this.surname = neighbor.surname ?? '';
     this.name = neighbor.name ?? '';
     this.security = neighbor.security ?? false;

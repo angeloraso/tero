@@ -9,13 +9,9 @@ export enum PATH {
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: PATH.SIGN_IN,
+    path: PATH.EMPTY,
+    component: SignInComponent,
     pathMatch: 'full'
-  },
-  {
-    path: PATH.SIGN_IN,
-    component: SignInComponent
   }
 ];
 

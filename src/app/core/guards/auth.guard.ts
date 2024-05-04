@@ -10,8 +10,8 @@ export const authGuard = () => {
   const router = inject(Router);
   return auth.signedIn$.pipe(
     take(1),
-    map(isLoggedIn => {
-      if (!isLoggedIn) {
+    map(signedIn => {
+      if (!signedIn) {
         router.navigateByUrl(`/${APP_PATH.AUTH}/${AUTH_PATH.SIGN_IN}`, { replaceUrl: true });
         console.error('Not permissions');
         return false;

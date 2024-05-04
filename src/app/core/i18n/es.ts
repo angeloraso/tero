@@ -5,6 +5,7 @@ export const locale = {
   translations: {
     CORE: {
       EMPTY: 'Sin información',
+      TOTAL: 'Total',
       MENU: {
         DASHBOARD: 'Panel',
         NEIGHBORHOOD: 'Barrio',
@@ -15,7 +16,9 @@ export const locale = {
       BUTTON: {
         CANCEL: 'Cancelar',
         SAVE: 'Guardar',
-        CONFIRM: 'Confirmar'
+        CONFIRM: 'Confirmar',
+        EXPORT: 'Exportar',
+        CLEAN: 'Limpiar'
       },
       FORM: {
         FIELD: {

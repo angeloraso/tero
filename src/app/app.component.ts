@@ -3,6 +3,7 @@ import { BizyRouterService } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { ROOT_PATHS } from '@core/constants';
 import { DatabaseService, MobileService } from '@core/services';
+import { skip } from 'rxjs';
 import { PATH } from './app.routing';
 
 @Component({
@@ -33,7 +34,7 @@ export class AppComponent implements OnInit {
         this.mobile.hideSplash();
       }
 
-      this.auth.signedIn$.subscribe(signedIn => {
+      this.auth.signedIn$.pipe(skip(1)).subscribe(signedIn => {
         if (!signedIn) {
           this.database.destroy();
           this.router.goTo({ path: `/${PATH.AUTH}` });

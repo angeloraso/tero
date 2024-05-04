@@ -87,7 +87,7 @@ h6 {
 }
 
 .tero-button--default {
-    background-color: var(--primary-color) !important;
+    background-color: var(--default-color) !important;
 }
 
 .tero-button--info {
@@ -300,7 +300,6 @@ h6 {
 .tero-wrapper {
     padding: 0.5rem;
     flex: 1;
-    min-height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -389,14 +388,11 @@ h6 {
 
 .tero-counter__section {
     display: flex;
-    align-items: 0.5rem;
-}
-
-.tero-counter__section__title {
-    padding-right: 0.3rem;
+    flex-direction: column;
+    row-gap: 0.3rem;
+    min-width: 5rem;
 }
 
 .tero-title {
     color: var(--info-color);
-    font-weight: bold;
 }

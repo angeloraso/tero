@@ -18,13 +18,12 @@ const routes: Routes = [
   {
     path: PATH.AUTH,
     loadChildren: () => import('@auth/auth.module').then(m => m.AuthModule),
-    canLoad: [autoSignInGuard],
     canActivate: [autoSignInGuard]
   },
   {
     path: PATH.HOME,
     loadChildren: () => import('@home/home.module').then(m => m.HomeModule),
-    canLoad: [authGuard]
+    canActivate: [authGuard]
   },
   {
     path: PATH.ANY,
