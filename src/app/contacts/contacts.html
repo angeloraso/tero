@@ -60,7 +60,7 @@
 
                     <bizy-button card-header-end class="tero-action tero-action--success conctacts__card__action" (onSelect)="onWhatsapp(contact); $event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i></bizy-button>
 
-                    <bizy-tag card-footer-start type="info" *ngFor="let tag of contact.tags" class="conctacts__card__tag">{{('CONTACTS.TAG.' + tag) | translate}}</bizy-tag>
+                    <bizy-tag card-footer-start type="warning" *ngFor="let tag of contact.tags" class="conctacts__card__tag">{{('CONTACTS.TAG.' + tag) | translate}}</bizy-tag>
 
                 </bizy-card>
 
