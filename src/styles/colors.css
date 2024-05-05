@@ -18,14 +18,14 @@ html:root {
 
     --success-color: #5fbc5a;
     --default-color: #666666;
-    --info-color: #2b94f4;
+    --info-color: #2484c6;
     --warning-color: #f7a64c;
     --danger-color: #e76565;
 
-    --group-1-color: #d7ebfe;
-    --group-2-color: #ffd1ee;
-    --group-3-color: #ffe3be;
-    --group-4-color: #fffec6;
-    --group-5-color: #e6c1ff;
-    --group-6-color: #d5fece;
+    --group-1-color: #75afe4;
+    --group-2-color: #e59fcb;
+    --group-3-color: #cfb38f;
+    --group-4-color: #cac980;
+    --group-5-color: #ac87c6;
+    --group-6-color: #8cbe83;
 }

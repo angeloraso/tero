@@ -22,6 +22,7 @@ export const ROOT_PATHS = [
 export const LOGO_PATH = '/assets/favicons/favicon.ico';
 
 export const AVAILABLE_LOTS = 224;
+export const AVAILABLE_SECURITY_GROUPS = [1, 2, 3, 4, 5, 6];
 export const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=549';
 
 export const DEFAULT_PICTURE = 'picture_user.svg';

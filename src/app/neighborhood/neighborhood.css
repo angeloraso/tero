@@ -1,12 +1,20 @@
-.map {
+.neighborhood {
     overflow: scroll;
 }
 
-.map__block-row {
+.neighborhood__toolbar {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.neighborhood__block-row {
     display: flex;
 }
 
-.map__block {
+.neighborhood__block {
     padding: 0.3rem;
     background-color: var(--hover-color);
     border-radius: 0.3rem;
@@ -14,17 +22,17 @@
     height: fit-content;
 }
 
-.map__block__column--free {
+.neighborhood__block__column--free {
     background-color: var(--free-color);
     width: 6rem;
 }
 
-.map__block__column {
+.neighborhood__block__column {
     display: flex;
     flex-direction: column;
 }
 
-.map__block__column__lot {
+.neighborhood__block__column__lot {
     border: 0.1rem solid var(--default-color);
     height: 2rem;
     width: 6rem;
@@ -33,7 +41,7 @@
     place-items: center;
 }
 
-.map__vertical-street {
+.neighborhood__vertical-street {
     background-color: var(--street-color);
     writing-mode: vertical-rl;
     transform: rotate(180deg);
@@ -46,7 +54,7 @@
     border-radius: 0.3rem;
 }
 
-.map__vertical-street--main {
+.neighborhood__vertical-street--main {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,7 +72,7 @@
     transform: rotate(180deg);
 }
 
-.map__horizontal-street {
+.neighborhood__horizontal-street {
     background-color: var(--street-color);
     display: flex;
     justify-content: center;

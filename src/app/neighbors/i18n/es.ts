@@ -14,7 +14,11 @@ export const locale = {
         TITLE: 'Agregar vecino'
       },
       EDIT_NEIGHBOR: {
-        TITLE: 'Editar vecino'
+        TITLE: 'Editar vecino',
+        DELETE_POPUP: {
+          TITLE: 'Borrar vecino/a',
+          MSG: 'Se borrará el vecino/a'
+        }
       }
     }
   }

@@ -14,7 +14,8 @@
 
     --bizy-table-column-min-width: 4.3rem;
     --bizy-table-background-color: var(--background-color);
-    --bizy-table-header-background-color: var(--hover-color);
+    --bizy-table-header-background-color: var(--light-primary-color);
+    --bizy-table-column-arrows-color: var(--text-color);
 
     --bizy-sidebar-shrinked-width: 3rem;
     --bizy-sidebar-width: 14rem;

@@ -1,0 +1,17 @@
+<bizy-toolbar>
+
+    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
+
+    <h1 slot=start>{{'NEIGHBORS.ADD_NEIGHBOR.TITLE' | translate}}</h1>
+
+</bizy-toolbar>
+
+<div class="neighbors tero-wrapper">
+
+    <tero-neighbor-form
+        [bizyLoading]="loading"
+        (cancel)="goBack()"
+        (save)="save($event)">
+    </tero-neighbor-form>
+
+</div>

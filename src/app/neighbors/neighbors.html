@@ -6,6 +6,8 @@
 
     <h2 slot="end" (click)="export()"><i class="fa-solid fa-file-arrow-down tero-toolbar__icon"></i></h2>
 
+    <h2 slot="end" (click)="addNeighbor()"><i class="fa-solid fa-user-plus tero-toolbar__icon"></i></h2>
+
 </bizy-toolbar>
 
 <div class="neighbors tero-wrapper">
@@ -52,7 +54,7 @@
                     <i class="fa-solid fa-filter"></i>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title class="tero-table__header__title"><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h4>
+                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h4>
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let group of filterGroups"
                             [id]="group.id"
@@ -64,7 +66,7 @@
 
                 </bizy-filter>
 
-                <h5 class="tero-table__header__title"><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h5>
+                <h5><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h5>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'group'"></bizy-table-column-arrows>
             </bizy-table-column>
 
@@ -74,7 +76,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title class="tero-table__header__title"><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h4>
+                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h4>
                         <bizy-filter-section-search-option 
                             [(value)]="lotSearch"
                             (onChange)="refresh()">
@@ -83,7 +85,7 @@
 
                 </bizy-filter>
 
-                <h5 class="tero-table__header__title"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h5>
+                <h5><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h5>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'lot'"></bizy-table-column-arrows>
             </bizy-table-column>
 
@@ -93,7 +95,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title class="tero-table__header__title"><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h4>
+                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h4>
                         <bizy-filter-section-search-option 
                             [(value)]="surnameSearch"
                             (onChange)="refresh()">
@@ -102,7 +104,7 @@
 
                 </bizy-filter>
 
-                <h5 class="tero-table__header__title"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h5>
+                <h5><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h5>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'surname'"></bizy-table-column-arrows>
             </bizy-table-column>
 
@@ -112,7 +114,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title class="tero-table__header__title"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h4>
+                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h4>
                         <bizy-filter-section-search-option 
                             [(value)]="nameSearch"
                             (onChange)="refresh()">
@@ -121,7 +123,7 @@
 
                 </bizy-filter>
 
-                <h5 class="tero-table__header__title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h5>
+                <h5><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h5>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'name'"></bizy-table-column-arrows>
             </bizy-table-column>
 
@@ -129,7 +131,7 @@
     
         </bizy-table-header>
     
-        <bizy-table-row *ngFor="let neighbor of neighbors 
+        <bizy-table-row *tableFor="let neighbor in: neighbors 
                                                     | bizySearch: search : ['group', 'lot', 'surname', 'name']
                                                     | bizySearch: lotSearch : 'lot'
                                                     | bizySearch: surnameSearch : 'surname'
@@ -146,7 +148,7 @@
             <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 1, minWidth: '1rem'}" (onSelect)="removeNeighborFromSecurity(neighbor)">
-                <bizy-tag type="warning"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>
+                <bizy-tag *ngIf="neighbor.security" type="warning"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>
             </bizy-table-column>
 
         </bizy-table-row>

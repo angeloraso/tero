@@ -1,0 +1,28 @@
+<bizy-toolbar>
+
+    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
+
+    <h1 slot=start>{{'NEIGHBORS.EDIT_NEIGHBOR.TITLE' | translate}}</h1>
+
+    <h2 slot="end" (click)="deleteNeighbor()"><i class="fa-solid fa-trash-alt tero-toolbar__icon"></i></h2>
+
+</bizy-toolbar>
+
+<div class="neighbors tero-wrapper" [bizyLoading]="loading">
+
+    <tero-neighbor-form
+        *ngIf="neighbor"
+        [id]="neighbor.id"
+        [picture]="neighbor.picture"
+        [name]="neighbor.name"
+        [group]="neighbor.group"
+        [created]="neighbor.created"
+        [updated]="neighbor.updated"
+        [surname]="neighbor.surname"
+        [lot]="neighbor.lot"
+        [security]="neighbor.security"
+        (cancel)="goBack()"
+        (save)="save($event)">
+    </tero-neighbor-form>
+
+</div>

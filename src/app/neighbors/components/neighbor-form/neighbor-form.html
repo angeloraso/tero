@@ -1,0 +1,67 @@
+<form class="tero-form" [formGroup]="form">
+
+    <span class="neighbor-form__picture">
+
+        <tero-img [src]="_picture.value" alt="Neighbor picture"></tero-img>
+
+    </span>
+
+    <bizy-input 
+        label="{{'CORE.FORM.FIELD.NAME' | translate}}"
+        [control]="_name">
+
+        <bizy-error input-error *ngIf="_name.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
+
+    </bizy-input>
+
+    <bizy-input 
+        label="{{'CORE.FORM.FIELD.SURNAME' | translate}}"
+        [control]="_surname">
+
+        <bizy-error input-error *ngIf="_surname.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
+
+    </bizy-input>
+
+    <bizy-input 
+        label="{{'CORE.FORM.FIELD.LOT' | translate}}"
+        type="number"
+        [control]="_lot">
+
+        <bizy-error input-error *ngIf="_lot.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
+        <bizy-error input-error *ngIf="_lot.hasError('min')"><h5>{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</h5></bizy-error>
+        <bizy-error input-error *ngIf="_lot.hasError('min')"><h5>{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_VALUE}}</h5></bizy-error>
+
+    </bizy-input>
+
+    <span class="neighbor-form__security-card">
+
+        <h5 class="tero-title">{{'CORE.FORM.FIELD.SECURITY' | translate}}</h5>
+    
+        <span class="tero-form__section">
+            <bizy-toggle [checked]="_security.value" (onSelect)="setSecurity($event)"></bizy-toggle>
+    
+            <bizy-select label="{{'CORE.FORM.FIELD.GROUP' | translate}}" [disabled]="!_security.value">
+                <bizy-select-option 
+                    *ngFor="let g of GROUPS"
+                    [selected]="_group.value === g"
+                    (onSelect)="_group.setValue(g)">
+                    {{g}}
+                </bizy-select-option>
+
+            </bizy-select>
+
+        </span>
+
+        <bizy-error input-error *ngIf="_group.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
+
+    </span>
+
+    
+
+    <bizy-confirm-buttons
+        (cancel)="_cancel()"
+        (confirm)="_confirm()">
+    </bizy-confirm-buttons>
+
+</form>
+

@@ -1,4 +1,4 @@
-<bizy-toolbar>
+<bizy-toolbar class="neighborhood__toolbar">
 
     <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
 
@@ -6,13 +6,13 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper map" [bizyLoading]="loading">
+<div class="neighborhood tero-wrapper" [bizyLoading]="loading">
 
-    <span class="map__block-row">
+    <span class="neighborhood__block-row">
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[1]" (onClick)="showLot(lots[1])"></tero-lot>
     
@@ -34,15 +34,15 @@
 
         </span>
 
-        <span class="map__vertical-street map__vertical-street--main" style="height: 16.6rem;">
+        <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
             <h5>Calle 170 Nte</h5>
             <i class="fa-solid fa-person-walking street__icon"></i>
         </span>    
         
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[9]" (onClick)="showLot(lots[9])"></tero-lot>
     
@@ -62,7 +62,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[17]" (onClick)="showLot(lots[17])"></tero-lot>
     
@@ -84,15 +84,15 @@
 
         </span>
 
-        <span class="map__vertical-street map__vertical-street--main" style="height: 16.6rem;">
+        <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
             <h5>Calle 171</h5>
             <h4 class="street__icon"><i class="fa-solid fa-xmark"></i></h4>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[25]" (onClick)="showLot(lots[25])"></tero-lot>
     
@@ -112,7 +112,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[33]" (onClick)="showLot(lots[33])"></tero-lot>
     
@@ -134,15 +134,15 @@
 
         </span>
 
-        <span class="map__vertical-street map__vertical-street--main" style="height: 16.6rem;">
+        <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
             <h5>Calle 171 Nte</h5>
             <i class="fa-solid fa-car street__icon"></i>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[41]" (onClick)="showLot(lots[41])"></tero-lot>
     
@@ -162,7 +162,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[49]" (onClick)="showLot(lots[49])"></tero-lot>
     
@@ -184,15 +184,15 @@
 
         </span>
 
-        <span class="map__vertical-street map__vertical-street--main" style="height: 16.6rem;">
+        <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
             <h5>Calle 172</h5>
             <i #mainEntrance class="fa-solid fa-car street__icon"></i>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[57]" (onClick)="showLot(lots[57])"></tero-lot>
     
@@ -216,15 +216,15 @@
 
     </span>
 
-    <span class="map__horizontal-street" style="width: 59rem;">
+    <span class="neighborhood__horizontal-street" style="width: 59rem;">
         <h5>Calle 46 Este</h5>
     </span>
 
-    <span class="map__block-row">
+    <span class="neighborhood__block-row">
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[65]" (onClick)="showLot(lots[65])"></tero-lot>
     
@@ -242,13 +242,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 12.6rem;">
+        <span class="neighborhood__vertical-street" style="height: 12.6rem;">
             <h5>Calle 170 Nte</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[71]" (onClick)="showLot(lots[71])"></tero-lot>
     
@@ -264,7 +264,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[77]" (onClick)="showLot(lots[77])"></tero-lot>
     
@@ -290,13 +290,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 20.6rem;">
+        <span class="neighborhood__vertical-street" style="height: 20.6rem;">
             <h5>Calle 171</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[87]" (onClick)="showLot(lots[87])"></tero-lot>
     
@@ -320,7 +320,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[97]" (onClick)="showLot(lots[97])"></tero-lot>
     
@@ -346,13 +346,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 20.6rem;">
+        <span class="neighborhood__vertical-street" style="height: 20.6rem;">
             <h5>Calle 171 Nte</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[107]" (onClick)="showLot(lots[107])"></tero-lot>
     
@@ -376,7 +376,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[117]" (onClick)="showLot(lots[117])"></tero-lot>
     
@@ -402,13 +402,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 20.6rem;">
+        <span class="neighborhood__vertical-street" style="height: 20.6rem;">
             <h5>Calle 172</h5>
         </span>
 
-        <span class="map__block" style="align-items: flex-end;">
+        <span class="neighborhood__block" style="align-items: flex-end;">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[127]" (onClick)="showLot(lots[127])"></tero-lot>
     
@@ -432,7 +432,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[137]" (onClick)="showLot(lots[137])"></tero-lot>
     
@@ -446,27 +446,27 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 8.6rem; align-self: flex-end;">
+        <span class="neighborhood__vertical-street" style="height: 8.6rem; align-self: flex-end;">
             <h5>Calle 172 Nte</h5>
         </span>
 
-        <span class="map__block" style="align-self: flex-end;">
+        <span class="neighborhood__block" style="align-self: flex-end;">
 
-            <span class="map__block__column--free" style="height: 8rem;"></span>
+            <span class="neighborhood__block__column--free" style="height: 8rem;"></span>
         
         </span>
 
     </span>
 
-    <span class="map__horizontal-street" style="width: 59rem; position: relative; left: 14.6rem;">
+    <span class="neighborhood__horizontal-street" style="width: 59rem; position: relative; left: 14.6rem;">
         <h5>Calle 47</h5>
     </span>
 
-    <span class="map__block-row" style="position: relative; left: 14.6rem;">
+    <span class="neighborhood__block-row" style="position: relative; left: 14.6rem;">
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[141]" (onClick)="showLot(lots[141])"></tero-lot>
     
@@ -496,13 +496,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 24.6rem">
+        <span class="neighborhood__vertical-street" style="height: 24.6rem">
             <h5>Calle 171</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
         
                 <tero-lot [lot]="lots[153]" (onClick)="showLot(lots[153])"></tero-lot>
     
@@ -530,7 +530,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
         
                 <tero-lot [lot]="lots[165]" (onClick)="showLot(lots[165])"></tero-lot>
     
@@ -560,13 +560,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 24.6rem">
+        <span class="neighborhood__vertical-street" style="height: 24.6rem">
             <h5>Calle 171 Nte</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
         
                 <tero-lot [lot]="lots[177]" (onClick)="showLot(lots[177])"></tero-lot>
     
@@ -594,7 +594,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
         
                 <tero-lot [lot]="lots[189]" (onClick)="showLot(lots[189])"></tero-lot>
     
@@ -624,13 +624,13 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 24.6rem">
+        <span class="neighborhood__vertical-street" style="height: 24.6rem">
             <h5>Calle 172</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[201]" (onClick)="showLot(lots[201])"></tero-lot>
     
@@ -658,7 +658,7 @@
 
             </span>
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
                 <tero-lot [lot]="lots[213]" (onClick)="showLot(lots[213])"></tero-lot>
     
@@ -688,15 +688,15 @@
 
         </span>
 
-        <span class="map__vertical-street" style="height: 24.6rem">
+        <span class="neighborhood__vertical-street" style="height: 24.6rem">
             <h5>Calle 172 Nte</h5>
         </span>
 
-        <span class="map__block">
+        <span class="neighborhood__block">
 
-            <span class="map__block__column">
+            <span class="neighborhood__block__column">
 
-                <span class="map__block__column--free" style="height: 24rem;"></span>
+                <span class="neighborhood__block__column--free" style="height: 24rem;"></span>
 
             </span>
 

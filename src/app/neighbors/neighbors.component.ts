@@ -31,8 +31,8 @@ export class NeighborsComponent implements OnInit {
   nameSearch: string | number = '';
   filterGroups: Array<{ id: string; value: number; selected: boolean }> = [];
   activatedFilters: number = 0;
-  orderBy: string = 'date';
-  order: 'asc' | 'desc' | null = 'desc';
+  orderBy: string = 'lot';
+  order: 'asc' | 'desc' | null = 'asc';
 
   readonly LOGO_PATH = LOGO_PATH;
 

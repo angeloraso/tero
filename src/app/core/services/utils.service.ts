@@ -9,6 +9,7 @@ export class UtilsService {
     return Math.round((num + Number.EPSILON) * 100) / 100;
   }
 
+  // @Deprecated
   getGroup(neighbor: INeighbor): number {
     if (!neighbor || !neighbor.lot) {
       return 0;
