@@ -4,6 +4,7 @@ import {
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
+  BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
@@ -25,10 +26,11 @@ export class EditNeighborComponent implements OnInit {
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(NeighborsService) private neighborsServices: NeighborsService,
+    @Inject(NeighborsService) private neighborsService: NeighborsService,
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService
   ) {}
 
@@ -41,13 +43,14 @@ export class EditNeighborComponent implements OnInit {
         return;
       }
 
-      this.neighbor = await this.neighborsServices.getNeighbor(this.neighborId);
+      this.neighbor = await this.neighborsService.getNeighbor(this.neighborId);
     } catch (error) {
       this.log.error({
         fileName: 'edit-neighbor.component',
         functionName: 'ngOnInit',
         param: error
       });
+      this.toast.danger();
     } finally {
       this.loading = false;
     }
@@ -70,7 +73,7 @@ export class EditNeighborComponent implements OnInit {
         try {
           if (res) {
             this.loading = true;
-            await this.neighborsServices.deleteNeighbor(this.neighbor as INeighbor);
+            await this.neighborsService.deleteNeighbor(this.neighbor as INeighbor);
             this.goBack();
           }
         } catch (error) {
@@ -79,6 +82,7 @@ export class EditNeighborComponent implements OnInit {
             functionName: 'deleteNeighbor',
             param: error
           });
+          this.toast.danger();
         } finally {
           this.loading = false;
         }
@@ -97,7 +101,7 @@ export class EditNeighborComponent implements OnInit {
       }
 
       this.loading = true;
-      await this.neighborsServices.putNeighbor(neighbor);
+      await this.neighborsService.putNeighbor(neighbor);
       this.goBack();
     } catch (error) {
       this.log.error({
@@ -105,6 +109,7 @@ export class EditNeighborComponent implements OnInit {
         functionName: 'save',
         param: error
       });
+      this.toast.danger();
     } finally {
       this.loading = false;
     }

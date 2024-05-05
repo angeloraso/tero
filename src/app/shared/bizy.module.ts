@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import {
   BizyBarChartModule,
   BizyButtonModule,
+  BizyCardModule,
   BizyConfirmButtonsModule,
   BizyErrorModule,
   BizyFabButtonModule,
@@ -44,7 +45,8 @@ import { BizyPopupModule, BizyToastModule, BizyTranslatePipeModule } from '@bizy
     BizyLineChartModule,
     BizyBarChartModule,
     BizyFilterModule,
-    BizyTagModule
+    BizyTagModule,
+    BizyCardModule
   ]
 })
 export class BizyModule {}

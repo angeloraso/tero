@@ -1,10 +1,17 @@
-<tero-loading [show]="showLoading">
-    <div class="tero-wrapper">
-    
-        <tero-contact-form
-            (cancel)="goBack()"
-            (confirm)="save($event)">
-        </tero-contact-form>
-    
-    </div>
-</tero-loading>
+<bizy-toolbar>
+
+    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
+
+    <h1 slot=start>{{'CONTACTS.ADD_CONTACT.TITLE' | translate}}</h1>
+
+</bizy-toolbar>
+
+<div class="add-contact tero-wrapper">
+
+    <tero-contact-form
+        [bizyLoading]="loading"
+        (cancel)="goBack()"
+        (save)="save($event)">
+    </tero-contact-form>
+
+</div>

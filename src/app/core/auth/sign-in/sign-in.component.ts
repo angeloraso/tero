@@ -23,7 +23,7 @@ export class SignInComponent {
       this.loading = true;
       await this.auth.signIn();
     } catch (error) {
-      this.toast.danger({ msg: String(error) });
+      this.toast.danger(String(error));
       this.loading = false;
     }
   }

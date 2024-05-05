@@ -40,6 +40,11 @@ const routes: Routes = [
         canActivate: [authGuard]
       },
       {
+        path: PATH.CONTACTS,
+        loadChildren: () => import('@contacts/contacts.module').then(m => m.ContactsModule),
+        canActivate: [authGuard]
+      },
+      {
         path: PATH.CONFIG,
         loadChildren: () => import('@config/config.module').then(m => m.ConfigModule),
         canActivate: [authGuard]

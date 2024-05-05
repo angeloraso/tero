@@ -1,24 +1,24 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { LOGO_PATH } from '@core/constants';
 import { IContact } from '@core/model';
-import { ContactsService, RouterService } from '@core/services';
-import { HomeService } from '@home/home.service';
+import { ContactsService } from '@core/services';
 
 @Component({
   selector: 'tero-add-contact',
   templateUrl: './add-contact.html',
   styleUrls: ['./add-contact.css']
 })
-export class AddContactComponent implements OnDestroy {
-  showLoading = false;
+export class AddContactComponent {
+  loading: boolean = false;
+  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
     @Inject(ContactsService) private contacts: ContactsService,
-    @Inject(RouterService) private router: RouterService,
-    @Inject(HomeService) private home: HomeService
-  ) {
-    this.home.updateTitle('CONTACTS.ADD_CONTACT.TITLE');
-    this.home.hideBottomBar(true);
-  }
+    @Inject(BizyRouterService) private router: BizyRouterService,
+    @Inject(BizyToastService) private toast: BizyToastService,
+    @Inject(BizyLogService) private log: BizyLogService
+  ) {}
 
   goBack() {
     this.router.goBack();
@@ -26,21 +26,22 @@ export class AddContactComponent implements OnDestroy {
 
   async save(contact: IContact) {
     try {
-      if (!contact) {
+      if (!contact || this.loading) {
         return;
       }
 
-      this.showLoading = true;
+      this.loading = true;
       await this.contacts.postContact(contact);
       this.goBack();
     } catch (error) {
-      console.error(error);
+      this.log.error({
+        fileName: 'add-contact.component',
+        functionName: 'save',
+        param: error
+      });
+      this.toast.danger();
     } finally {
-      this.showLoading = false;
+      this.loading = false;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.home.hideBottomBar(false);
   }
 }

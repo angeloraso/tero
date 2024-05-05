@@ -1,49 +1,18 @@
-.contacts__search {
-    margin-bottom: 1rem;
+.contacts {
+    --bizy-virtual-scroll-height: calc(100vh - var(--bizy-toolbar-height) - 8rem);
 }
 
-.contacts__search__icon {
-    color: var(--primary-color);
+.conctacts__card__action {
+    align-self: flex-start;
 }
 
-.contacts__card-list {
-    height: calc(100vh - var(--top-bar-height) - var(--bottom-bar-height) - 6rem);
+.contacts__card__title {
+    text-align: start;
 }
 
-.contacts__contact-card {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.5rem;
-}
-
-.contacts__contact-card__header {
-    display: flex;
-    justify-content: space-between;
-    column-gap: 0.5rem;
-}
-
-.contacts__contact-card__header__first-column {
-    display: flex;
-    column-gap: 0.5rem;
-}
-
-.contacts__contact-card__header__first-column__data {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 0.3rem;
-}
-
-.contacts__contact-card__header__first-column__data__comments {
-    opacity: 0.7;
-}
-
-.contacts__contact-card__footer {
+.contacts__card__phones__phone {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-    column-gap: 1rem;
-    padding: 0.5rem 0;
-    color: var(--success-color);
+    column-gap: 0.3rem;
 }

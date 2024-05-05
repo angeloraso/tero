@@ -1,71 +1,92 @@
-import { NoopScrollStrategy } from '@angular/cdk/overlay';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ConfirmAlertComponent } from '@components/confirm-alert';
+import {
+  BizyLogService,
+  BizyPopupService,
+  BizyRouterService,
+  BizyToastService,
+  BizyTranslateService
+} from '@bizy/services';
+import { LOGO_PATH } from '@core/constants';
 import { Empty, IContact } from '@core/model';
-import { ContactsService, RouterService } from '@core/services';
-import { HomeService } from '@home/home.service';
-import { Subscription } from 'rxjs';
+import { ContactsService } from '@core/services';
+import { PopupComponent } from '@shared/components';
 
 @Component({
   selector: 'tero-edit-contact',
   templateUrl: './edit-contact.html',
   styleUrls: ['./edit-contact.css']
 })
-export class EditContactComponent implements OnInit, OnDestroy {
+export class EditContactComponent implements OnInit {
   contact: IContact | Empty;
   contactId: string | Empty;
-  showLoading = false;
+  loading = false;
 
-  #subscription = new Subscription();
+  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
-    @Inject(MatDialog) private dialog: MatDialog,
-    @Inject(ContactsService) private contacts: ContactsService,
-    @Inject(RouterService) private router: RouterService,
+    @Inject(BizyPopupService) private popup: BizyPopupService,
+    @Inject(ContactsService) private contactsService: ContactsService,
+    @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
-    @Inject(HomeService) private home: HomeService
-  ) {
-    this.home.updateTitle('CONTACTS.EDIT_CONTACT.TITLE');
-    this.home.hideBottomBar(true);
-  }
+    @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(BizyToastService) private toast: BizyToastService,
+    @Inject(BizyTranslateService) private translate: BizyTranslateService
+  ) {}
 
   async ngOnInit() {
     try {
-      this.showLoading = true;
+      this.loading = true;
       this.contactId = this.router.getId(this.activatedRoute, 'contactId');
       if (!this.contactId) {
         this.goBack();
         return;
       }
 
-      this.contact = await this.contacts.getContact(this.contactId);
+      this.contact = await this.contactsService.getContact(this.contactId);
     } catch (error) {
-      console.error(error);
+      this.log.error({
+        fileName: 'edit-contact.component',
+        functionName: 'save',
+        param: error
+      });
+      this.toast.danger();
     } finally {
-      this.showLoading = false;
-      this.home.setDeleteFn(this.openAlertDialog);
+      this.loading = false;
     }
   }
 
-  openAlertDialog = () => {
-    if (!this.contact) {
+  deleteContact = () => {
+    if (!this.contact || this.loading) {
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmAlertComponent, {
-      data: this.contact,
-      scrollStrategy: new NoopScrollStrategy(),
-      panelClass: 'tero-material-dialog'
-    });
-
-    this.#subscription.add(
-      dialogRef.afterClosed().subscribe((res: boolean) => {
-        if (res) {
-          this._deleteContact(this.contact!);
+    this.popup.open<boolean>(
+      {
+        component: PopupComponent,
+        data: {
+          title: this.translate.get('CONTACTS.EDIT_CONTACT.DELETE_POPUP.TITLE'),
+          msg: `${this.translate.get('CONTACTS.EDIT_CONTACT.DELETE_POPUP.MSG')}: ${this.contact.surname} ${this.contact.name}`
         }
-      })
+      },
+      async res => {
+        try {
+          if (res) {
+            this.loading = true;
+            await this.contactsService.deleteContact(this.contact as IContact);
+            this.goBack();
+          }
+        } catch (error) {
+          this.log.error({
+            fileName: 'edit-contact.component',
+            functionName: 'deleteContact',
+            param: error
+          });
+          this.toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
     );
   };
 
@@ -79,35 +100,18 @@ export class EditContactComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.showLoading = true;
-      this.home.setDeleteFn(null);
-      await this.contacts.putContact(contact);
+      this.loading = true;
+      await this.contactsService.putContact(contact);
       this.goBack();
     } catch (error) {
-      this.home.setDeleteFn(this.openAlertDialog);
-      console.error(error);
+      this.log.error({
+        fileName: 'edit-contact.component',
+        functionName: 'save',
+        param: error
+      });
+      this.toast.danger();
     } finally {
-      this.showLoading = false;
+      this.loading = false;
     }
-  }
-
-  private async _deleteContact(contact: IContact) {
-    try {
-      this.showLoading = true;
-      this.home.setDeleteFn(null);
-      await this.contacts.deleteContact(contact);
-      this.goBack();
-    } catch (error) {
-      this.home.setDeleteFn(this.openAlertDialog);
-      console.log(error);
-    } finally {
-      this.showLoading = false;
-    }
-  }
-
-  ngOnDestroy() {
-    this.#subscription.unsubscribe();
-    this.home.setDeleteFn(null);
-    this.home.hideBottomBar(false);
   }
 }

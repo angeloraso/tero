@@ -1,56 +1,72 @@
-<tero-loading [show]="showLoading">
-    <div class="tero-wrapper">
+<bizy-toolbar>
+
+    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
+
+    <h1 slot=start>{{'CONTACTS.TITLE' | translate}}</h1>
+
+    <h2 slot="end" (click)="export()"><i class="fa-solid fa-file-arrow-down tero-toolbar__icon"></i></h2>
+
+    <h2 slot="end" (click)="addContact()"><i class="fa-solid fa-user-plus tero-toolbar__icon"></i></h2>
+
+</bizy-toolbar>
+
+<div class="contacts tero-wrapper">
+
+    <span class="tero-section">
+
+        <span class="tero-counter">
+
+            <span class="tero-counter__section">
+                <h4 class="tero-title">{{'CORE.TOTAL' | translate}}:</h4>
+                <h4><strong>{{(contacts | bizySearch: search : ['name', 'tags', 'surname', 'phones', 'score']).length}}/{{contacts.length}}</strong></h4>
+            </span>
+
+        </span>
+
+        <span class="tero-section__end">
+
+            <bizy-input 
+                label="{{'CORE.FORM.FIELD.SEARCH' | translate}}"
+                [(value)]="search">
+
+                <span input-start><i class="fa-solid fa-magnifying-glass"></i>&nbsp;</span>
+
+            </bizy-input>
     
-        <mat-form-field appearance="fill" class="contacts__search">
-            <mat-label>{{'CORE.FORM.FIELD.SEARCH' | translate}}</mat-label>
-            <mat-icon class="tero-icon contacts__search__icon" matPrefix>search</mat-icon>
-            <input matInput (keyup)="onSearch($event)" #input>
-        </mat-form-field>
+        </span>
 
-        <cdk-virtual-scroll-viewport itemSize="100" class="contacts__card-list">
-            <button *cdkVirtualFor="let contact of contacts | teroSearch : search : ['name', 'surname', '_tags._value', 'comments'] | teroOderAlphabetically: 'name'" class="tero-card contacts__contact-card" (click)="editContact(contact)" (keypress)="editContact(contact)">
-                <span class="contacts__contact-card__header">
+    </span>
 
-                    <span class="contacts__contact-card__header__first-column">
-                        
-                        <tero-img [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
+    <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
+        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : ['name', 'tags', 'surname', 'phones', 'score'] | bizyOrderBy: order : orderBy">
 
-                        <span class="contacts__contact-card__header__first-column__data">
+            <ng-container *ngFor="let contact of contactArray">
 
-                            <h2><strong>{{contact.name}} {{contact.surname}}</strong></h2>
+                <bizy-card (onSelect)="editContact(contact)">
 
-                            <h4>{{contact.phones[0]?.number}}</h4>
+                    <tero-img card-header-start [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
 
-                            <h6 class="contacts__contact-card__header__first-column__data__comments" *ngIf="contact.comments">{{contact.comments}}</h6>
+                    <h2 card-header-start class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h2>
 
-                        </span>
+                    <span class="contacts__card__phones__phone" *ngFor="let phone of contact.phones">
+
+                        <h5><strong>{{phone.number}}</strong></h5>
+
+                        <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone.number); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
 
                     </span>
-                    
-                </span>
 
-                <mat-chip-listbox *ngFor="let tag of contact._tags">
-                    <mat-chip>{{tag.value | translate}}</mat-chip>
-                </mat-chip-listbox>
+                    <bizy-button card-header-end class="tero-action tero-action--info conctacts__card__action" (onSelect)="onCall(contact); $event.stopPropagation()"><i class="fa-solid fa-phone"></i></bizy-button>
 
-                <span class="contacts__contact-card__footer">
+                    <bizy-button card-header-end class="tero-action tero-action--success conctacts__card__action" (onSelect)="onWhatsapp(contact); $event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i></bizy-button>
 
-                    <button class="tero-icon-button" type="button" (click)="onCall(contact); $event.stopPropagation()" (keypress)="onCall(contact); $event.stopPropagation()">
-                        <mat-icon>call</mat-icon>
-                    </button>
+                    <bizy-tag card-footer-start type="info" *ngFor="let tag of contact.tags" class="conctacts__card__tag">{{('CONTACTS.TAG.' + tag) | translate}}</bizy-tag>
 
-                    <button class="tero-icon-button" type="button" (click)="onWhatsapp(contact); $event.stopPropagation()" (keypress)="onWhatsapp(contact); $event.stopPropagation()">
-                        <i class="tero-icon fa-brands fa-whatsapp"></i>
-                    </button>
+                </bizy-card>
 
-                </span>
-            </button>
-        </cdk-virtual-scroll-viewport>
+            </ng-container>
 
+        </div>
+    </bizy-virtual-scroll>
 
-        <button mat-fab color="primary" (click)="addContact()">
-            <mat-icon>add</mat-icon>
-        </button>
-    
-    </div>
-</tero-loading>
+</div>

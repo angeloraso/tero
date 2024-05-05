@@ -73,6 +73,7 @@ export interface IContact {
   id: string;
   name: string;
   surname: string;
+  description: string;
   comments: Array<string>;
   picture: string;
   phones: Array<IPhone>;
@@ -86,6 +87,7 @@ export class Contact implements IContact {
   id: string;
   name: string;
   surname: string;
+  description: string;
   comments: Array<string>;
   picture: string;
   phones: Array<IPhone>;
@@ -98,6 +100,7 @@ export class Contact implements IContact {
     this.id = uuid4();
     this.name = contact.name ?? '';
     this.surname = contact.surname ?? '';
+    this.description = contact.description ?? '';
     this.comments = contact.comments ?? [];
     this.picture = contact.picture ?? DEFAULT_PICTURE;
     this.phones = contact.phones ?? [];

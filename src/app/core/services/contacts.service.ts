@@ -43,6 +43,7 @@ export class ContactsService {
       id: contact.id,
       name: contact.name,
       surname: contact.surname,
+      description: contact.description,
       comments: contact.comments,
       picture: contact.picture,
       phones: contact.phones,

@@ -1,22 +1,27 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DEFAULT_PICTURE, TAGS } from '@core/constants';
-import { Empty, IContact, IContactTag, IPhone } from '@core/model';
-import { TeroTranslateService } from '@core/services';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  Output
+} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CONTACT_TAGS, DEFAULT_PICTURE } from '@core/constants';
+import { Empty, IContact } from '@core/model';
 
 @Component({
   selector: 'tero-contact-form',
   templateUrl: './contact-form.html',
-  styleUrls: ['./contact-form.css']
+  styleUrls: ['./contact-form.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactFormComponent {
   @Output() cancel = new EventEmitter<void>();
-  @Output() confirm = new EventEmitter<IContact>();
+  @Output() save = new EventEmitter<IContact>();
   form: FormGroup;
 
-  readonly MIN_VALUE = 0;
-  readonly MAX_VALUE = 5;
-  TAGS: Array<IContactTag> = [];
+  readonly TAGS = CONTACT_TAGS;
 
   @Input() set id(id: string | Empty) {
     if (!id) {
@@ -24,6 +29,22 @@ export class ContactFormComponent {
     }
 
     this._id.setValue(id);
+  }
+
+  @Input() set created(created: number | Empty) {
+    if (!created) {
+      return;
+    }
+
+    this._created.setValue(created);
+  }
+
+  @Input() set updated(updated: number | Empty) {
+    if (!updated) {
+      return;
+    }
+
+    this._updated.setValue(updated);
   }
 
   @Input() set picture(picture: string | Empty) {
@@ -35,14 +56,6 @@ export class ContactFormComponent {
     this._picture.setValue(picture);
   }
 
-  @Input() set name(name: string | Empty) {
-    if (!name) {
-      return;
-    }
-
-    this._name.setValue(name);
-  }
-
   @Input() set surname(surname: string | Empty) {
     if (!surname) {
       return;
@@ -51,100 +64,60 @@ export class ContactFormComponent {
     this._surname.setValue(surname);
   }
 
-  @Input() set score(score: number | Empty) {
-    if (!score) {
+  @Input() set name(name: string | Empty) {
+    if (!name) {
       return;
     }
 
-    this._score.setValue(score);
+    this._name.setValue(name);
   }
 
-  @Input() set comments(comments: string | Empty) {
-    if (!comments) {
+  @Input() set description(description: string | Empty) {
+    if (!description) {
       return;
     }
 
-    this._comments.setValue(comments);
+    this._description.setValue(description);
   }
 
-  @Input() set phones(phones: Array<IPhone> | Empty) {
-    if (!phones || phones.length === 0) {
-      return;
-    }
-
-    this._phone.setValue(phones[0].number);
-  }
-
-  @Input() set tags(tags: Array<string> | Empty) {
-    if (!tags) {
-      return;
-    }
-
-    this._tags.setValue(tags);
-    this.TAGS.forEach(_tag => {
-      if (tags.includes(_tag.id)) {
-        _tag.selected = true;
-      }
-    });
-  }
-
-  constructor(
-    @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(TeroTranslateService) private translate: TeroTranslateService
-  ) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     this.form = this.fb.group({
       id: [null],
+      created: [null],
+      updated: [null],
       picture: [DEFAULT_PICTURE, [Validators.required]],
-      name: [null, [Validators.required]],
       surname: [null],
-      comments: [null],
-      tags: [[]],
-      phone: [null, [Validators.required]],
-      score: [
-        0,
-        [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_VALUE), Validators.required]
-      ]
-    });
-
-    this.TAGS = TAGS.map(_tag => {
-      return { ..._tag, _value: this.translate.get(_tag.value) };
+      name: [null, [Validators.required]],
+      description: [null]
     });
   }
 
   get _id() {
-    return this.form.get('id') as AbstractControl;
+    return this.form.get('id') as FormControl;
+  }
+
+  get _created() {
+    return this.form.get('created') as FormControl;
+  }
+
+  get _updated() {
+    return this.form.get('updated') as FormControl;
   }
 
   get _picture() {
-    return this.form.get('picture') as AbstractControl;
-  }
-
-  get _name() {
-    return this.form.get('name') as AbstractControl;
+    return this.form.get('picture') as FormControl;
   }
 
   get _surname() {
-    return this.form.get('surname') as AbstractControl;
+    return this.form.get('surname') as FormControl;
   }
 
-  get _comments() {
-    return this.form.get('comments') as AbstractControl;
+  get _name() {
+    return this.form.get('name') as FormControl;
   }
 
-  get _score() {
-    return this.form.get('score') as AbstractControl;
-  }
-
-  get _phone() {
-    return this.form.get('phone') as AbstractControl;
-  }
-
-  get _tags() {
-    return this.form.get('tags') as AbstractControl;
-  }
-
-  selectTag(tags: Array<string>) {
-    this._tags.setValue(tags);
+  get _description() {
+    return this.form.get('description') as FormControl;
   }
 
   _confirm() {
@@ -152,15 +125,18 @@ export class ContactFormComponent {
       return;
     }
 
-    this.confirm.emit({
+    this.save.emit({
       id: this._id.value,
+      created: this._created.value,
+      updated: this._updated.value,
       picture: this._picture.value,
-      surname: this._surname.value ? this._surname.value.trim() : '',
+      description: this._description.value,
+      surname: this._surname.value.trim(),
       name: this._name.value.trim(),
-      comments: this._comments.value ? this._comments.value.trim() : '',
-      score: this._score.value,
-      phones: [{ number: this._phone.value.trim(), description: '' }],
-      tags: this._tags.value
+      comments: [],
+      tags: [],
+      score: [],
+      phones: []
     });
   }
 

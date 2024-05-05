@@ -1,37 +1,31 @@
 <form class="tero-form" [formGroup]="form">
 
-    <tero-img [src]="_picture.value" alt="Contact picture"></tero-img>
+    <span class="contact-form__picture">
 
+        <tero-img [src]="_picture.value" alt="Contact picture"></tero-img>
 
-    <mat-form-field floatLabel="always" appearance="fill">
-        <mat-label>{{'CORE.FORM.FIELD.NAME' | translate}}</mat-label>
-        <input [teroAutoFocus]="true" matInput type="text" formControlName="name">
-        <mat-error *ngIf="_name.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
-    </mat-form-field>
+    </span>
 
-    <mat-form-field floatLabel="always" appearance="fill">
-        <mat-label>{{'CORE.FORM.FIELD.SURNAME' | translate}}</mat-label>
-        <input matInput type="text" formControlName="surname">
-     </mat-form-field>
+    <bizy-input 
+        label="{{'CORE.FORM.FIELD.NAME' | translate}}"
+        [control]="_name">
 
-    <mat-form-field floatLabel="always" appearance="fill">
-        <mat-label>{{'CORE.FORM.FIELD.PHONE' | translate}}</mat-label>
-        <input matInput type="text" formControlName="phone">
-        <mat-error *ngIf="_phone.hasError('required')">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</mat-error>
-    </mat-form-field>
+        <bizy-error input-error *ngIf="_name.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
 
-    <mat-form-field floatLabel="always" appearance="fill">
-        <mat-label>{{'CORE.FORM.FIELD.COMMENTS' | translate}}</mat-label>
-        <input matInput type="text" formControlName="comments">
-    </mat-form-field>
+    </bizy-input>
 
-    <mat-chip-listbox [multiple]="true" [required]="true" (change)="selectTag($event.value)">
-        <mat-chip-option *ngFor="let tag of TAGS | teroOderAlphabetically: '_value'" [value]="tag.id" [selected]="tag.selected">{{tag.value | translate}}</mat-chip-option>
-    </mat-chip-listbox>
+    <bizy-input 
+        label="{{'CORE.FORM.FIELD.SURNAME' | translate}}"
+        [control]="_surname">
 
-    <tero-confirm-footer
+        <bizy-error input-error *ngIf="_surname.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
+
+    </bizy-input>
+
+    <bizy-confirm-buttons
         (cancel)="_cancel()"
         (confirm)="_confirm()">
-    </tero-confirm-footer>
+    </bizy-confirm-buttons>
+
 </form>
 

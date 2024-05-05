@@ -1,18 +1,26 @@
-<tero-loading [show]="showLoading">
-    <div class="tero-wrapper">
-    
-        <tero-contact-form
-            [id]="contact?.id"
-            [picture]="contact?.picture"
-            [name]="contact?.name"
-            [surname]="contact?.surname"
-            [score]="contact?.score"
-            [comments]="contact?.comments"
-            [phones]="contact?.phones"
-            [tags]="contact?.tags"
-            (cancel)="goBack()"
-            (confirm)="save($event)">
-        </tero-contact-form>
-    
-    </div>
-</tero-loading>
+<bizy-toolbar>
+
+    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
+
+    <h1 slot=start>{{'CONTACTS.EDIT_CONTACT.TITLE' | translate}}</h1>
+
+    <h2 slot="end" (click)="deleteContact()"><i class="fa-solid fa-trash-alt tero-toolbar__icon"></i></h2>
+
+</bizy-toolbar>
+
+<div class="edit-contact tero-wrapper" [bizyLoading]="loading">
+
+    <tero-contact-form
+        *ngIf="contact"
+        [id]="contact.id"
+        [picture]="contact.picture"
+        [name]="contact.name"
+        [description]="contact.description"
+        [created]="contact.created"
+        [updated]="contact.updated"
+        [surname]="contact.surname"
+        (cancel)="goBack()"
+        (save)="save($event)">
+    </tero-contact-form>
+
+</div>

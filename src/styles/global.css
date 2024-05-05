@@ -39,39 +39,37 @@ h6 {
 }
 
 .tero-action {
-    background-color: transparent;
-    border: none;
+    --bizy-button-background-color: transparent;
     cursor: pointer;
-    transition: all 100ms ease;
+    transition: transform 100ms ease;
 }
 
 .tero-action:hover {
-    transform: translateY(-0.1rem);
-    font-size: 1.1rem;
+    transform: scale(1.1);
 }
 
 .tero-action--primary {
-    color: var(--primary-color) !important;
+    --bizy-button-color: var(--primary-color);
 }
 
 .tero-action--success {
-    color: var(--success-color) !important;
+    --bizy-button-color: var(--success-color);
 }
 
 .tero-action--default {
-    color: var(--default-color) !important;
+    --bizy-button-color: var(--default-color);
 }
 
 .tero-action--info {
-    color: var(--info-color) !important;
+    --bizy-button-color: var(--info-color);
 }
 
 .tero-action--warning {
-    color: var(--warning-color) !important;
+    --bizy-button-color: var(--warning-color);
 }
 
 .tero-action--danger {
-    color: var(--danger-color) !important;
+    --bizy-button-color: var(--danger-color);
 }
 
 .tero-table-column-center {
@@ -269,7 +267,6 @@ h6 {
 }
 
 .tero-wrapper {
-    min-height: 10rem;
     padding: 0.5rem;
     flex: 1;
     display: flex;
@@ -277,7 +274,6 @@ h6 {
 }
 
 .tero-wrapper--light {
-    min-height: 10rem;
     padding: 0.5rem;
     flex: 1;
     min-height: 100%;
@@ -356,6 +352,7 @@ h6 {
     background-color: #fff;
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
+    border-bottom: 0.1rem solid var(--dark-secondary-color);
 }
 
 .tero-counter__section {
