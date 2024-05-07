@@ -4,9 +4,9 @@
 
     <h1 slot=start>{{'CONTACTS.TITLE' | translate}}</h1>
 
-    <h2 slot="end" (click)="export()"><i class="fa-solid fa-file-arrow-down tero-toolbar__icon"></i></h2>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
-    <h2 slot="end" (click)="addContact()"><i class="fa-solid fa-user-plus tero-toolbar__icon"></i></h2>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="addContact()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
 
 </bizy-toolbar>
 

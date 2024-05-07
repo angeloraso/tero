@@ -32,7 +32,8 @@ export const locale = {
           SEARCH: 'Buscar',
           SCORE: 'Puntuación',
           COMMENTS: 'Comentarios',
-          PHONE: 'Teléfono'
+          PHONE: 'Teléfono',
+          DESCRIPTION: 'Descripción'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

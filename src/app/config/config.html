@@ -4,9 +4,9 @@
 
     <h1 slot=start>{{'CONFIG.TITLE' | translate}}</h1>
 
-    <h2 slot="end" (click)="openPopup()"><i class="fa-solid fa-circle-info tero-toolbar__icon"></i></h2>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="openPopup()"><h2><i class="fa-solid fa-circle-info"></i></h2></bizy-button>
 
-    <h2 slot="end" (click)="onSignOut()"><i class="fa-solid fa-right-from-bracket tero-toolbar__icon"></i></h2>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="onSignOut()"><h2><i class="fa-solid fa-right-from-bracket"></i></h2></bizy-button>
 
 </bizy-toolbar>
 

@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Inject,
@@ -7,7 +8,14 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CONTACT_TAGS, DEFAULT_PICTURE } from '@core/constants';
+import { BizyValidatorService } from '@bizy/services';
+import {
+  CONTACT_TAGS,
+  DEFAULT_PICTURE,
+  LONG_TEXT_MAX_LENGTH,
+  NAME_MAX_LENGTH,
+  NAME_MIN_LENGTH
+} from '@core/constants';
 import { Empty, IContact } from '@core/model';
 
 @Component({
@@ -22,6 +30,9 @@ export class ContactFormComponent {
   form: FormGroup;
 
   readonly TAGS = CONTACT_TAGS;
+  readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
+  readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
+  readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
 
   @Input() set id(id: string | Empty) {
     if (!id) {
@@ -72,6 +83,14 @@ export class ContactFormComponent {
     this._name.setValue(name);
   }
 
+  @Input() set phone(phone: string | Empty) {
+    if (!phone) {
+      return;
+    }
+
+    this._phone.setValue(phone);
+  }
+
   @Input() set description(description: string | Empty) {
     if (!description) {
       return;
@@ -80,15 +99,30 @@ export class ContactFormComponent {
     this._description.setValue(description);
   }
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(
+    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(BizyValidatorService) private validator: BizyValidatorService
+  ) {
     this.form = this.fb.group({
       id: [null],
       created: [null],
       updated: [null],
       picture: [DEFAULT_PICTURE, [Validators.required]],
-      surname: [null],
-      name: [null, [Validators.required]],
-      description: [null]
+      name: [
+        null,
+        [
+          Validators.minLength(NAME_MIN_LENGTH),
+          Validators.maxLength(NAME_MAX_LENGTH),
+          Validators.required
+        ]
+      ],
+      surname: [
+        null,
+        [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]
+      ],
+      phone: [null, [this.validator.phoneNumberValidator(), Validators.required]],
+      description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
     });
   }
 
@@ -120,8 +154,13 @@ export class ContactFormComponent {
     return this.form.get('description') as FormControl;
   }
 
+  get _phone() {
+    return this.form.get('phone') as FormControl;
+  }
+
   _confirm() {
     if (this.form.invalid) {
+      this.ref.detectChanges();
       return;
     }
 
@@ -130,13 +169,13 @@ export class ContactFormComponent {
       created: this._created.value,
       updated: this._updated.value,
       picture: this._picture.value,
-      description: this._description.value,
-      surname: this._surname.value.trim(),
-      name: this._name.value.trim(),
+      description: this._description.value ? this._description.value.trim() : '',
+      surname: this._surname.value ? this._surname.value.trim() : '',
+      name: this._name.value ? this._name.value.trim() : '',
       comments: [],
       tags: [],
       score: [],
-      phones: []
+      phones: [{ number: this._phone.value, description: '' }]
     });
   }
 

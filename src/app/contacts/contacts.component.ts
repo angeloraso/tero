@@ -47,8 +47,7 @@ export class ContactsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-      const contacts = await this.contactsService.getContacts();
-      this.contacts = contacts ?? [];
+      this.contacts = (await this.contactsService.getContacts()) ?? [];
     } catch (error) {
       this.log.error({
         fileName: 'contacts.component',
@@ -56,9 +55,7 @@ export class ContactsComponent implements OnInit {
         param: error
       });
     } finally {
-      setTimeout(() => {
-        this.loading = false;
-      });
+      this.loading = false;
     }
   }
 

@@ -72,6 +72,11 @@ h6 {
     --bizy-button-color: var(--danger-color);
 }
 
+.tero-toolbar-action {
+    --bizy-button-background-color: transparent;
+    --bizy-button-color: var(--dark-secondary-color);
+}
+
 .tero-table-column-center {
     justify-content: center;
 }
@@ -98,11 +103,6 @@ h6 {
 
 .tero-button--danger {
     background-color: var(--danger-color) !important;
-}
-
-.tero-toolbar__icon {
-    margin-left: 1rem;
-    color: var(--dark-secondary-color);
 }
 
 .tero-logo {
@@ -194,36 +194,6 @@ h6 {
 
 .tero-action--error {
     color: var(--error-color) !important;
-}
-
-.tero-table-row--success {
-    color: var(--dark-success-color) !important;
-    background-color: var(--light-success-color) !important;
-}
-
-.tero-table-row--default {
-    color: var(--primary) !important;
-    background-color: #ddd !important;
-}
-
-.tero-table-row--info {
-    color: var(--dark-info-color) !important;
-    background-color: var(--light-info-color) !important;
-}
-
-.tero-table-row--alert {
-    color: var(--dark-alert-color) !important;
-    background-color: var(--light-alert-color) !important;
-}
-
-.tero-table-row--warning {
-    color: var(--dark-warning-color) !important;
-    background-color: var(--light-warning-color) !important;
-}
-
-.tero-table-row--error {
-    color: var(--dark-error-color) !important;
-    background-color: var(--light-error-color) !important;
 }
 
 .tero-table-actions {

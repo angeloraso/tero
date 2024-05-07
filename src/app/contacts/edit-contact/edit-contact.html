@@ -4,7 +4,7 @@
 
     <h1 slot=start>{{'CONTACTS.EDIT_CONTACT.TITLE' | translate}}</h1>
 
-    <h2 slot="end" (click)="deleteContact()"><i class="fa-solid fa-trash-alt tero-toolbar__icon"></i></h2>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteContact()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
@@ -16,6 +16,7 @@
         [picture]="contact.picture"
         [name]="contact.name"
         [description]="contact.description"
+        [phone]="contact.phones[0].number"
         [created]="contact.created"
         [updated]="contact.updated"
         [surname]="contact.surname"
