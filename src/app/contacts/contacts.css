@@ -3,11 +3,17 @@
 }
 
 .conctacts__card__action {
-    align-self: flex-start;
+    align-self: flex-end;
 }
 
 .contacts__card__title {
     text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
 }
 
 .contacts__card__phones__phone {

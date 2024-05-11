@@ -29,7 +29,7 @@ export class NeighborsComponent implements OnInit {
   lotSearch: string | number = '';
   surnameSearch: string | number = '';
   nameSearch: string | number = '';
-  filterGroups: Array<{ id: string; value: number; selected: boolean }> = [];
+  filterGroups: Array<{ id: number; value: number; selected: boolean }> = [];
   activatedFilters: number = 0;
   orderBy: string = 'lot';
   order: 'asc' | 'desc' | null = 'asc';
@@ -59,9 +59,12 @@ export class NeighborsComponent implements OnInit {
         groups.add(_neighbor.group);
       });
 
-      this.filterGroups = Array.from(groups).map(_group => {
-        return { id: String(_group), value: _group, selected: true };
-      });
+      this.filterGroups = Array.from(groups)
+        .sort()
+        .map(_group => {
+          return { id: _group, value: _group, selected: true };
+        });
+      console.log(this.filterGroups);
     } catch (error) {
       this.log.error({
         fileName: 'neighbors.component',
@@ -124,7 +127,14 @@ export class NeighborsComponent implements OnInit {
       return;
     }
 
-    const items = this.#filter(this.neighbors);
+    const items = this.#filter(this.neighbors).map(_neighbor => {
+      return {
+        ..._neighbor,
+        _security: _neighbor.security
+          ? this.translate.get('CORE.YES')
+          : this.translate.get('CORE.NO')
+      };
+    });
 
     this.exportToCSV.toCSV({
       items,
@@ -132,7 +142,8 @@ export class NeighborsComponent implements OnInit {
         group: this.translate.get('CORE.FORM.FIELD.GROUP'),
         lot: this.translate.get('CORE.FORM.FIELD.LOT'),
         surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
-        name: this.translate.get('CORE.FORM.FIELD.NAME')
+        name: this.translate.get('CORE.FORM.FIELD.NAME'),
+        _security: this.translate.get('CORE.FORM.FIELD.SECURITY')
       },
       fileName: this.translate.get('NEIGHBORS.CSV_FILE_NAME')
     });
@@ -176,6 +187,7 @@ export class NeighborsComponent implements OnInit {
   }
 
   refresh() {
+    console.log(this.filterGroups);
     this.neighbors = [...this.neighbors];
   }
 

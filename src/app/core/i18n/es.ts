@@ -6,6 +6,8 @@ export const locale = {
     CORE: {
       EMPTY: 'Sin información',
       TOTAL: 'Total',
+      YES: 'Si',
+      No: 'No',
       MENU: {
         DASHBOARD: 'Panel',
         NEIGHBORHOOD: 'Barrio',
@@ -33,7 +35,8 @@ export const locale = {
           SCORE: 'Puntuación',
           COMMENTS: 'Comentarios',
           PHONE: 'Teléfono',
-          DESCRIPTION: 'Descripción'
+          DESCRIPTION: 'Descripción',
+          TAG: 'Categoría'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

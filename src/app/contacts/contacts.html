@@ -18,7 +18,7 @@
 
             <span class="tero-counter__section">
                 <h4 class="tero-title">{{'CORE.TOTAL' | translate}}:</h4>
-                <h4><strong>{{(contacts | bizySearch: search : ['name', 'tags', 'surname', 'phones', 'score']).length}}/{{contacts.length}}</strong></h4>
+                <h4><strong>{{(contacts | bizySearch: search : ['name', '_tags', 'surname', '_phones', 'score']).length}}/{{contacts.length}}</strong></h4>
             </span>
 
         </span>
@@ -38,7 +38,7 @@
     </span>
 
     <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : ['name', 'tags', 'surname', 'phones', 'score'] | bizyOrderBy: order : orderBy">
+        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : ['name', '_tags', 'surname', '_phones', 'score'] | bizyOrderBy: order : orderBy">
 
             <ng-container *ngFor="let contact of contactArray">
 
@@ -46,21 +46,31 @@
 
                     <tero-img card-header-start [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
 
-                    <h2 card-header-start class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h2>
+                    <h4 card-header-start class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
 
-                    <span class="contacts__card__phones__phone" *ngFor="let phone of contact.phones">
+                    <bizy-button 
+                        card-header-end
+                        class="tero-action tero-action--info conctacts__card__action"
+                        (onSelect)="onCall(contact); $event.stopPropagation()">
+                        <i class="fa-solid fa-phone"></i>
+                    </bizy-button>
 
-                        <h5><strong>{{phone.number}}</strong></h5>
+                    <bizy-button 
+                        card-header-end
+                        class="tero-action tero-action--success conctacts__card__action"
+                        (onSelect)="onWhatsapp(contact); $event.stopPropagation()">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </bizy-button>
 
-                        <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone.number); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
+                    <span class="contacts__card__phones__phone" *ngFor="let phone of contact._phones">
+
+                        <h6><strong>{{phone}}</strong></h6>
+
+                        <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
 
                     </span>
 
-                    <bizy-button card-header-end class="tero-action tero-action--info conctacts__card__action" (onSelect)="onCall(contact); $event.stopPropagation()"><i class="fa-solid fa-phone"></i></bizy-button>
-
-                    <bizy-button card-header-end class="tero-action tero-action--success conctacts__card__action" (onSelect)="onWhatsapp(contact); $event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i></bizy-button>
-
-                    <bizy-tag card-footer-start type="warning" *ngFor="let tag of contact.tags" class="conctacts__card__tag">{{('CONTACTS.TAG.' + tag) | translate}}</bizy-tag>
+                    <bizy-tag card-footer-start type="warning" *ngFor="let tag of contact._tags" class="conctacts__card__tag">{{tag}}</bizy-tag>
 
                 </bizy-card>
 

@@ -15,6 +15,11 @@ import { IContact } from '@core/model';
 import { ContactsService, MobileService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
+interface IContactCard extends IContact {
+  _phones: Array<string>;
+  _tags: Array<string>;
+}
+
 @Component({
   selector: 'tero-contacts',
   templateUrl: './contacts.html',
@@ -23,7 +28,7 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 export class ContactsComponent implements OnInit {
   loading = false;
   securityLoading = false;
-  contacts: Array<IContact> = [];
+  contacts: Array<IContactCard> = [];
   search: string | number = '';
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
@@ -47,7 +52,14 @@ export class ContactsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-      this.contacts = (await this.contactsService.getContacts()) ?? [];
+      const contacts = (await this.contactsService.getContacts()) ?? [];
+      this.contacts = contacts.map(_contact => {
+        return {
+          ..._contact,
+          _tags: _contact.tags.map(_tag => this.translate.get(`CONTACTS.TAG.${_tag}`)),
+          _phones: _contact.phones.map(_phone => _phone.number)
+        };
+      });
     } catch (error) {
       this.log.error({
         fileName: 'contacts.component',
@@ -63,7 +75,7 @@ export class ContactsComponent implements OnInit {
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${CONTACTS_PATH.ADD}` });
   }
 
-  editContact(contact: IContact) {
+  editContact(contact: IContactCard) {
     if (!contact) {
       return;
     }
@@ -85,7 +97,7 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  async onCall(contact: IContact) {
+  async onCall(contact: IContactCard) {
     try {
       if (!contact.phones[0]) {
         return;
@@ -97,7 +109,7 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  onWhatsapp(contact: IContact) {
+  onWhatsapp(contact: IContactCard) {
     if (!contact.phones[0]) {
       return;
     }
@@ -110,16 +122,15 @@ export class ContactsComponent implements OnInit {
       return;
     }
 
-    const items = this.#filter(this.contacts).map(_contact => {
-      return { ..._contact, _phones: _contact.phones.map(_phone => _phone.number) };
-    });
+    const items = this.#filter(this.contacts);
 
     this.exportToCSV.toCSV({
       items,
       model: {
         name: this.translate.get('CORE.FORM.FIELD.NAME'),
         surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
-        _phones: this.translate.get('CORE.FORM.FIELD.PHONE')
+        _phones: this.translate.get('CORE.FORM.FIELD.PHONE'),
+        _tags: this.translate.get('CORE.FORM.FIELD.TAG')
       },
       fileName: this.translate.get('CONTACTS.CSV_FILE_NAME')
     });
@@ -128,10 +139,10 @@ export class ContactsComponent implements OnInit {
   #filter(items: Array<IContact>): Array<IContact> {
     let _items = this.bizySearchPipe.transform(items, this.search, [
       'name',
-      'tags',
+      '_tags',
       'surname',
       'score',
-      'phones'
+      '_phones'
     ]);
     _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
     return _items;

@@ -156,46 +156,6 @@ h6 {
     -webkit-line-clamp: unset !important;
 }
 
-.tero-action {
-    background-color: transparent !important;
-    border: none;
-    cursor: pointer;
-    transition: all 100ms ease;
-}
-
-.tero-action:hover {
-    transform: translateY(-0.1rem);
-    font-size: 1.1rem;
-}
-
-.tero-action--apply {
-    color: var(--apply-color) !important;
-}
-
-.tero-action--primary {
-    color: var(--primary-color) !important;
-}
-
-.tero-action--success {
-    color: var(--success-color) !important;
-}
-
-.tero-action--default {
-    color: var(--default-color) !important;
-}
-
-.tero-action--info {
-    color: var(--info-color) !important;
-}
-
-.tero-action--warning {
-    color: var(--warning-color) !important;
-}
-
-.tero-action--error {
-    color: var(--error-color) !important;
-}
-
 .tero-table-actions {
     padding: 0 0.5rem;
 }
