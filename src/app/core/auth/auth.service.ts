@@ -72,6 +72,14 @@ export class AuthService {
     return null;
   }
 
+  getName(): string | null {
+    if (this.#USER && this.#USER.providerData[0]) {
+      return this.#USER.providerData[0].displayName;
+    }
+
+    return null;
+  }
+
   getId(): string | null {
     if (this.#USER && this.#USER.providerData[0]) {
       return this.#USER.providerData[0].uid;

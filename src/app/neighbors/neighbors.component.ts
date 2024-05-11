@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { BizyFilterPipe } from '@bizy/components';
+import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
   BizyExportToCSVService,
@@ -11,7 +11,7 @@ import {
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
-import { NeighborsService } from '@core/services';
+import { NeighborsService, UserSettingsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
 import { PopupComponent } from '@shared/components';
@@ -24,6 +24,9 @@ import { PopupComponent } from '@shared/components';
 export class NeighborsComponent implements OnInit {
   loading = false;
   securityLoading = false;
+  isConfig = false;
+  isNeighbor = false;
+  isSecurity = false;
   neighbors: Array<INeighbor> = [];
   search: string | number = '';
   lotSearch: string | number = '';
@@ -35,10 +38,12 @@ export class NeighborsComponent implements OnInit {
   order: 'asc' | 'desc' | null = 'asc';
 
   readonly LOGO_PATH = LOGO_PATH;
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
 
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(NeighborsService) private neighborsService: NeighborsService,
+    @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
     @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
@@ -51,6 +56,19 @@ export class NeighborsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      const [isConfig, isNeighbor, isSecurity] = await Promise.all([
+        this.userSettingsService.isConfig(),
+        this.userSettingsService.isNeighbor(),
+        this.userSettingsService.isSecurity()
+      ]);
+
+      this.isNeighbor = isNeighbor;
+      this.isSecurity = isSecurity;
+      this.isConfig = isConfig;
+      if (!this.isNeighbor && !this.isConfig) {
+        return;
+      }
+
       this.neighbors = (await this.neighborsService.getNeighbors()) ?? [];
 
       const groups = new Set<number>();
@@ -77,11 +95,15 @@ export class NeighborsComponent implements OnInit {
   }
 
   addNeighbor() {
+    if (!this.isConfig) {
+      return;
+    }
+
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}/${NEIGHBORS_PATH.ADD}` });
   }
 
   editNeighbor(neighbor: INeighbor) {
-    if (!neighbor) {
+    if (!neighbor || !this.isConfig) {
       return;
     }
 
@@ -89,7 +111,7 @@ export class NeighborsComponent implements OnInit {
   }
 
   removeNeighborFromSecurity(neighbor: INeighbor) {
-    if (!neighbor || this.securityLoading) {
+    if (!neighbor || this.securityLoading || (!this.isConfig && !this.isSecurity)) {
       return;
     }
 
@@ -123,7 +145,7 @@ export class NeighborsComponent implements OnInit {
   }
 
   export() {
-    if (!this.neighbors || this.neighbors.length === 0) {
+    if (!this.neighbors || this.neighbors.length === 0 || !this.isConfig) {
       return;
     }
 

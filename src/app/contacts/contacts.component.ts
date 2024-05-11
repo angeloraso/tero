@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
   BizyCopyToClipboardService,
@@ -12,7 +13,7 @@ import {
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
 import { DEFAULT_PICTURE, LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact } from '@core/model';
-import { ContactsService, MobileService } from '@core/services';
+import { ContactsService, MobileService, UserSettingsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
 interface IContactCard extends IContact {
@@ -27,6 +28,8 @@ interface IContactCard extends IContact {
 })
 export class ContactsComponent implements OnInit {
   loading = false;
+  isNeighbor = false;
+  isConfig = false;
   securityLoading = false;
   contacts: Array<IContactCard> = [];
   search: string | number = '';
@@ -34,6 +37,7 @@ export class ContactsComponent implements OnInit {
   orderBy = 'name';
 
   readonly LOGO_PATH = LOGO_PATH;
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly DEFAULT_PICTURE = DEFAULT_PICTURE;
 
   constructor(
@@ -46,13 +50,22 @@ export class ContactsComponent implements OnInit {
     @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
     @Inject(BizyCopyToClipboardService) private bizyToClipboard: BizyCopyToClipboardService,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
-    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe
+    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
+    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
-      const contacts = (await this.contactsService.getContacts()) ?? [];
+      const [contacts, isConfig, isNeighbor] = await Promise.all([
+        this.contactsService.getContacts(),
+        this.userSettingsService.isConfig(),
+        this.userSettingsService.isNeighbor()
+      ]);
+
+      this.isConfig = isConfig;
+      this.isNeighbor = isNeighbor;
+
       this.contacts = contacts.map(_contact => {
         return {
           ..._contact,

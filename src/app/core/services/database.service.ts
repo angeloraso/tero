@@ -1,21 +1,18 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { AuthService } from '@core/auth/auth.service';
-import { IContact, INeighbor, ISecurity, IUserSettings, ROLE } from '@core/model';
+import { IContact, INeighbor, ISecurity, IUserSettings, ROLE, USER_STATUS } from '@core/model';
 import { BehaviorSubject } from 'rxjs';
 
 enum COLLECTION {
-  CORE = 'core'
+  CORE = 'core',
+  USERS = 'users'
 }
 
 enum CORE_DOCUMENT {
   NEIGHBORS = 'neighbors',
   CONTACTS = 'contacts',
   SECURITY = 'security'
-}
-
-enum USER_DOCUMENT {
-  SETTINGS = 'settings'
 }
 
 /* enum OPERATOR {
@@ -295,7 +292,7 @@ export class DatabaseService implements OnDestroy {
         }
 
         await FirebaseFirestore.addDocumentSnapshotListener<IUserSettings>(
-          { reference: `${userEmail}/${USER_DOCUMENT.SETTINGS}` },
+          { reference: `${COLLECTION.USERS}/${this.auth.getEmail()}` },
           (event, error) => {
             if (error) {
               console.log(error);
@@ -326,6 +323,48 @@ export class DatabaseService implements OnDestroy {
           resolve(settings.roles);
         } else {
           resolve([]);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getUserStatus() {
+    return new Promise<USER_STATUS | null>(async (resolve, reject) => {
+      try {
+        if (typeof this.#userSettings.value !== 'undefined') {
+          resolve(this.#userSettings.value.status ?? null);
+          return;
+        }
+
+        const settings = await this.getUserSettings();
+
+        if (settings && settings.status) {
+          resolve(settings.status);
+        } else {
+          resolve(null);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getUserId() {
+    return new Promise<number | null>(async (resolve, reject) => {
+      try {
+        if (typeof this.#userSettings.value !== 'undefined') {
+          resolve(this.#userSettings.value.id ?? null);
+          return;
+        }
+
+        const settings = await this.getUserSettings();
+
+        if (settings && settings.id) {
+          resolve(settings.id);
+        } else {
+          resolve(null);
         }
       } catch (error) {
         reject(error);

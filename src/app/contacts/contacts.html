@@ -4,9 +4,9 @@
 
     <h1 slot=start>{{'CONTACTS.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="addContact()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="addContact()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
@@ -70,7 +70,7 @@
 
                     </span>
 
-                    <bizy-tag card-footer-start type="warning" *ngFor="let tag of contact._tags" class="conctacts__card__tag">{{tag}}</bizy-tag>
+                    <bizy-tag card-footer-start [type]="BIZY_TAG_TYPE.WARNING" *ngFor="let tag of contact._tags" class="conctacts__card__tag">{{tag}}</bizy-tag>
 
                 </bizy-card>
 

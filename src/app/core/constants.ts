@@ -25,6 +25,7 @@ export const LONG_TEXT_MAX_LENGTH = 256;
 export const AVAILABLE_LOTS = 224;
 export const AVAILABLE_SECURITY_GROUPS = [1, 2, 3, 4, 5, 6];
 export const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=549';
+export const DEFAULT_USER_ID = '00000000000000';
 
 export const DEFAULT_PICTURE = 'picture_user.svg';
 

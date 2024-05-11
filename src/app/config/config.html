@@ -1,6 +1,6 @@
 <bizy-toolbar>
 
-    <img slot=start class="tero-logo" [src]="profilePic" alt="logo"/>
+    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
 
     <h1 slot=start>{{'CONFIG.TITLE' | translate}}</h1>
 
@@ -10,7 +10,29 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper config" [bizyLoading]="loading">
+<div class="config tero-wrapper" [bizyLoading]="loading">
+
+    <bizy-card class="config__credential">
+        
+        <img *ngIf="profilePic" card-header-start class="config__credential__header-picture" [src]="profilePic" alt="User picture"/>
+
+        <tero-img *ngIf="!profilePic" card-header-start [height]="50" alt="User picture"></tero-img>
+
+        <h4 card-header-end class="config__credential__membership-number"><strong>Nº {{id}}</strong></h4>
+
+        <span class="config__credential__content">
+
+            <h3><strong>{{name}}</strong></h3>
+
+            <h5>{{email}}</h5>
+
+        </span>
+
+        <bizy-tag card-footer-start [type]="statusTagType"><h5>{{('CONFIG.USER_STATUS.' + status) | translate}}</h5></bizy-tag>
+
+        <h1 card-footer-end *ngIf="isConfig" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
+
+    </bizy-card>
 
 
 </div>

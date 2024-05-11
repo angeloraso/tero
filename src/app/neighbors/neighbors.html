@@ -4,9 +4,9 @@
 
     <h1 slot=start>{{'NEIGHBORS.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="addNeighbor()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" (onSelect)="addNeighbor()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
@@ -148,7 +148,7 @@
             <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 1, minWidth: '1rem'}" (onSelect)="removeNeighborFromSecurity(neighbor)">
-                <bizy-tag *ngIf="neighbor.security" type="warning"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>
+                <bizy-tag *ngIf="neighbor.security" [type]="BIZY_TAG_TYPE.WARNING"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>
             </bizy-table-column>
 
         </bizy-table-row>

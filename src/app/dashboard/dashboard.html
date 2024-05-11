@@ -22,7 +22,7 @@
 
             </span>
 
-            <h1 class="dashboard__security__header__fee">${{securityFee}}</h1>
+            <bizy-tag [type]="BIZY_TAG_TYPE.DEFAULT"><h5>${{securityFee | number : '1.0-0'}}</h5></bizy-tag>
 
         </span>
 
@@ -30,7 +30,9 @@
 
             <span class="dashboard__security__content__title">
                 <h3>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}:</h3>
-                <h1 class="dashboard__security__content__title__value">${{contributorFee}}</h1>
+
+                <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h4>${{contributorFee | number : '1.2-2'}}</h4></bizy-tag>
+
             </span>
 
             <ng-container *ngFor="let group of groups">

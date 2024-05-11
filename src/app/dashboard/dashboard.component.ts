@@ -1,7 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { BIZY_TAG_TYPE } from '@bizy/components';
 import { LOGO_PATH } from '@core/constants';
 import { Empty, ISecurityGuard } from '@core/model';
-import { NeighborsService, SecurityService, UtilsService } from '@core/services';
+import {
+  NeighborsService,
+  SecurityService,
+  UserSettingsService,
+  UtilsService
+} from '@core/services';
 interface IGroup {
   value: number;
   lots: Set<number>;
@@ -14,27 +20,42 @@ interface IGroup {
 })
 export class DashboardComponent implements OnInit {
   loading = false;
+  showInfo = false;
   securityStaff: Array<ISecurityGuard> = [];
   securityFee: number | Empty;
   groups: Array<IGroup> = [];
   contributors = 0;
   contributorFee = 0;
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
-    @Inject(NeighborsService) private neighbors: NeighborsService,
+    @Inject(NeighborsService) private neighborsService: NeighborsService,
     @Inject(SecurityService) private security: SecurityService,
-    @Inject(UtilsService) private utils: UtilsService
+    @Inject(UtilsService) private utils: UtilsService,
+    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
+
+      const [isConfig, isNeighbor, isSecurity] = await Promise.all([
+        this.userSettingsService.isConfig(),
+        this.userSettingsService.isNeighbor(),
+        this.userSettingsService.isSecurity()
+      ]);
+
+      this.showInfo = isNeighbor || isSecurity || isConfig;
+      if (!this.showInfo) {
+        return;
+      }
+
       this.groups.length = 0;
       this.contributors = 0;
       this.contributorFee = 0;
       const [neighbors, security] = await Promise.all([
-        this.neighbors.getNeighbors(),
+        this.neighborsService.getNeighbors(),
         this.security.getSecurity()
       ]);
 

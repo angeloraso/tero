@@ -7,14 +7,23 @@ export interface IPhone {
 }
 
 export enum ROLE {
-  ADMIN = 'ADMIN',
-  MANAGER = 'MANAGER',
   NEIGHBOR = 'NEIGHBOR',
-  INVITED = 'INVITED'
+  ADMIN = 'ADMIN',
+  SECURITY = 'SECURITY',
+  CONFIG = 'CONFIG'
+}
+
+export enum USER_STATUS {
+  ACTIVE = 'ACTIVE',
+  PENDING = 'PENDING',
+  SUSPENDED = 'SUSPENDED',
+  REJECTED = 'REJECTED'
 }
 
 export interface IUserSettings {
+  id: number;
   roles: Array<ROLE>;
+  status: USER_STATUS;
 }
 
 export type Empty = undefined | null;

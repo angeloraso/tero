@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from 
 import { BizyPopupService } from '@bizy/services';
 import { AVAILABLE_LOTS, LOGO_PATH } from '@core/constants';
 import { Empty } from '@core/model';
-import { NeighborsService } from '@core/services';
+import { NeighborsService, UserSettingsService } from '@core/services';
 import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
 
@@ -14,6 +14,7 @@ import { ILot } from './neighborhood.model';
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
   @ViewChild('mainEntrance') mainEntrance: ElementRef | Empty;
   loading = false;
+  showInfo: boolean = false;
   lots: Array<ILot> = Array.from({ length: AVAILABLE_LOTS + 1 }, (_, index) => ({
     number: index,
     security: false,
@@ -24,13 +25,25 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(NeighborsService) private neighborhood: NeighborsService
+    @Inject(NeighborsService) private neighborsService: NeighborsService,
+    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
-      const neighbors = await this.neighborhood.getNeighbors();
+      const [isConfig, isNeighbor, isSecurity] = await Promise.all([
+        this.userSettingsService.isConfig(),
+        this.userSettingsService.isNeighbor(),
+        this.userSettingsService.isSecurity()
+      ]);
+
+      this.showInfo = isNeighbor || isSecurity || isConfig;
+      if (!this.showInfo) {
+        return;
+      }
+
+      const neighbors = await this.neighborsService.getNeighbors();
       neighbors.forEach(_neighbor => {
         if (this.lots[_neighbor.lot]) {
           if (!this.lots[_neighbor.lot].security) {
@@ -57,7 +70,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   }
 
   showLot(lot: ILot) {
-    if (!lot) {
+    if (!lot || !this.showInfo) {
       return;
     }
 

@@ -1,4 +1,5 @@
 @import '/node_modules/@bizy/directives/styles/loading.css';
+@import '/node_modules/@bizy/directives/styles/tooltip.css';
 @import '/node_modules/@bizy/directives/styles/variables.css';
 @import '/node_modules/@bizy/services/styles/popup.css';
 @import '/node_modules/@bizy/services/styles/toast.css';
