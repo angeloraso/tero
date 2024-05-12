@@ -3,6 +3,7 @@ import { BizyLogService, BizyRouterService } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { ROOT_PATHS } from '@core/constants';
 import { DatabaseService, MobileService, UserSettingsService } from '@core/services';
+import { ENV } from '@env/environment';
 import { PATH } from './app.routing';
 
 @Component({
@@ -40,6 +41,9 @@ export class AppComponent implements OnInit {
           this.database.destroy();
           this.router.goTo({ path: `/${PATH.AUTH}` });
         } else {
+          if (ENV.mobile) {
+            this.router.goTo({ path: `/${PATH.HOME}` });
+          }
           this.userSettingsService.postUserSettings();
         }
       });
