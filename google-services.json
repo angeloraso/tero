@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "351417061129",
+    "project_id": "tero-bba73",
+    "storage_bucket": "tero-bba73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351417061129:android:b06f9d94a785788e560dd8",
+        "android_client_info": {
+          "package_name": "ar.com.tero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351417061129-ablp08r91meccqlu3kjnr037786avhco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.tero",
+            "certificate_hash": "cfea5800f8c128558683974e8367eb25bfd7a8cc"
+          }
+        },
+        {
+          "client_id": "351417061129-dk77s41fpvin50cce05aor8d287r9ell.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.tero",
+            "certificate_hash": "15fdd4a6f1707352e0efa7c91314f3861e77b51a"
+          }
+        },
+        {
+          "client_id": "351417061129-apphnoisfg3mr9k5ikcsr674nfp9lntd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkLnQLVzprQHmBW1PvtZqnlWyKU6NJQbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351417061129-apphnoisfg3mr9k5ikcsr674nfp9lntd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
