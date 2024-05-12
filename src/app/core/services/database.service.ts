@@ -436,6 +436,7 @@ export class DatabaseService implements OnDestroy {
         const index = pendingUsers.findIndex(_pendingUser => _pendingUser.email === email);
         if (index !== -1) {
           pendingUsers[index].status = USER_STATUS.ACTIVE;
+          pendingUsers[index].roles = [ROLE.NEIGHBOR];
 
           const userDocument = JSON.parse(JSON.stringify(pendingUsers[index]));
           await FirebaseFirestore.setDocument({
