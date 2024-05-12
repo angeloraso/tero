@@ -63,4 +63,31 @@ export class UserSettingsService {
   getId() {
     return this.database.getUserId();
   }
+
+  postUserSettings() {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const userSettings = await this.database.getUserSettings();
+        if (!userSettings) {
+          await this.database.postUserSettings();
+        }
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getPendingUsers() {
+    return this.database.getPendingUsers();
+  }
+
+  acceptPendingUser(email: string) {
+    return this.database.acceptPendingUser(email);
+  }
+
+  rejectPendingUser(email: string) {
+    return this.database.rejectPendingUser(email);
+  }
 }

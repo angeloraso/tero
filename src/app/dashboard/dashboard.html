@@ -22,7 +22,7 @@
 
             </span>
 
-            <bizy-tag [type]="BIZY_TAG_TYPE.DEFAULT"><h5>${{securityFee | number : '1.0-0'}}</h5></bizy-tag>
+            <bizy-tag [type]="BIZY_TAG_TYPE.DEFAULT"><h5>${{securityFee ? (securityFee | number : '1.0-0') : '0.00'}}</h5></bizy-tag>
 
         </span>
 

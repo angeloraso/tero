@@ -309,6 +309,33 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
+  postUserSettings() {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const userEmail = this.auth.getEmail();
+        if (!userEmail) {
+          throw new Error('No user email');
+        }
+
+        const userSettings: IUserSettings = {
+          roles: [],
+          status: USER_STATUS.PENDING,
+          id: Date.now()
+        };
+
+        const userDocument = JSON.parse(JSON.stringify(userSettings));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.USERS}/${userEmail}`,
+          data: userDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   getUserRoles() {
     return new Promise<Array<ROLE>>(async (resolve, reject) => {
       try {
@@ -366,6 +393,80 @@ export class DatabaseService implements OnDestroy {
         } else {
           resolve(null);
         }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getPendingUsers() {
+    return new Promise<Array<IUserSettings & { email: string }>>(async (resolve, reject) => {
+      try {
+        const res = await FirebaseFirestore.getCollection<IUserSettings>({
+          reference: COLLECTION.USERS,
+          compositeFilter: {
+            type: 'and',
+            queryConstraints: [
+              {
+                type: 'where',
+                fieldPath: 'status',
+                opStr: '==',
+                value: USER_STATUS.PENDING
+              }
+            ]
+          }
+        });
+        resolve(
+          res.snapshots
+            ? res.snapshots.map(_snap => {
+                return { ..._snap.data, email: _snap.id } as IUserSettings & { email: string };
+              })
+            : []
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  acceptPendingUser(email: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const pendingUsers = await this.getPendingUsers();
+        const index = pendingUsers.findIndex(_pendingUser => _pendingUser.email === email);
+        if (index !== -1) {
+          pendingUsers[index].status = USER_STATUS.ACTIVE;
+
+          const userDocument = JSON.parse(JSON.stringify(pendingUsers[index]));
+          await FirebaseFirestore.setDocument({
+            reference: `${COLLECTION.USERS}/${email}`,
+            data: userDocument
+          });
+        }
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  rejectPendingUser(email: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const pendingUsers = await this.getPendingUsers();
+        const index = pendingUsers.findIndex(_pendingUser => _pendingUser.email === email);
+        if (index !== -1) {
+          pendingUsers[index].status = USER_STATUS.REJECTED;
+
+          const userDocument = JSON.parse(JSON.stringify(pendingUsers[index]));
+          await FirebaseFirestore.setDocument({
+            reference: `${COLLECTION.USERS}/${email}`,
+            data: userDocument
+          });
+        }
+
+        resolve();
       } catch (error) {
         reject(error);
       }

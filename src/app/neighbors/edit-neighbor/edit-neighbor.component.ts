@@ -7,7 +7,6 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { LOGO_PATH } from '@core/constants';
 import { Empty, INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
@@ -21,8 +20,6 @@ export class EditNeighborComponent implements OnInit {
   neighbor: INeighbor | Empty;
   neighborId: string | Empty;
   loading = false;
-
-  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,

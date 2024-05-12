@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
-import { LOGO_PATH } from '@core/constants';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 
@@ -11,7 +10,6 @@ import { ContactsService } from '@core/services';
 })
 export class AddContactComponent {
   loading: boolean = false;
-  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
     @Inject(ContactsService) private contacts: ContactsService,

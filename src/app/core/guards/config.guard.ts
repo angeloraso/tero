@@ -2,13 +2,13 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserSettingsService } from '@core/services';
 
-export const adminGuard = () => {
+export const configGuard = () => {
   const router = inject(Router);
   const userSettings = inject(UserSettingsService);
-  return userSettings.isAdmin().then(isAdmin => {
-    if (!isAdmin) {
+  return userSettings.isConfig().then(isConfig => {
+    if (!isConfig) {
       router.navigateByUrl('/', { replaceUrl: true });
-      console.error('Role error: User has not admin role');
+      console.error('Role error: User has not config role');
       return false;
     }
 

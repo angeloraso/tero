@@ -20,7 +20,9 @@ export const locale = {
         SAVE: 'Guardar',
         CONFIRM: 'Confirmar',
         EXPORT: 'Exportar',
-        CLEAN: 'Limpiar'
+        CLEAN: 'Limpiar',
+        ACCEPT: 'Aceptar',
+        REJECT: 'Rechazar'
       },
       FORM: {
         FIELD: {

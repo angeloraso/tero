@@ -7,7 +7,6 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { LOGO_PATH } from '@core/constants';
 import { Empty, IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
@@ -21,8 +20,6 @@ export class EditContactComponent implements OnInit {
   contact: IContact | Empty;
   contactId: string | Empty;
   loading = false;
-
-  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,

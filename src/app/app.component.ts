@@ -1,9 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { BizyRouterService } from '@bizy/services';
+import { BizyLogService, BizyRouterService } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { ROOT_PATHS } from '@core/constants';
-import { DatabaseService, MobileService } from '@core/services';
-import { skip } from 'rxjs';
+import { DatabaseService, MobileService, UserSettingsService } from '@core/services';
 import { PATH } from './app.routing';
 
 @Component({
@@ -15,7 +14,9 @@ export class AppComponent implements OnInit {
   constructor(
     @Inject(MobileService) private mobile: MobileService,
     @Inject(AuthService) private auth: AuthService,
+    @Inject(BizyLogService) private log: BizyLogService,
     @Inject(DatabaseService) private database: DatabaseService,
+    @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
     @Inject(BizyRouterService) private router: BizyRouterService
   ) {}
 
@@ -34,16 +35,20 @@ export class AppComponent implements OnInit {
         this.mobile.hideSplash();
       }
 
-      this.auth.signedIn$.pipe(skip(1)).subscribe(signedIn => {
+      this.auth.signedIn$.subscribe(signedIn => {
         if (!signedIn) {
           this.database.destroy();
           this.router.goTo({ path: `/${PATH.AUTH}` });
         } else {
-          this.router.goTo({ path: `/${PATH.HOME}` });
+          this.userSettingsService.postUserSettings();
         }
       });
     } catch (error) {
-      console.error(error);
+      this.log.error({
+        fileName: 'app.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
     }
   }
 }

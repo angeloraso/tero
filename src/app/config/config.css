@@ -1,5 +1,7 @@
-.config__credential__header-picture {
-    height: 3.6rem;
+.config {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
 }
 
 .config__credential__content {
@@ -18,4 +20,23 @@
 
 .config__credential__badge {
     color: var(--primary-color);
+}
+
+.config__requests {
+    position: relative;
+    padding: 0.3rem;
+}
+
+.config__requests__icon {
+    color: var(--info-color);
+}
+
+.config__requests__icon--badge {
+    position: absolute;
+    top: 0.1em;
+    right: 0rem;
+    border-radius: 50%;
+    height: 0.7rem;
+    width: 0.7rem;
+    background-color: var(--danger-color);
 }

@@ -1,6 +1,6 @@
 <bizy-toolbar>
 
-    <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
 
     <h1 slot=start>{{'NEIGHBORS.ADD_NEIGHBOR.TITLE' | translate}}</h1>
 

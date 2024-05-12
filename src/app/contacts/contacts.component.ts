@@ -11,7 +11,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
-import { DEFAULT_PICTURE, LOGO_PATH, WHATSAPP_URL } from '@core/constants';
+import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact } from '@core/model';
 import { ContactsService, MobileService, UserSettingsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -38,7 +38,6 @@ export class ContactsComponent implements OnInit {
 
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-  readonly DEFAULT_PICTURE = DEFAULT_PICTURE;
 
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,
@@ -79,6 +78,7 @@ export class ContactsComponent implements OnInit {
         functionName: 'ngOnInit',
         param: error
       });
+      this.toast.danger();
     } finally {
       this.loading = false;
     }

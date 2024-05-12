@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { configGuard } from '@core/guards';
 import { AddNeighborComponent } from './add-neighbor/add-neighbor.component';
 import { EditNeighborComponent } from './edit-neighbor/edit-neighbor.component';
 import { NeighborsComponent } from './neighbors.component';
@@ -17,11 +18,13 @@ const routes: Routes = [
   },
   {
     path: PATH.ADD,
-    component: AddNeighborComponent
+    component: AddNeighborComponent,
+    canActivate: [configGuard]
   },
   {
     path: ':neighborId',
-    component: EditNeighborComponent
+    component: EditNeighborComponent,
+    canActivate: [configGuard]
   }
 ];
 

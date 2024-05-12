@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { BizyLogService, BizyPopupService, BizyUserAgentService } from '@bizy/services';
-import pkg from '../../../../package.json';
+import pkg from 'package.json';
 
 @Component({
   selector: 'caquen-about-popup',

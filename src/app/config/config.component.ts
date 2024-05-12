@@ -3,15 +3,17 @@ import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
   BizyLogService,
   BizyPopupService,
+  BizyRouterService,
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
+import { AboutPopupComponent } from '@config/components';
 import { AuthService } from '@core/auth/auth.service';
 import { DEFAULT_USER_ID, LOGO_PATH } from '@core/constants';
-import { USER_STATUS } from '@core/model';
+import { IUserSettings, USER_STATUS } from '@core/model';
 import { UserSettingsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
-import { AboutPopupComponent } from './about-popup/about-popup.component';
+import { PATH } from './config.routing';
 
 @Component({
   selector: 'tero-config',
@@ -29,11 +31,13 @@ export class ConfigComponent implements OnInit {
   id: string = DEFAULT_USER_ID;
   status: USER_STATUS | null = null;
   statusTagType: BIZY_TAG_TYPE = BIZY_TAG_TYPE.DEFAULT;
+  pendingUsers: Array<IUserSettings> = [];
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,
     @Inject(AuthService) private auth: AuthService,
     @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(UserSettingsService) private userSettings: UserSettingsService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService
@@ -48,18 +52,21 @@ export class ConfigComponent implements OnInit {
       const [status, id, isConfig] = await Promise.all([
         this.userSettings.getStatus(),
         this.userSettings.getId(),
-        this.userSettings.isAdmin(),
         this.userSettings.isConfig()
       ]);
 
-      this.isConfig = isConfig;
+      this.id = id ? String(id) : DEFAULT_USER_ID;
 
       if (status) {
         this.status = status;
         this.statusTagType = this.#getStatusTagType(status);
       }
 
-      this.id = id ? String(id) : DEFAULT_USER_ID;
+      this.isConfig = isConfig;
+
+      if (this.isConfig) {
+        this.pendingUsers = await this.userSettings.getPendingUsers();
+      }
     } catch (error) {
       this.log.error({
         fileName: 'config.component',
@@ -74,6 +81,14 @@ export class ConfigComponent implements OnInit {
 
   openPopup(): void {
     this.popup.open({ component: AboutPopupComponent });
+  }
+
+  goToPendingUsers(): void {
+    if (!this.isConfig || this.pendingUsers.length === 0) {
+      return;
+    }
+
+    this.router.goTo({ path: PATH.PENDING_USERS });
   }
 
   onSignOut(): void {

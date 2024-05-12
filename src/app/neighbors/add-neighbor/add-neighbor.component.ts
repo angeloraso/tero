@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { BizyRouterService } from '@bizy/services';
-import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 
@@ -11,7 +10,6 @@ import { NeighborsService } from '@core/services';
 })
 export class AddNeighborComponent {
   loading: boolean = false;
-  readonly LOGO_PATH = LOGO_PATH;
 
   constructor(
     @Inject(NeighborsService) private neighbors: NeighborsService,
