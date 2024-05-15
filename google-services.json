@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "351417061129-nfukitj8c3af5teqqnm5456k44itk1tj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.tero",
+            "certificate_hash": "62a6eb0bb20b59ec1753e11f707f49038898d508"
+          }
+        },
+        {
           "client_id": "351417061129-apphnoisfg3mr9k5ikcsr674nfp9lntd.apps.googleusercontent.com",
           "client_type": 3
         }
