@@ -82,7 +82,6 @@ export class NeighborsComponent implements OnInit {
         .map(_group => {
           return { id: _group, value: _group, selected: true };
         });
-      console.log(this.filterGroups);
     } catch (error) {
       this.log.error({
         fileName: 'neighbors.component',
@@ -209,7 +208,6 @@ export class NeighborsComponent implements OnInit {
   }
 
   refresh() {
-    console.log(this.filterGroups);
     this.neighbors = [...this.neighbors];
   }
 
