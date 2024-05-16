@@ -26,7 +26,7 @@ export class PendingUsersComponent implements OnInit {
   isConfig = false;
   pendingUsers: Array<IUserSettingsCard> = [];
   search: string | number = '';
-  order: 'asc' | 'desc' = 'asc';
+  order: 'asc' | 'desc' | null = 'asc';
   orderBy = 'email';
 
   readonly LOGO_PATH = LOGO_PATH;

@@ -33,7 +33,7 @@ export class ContactsComponent implements OnInit {
   securityLoading = false;
   contacts: Array<IContactCard> = [];
   search: string | number = '';
-  order: 'asc' | 'desc' = 'asc';
+  order: 'asc' | 'desc' | null = 'asc';
   orderBy = 'name';
 
   readonly LOGO_PATH = LOGO_PATH;

@@ -35,13 +35,23 @@
 
     </bizy-input>
 
-    <bizy-input 
-        label="{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}"
-        [control]="_description">
+    <bizy-select label="{{'CORE.FORM.FIELD.TAG' | translate}}">
 
-        <bizy-error input-error *ngIf="_description.hasError('maxlength')"><h5>{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h5></bizy-error>
+        <bizy-select-option 
+            *ngFor="let tag of availableTags | bizyOrderBy : 'asc' : 'value'"
+            (onSelect)="addTag(tag.id)">
+            {{tag.value}}
+        </bizy-select-option>
 
-    </bizy-input>
+    </bizy-select>
+
+    <span class="contact-form__tags">
+
+        <bizy-button *ngFor="let tag of selectedTags" (onSelect)="removeTag(tag)">
+            <bizy-tag [type]="BIZY_TAG_TYPE.WARNING">{{'CONTACTS.TAG.' + tag | translate}}</bizy-tag>
+        </bizy-button>
+        
+    </span>
 
     <bizy-confirm-buttons
         confirmLabel="{{'CORE.BUTTON.CONFIRM' | translate}}"
