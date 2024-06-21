@@ -137,7 +137,7 @@ export class ContactsComponent implements OnInit {
 
     const items = this.#filter(this.contacts);
 
-    this.exportToCSV.toCSV({
+    this.exportToCSV.downloadCSV({
       items,
       model: {
         name: this.translate.get('CORE.FORM.FIELD.NAME'),

@@ -157,7 +157,7 @@ export class NeighborsComponent implements OnInit {
       };
     });
 
-    this.exportToCSV.toCSV({
+    this.exportToCSV.downloadCSV({
       items,
       model: {
         group: this.translate.get('CORE.FORM.FIELD.GROUP'),
