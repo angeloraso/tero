@@ -20,6 +20,7 @@ export class EditContactComponent implements OnInit {
   contact: IContact | Empty;
   contactId: string | Empty;
   loading = false;
+  tags: Array<string> = [];
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,
@@ -40,11 +41,16 @@ export class EditContactComponent implements OnInit {
         return;
       }
 
-      this.contact = await this.contactsService.getContact(this.contactId);
+      const [contact, tags] = await Promise.all([
+        this.contactsService.getContact(this.contactId),
+        this.contactsService.getTags()
+      ]);
+      this.contact = contact;
+      this.tags = tags;
     } catch (error) {
       this.log.error({
         fileName: 'edit-contact.component',
-        functionName: 'save',
+        functionName: 'ngOnInit',
         param: error
       });
       this.toast.danger();

@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
+import { FileOpener } from '@capacitor-community/file-opener';
 import { App } from '@capacitor/app';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar } from '@capacitor/status-bar';
 import { ENV } from '@env/environment';
@@ -47,6 +49,24 @@ export class MobileService {
 
   call(number: string) {
     return this.callNumber.callNumber(number, false);
+  }
+
+  downloadFile(file: { data: string; name: string }) {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const { uri } = await Filesystem.writeFile({
+          path: file.name,
+          data: file.data,
+          directory: Directory.Documents,
+          encoding: Encoding.UTF8
+        });
+
+        await FileOpener.open({ filePath: uri, openWithDefault: true });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   exit(): Promise<void> {

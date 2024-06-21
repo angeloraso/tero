@@ -28,32 +28,3 @@ export const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=549';
 export const DEFAULT_USER_ID = '00000000000000';
 
 export const DEFAULT_PICTURE = 'picture_user.svg';
-
-export const CONTACT_TAGS = [
-  'AIR_CONDITIONING',
-  'MASON',
-  'ARCHITECT',
-  'BUILDING_MATERIALS',
-  'CONCRETE',
-  'CARPENTER',
-  'PHOTOCOPY',
-  'BOOKSHOP',
-  'ELECTRICIAN',
-  'GAS_FITTER',
-  'BLACKSMITH',
-  'INTERNET',
-  'GARDENER',
-  'MASTER_BUILDER',
-  'PLUMBER',
-  'SOIL',
-  'SECURITY',
-  'MUNICIPALITY',
-  'FOOD',
-  'DESSERT',
-  'WIRE_FENCE',
-  'CEMENT_FENCE',
-  'CONTAINERS',
-  'FREIGHT',
-  'PAINTER',
-  'BANK'
-];

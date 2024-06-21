@@ -18,7 +18,6 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 
 interface IContactCard extends IContact {
   _phones: Array<string>;
-  _tags: Array<string>;
 }
 
 @Component({
@@ -28,6 +27,7 @@ interface IContactCard extends IContact {
 })
 export class ContactsComponent implements OnInit {
   loading = false;
+  csvLoading = false;
   isNeighbor = false;
   isConfig = false;
   securityLoading = false;
@@ -68,7 +68,6 @@ export class ContactsComponent implements OnInit {
       this.contacts = contacts.map(_contact => {
         return {
           ..._contact,
-          _tags: _contact.tags.map(_tag => this.translate.get(`CONTACTS.TAG.${_tag}`)),
           _phones: _contact.phones.map(_phone => _phone.number)
         };
       });
@@ -130,29 +129,47 @@ export class ContactsComponent implements OnInit {
     window.open(`${WHATSAPP_URL}${contact.phones[0].number}`, '_blank');
   }
 
-  export() {
-    if (!this.contacts || this.contacts.length === 0) {
-      return;
-    }
+  async export() {
+    try {
+      if (!this.contacts || this.contacts.length === 0) {
+        return;
+      }
 
-    const items = this.#filter(this.contacts);
+      const items = this.#filter(this.contacts);
 
-    this.exportToCSV.downloadCSV({
-      items,
-      model: {
+      const fileName = this.translate.get('CONTACTS.CSV_FILE_NAME');
+      const model = {
         name: this.translate.get('CORE.FORM.FIELD.NAME'),
         surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
         _phones: this.translate.get('CORE.FORM.FIELD.PHONE'),
-        _tags: this.translate.get('CORE.FORM.FIELD.TAG')
-      },
-      fileName: this.translate.get('CONTACTS.CSV_FILE_NAME')
-    });
+        tags: this.translate.get('CORE.FORM.FIELD.TAG')
+      };
+
+      if (this.mobile.isMobile()) {
+        const csv = this.exportToCSV.getCSV({ items, model });
+        await this.mobile.downloadFile({ data: csv, name: fileName });
+      } else {
+        this.exportToCSV.download({ items, model, fileName });
+      }
+    } catch (error) {
+      this.log.error({
+        fileName: 'contacts.component',
+        functionName: 'export',
+        param: error
+      });
+      this.toast.danger({
+        title: 'Error',
+        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+      });
+    } finally {
+      this.csvLoading = false;
+    }
   }
 
   #filter(items: Array<IContact>): Array<IContact> {
     let _items = this.bizySearchPipe.transform(items, this.search, [
       'name',
-      '_tags',
+      'tags',
       'surname',
       'score',
       '_phones'

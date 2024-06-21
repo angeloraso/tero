@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BIZY_TAG_TYPE } from '@bizy/components';
+import { BizyLogService, BizyToastService } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
 import { Empty, ISecurityGuard } from '@core/model';
 import {
@@ -33,6 +34,8 @@ export class DashboardComponent implements OnInit {
     @Inject(NeighborsService) private neighborsService: NeighborsService,
     @Inject(SecurityService) private security: SecurityService,
     @Inject(UtilsService) private utils: UtilsService,
+    @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(UserSettingsService) private userSettingsService: UserSettingsService
   ) {}
 
@@ -88,7 +91,12 @@ export class DashboardComponent implements OnInit {
         });
       }
     } catch (error) {
-      console.error(error);
+      this.log.error({
+        fileName: 'dashboard.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
+      this.toast.danger();
     } finally {
       this.loading = false;
     }

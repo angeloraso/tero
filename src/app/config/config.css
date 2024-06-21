@@ -4,6 +4,10 @@
     row-gap: 1rem;
 }
 
+.config__credential__profile-pic {
+    border-radius: 50%;
+}
+
 .config__credential__content {
     height: 4rem;
     display: flex;

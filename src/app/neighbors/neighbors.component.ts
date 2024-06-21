@@ -7,11 +7,12 @@ import {
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
+  BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
-import { NeighborsService, UserSettingsService } from '@core/services';
+import { MobileService, NeighborsService, UserSettingsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
 import { PopupComponent } from '@shared/components';
@@ -23,6 +24,7 @@ import { PopupComponent } from '@shared/components';
 })
 export class NeighborsComponent implements OnInit {
   loading = false;
+  csvLoading = false;
   securityLoading = false;
   isConfig = false;
   isNeighbor = false;
@@ -45,6 +47,8 @@ export class NeighborsComponent implements OnInit {
     @Inject(NeighborsService) private neighborsService: NeighborsService,
     @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
     @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(BizyToastService) private toast: BizyToastService,
+    @Inject(MobileService) private mobile: MobileService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
     @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
@@ -143,31 +147,51 @@ export class NeighborsComponent implements OnInit {
     );
   }
 
-  export() {
-    if (!this.neighbors || this.neighbors.length === 0 || !this.isConfig) {
-      return;
-    }
+  async export() {
+    try {
+      if (this.csvLoading || !this.neighbors || this.neighbors.length === 0 || !this.isConfig) {
+        return;
+      }
 
-    const items = this.#filter(this.neighbors).map(_neighbor => {
-      return {
-        ..._neighbor,
-        _security: _neighbor.security
-          ? this.translate.get('CORE.YES')
-          : this.translate.get('CORE.NO')
-      };
-    });
+      this.csvLoading = true;
 
-    this.exportToCSV.downloadCSV({
-      items,
-      model: {
+      const items = this.#filter(this.neighbors).map(_neighbor => {
+        return {
+          ..._neighbor,
+          _security: _neighbor.security
+            ? this.translate.get('CORE.YES')
+            : this.translate.get('CORE.NO')
+        };
+      });
+
+      const fileName = this.translate.get('NEIGHBORS.CSV_FILE_NAME');
+      const model = {
         group: this.translate.get('CORE.FORM.FIELD.GROUP'),
         lot: this.translate.get('CORE.FORM.FIELD.LOT'),
         surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
         name: this.translate.get('CORE.FORM.FIELD.NAME'),
         _security: this.translate.get('CORE.FORM.FIELD.SECURITY')
-      },
-      fileName: this.translate.get('NEIGHBORS.CSV_FILE_NAME')
-    });
+      };
+
+      if (this.mobile.isMobile()) {
+        const csv = this.exportToCSV.getCSV({ items, model });
+        await this.mobile.downloadFile({ data: csv, name: fileName });
+      } else {
+        this.exportToCSV.download({ items, model, fileName });
+      }
+    } catch (error) {
+      this.log.error({
+        fileName: 'neighbors.component',
+        functionName: 'export',
+        param: error
+      });
+      this.toast.danger({
+        title: 'Error',
+        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+      });
+    } finally {
+      this.csvLoading = false;
+    }
   }
 
   #filter(items: Array<INeighbor>): Array<INeighbor> {

@@ -30,7 +30,9 @@ enum CORE_DOCUMENT {
 })
 export class DatabaseService implements OnDestroy {
   #neighbors = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
-  #contacts = new BehaviorSubject<Array<IContact> | undefined>(undefined);
+  #contactData = new BehaviorSubject<{ data: Array<IContact>; tags: Array<string> } | undefined>(
+    undefined
+  );
   #security = new BehaviorSubject<ISecurity | undefined>(undefined);
   #userSettings = new BehaviorSubject<IUserSettings | undefined>(undefined);
 
@@ -144,26 +146,54 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  getContacts() {
-    return new Promise<Array<IContact>>(async (resolve, reject) => {
+  getContactTags() {
+    return new Promise<Array<string>>(async (resolve, reject) => {
       try {
-        if (typeof this.#contacts.value !== 'undefined') {
-          resolve(this.#contacts.value);
+        if (typeof this.#contactData.value !== 'undefined') {
+          resolve(this.#contactData.value.tags);
           return;
         }
 
-        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<IContact> }>(
-          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` },
-          (event, error) => {
-            if (error) {
-              console.log(error);
-            } else {
-              const contacts = event && event.snapshot.data ? event.snapshot.data.data : [];
-              this.#contacts.next(contacts);
-              resolve(contacts);
-            }
+        await FirebaseFirestore.addDocumentSnapshotListener<{
+          data: Array<IContact>;
+          tags: Array<string>;
+        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
+          if (error) {
+            console.log(error);
+          } else if (event && event.snapshot && event.snapshot.data) {
+            this.#contactData.next(event.snapshot.data);
+            resolve(event.snapshot.data.tags ?? []);
+          } else {
+            resolve([]);
           }
-        );
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getContacts() {
+    return new Promise<Array<IContact>>(async (resolve, reject) => {
+      try {
+        if (typeof this.#contactData.value !== 'undefined') {
+          resolve(this.#contactData.value.data);
+          return;
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<{
+          data: Array<IContact>;
+          tags: Array<string>;
+        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
+          if (error) {
+            console.log(error);
+          } else if (event && event.snapshot && event.snapshot.data) {
+            this.#contactData.next(event.snapshot.data);
+            resolve(event.snapshot.data.data ?? []);
+          } else {
+            resolve([]);
+          }
+        });
       } catch (error) {
         reject(error);
       }
@@ -173,13 +203,13 @@ export class DatabaseService implements OnDestroy {
   getContact(id: string) {
     return new Promise<IContact | null>(async (resolve, reject) => {
       try {
-        if (typeof this.#contacts.value !== 'undefined') {
-          resolve(this.#contacts.value.find(_contact => _contact.id === id) || null);
+        if (typeof this.#contactData.value !== 'undefined') {
+          resolve(this.#contactData.value.data.find(_contact => _contact.id === id) || null);
           return;
         }
 
-        const contacts = await this.getContacts();
-        const contact = contacts.find(_contact => _contact.id === id) || null;
+        const data = await this.getContacts();
+        const contact = data.find(_contact => _contact.id === id) || null;
         resolve(contact as IContact);
       } catch (error) {
         reject(error);
@@ -190,15 +220,17 @@ export class DatabaseService implements OnDestroy {
   postContact(contact: IContact): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const contacts = await this.getContacts();
-        const index = contacts.findIndex(_contact => _contact.id === contact.id);
+        const data = await this.getContacts();
+        const index = data.findIndex(_contact => _contact.id === contact.id);
         if (index !== -1) {
-          contacts[index] = contact;
+          data[index] = contact;
         } else {
-          contacts.push(contact);
+          data.push(contact);
         }
 
-        const contactsDocument = JSON.parse(JSON.stringify({ data: contacts }));
+        const tags = await this.getContactTags();
+
+        const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
 
         await FirebaseFirestore.setDocument({
           reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
@@ -214,12 +246,14 @@ export class DatabaseService implements OnDestroy {
   putContact(contact: IContact): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const contacts = await this.getContacts();
-        const index = contacts.findIndex(_contact => _contact.id === contact.id);
+        const data = await this.getContacts();
+        const index = data.findIndex(_contact => _contact.id === contact.id);
         if (index !== -1) {
-          contacts[index] = contact;
+          data[index] = contact;
 
-          const contactsDocument = JSON.parse(JSON.stringify({ data: contacts }));
+          const tags = await this.getContactTags();
+
+          const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
           await FirebaseFirestore.setDocument({
             reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
             data: contactsDocument
@@ -236,10 +270,12 @@ export class DatabaseService implements OnDestroy {
   deleteContact(id: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        let contacts = await this.getContacts();
-        contacts = contacts.filter(_contact => _contact.id !== id);
+        let data = await this.getContacts();
+        data = data.filter(_contact => _contact.id !== id);
 
-        const contactsDocument = JSON.parse(JSON.stringify({ data: contacts }));
+        const tags = await this.getContactTags();
+
+        const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
 
         await FirebaseFirestore.setDocument({
           reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
@@ -476,7 +512,7 @@ export class DatabaseService implements OnDestroy {
 
   destroy = () => {
     this.#neighbors.next(undefined);
-    this.#contacts.next(undefined);
+    this.#contactData.next(undefined);
     this.#security.next(undefined);
     this.#userSettings.next(undefined);
     return FirebaseFirestore.removeAllListeners();

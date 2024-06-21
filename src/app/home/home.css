@@ -40,6 +40,7 @@ bizy-sidebar-option[slot=start] {
 
 .home__sidebar__option__profile-pic {
   height: 1.2rem;
+  border-radius: 50%;
 }
 
 .home__sidebar__option__label {

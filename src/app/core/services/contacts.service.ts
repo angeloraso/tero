@@ -8,6 +8,17 @@ import { DatabaseService } from '@core/services';
 export class ContactsService {
   constructor(@Inject(DatabaseService) private database: DatabaseService) {}
 
+  getTags() {
+    return new Promise<Array<string>>(async (resolve, reject) => {
+      try {
+        const tags = await this.database.getContactTags();
+        resolve(tags ?? []);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   getContacts() {
     return new Promise<Array<IContact>>(async (resolve, reject) => {
       try {

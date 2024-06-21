@@ -4,7 +4,7 @@
 
     <h1 slot=start>{{'CONTACTS.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
     <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="addContact()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
 
@@ -18,7 +18,7 @@
 
             <span class="tero-counter__section">
                 <h4 class="tero-title">{{'CORE.TOTAL' | translate}}:</h4>
-                <h4><strong>{{(contacts | bizySearch: search : ['name', '_tags', 'surname', '_phones', 'score']).length}}/{{contacts.length}}</strong></h4>
+                <h4><strong>{{(contacts | bizySearch: search : ['name', 'tags', 'surname', '_phones', 'score']).length}}/{{contacts.length}}</strong></h4>
             </span>
 
         </span>
@@ -38,7 +38,7 @@
     </span>
 
     <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : ['name', '_tags', 'surname', '_phones', 'score'] | bizyOrderBy: order : orderBy">
+        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : ['name', 'tags', 'surname', '_phones', 'score'] | bizyOrderBy: order : orderBy">
 
             <ng-container *ngFor="let contact of contactArray">
 
@@ -70,7 +70,7 @@
 
                     </span>
 
-                    <bizy-tag card-footer-start [type]="BIZY_TAG_TYPE.WARNING" *ngFor="let tag of contact._tags" class="conctacts__card__tag">{{tag}}</bizy-tag>
+                    <bizy-tag card-footer-start [type]="BIZY_TAG_TYPE.WARNING" *ngFor="let tag of contact.tags" class="conctacts__card__tag">{{tag}}</bizy-tag>
 
                 </bizy-card>
 

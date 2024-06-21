@@ -5,7 +5,7 @@ export const locale = {
   translations: {
     NEIGHBORS: {
       TITLE: 'Vecinos',
-      CSV_FILE_NAME: 'tero_vecinos',
+      CSV_FILE_NAME: 'tero_vecinos.csv',
       SECURITY: {
         TITLE: 'Dar de baja',
         MSG: 'Se dará de baja del servicio de seguridad al vecino/a'

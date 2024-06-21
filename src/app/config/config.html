@@ -14,9 +14,9 @@
 
     <bizy-card class="config__credential">
         
-        <img *ngIf="profilePic" card-header-start height="50" [src]="profilePic" alt="User picture"/>
+        <img *ngIf="profilePic" class="config__credential__profile-pic" card-header-start height="50" [src]="profilePic" alt="User picture"/>
 
-        <tero-img *ngIf="!profilePic" card-header-start [height]="50" alt="User picture"></tero-img>
+        <tero-img *ngIf="!profilePic" class="config__credential__profile-pic" card-header-start [height]="50" alt="User picture"></tero-img>
 
         <h4 card-header-end class="config__credential__membership-number"><strong>Nº {{id}}</strong></h4>
 

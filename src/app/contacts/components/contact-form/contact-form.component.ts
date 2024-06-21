@@ -9,9 +9,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BIZY_TAG_TYPE } from '@bizy/components';
-import { BizyTranslateService, BizyValidatorService } from '@bizy/services';
 import {
-  CONTACT_TAGS,
   DEFAULT_PICTURE,
   LONG_TEXT_MAX_LENGTH,
   NAME_MAX_LENGTH,
@@ -30,13 +28,22 @@ export class ContactFormComponent {
   @Output() save = new EventEmitter<IContact>();
   form: FormGroup;
 
-  availableTags: Array<{ id: string; value: string }> = [];
-  selectedTags = new Set<string>();
+  availableTags: Set<string> = new Set<string>();
+  selectedTags: Set<string> = new Set<string>();
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
+
+  @Input() set tags(tags: { available: Array<string>; selected: Array<string> }) {
+    if (!tags) {
+      return;
+    }
+
+    this.availableTags = new Set(tags.available);
+    this.selectedTags = new Set(tags.selected);
+  }
 
   @Input() set id(id: string | Empty) {
     if (!id) {
@@ -103,29 +110,10 @@ export class ContactFormComponent {
     this._description.setValue(description);
   }
 
-  @Input() set tags(tags: Array<string> | Empty) {
-    if (!tags) {
-      return;
-    }
-
-    this.selectedTags = new Set(tags);
-    tags.forEach(_tag => {
-      const index = this.availableTags.findIndex(_t => _t.id === _tag);
-      if (index !== -1) {
-        this.availableTags.splice(index, 1);
-      }
-    });
-  }
-
   constructor(
     @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(BizyValidatorService) private validator: BizyValidatorService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {
-    CONTACT_TAGS.forEach(_tag => {
-      this.availableTags.push({ id: _tag, value: this.translate.get(`CONTACTS.TAG.${_tag}`) });
-    });
     this.form = this.fb.group({
       id: [null],
       created: [null],
@@ -143,7 +131,7 @@ export class ContactFormComponent {
         null,
         [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]
       ],
-      phone: [null, [this.validator.phoneNumberValidator(), Validators.required]],
+      phone: [null, [Validators.required]],
       description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
     });
   }
@@ -186,15 +174,12 @@ export class ContactFormComponent {
     }
 
     this.selectedTags.add(tag);
-    const index = this.availableTags.findIndex(_t => _t.id === tag);
-    if (index !== -1) {
-      this.availableTags.splice(index, 1);
-    }
+    this.availableTags.delete(tag);
   }
 
   removeTag(tag: string) {
+    this.availableTags.add(tag);
     this.selectedTags.delete(tag);
-    this.availableTags.push({ id: tag, value: this.translate.get(`CONTACTS.TAG.${tag}`) });
   }
 
   _confirm() {
