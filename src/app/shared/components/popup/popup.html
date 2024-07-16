@@ -10,12 +10,18 @@
     
     </span>
     
-    
-    <bizy-confirm-buttons
-        confirmLabel="{{'CORE.BUTTON.CONFIRM' | translate}}"
-        cancelLabel="{{'CORE.BUTTON.CANCEL' | translate}}"
-        (cancel)="close()"
-        (confirm)="apply()">
-    </bizy-confirm-buttons>
+    <span class="tero-confirm-buttons">
 
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+            <h5><i class="fa-solid fa-xmark"></i></h5>
+            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+        </bizy-button>
+
+        <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+            <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+            <h5><i class="fa-solid fa-check"></i></h5>
+        </bizy-button>
+
+    </span>
+    
 </span>

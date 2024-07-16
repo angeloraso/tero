@@ -10,47 +10,61 @@
 
     <span class="tero-section">
 
-        <span class="tero-counter">
+        <span class="tero-section__start">
 
-            <span class="tero-counter__section">
-                <h4 class="tero-title">{{'CORE.TOTAL' | translate}}:</h4>
-                <h4><strong>{{(pendingUsers | bizySearch: search : ['email']).length}}/{{pendingUsers.length}}</strong></h4>
-            </span>
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="search ? ((pendingUsers | bizySearch: search : 'email').length + '/' + pendingUsers.length) : pendingUsers.length"
+                [autofocus]="true">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
 
         </span>
 
         <span class="tero-section__end">
 
             <bizy-input 
-                label="{{'CORE.FORM.FIELD.SEARCH' | translate}}"
-                [(value)]="search">
-
-                <span input-start><i class="fa-solid fa-magnifying-glass"></i>&nbsp;</span>
-
+                [disabled]="loading"
+                [(value)]="search"
+                [autofocus]="true">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
-    
+
+            <bizy-button class="tero-button--warning" (onSelect)="search = ''" [disabled]="loading || !search">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
         </span>
 
     </span>
 
     <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let pendingUsersArray in pendingUsers | bizySearch: search : ['email'] | bizyOrderBy: order : orderBy">
+        <div virtualScrollGrid *virtualNgFor="let pendingUsersArray in pendingUsers | bizySearch: search : 'email' | bizyOrderBy: order : orderBy">
 
             <ng-container *ngFor="let pendingUser of pendingUsersArray">
 
                 <bizy-card>
 
-                    <tero-img card-header-start [height]="40" alt="Pending user picture"></tero-img>
+                    <tero-img slot="header-start" [height]="40" alt="Pending user picture"></tero-img>
 
-                    <h4 card-header-start class="contacts__card__title"><strong>{{pendingUser.email}}</strong></h4>
+                    <h4 slot="header-start" class="contacts__card__title"><strong>{{pendingUser.email}}</strong></h4>
 
-                    <bizy-confirm-buttons
-                        card-footer-end
-                        confirmLabel="{{'CORE.BUTTON.ACCEPT' | translate}}"
-                        cancelLabel="{{'CORE.BUTTON.REJECT' | translate}}"
-                        (cancel)="onReject(pendingUser.email)"
-                        (confirm)="onAccept(pendingUser.email)">
-                    </bizy-confirm-buttons>
+
+                    <span class="tero-confirm-buttons" slot="footer-end">
+
+                        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="onReject(pendingUser.email)">
+                            <h5><i class="fa-solid fa-xmark"></i></h5>
+                            <h5>{{'CORE.BUTTON.REJECT' | translate}}</h5>
+                        </bizy-button>
+                
+                        <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="onAccept(pendingUser.email)">
+                            <h5>{{'CORE.BUTTON.ACCEPT' | translate}}</h5>
+                            <h5><i class="fa-solid fa-check"></i></h5>
+                        </bizy-button>
+                
+                    </span>
 
                 </bizy-card>
 

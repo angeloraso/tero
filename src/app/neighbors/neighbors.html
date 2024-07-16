@@ -10,35 +10,42 @@
 
 </bizy-toolbar>
 
-<div class="neighbors tero-wrapper">
+<div class="tero-wrapper">
 
     <span class="tero-section">
 
-        <span class="tero-counter">
+        <span class="tero-section__start">
 
-            <span class="tero-counter__section">
-                <h4 class="tero-title">{{'CORE.TOTAL' | translate}}:</h4>
-                <h4><strong>{{(neighbors 
-                                | bizySearch: search : ['group', 'lot', 'surname', 'name']
-                                | bizySearch: lotSearch : 'lot'
-                                | bizySearch: surnameSearch : 'surname'
-                                | bizySearch: nameSearch : 'name'
-                                | bizyFilter : 'group' : filterGroups).length}}/{{neighbors.length}}</strong></h4>
-            </span>
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((neighbors 
+                    | bizySearch: search : ['group', 'lot', 'surname', 'name']
+                    | bizySearch: lotSearch : 'lot'
+                    | bizySearch: surnameSearch : 'surname'
+                    | bizySearch: nameSearch : 'name'
+                    | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length"
+                [autofocus]="true">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
 
         </span>
 
         <span class="tero-section__end">
 
             <bizy-input 
-                label="{{'CORE.FORM.FIELD.SEARCH' | translate}}"
+                [disabled]="loading"
                 [(value)]="search"
-                (onChange)="checkFilters(!!search)">
-
-                <span input-start><i class="fa-solid fa-magnifying-glass"></i>&nbsp;</span>
-
+                (onChange)="checkFilters(!!search)"
+                [autofocus]="true">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
-    
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
         </span>
 
     </span>
@@ -57,7 +64,6 @@
                         <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h4>
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let group of filterGroups"
-                            [id]="group.id"
                             [selected]="group.selected"
                             (onChange)="group.selected = $event; refresh()">
                             <h5>{{group.value}}</h5>
@@ -90,15 +96,20 @@
             </bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="onSort('surname')">
-                <bizy-filter class="hidden-xs" (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                    
-                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                        
+                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h4>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h6>
+
                         <bizy-filter-section-search-option 
                             [(value)]="surnameSearch"
                             (onChange)="refresh()">
+
+                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+                            
                         </bizy-filter-section-search-option>
                     </bizy-filter-section>
 
@@ -109,15 +120,20 @@
             </bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="onSort('name')">
-                <bizy-filter class="hidden-xs" (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                    
-                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                        
+                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h4>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
+
                         <bizy-filter-section-search-option 
                             [(value)]="nameSearch"
                             (onChange)="refresh()">
+
+                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+                            
                         </bizy-filter-section-search-option>
                     </bizy-filter-section>
 
@@ -127,7 +143,7 @@
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'name'"></bizy-table-column-arrows>
             </bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 1, minWidth: '1rem'}"></bizy-table-column>
+            <bizy-table-column [ngStyle]="{flex: 1, width: '2rem'}"></bizy-table-column>
     
         </bizy-table-header>
     
@@ -147,7 +163,7 @@
 
             <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 1, minWidth: '1rem'}" (onSelect)="removeNeighborFromSecurity(neighbor)">
+            <bizy-table-column [ngStyle]="{flex: 1, width: '2rem'}" (onSelect)="removeNeighborFromSecurity(neighbor)">
                 <bizy-tag *ngIf="neighbor.security" [type]="BIZY_TAG_TYPE.WARNING"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>
             </bizy-table-column>
 

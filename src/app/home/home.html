@@ -51,6 +51,7 @@
           <bizy-tab 
             class="home__tabs__tab"
             *ngFor="let option of options"
+            linePosition="top"
             [(selected)]="option.selected"
             (onSelect)="onSelect(option)">
 

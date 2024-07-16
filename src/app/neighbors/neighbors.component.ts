@@ -31,9 +31,9 @@ export class NeighborsComponent implements OnInit {
   isSecurity = false;
   neighbors: Array<INeighbor> = [];
   search: string | number = '';
-  lotSearch: string | number = '';
-  surnameSearch: string | number = '';
-  nameSearch: string | number = '';
+  lotSearch: string = '';
+  surnameSearch: string = '';
+  nameSearch: string = '';
   filterGroups: Array<{ id: number; value: number; selected: boolean }> = [];
   activatedFilters: number = 0;
   orderBy: string = 'lot';
@@ -78,7 +78,9 @@ export class NeighborsComponent implements OnInit {
       const groups = new Set<number>();
 
       this.neighbors.forEach(_neighbor => {
-        groups.add(_neighbor.group);
+        if (_neighbor.group) {
+          groups.add(_neighbor.group);
+        }
       });
 
       this.filterGroups = Array.from(groups)

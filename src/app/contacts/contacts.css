@@ -1,4 +1,4 @@
-.contacts {
+:host {
     --bizy-virtual-scroll-height: calc(100vh - var(--bizy-toolbar-height) - 8rem);
 }
 

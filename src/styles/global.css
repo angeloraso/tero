@@ -82,27 +82,27 @@ h6 {
 }
 
 .tero-button--accent {
-    background-color: var(--accent-color) !important;
+    --bizy-button-background-color: var(--accent-color) !important;
 }
 
 .tero-button--success {
-    background-color: var(--success-color) !important;
+    --bizy-button-background-color: var(--success-color) !important;
 }
 
 .tero-button--default {
-    background-color: var(--default-color) !important;
+    --bizy-button-background-color: var(--default-color) !important;
 }
 
 .tero-button--info {
-    background-color: var(--info-color) !important;
+    --bizy-button-background-color: var(--info-color) !important;
 }
 
 .tero-button--warning {
-    background-color: var(--warning-color) !important;
+    --bizy-button-background-color: var(--warning-color) !important;
 }
 
 .tero-button--danger {
-    background-color: var(--danger-color) !important;
+    --bizy-button-background-color: var(--danger-color) !important;
 }
 
 .tero-logo {
@@ -160,45 +160,16 @@ h6 {
     padding: 0 0.5rem;
 }
 
-.tero-button--apply {
-    background-color: var(--apply-color) !important;
-}
-
-.tero-button--primary {
-    background-color: var(--primary-color) !important;
-}
-
-.tero-button--secondary {
-    background-color: var(--secondary-color) !important;
-}
-
-.tero-button--accent {
-    background-color: var(--accent-color) !important;
-}
-
-.tero-button--success {
-    background-color: var(--success-color) !important;
-}
-
-.tero-button--info {
-    background-color: var(--info-color) !important;
-}
-
-.tero-button--warning {
-    background-color: var(--warning-color) !important;
-}
-
-.tero-button--error {
-    background-color: var(--error-color) !important;
-}
-
 .tero-no-padding {
     padding: 0 !important;
+    --bizy-button-padding: 0;
 }
 
 .tero-wrapper {
     padding: 0.5rem;
     flex: 1;
+    min-height: fit-content;
+    overflow: auto;
     display: flex;
     flex-direction: column;
 }
@@ -206,7 +177,8 @@ h6 {
 .tero-wrapper--light {
     padding: 0.5rem;
     flex: 1;
-    min-height: 100%;
+    min-height: fit-content;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -242,9 +214,8 @@ h6 {
 .tero-section__start {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 1rem;
-    flex-wrap: wrap;
 }
 
 .tero-section__end {
@@ -253,7 +224,6 @@ h6 {
     justify-content: flex-end;
     align-items: flex-end;
     gap: 1rem;
-    flex-wrap: wrap;
 }
 
 .tero-section__end bizy-search-input {
@@ -275,21 +245,8 @@ h6 {
 }
 
 .tero-counter {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.3rem;
-    padding: 0.5rem;
-    background-color: #fff;
-    border-top-left-radius: 0.3rem;
-    border-top-right-radius: 0.3rem;
-    border-bottom: 0.1rem solid var(--dark-secondary-color);
-}
-
-.tero-counter__section {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.3rem;
-    min-width: 5rem;
+    --bizy-input-min-width: fit-content;
+    --bizy-input-width: fit-content;
 }
 
 .tero-title {
@@ -305,4 +262,20 @@ h6 {
 
 .tero-form__toggle-field__label {
     color: var(--info-color);
+}
+
+.tero-confirm-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    column-gap: 1rem;
+    width: 100%;
+}
+
+.tero-confirm-buttons__cancel {
+    --bizy-button-background-color: var(--danger-color);
+}
+
+.tero-confirm-buttons__confirm {
+    --bizy-button-background-color: var(--accent-color);
 }

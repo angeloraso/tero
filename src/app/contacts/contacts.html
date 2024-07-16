@@ -10,53 +10,60 @@
 
 </bizy-toolbar>
 
-<div class="contacts tero-wrapper">
+<div class="tero-wrapper">
 
     <span class="tero-section">
 
-        <span class="tero-counter">
+        <span class="tero-section__start">
 
-            <span class="tero-counter__section">
-                <h4 class="tero-title">{{'CORE.TOTAL' | translate}}:</h4>
-                <h4><strong>{{(contacts | bizySearch: search : ['name', 'tags', 'surname', '_phones', 'score']).length}}/{{contacts.length}}</strong></h4>
-            </span>
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="search ? ((contacts | bizySearch: search : searchKeys).length + '/' + contacts.length) : contacts.length"
+                [autofocus]="true">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
 
         </span>
 
         <span class="tero-section__end">
 
             <bizy-input 
-                label="{{'CORE.FORM.FIELD.SEARCH' | translate}}"
-                [(value)]="search">
-
-                <span input-start><i class="fa-solid fa-magnifying-glass"></i>&nbsp;</span>
-
+                [disabled]="loading"
+                [(value)]="search"
+                [autofocus]="true">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
-    
+
+            <bizy-button class="tero-button--warning" (onSelect)="search = ''" [disabled]="loading || !search">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
         </span>
 
     </span>
 
     <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : ['name', 'tags', 'surname', '_phones', 'score'] | bizyOrderBy: order : orderBy">
+        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : searchKeys | bizyOrderBy: order : orderBy">
 
             <ng-container *ngFor="let contact of contactArray">
 
                 <bizy-card (onSelect)="editContact(contact)">
 
-                    <tero-img card-header-start [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
+                    <tero-img slot="header-start" [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
 
-                    <h4 card-header-start class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
+                    <h4 slot="header-start" class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
 
                     <bizy-button 
-                        card-header-end
+                        slot="header-end"
                         class="tero-action tero-action--info conctacts__card__action"
                         (onSelect)="onCall(contact); $event.stopPropagation()">
                         <i class="fa-solid fa-phone"></i>
                     </bizy-button>
 
                     <bizy-button 
-                        card-header-end
+                        slot="header-end"
                         class="tero-action tero-action--success conctacts__card__action"
                         (onSelect)="onWhatsapp(contact); $event.stopPropagation()">
                         <i class="fa-brands fa-whatsapp"></i>
@@ -70,7 +77,7 @@
 
                     </span>
 
-                    <bizy-tag card-footer-start [type]="BIZY_TAG_TYPE.WARNING" *ngFor="let tag of contact.tags" class="conctacts__card__tag">{{tag}}</bizy-tag>
+                    <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.WARNING" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
 
                 </bizy-card>
 

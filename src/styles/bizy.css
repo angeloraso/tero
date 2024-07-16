@@ -24,5 +24,8 @@
     --bizy-sidebar-option-hover-color: var(--light-info-color);
     --bizy-sidebar-option-selected-color: var(--accent-color);
 
-    --bizy-toolbar-padding: 0 0.7rem;
+    --bizy-tab-border-top: none;
+    --bizy-tab-border-right: none;
+    --bizy-tab-border-left: none;
+    --bizy-tab-border-bottom: none;
 }

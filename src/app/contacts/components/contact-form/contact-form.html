@@ -6,58 +6,65 @@
 
     </span>
 
-    <bizy-input 
-        label="{{'CORE.FORM.FIELD.NAME' | translate}}"
-        [control]="_name">
-
-        <bizy-error input-error *ngIf="_name.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
-        <bizy-error input-error *ngIf="_name.hasError('minlength')"><h5>"{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h5></bizy-error>
-        <bizy-error input-error *ngIf="_name.hasError('maxlength')"><h5>{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h5></bizy-error>
-
+    <bizy-input
+        #nameInput
+        [value]="_name.value"
+        [autofocus]="true"
+        (onChange)="_name.setValue($event)">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="_name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+        <h6 slot="error" *ngIf="_name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
     </bizy-input>
 
-    <bizy-input 
-        label="{{'CORE.FORM.FIELD.SURNAME' | translate}}"
-        [control]="_surname">
-
-        <bizy-error input-error *ngIf="_surname.hasError('minlength')"><h5>"{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h5></bizy-error>
-        <bizy-error input-error *ngIf="_surname.hasError('maxlength')"><h5>{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h5></bizy-error>
-
+    <bizy-input
+        #surnameInput
+        [value]="_surname.value"
+        (onChange)="_surname.setValue($event)">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="_surname.hasError('required') && surnameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+        <h6 slot="error" *ngIf="_surname.hasError('minlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
     </bizy-input>
 
-    <bizy-input 
-        label="{{'CORE.FORM.FIELD.PHONE' | translate}}"
+    <bizy-input
+        #phoneInput
         type="tel"
-        [control]="_phone">
+        [value]="_phone.value"
+        (onChange)="_phone.setValue($event)">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="_phone.hasError('required') && phoneInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+    </bizy-input>
 
-        <bizy-error input-error *ngIf="_phone.hasError('required')"><h5>{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h5></bizy-error>
+    <bizy-input [(value)]="tagSearch">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.TAG' | translate}}</strong></h6>
+
+        <bizy-input-option 
+            *ngFor="let tag of availableTags | bizySearch : tagSearch | bizyOrderBy : 'asc'"
+            (onSelect)="addTag(tag); tagSearch = ''">
+            <h5>{{tag}}</h5>
+        </bizy-input-option>
+
+        <bizy-tag slot="prefix" *ngFor="let tag of selectedTags" [type]="BIZY_TAG_TYPE.WARNING" (onSelect)="removeTag(tag)">
+            <h6>{{tag}}</h6>
+            <h6><i class="fa-solid fa-xmark"></i></h6>
+        </bizy-tag>
 
     </bizy-input>
 
-    <bizy-select label="{{'CORE.FORM.FIELD.TAG' | translate}}">
+    <span class="tero-confirm-buttons">
 
-        <bizy-select-option 
-            *ngFor="let tag of availableTags | bizySetToArray | bizyOrderBy : 'asc'"
-            (onSelect)="addTag(tag)">
-            <h5>{{tag}}</h5>
-        </bizy-select-option>
-
-    </bizy-select>
-
-    <span class="contact-form__tags">
-
-        <bizy-button *ngFor="let tag of selectedTags" (onSelect)="removeTag(tag)">
-            <bizy-tag [type]="BIZY_TAG_TYPE.WARNING">{{tag}}</bizy-tag>
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="_cancel()">
+            <h5><i class="fa-solid fa-xmark"></i></h5>
+            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
         </bizy-button>
-        
-    </span>
 
-    <bizy-confirm-buttons
-        confirmLabel="{{'CORE.BUTTON.CONFIRM' | translate}}"
-        cancelLabel="{{'CORE.BUTTON.CANCEL' | translate}}"
-        (cancel)="_cancel()"
-        (confirm)="_confirm()">
-    </bizy-confirm-buttons>
+        <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="_confirm()">
+            <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+            <h5><i class="fa-solid fa-check"></i></h5>
+        </bizy-button>
+
+    </span>
 
 </form>
 

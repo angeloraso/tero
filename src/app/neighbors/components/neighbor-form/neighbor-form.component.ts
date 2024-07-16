@@ -7,7 +7,13 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AVAILABLE_LOTS, AVAILABLE_SECURITY_GROUPS, DEFAULT_PICTURE } from '@core/constants';
+import {
+  AVAILABLE_LOTS,
+  AVAILABLE_SECURITY_GROUPS,
+  DEFAULT_PICTURE,
+  NAME_MAX_LENGTH,
+  NAME_MIN_LENGTH
+} from '@core/constants';
 import { Empty, INeighbor } from '@core/model';
 
 @Component({
@@ -23,6 +29,8 @@ export class NeighborFormComponent {
 
   readonly MIN_VALUE = 0;
   readonly MAX_VALUE = AVAILABLE_LOTS;
+  readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
+  readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly GROUPS = AVAILABLE_SECURITY_GROUPS;
 
   @Input() set id(id: string | Empty) {
@@ -150,10 +158,10 @@ export class NeighborFormComponent {
     return this.form.get('lot') as FormControl;
   }
 
-  setSecurity(security: boolean) {
-    this._security.setValue(security);
+  setSecurity(enable: boolean) {
+    this._security.setValue(enable);
 
-    if (security) {
+    if (enable) {
       this._group.setValidators([Validators.required]);
     } else {
       this._group.clearValidators();

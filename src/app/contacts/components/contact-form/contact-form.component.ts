@@ -27,9 +27,9 @@ export class ContactFormComponent {
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<IContact>();
   form: FormGroup;
-
-  availableTags: Set<string> = new Set<string>();
-  selectedTags: Set<string> = new Set<string>();
+  tagSearch: string | number = '';
+  availableTags: Array<string> = [];
+  selectedTags: Array<string> = [];
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
@@ -41,8 +41,8 @@ export class ContactFormComponent {
       return;
     }
 
-    this.availableTags = new Set(tags.available);
-    this.selectedTags = new Set(tags.selected);
+    this.availableTags = [...tags.available];
+    this.selectedTags = [...tags.selected];
   }
 
   @Input() set id(id: string | Empty) {
@@ -173,13 +173,31 @@ export class ContactFormComponent {
       return;
     }
 
-    this.selectedTags.add(tag);
-    this.availableTags.delete(tag);
+    this.selectedTags.push(tag);
+
+    const index = this.availableTags.findIndex(_tag => _tag === tag);
+    if (index !== -1) {
+      this.availableTags.splice(index, 1);
+    }
+
+    this.selectedTags = [...this.selectedTags];
+    this.availableTags = [...this.availableTags];
   }
 
   removeTag(tag: string) {
-    this.availableTags.add(tag);
-    this.selectedTags.delete(tag);
+    if (!tag) {
+      return;
+    }
+
+    this.availableTags.push(tag);
+
+    const index = this.selectedTags.findIndex(_tag => _tag === tag);
+    if (index !== -1) {
+      this.selectedTags.splice(index, 1);
+    }
+
+    this.selectedTags = [...this.selectedTags];
+    this.availableTags = [...this.availableTags];
   }
 
   _confirm() {

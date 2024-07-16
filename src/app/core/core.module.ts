@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
-import { BizyComponentsModule } from '@bizy/components';
 import { BizyTranslateModule, BizyTranslateService, LANGUAGE } from '@bizy/services';
 import { ENV } from '@env/environment';
 import { es } from './i18n';
@@ -15,7 +14,6 @@ import { es } from './i18n';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    BizyComponentsModule,
     BizyTranslateModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: ENV.production && !ENV.mobile })
   ],

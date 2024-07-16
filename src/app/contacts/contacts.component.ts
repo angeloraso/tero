@@ -33,6 +33,7 @@ export class ContactsComponent implements OnInit {
   securityLoading = false;
   contacts: Array<IContactCard> = [];
   search: string | number = '';
+  searchKeys = ['name', 'tags', 'surname', '_phones', 'score'];
   order: 'asc' | 'desc' | null = 'asc';
   orderBy = 'name';
 
@@ -167,13 +168,7 @@ export class ContactsComponent implements OnInit {
   }
 
   #filter(items: Array<IContact>): Array<IContact> {
-    let _items = this.bizySearchPipe.transform(items, this.search, [
-      'name',
-      'tags',
-      'surname',
-      'score',
-      '_phones'
-    ]);
+    let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
     _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }
