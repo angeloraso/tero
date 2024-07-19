@@ -38,6 +38,7 @@ export class NeighborsComponent implements OnInit {
   activatedFilters: number = 0;
   orderBy: string = 'lot';
   order: 'asc' | 'desc' | null = 'asc';
+  isMobile = true;
 
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -55,7 +56,9 @@ export class NeighborsComponent implements OnInit {
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(BizyPopupService) private popup: BizyPopupService
-  ) {}
+  ) {
+    this.isMobile = this.mobile.isMobile();
+  }
 
   async ngOnInit() {
     try {
@@ -175,7 +178,7 @@ export class NeighborsComponent implements OnInit {
         _security: this.translate.get('CORE.FORM.FIELD.SECURITY')
       };
 
-      if (this.mobile.isMobile()) {
+      if (this.isMobile) {
         const csv = this.exportToCSV.getCSV({ items, model });
         await this.mobile.downloadFile({ data: csv, name: fileName });
       } else {

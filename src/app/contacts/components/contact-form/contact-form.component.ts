@@ -16,6 +16,7 @@ import {
   NAME_MIN_LENGTH
 } from '@core/constants';
 import { Empty, IContact } from '@core/model';
+import { MobileService } from '@core/services';
 
 @Component({
   selector: 'tero-contact-form',
@@ -30,6 +31,7 @@ export class ContactFormComponent {
   tagSearch: string | number = '';
   availableTags: Array<string> = [];
   selectedTags: Array<string> = [];
+  isMobile = true;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
@@ -112,8 +114,10 @@ export class ContactFormComponent {
 
   constructor(
     @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(MobileService) private mobile: MobileService
   ) {
+    this.isMobile = this.mobile.isMobile();
     this.form = this.fb.group({
       id: [null],
       created: [null],

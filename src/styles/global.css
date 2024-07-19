@@ -245,8 +245,8 @@ h6 {
 }
 
 .tero-counter {
-    --bizy-input-min-width: fit-content;
-    --bizy-input-width: fit-content;
+    --bizy-input-min-width: 3rem;
+    --bizy-input-max-width: 4rem;
 }
 
 .tero-title {

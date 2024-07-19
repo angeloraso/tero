@@ -8,7 +8,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
-import { UserSettingsService } from '@core/services';
+import { MobileService, UserSettingsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
 import { IUserSettings } from './../../core/model';
 
@@ -28,18 +28,22 @@ export class PendingUsersComponent implements OnInit {
   search: string | number = '';
   order: 'asc' | 'desc' | null = 'asc';
   orderBy = 'email';
+  isMobile = true;
 
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
 
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,
+    @Inject(MobileService) private mobile: MobileService,
     @Inject(BizyPopupService) private popup: BizyPopupService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
     @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService
-  ) {}
+  ) {
+    this.isMobile = this.mobile.isMobile();
+  }
 
   async ngOnInit() {
     try {

@@ -36,6 +36,9 @@ export class ContactsComponent implements OnInit {
   searchKeys = ['name', 'tags', 'surname', '_phones', 'score'];
   order: 'asc' | 'desc' | null = 'asc';
   orderBy = 'name';
+  isMobile = true;
+  filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
+  activatedFilters: number = 0;
 
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -52,7 +55,9 @@ export class ContactsComponent implements OnInit {
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(UserSettingsService) private userSettingsService: UserSettingsService
-  ) {}
+  ) {
+    this.isMobile = this.mobile.isMobile();
+  }
 
   async ngOnInit() {
     try {
@@ -66,11 +71,20 @@ export class ContactsComponent implements OnInit {
       this.isConfig = isConfig;
       this.isNeighbor = isNeighbor;
 
+      const tags: Set<string> = new Set();
+
       this.contacts = contacts.map(_contact => {
+        _contact.tags.forEach(_tag => {
+          tags.add(_tag);
+        });
+
         return {
           ..._contact,
           _phones: _contact.phones.map(_phone => _phone.number)
         };
+      });
+      this.filterTags = Array.from(tags).map(_tag => {
+        return { id: _tag, value: _tag, selected: true };
       });
     } catch (error) {
       this.log.error({
@@ -94,6 +108,29 @@ export class ContactsComponent implements OnInit {
     }
 
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${contact.id}` });
+  }
+
+  checkFilters(activated: boolean) {
+    if (activated) {
+      this.activatedFilters++;
+    } else if (this.activatedFilters > 0) {
+      this.activatedFilters--;
+    }
+  }
+
+  onRemoveFilters() {
+    this.search = '';
+    this.filterTags.forEach(_tag => {
+      _tag.selected = true;
+    });
+    this.orderBy = '';
+    this.order = null;
+    this.activatedFilters = 0;
+    this.refresh();
+  }
+
+  refresh() {
+    this.contacts = [...this.contacts];
   }
 
   async copyPhone(phone: string) {
@@ -146,7 +183,7 @@ export class ContactsComponent implements OnInit {
         tags: this.translate.get('CORE.FORM.FIELD.TAG')
       };
 
-      if (this.mobile.isMobile()) {
+      if (this.isMobile) {
         const csv = this.exportToCSV.getCSV({ items, model });
         await this.mobile.downloadFile({ data: csv, name: fileName });
       } else {

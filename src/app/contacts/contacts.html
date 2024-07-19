@@ -14,29 +14,45 @@
 
     <span class="tero-section">
 
-        <span class="tero-section__start">
+        <span class="tero-section__end">
 
             <bizy-input 
                 class="tero-counter"
                 [readonly]="true"
-                [value]="search ? ((contacts | bizySearch: search : searchKeys).length + '/' + contacts.length) : contacts.length"
-                [autofocus]="true">
+                [value]="activatedFilters ? ((contacts | bizySearch: search : searchKeys | bizyFilter : 'tags' : filterTags).length + '/' + contacts.length) : contacts.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
-
-        </span>
-
-        <span class="tero-section__end">
 
             <bizy-input 
                 [disabled]="loading"
                 [(value)]="search"
-                [autofocus]="true">
+                (onChange)="checkFilters(!!search)"
+                [autofocus]="!isMobile">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
-            <bizy-button class="tero-button--warning" (onSelect)="search = ''" [disabled]="loading || !search">
+            <bizy-button class="tero-button--success" [disabled]="loading">
+    
+                <bizy-filter (onChange)="checkFilters($event)">
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+                    
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.TAG' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let tag of filterTags" 
+                            [id]="tag.id"
+                            [selected]="tag.selected"
+                            (onChange)="tag.selected = $event; refresh()">
+                            <h6>{{tag.value}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+            </bizy-button>
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
 
@@ -45,7 +61,10 @@
     </span>
 
     <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts | bizySearch: search : searchKeys | bizyOrderBy: order : orderBy">
+        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts 
+                                                                    | bizySearch: search : searchKeys
+                                                                    | bizyFilter : 'tags' : filterTags
+                                                                    | bizyOrderBy: order : orderBy">
 
             <ng-container *ngFor="let contact of contactArray">
 

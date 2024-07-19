@@ -15,6 +15,7 @@ import {
   NAME_MIN_LENGTH
 } from '@core/constants';
 import { Empty, INeighbor } from '@core/model';
+import { MobileService } from '@core/services';
 
 @Component({
   selector: 'tero-neighbor-form',
@@ -26,6 +27,7 @@ export class NeighborFormComponent {
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<INeighbor>();
   form: FormGroup;
+  isMobile = true;
 
   readonly MIN_VALUE = 0;
   readonly MAX_VALUE = AVAILABLE_LOTS;
@@ -105,7 +107,11 @@ export class NeighborFormComponent {
     this.setSecurity(security);
   }
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(
+    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(MobileService) private mobile: MobileService
+  ) {
+    this.isMobile = this.mobile.isMobile();
     this.form = this.fb.group({
       id: [null],
       created: [null],

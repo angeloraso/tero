@@ -15,8 +15,7 @@
             <bizy-input 
                 class="tero-counter"
                 [readonly]="true"
-                [value]="search ? ((pendingUsers | bizySearch: search : 'email').length + '/' + pendingUsers.length) : pendingUsers.length"
-                [autofocus]="true">
+                [value]="search ? ((pendingUsers | bizySearch: search : 'email').length + '/' + pendingUsers.length) : pendingUsers.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
@@ -27,7 +26,7 @@
             <bizy-input 
                 [disabled]="loading"
                 [(value)]="search"
-                [autofocus]="true">
+                [autofocus]="!isMobile">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>

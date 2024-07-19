@@ -24,8 +24,7 @@
                     | bizySearch: lotSearch : 'lot'
                     | bizySearch: surnameSearch : 'surname'
                     | bizySearch: nameSearch : 'name'
-                    | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length"
-                [autofocus]="true">
+                    | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
@@ -37,7 +36,7 @@
                 [disabled]="loading"
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
-                [autofocus]="true">
+                [autofocus]="!isMobile">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
