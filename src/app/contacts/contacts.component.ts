@@ -155,6 +155,11 @@ export class ContactsComponent implements OnInit {
 
       await this.mobile.call(contact.phones[0].number);
     } catch (error) {
+      this.log.error({
+        fileName: 'contacts.component',
+        functionName: 'onCall',
+        param: error
+      });
       this.toast.danger();
     }
   }
@@ -165,6 +170,32 @@ export class ContactsComponent implements OnInit {
     }
 
     window.open(`${WHATSAPP_URL}${contact.phones[0].number}`, '_blank');
+  }
+
+  async onShare(contact: IContactCard) {
+    try {
+      if (!contact.phones[0]) {
+        return;
+      }
+
+      await this.mobile.share({
+        dialogTitle: this.translate.get('CONTACTS.SHARE_CONTACTS'),
+        title: `${contact.name} ${contact.surname}`,
+        text: `${this.translate.get('CORE.FORM.FIELD.NAME')}: ${contact.name}${contact.surname ? ' ' + contact.surname : ''}
+${this.translate.get('CORE.FORM.FIELD.PHONE')}: ${contact.phones[0].number}
+${this.translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
+      });
+    } catch (error) {
+      this.log.error({
+        fileName: 'contacts.component',
+        functionName: 'onShare',
+        param: error
+      });
+      this.toast.danger({
+        title: 'Error',
+        msg: this.translate.get('CORE.FORM.ERROR.SHARE')
+      });
+    }
   }
 
   async export() {

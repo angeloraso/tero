@@ -75,6 +75,14 @@
                     <h4 slot="header-start" class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
 
                     <bizy-button 
+                        *ngIf="isMobile"
+                        slot="header-end"
+                        class="tero-action tero-action--default conctacts__card__action"
+                        (onSelect)="onShare(contact); $event.stopPropagation()">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </bizy-button>
+
+                    <bizy-button 
                         slot="header-end"
                         class="tero-action tero-action--info conctacts__card__action"
                         (onSelect)="onCall(contact); $event.stopPropagation()">

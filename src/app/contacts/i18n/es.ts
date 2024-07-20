@@ -6,6 +6,7 @@ export const locale = {
     CONTACTS: {
       TITLE: 'Contactos',
       CSV_FILE_NAME: 'tero_contactos.csv',
+      SHARE_CONTACT: 'Compartir contacto',
       ADD_CONTACT: {
         TITLE: 'Agregar contacto'
       },

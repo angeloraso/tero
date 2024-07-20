@@ -3,6 +3,7 @@ import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { App } from '@capacitor/app';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar } from '@capacitor/status-bar';
 import { ENV } from '@env/environment';
@@ -49,6 +50,21 @@ export class MobileService {
 
   call(number: string) {
     return this.callNumber.callNumber(number, false);
+  }
+
+  share(data: { dialogTitle?: string; title?: string; text?: string; url?: string }) {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const res = await Share.canShare();
+        if (!res.value) {
+          throw new Error('Not supported');
+        }
+        await Share.share(data);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   downloadFile(file: { data: string; name: string }) {

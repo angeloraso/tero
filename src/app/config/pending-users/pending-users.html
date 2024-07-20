@@ -10,18 +10,14 @@
 
     <span class="tero-section">
 
-        <span class="tero-section__start">
+        <span class="tero-section__end">
 
             <bizy-input 
                 class="tero-counter"
                 [readonly]="true"
-                [value]="search ? ((pendingUsers | bizySearch: search : 'email').length + '/' + pendingUsers.length) : pendingUsers.length">
+                [value]="search ? ((pendingUsers | bizySearch: search : searchKeys).length + '/' + pendingUsers.length) : pendingUsers.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
-
-        </span>
-
-        <span class="tero-section__end">
 
             <bizy-input 
                 [disabled]="loading"

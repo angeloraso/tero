@@ -46,7 +46,8 @@ export const locale = {
           MAX: 'El valor debe ser menor o igual a ',
           EMAIL: 'Email inválido',
           PHONE: 'Teléfono inválido',
-          APP: 'No posee una aplicación para leer el archivo'
+          APP: 'No posee una aplicación para leer el archivo',
+          SHARE: 'El dispositivo no permite compartir la información'
         }
       }
     }
