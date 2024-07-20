@@ -35,7 +35,8 @@
         </span>
 
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
-            <h4 class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
+            <span *ngIf="!showInfo"></span>
+            <h4 *ngIf="showInfo" class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
             <h5>Calle 170 Nte</h5>
             <h4 class="street__icon"><i class="fa-solid fa-person-walking"></i></h4>
         </span>    
@@ -405,7 +406,8 @@
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 20.6rem;">
             <span></span>
             <h5>Calle 172</h5>
-            <h4 class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
+            <span *ngIf="!showInfo"></span>
+            <h4 *ngIf="showInfo" class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
         </span>
 
         <span class="neighborhood__block" style="align-items: flex-end;">
@@ -501,7 +503,8 @@
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 24.6rem">
             <span></span>
             <h5>Calle 171</h5>
-            <h4 class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
+            <span *ngIf="!showInfo"></span>
+            <h4 *ngIf="showInfo" class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
         </span>
 
         <span class="neighborhood__block">
