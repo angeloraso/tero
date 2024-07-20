@@ -5,7 +5,7 @@ vars:
     default: ar.com.tero
   VERSION_NAME:
   VERSION_CODE:
-    default: 11
+    default: 12
   MIN_SDK:
     default: '= 29'
   SDK:
