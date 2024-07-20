@@ -14,7 +14,7 @@
 
     <span class="tero-section">
 
-        <span class="tero-section__start">
+        <span class="tero-section__end">
 
             <bizy-input 
                 class="tero-counter"
@@ -27,10 +27,6 @@
                     | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
-
-        </span>
-
-        <span class="tero-section__end">
 
             <bizy-input 
                 [disabled]="loading"
@@ -57,10 +53,11 @@
 
                 <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
                     
-                    <i class="fa-solid fa-filter"></i>
+                    <h6><i class="fa-solid fa-filter"></i></h6>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h4>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h6>
+
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let group of filterGroups"
                             [selected]="group.selected"
@@ -71,17 +68,18 @@
 
                 </bizy-filter>
 
-                <h5><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h5>
+                <h6><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h6>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'group'"></bizy-table-column-arrows>
             </bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="onSort('lot')">
-                <bizy-filter class="hidden-xs" (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
                     
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h4 filter-section-title><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h4>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h6>
+
                         <bizy-filter-section-search-option 
                             [(value)]="lotSearch"
                             (onChange)="refresh()">
@@ -90,7 +88,7 @@
 
                 </bizy-filter>
 
-                <h5><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h5>
+                <h6><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'lot'"></bizy-table-column-arrows>
             </bizy-table-column>
 
@@ -114,7 +112,7 @@
 
                 </bizy-filter>
 
-                <h5><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h5>
+                <h6><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'surname'"></bizy-table-column-arrows>
             </bizy-table-column>
 
@@ -138,7 +136,7 @@
 
                 </bizy-filter>
 
-                <h5><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h5>
+                <h6><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'name'"></bizy-table-column-arrows>
             </bizy-table-column>
 
