@@ -41,7 +41,7 @@
                         <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.TAG' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
-                            *ngFor="let tag of filterTags" 
+                            *ngFor="let tag of filterTags | bizyOrderBy : 'asc' : 'value'" 
                             [id]="tag.id"
                             [selected]="tag.selected"
                             (onChange)="tag.selected = $event; refresh()">
