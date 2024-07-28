@@ -1,5 +1,6 @@
 :host {
     --bizy-virtual-scroll-height: calc(100vh - var(--bizy-toolbar-height) - 8rem);
+    --bizy-card-cursor: pointer;
 }
 
 .conctacts__card__action {
@@ -13,7 +14,23 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+}
 
+.contacts__card__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.contacts__card__content__description {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.contacts__card__content__description * {
+    color: var(--default-color);
 }
 
 .contacts__card__phones__phone {

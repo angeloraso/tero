@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { configGuard } from '@core/guards';
+import { neighborGuard } from '@core/guards';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { ContactsComponent } from './contacts.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
@@ -19,12 +19,12 @@ const routes: Routes = [
   {
     path: PATH.ADD,
     component: AddContactComponent,
-    canActivate: [configGuard]
+    canActivate: [neighborGuard]
   },
   {
     path: ':contactId',
     component: EditContactComponent,
-    canActivate: [configGuard]
+    canActivate: [neighborGuard]
   }
 ];
 

@@ -52,13 +52,13 @@ export class ContactsService {
   putContact(contact: IContact): Promise<void> {
     return this.database.putContact({
       id: contact.id,
+      accountId: contact.accountId,
       name: contact.name,
       surname: contact.surname,
       description: contact.description,
-      comments: contact.comments,
+      rating: contact.rating,
       picture: contact.picture,
       phones: contact.phones,
-      score: contact.score,
       tags: contact.tags,
       created: Number(contact.created) || Date.now(),
       updated: Date.now()

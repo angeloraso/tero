@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import {
-  BizyBarChartModule,
   BizyButtonModule,
   BizyCardModule,
   BizyFilterModule,
   BizyInputModule,
-  BizyLineChartModule,
   BizySelectModule,
   BizySidebarModule,
   BizyTableModule,
@@ -41,8 +39,6 @@ import {
     BizyTableModule,
     BizySelectModule,
     BizyTranslatePipeModule,
-    BizyLineChartModule,
-    BizyBarChartModule,
     BizyFilterModule,
     BizyTagModule,
     BizyCardModule

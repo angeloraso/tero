@@ -9,13 +9,16 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BIZY_TAG_TYPE } from '@bizy/components';
+import { BizyPopupService } from '@bizy/services';
+import { RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
+import { AuthService } from '@core/auth/auth.service';
 import {
   DEFAULT_PICTURE,
   LONG_TEXT_MAX_LENGTH,
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH
 } from '@core/constants';
-import { Empty, IContact } from '@core/model';
+import { Empty, IContact, IContactRating } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
@@ -25,6 +28,11 @@ import { MobileService } from '@core/services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactFormComponent {
+  @Input() id: string = '';
+  @Input() accountId: string = '';
+  @Input() created: number = 0;
+  @Input() updated: number = 0;
+  @Input() rating: Array<IContactRating> = [];
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<IContact>();
   form: FormGroup;
@@ -45,30 +53,6 @@ export class ContactFormComponent {
 
     this.availableTags = [...tags.available];
     this.selectedTags = [...tags.selected];
-  }
-
-  @Input() set id(id: string | Empty) {
-    if (!id) {
-      return;
-    }
-
-    this._id.setValue(id);
-  }
-
-  @Input() set created(created: number | Empty) {
-    if (!created) {
-      return;
-    }
-
-    this._created.setValue(created);
-  }
-
-  @Input() set updated(updated: number | Empty) {
-    if (!updated) {
-      return;
-    }
-
-    this._updated.setValue(updated);
   }
 
   @Input() set picture(picture: string | Empty) {
@@ -115,13 +99,12 @@ export class ContactFormComponent {
   constructor(
     @Inject(FormBuilder) private fb: FormBuilder,
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(MobileService) private mobile: MobileService
+    @Inject(MobileService) private mobile: MobileService,
+    @Inject(BizyPopupService) private popup: BizyPopupService,
+    @Inject(AuthService) private auth: AuthService
   ) {
     this.isMobile = this.mobile.isMobile();
     this.form = this.fb.group({
-      id: [null],
-      created: [null],
-      updated: [null],
       picture: [DEFAULT_PICTURE, [Validators.required]],
       name: [
         null,
@@ -138,18 +121,6 @@ export class ContactFormComponent {
       phone: [null, [Validators.required]],
       description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
     });
-  }
-
-  get _id() {
-    return this.form.get('id') as FormControl;
-  }
-
-  get _created() {
-    return this.form.get('created') as FormControl;
-  }
-
-  get _updated() {
-    return this.form.get('updated') as FormControl;
   }
 
   get _picture() {
@@ -170,6 +141,65 @@ export class ContactFormComponent {
 
   get _phone() {
     return this.form.get('phone') as FormControl;
+  }
+
+  async openRatingPopup() {
+    const accountId = await this.auth.getId();
+    if (!accountId) {
+      return;
+    }
+
+    let value = null;
+    let description = null;
+
+    if (this.rating && this.rating.length > 0) {
+      const contactRating = this.rating.find(_rating => _rating.accountId === accountId);
+      if (contactRating) {
+        value = contactRating.value;
+        description = contactRating.description;
+      }
+    }
+
+    this.popup.open<IContactRating>(
+      {
+        component: RatingPopupComponent,
+        data: {
+          accountId,
+          value,
+          description
+        }
+      },
+      rating => {
+        if (rating) {
+          if (this.rating && this.rating.length > 0) {
+            const index = this.rating.findIndex(_rating => _rating.accountId === rating.accountId);
+            if (index !== -1) {
+              this.rating[index] = rating;
+            } else {
+              this.rating.push(rating);
+            }
+          } else {
+            this.rating = [rating];
+          }
+
+          this.rating = [...this.rating];
+          this.ref.detectChanges();
+        }
+      }
+    );
+  }
+
+  openRatingHistoryPopup() {
+    if (!this.rating || this.rating.length === 0) {
+      return;
+    }
+
+    this.popup.open<void>({
+      component: RatingHistoryPopupComponent,
+      data: {
+        rating: this.rating
+      }
+    });
   }
 
   addTag(tag: string) {
@@ -211,16 +241,16 @@ export class ContactFormComponent {
     }
 
     this.save.emit({
-      id: this._id.value,
-      created: this._created.value,
-      updated: this._updated.value,
+      id: this.id,
+      accountId: this.accountId,
+      created: this.created,
+      updated: this.updated,
       picture: this._picture.value,
       description: this._description.value ? this._description.value.trim() : '',
       surname: this._surname.value ? this._surname.value.trim() : '',
       name: this._name.value ? this._name.value.trim() : '',
-      comments: [],
+      rating: this.rating,
       tags: Array.from(this.selectedTags),
-      score: [],
       phones: [{ number: this._phone.value, description: '' }]
     });
   }

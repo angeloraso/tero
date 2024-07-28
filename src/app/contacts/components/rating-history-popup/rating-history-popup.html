@@ -1,0 +1,49 @@
+<span class="tero-wrapper">
+
+    <span class="tero-section">
+
+        <span class="tero-section__start">
+
+            <h1 class="tero-title">{{'CONTACTS.RATING_HISTORY_POPUP.TITLE' | translate}}</h1>
+
+            <bizy-tag [type]="BIZY_TAG_TYPE.WARNING" *ngIf="rating && rating.length > 0">
+                <h6>{{rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h6>
+            </bizy-tag>
+            
+        </span>
+    </span>
+
+    <span class="rating-history-popup__rating-wrapper" *ngIf="rating && rating.length > 0">
+
+        <span class="rating-history-popup__rating" *ngFor="let contactRating of rating">
+
+            <span class="rating-history-popup__rating__header">
+
+                <tero-img [height]="20" alt="Contact picture"></tero-img>
+
+                <span class="rating-history-popup__stars">
+    
+                    <h6 class="rating-history-popup__stars__star rating-history-popup__stars__star--selected"><i class="fa-solid fa-star"></i></h6>
+        
+                    <h6 class="rating-history-popup__stars__star" [ngClass]="{'rating-history-popup__stars__star--selected': contactRating.value <= 2}"><i class="fa-solid fa-star"></i></h6>
+        
+                    <h6 class="rating-history-popup__stars__star" [ngClass]="{'rating-history-popup__stars__star--selected': contactRating.value <= 3}"><i class="fa-solid fa-star"></i></h6>
+        
+                    <h6 class="rating-history-popup__stars__star" [ngClass]="{'rating-history-popup__stars__star--selected': contactRating.value <= 4}"><i class="fa-solid fa-star"></i></h6>
+        
+                    <h6 class="rating-history-popup__stars__star" [ngClass]="{'rating-history-popup__stars__star--selected': contactRating.value <= 5}"><i class="fa-solid fa-star"></i></h6>
+        
+                </span>
+
+            </span>
+        
+            <bizy-card *ngIf="contactRating.description">
+                <h6 slot="header-start" class="tero-title"><strong>{{'CORE.FORM.FIELD.COMMENTS' | translate}}</strong></h6>
+                <h6>{{contactRating.description}}</h6>
+            </bizy-card>
+        
+        </span>
+
+    </span>
+    
+</span>

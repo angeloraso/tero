@@ -60,7 +60,7 @@
 
     </span>
 
-    <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
+    <bizy-virtual-scroll itemMinHeight="9rem" itemMinWidth="16rem" [bizyLoading]="loading">
         <div virtualScrollGrid *virtualNgFor="let contactArray in contacts 
                                                                     | bizySearch: search : searchKeys
                                                                     | bizyFilter : 'tags' : filterTags
@@ -96,15 +96,36 @@
                         <i class="fa-brands fa-whatsapp"></i>
                     </bizy-button>
 
-                    <span class="contacts__card__phones__phone" *ngFor="let phone of contact._phones">
+                    <span class="contacts__card__content">
 
-                        <h6><strong>{{phone}}</strong></h6>
+                        <span class="contacts__card__content__description" *ngIf="contact.description">
+                            <h6><i class="fa-regular fa-message"></i></h6>
+                            <h6 class="tero-text-ellipsis">{{contact.description}}</h6>
+                        </span>
 
-                        <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
-
+                        <span class="contacts__card__phones__phone" *ngFor="let phone of contact._phones">
+    
+                            <h6><strong>{{phone}}</strong></h6>
+    
+                            <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
+    
+                        </span>
                     </span>
+                    
 
-                    <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.WARNING" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
+                    <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
+
+                    <bizy-tag slot="footer-end" *ngIf="!contact.rating || contact.rating.length === 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
+                        <h6><i class="fa-solid fa-star"></i></h6>
+                    </bizy-tag>
+
+                    <bizy-tag slot="footer-end" *ngIf="contact.rating && contact.rating.length > 0" (onSelect)="openRatingHistoryPopup(contact); $event.stopPropagation()">
+                        <h6><i class="fa-regular fa-comment"></i></h6>
+                    </bizy-tag>
+
+                    <bizy-tag slot="footer-end" [type]="BIZY_TAG_TYPE.WARNING" *ngIf="contact.rating && contact.rating.length > 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
+                        <h6>{{contact.rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h6>
+                    </bizy-tag>
 
                 </bizy-card>
 

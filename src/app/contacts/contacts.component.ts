@@ -6,15 +6,18 @@ import {
   BizyCopyToClipboardService,
   BizyExportToCSVService,
   BizyLogService,
+  BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
+import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
-import { IContact } from '@core/model';
+import { IContact, IContactRating } from '@core/model';
 import { ContactsService, MobileService, UserSettingsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { RatingHistoryPopupComponent, RatingPopupComponent } from './components';
 
 interface IContactCard extends IContact {
   _phones: Array<string>;
@@ -45,6 +48,7 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,
+    @Inject(AuthService) private auth: AuthService,
     @Inject(ContactsService) private contactsService: ContactsService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
@@ -54,7 +58,8 @@ export class ContactsComponent implements OnInit {
     @Inject(BizyCopyToClipboardService) private bizyToClipboard: BizyCopyToClipboardService,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
+    @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
+    @Inject(BizyPopupService) private popup: BizyPopupService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -99,15 +104,100 @@ export class ContactsComponent implements OnInit {
   }
 
   addContact() {
+    if (!this.isNeighbor) {
+      return;
+    }
+
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${CONTACTS_PATH.ADD}` });
   }
 
   editContact(contact: IContactCard) {
-    if (!contact) {
+    if (!contact || !this.isNeighbor) {
       return;
     }
 
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${contact.id}` });
+  }
+
+  async openRatingPopup(contact: IContactCard) {
+    if (!contact || !this.isNeighbor) {
+      return;
+    }
+
+    const accountId = await this.auth.getId();
+    if (!accountId) {
+      return;
+    }
+
+    let value = null;
+    let description = null;
+
+    if (contact.rating && contact.rating.length > 0) {
+      const contactRating = contact.rating.find(_rating => _rating.accountId === accountId);
+      if (contactRating) {
+        value = contactRating.value;
+        description = contactRating.description;
+      }
+    }
+
+    this.popup.open<IContactRating>(
+      {
+        component: RatingPopupComponent,
+        data: {
+          accountId,
+          value,
+          description
+        }
+      },
+      async rating => {
+        try {
+          if (rating) {
+            this.loading = true;
+            if (contact.rating && contact.rating.length > 0) {
+              const index = contact.rating.findIndex(
+                _rating => _rating.accountId === rating.accountId
+              );
+              if (index !== -1) {
+                contact.rating[index] = rating;
+              } else {
+                contact.rating.push(rating);
+              }
+            } else {
+              contact.rating = [rating];
+            }
+
+            await this.contactsService.putContact(contact);
+            const index = this.contacts.findIndex(_contact => _contact.id === contact.id);
+            if (index !== -1) {
+              this.contacts[index] = contact;
+              this.contacts = [...this.contacts];
+            }
+          }
+        } catch (error) {
+          this.log.error({
+            fileName: 'contacts.component',
+            functionName: 'openRating',
+            param: error
+          });
+          this.toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
+  }
+
+  openRatingHistoryPopup(contact: IContactCard) {
+    if (!contact || !contact.rating || contact.rating.length === 0 || !this.isNeighbor) {
+      return;
+    }
+
+    this.popup.open<void>({
+      component: RatingHistoryPopupComponent,
+      data: {
+        rating: contact.rating
+      }
+    });
   }
 
   checkFilters(activated: boolean) {

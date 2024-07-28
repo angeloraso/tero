@@ -34,7 +34,6 @@ export const locale = {
           EMAIL: 'Email',
           PASSWORD: 'Contraseña',
           SEARCH: 'Buscar',
-          SCORE: 'Puntuación',
           COMMENTS: 'Comentarios',
           PHONE: 'Teléfono',
           DESCRIPTION: 'Descripción',

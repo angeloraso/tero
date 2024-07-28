@@ -7,6 +7,12 @@ export const locale = {
       TITLE: 'Contactos',
       CSV_FILE_NAME: 'tero_contactos.csv',
       SHARE_CONTACT: 'Compartir contacto',
+      RATING_POPUP: {
+        TITLE: 'Opinar sobre el contacto'
+      },
+      RATING_HISTORY_POPUP: {
+        TITLE: 'Opiniones'
+      },
       ADD_CONTACT: {
         TITLE: 'Agregar contacto'
       },

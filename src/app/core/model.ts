@@ -78,15 +78,23 @@ export interface ISecurity {
   staff: Array<ISecurityGuard>;
 }
 
+export type Rating = 1 | 2 | 3 | 4 | 5;
+
+export interface IContactRating {
+  accountId: string;
+  description: string;
+  value: Rating;
+}
+
 export interface IContact {
   id: string;
+  accountId: string;
   name: string;
   surname: string;
   description: string;
-  comments: Array<string>;
+  rating: Array<IContactRating>;
   picture: string;
   phones: Array<IPhone>;
-  score: Array<number>;
   tags: Array<string>;
   created: number;
   updated: number;
@@ -94,34 +102,28 @@ export interface IContact {
 
 export class Contact implements IContact {
   id: string;
+  accountId: string;
   name: string;
   surname: string;
   description: string;
-  comments: Array<string>;
+  rating: Array<IContactRating>;
   picture: string;
   phones: Array<IPhone>;
-  score: Array<number>;
   tags: Array<string>;
   created: number;
   updated: number;
 
   constructor(contact: Omit<IContact, 'id' | 'score'>) {
     this.id = uuid4();
+    this.accountId = contact.accountId;
     this.name = contact.name ?? '';
     this.surname = contact.surname ?? '';
     this.description = contact.description ?? '';
-    this.comments = contact.comments ?? [];
+    this.rating = contact.rating ?? [];
     this.picture = contact.picture ?? DEFAULT_PICTURE;
     this.phones = contact.phones ?? [];
     this.tags = contact.tags ?? [];
-    this.score = [];
     this.created = Date.now();
     this.updated = Date.now();
   }
-}
-
-export interface IContactTag {
-  id: string;
-  value: string;
-  selected: boolean;
 }

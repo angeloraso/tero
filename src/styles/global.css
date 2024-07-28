@@ -282,3 +282,11 @@ h6 {
 .tero-confirm-buttons__confirm {
     --bizy-button-background-color: var(--accent-color);
 }
+
+.tero-text-ellipsis {
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { AuthService } from '@core/auth/auth.service';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 
@@ -14,6 +15,7 @@ export class AddContactComponent implements OnInit {
 
   constructor(
     @Inject(ContactsService) private contacts: ContactsService,
+    @Inject(AuthService) private auth: AuthService,
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(BizyLogService) private log: BizyLogService
@@ -46,7 +48,12 @@ export class AddContactComponent implements OnInit {
       }
 
       this.loading = true;
-      await this.contacts.postContact(contact);
+      const accountId = await this.auth.getId();
+      if (!accountId) {
+        throw new Error();
+      }
+
+      await this.contacts.postContact({ ...contact, accountId });
       this.goBack();
     } catch (error) {
       this.log.error({

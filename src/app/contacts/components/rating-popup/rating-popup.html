@@ -1,0 +1,59 @@
+<span class="tero-wrapper">
+
+    <span class="tero-section">
+        <h1 class="tero-title">{{'CONTACTS.RATING_POPUP.TITLE' | translate}}</h1>
+    </span>
+
+    <span class="tero-form">
+        
+        <span class="rating-popup__stars">
+
+            <bizy-button (onSelect)="value.setValue(5)" class="rating-popup__stars__star" [ngClass]="{'rating-popup__stars__star--selected': value.value === 5}">
+                <h1><i class="fa-solid fa-star"></i></h1>
+            </bizy-button>
+
+            <bizy-button (onSelect)="value.setValue(4)" class="rating-popup__stars__star" [ngClass]="{'rating-popup__stars__star--selected': value.value === 4}">
+                <h1><i class="fa-solid fa-star"></i></h1>
+            </bizy-button>
+
+            <bizy-button (onSelect)="value.setValue(3)" class="rating-popup__stars__star" [ngClass]="{'rating-popup__stars__star--selected': value.value === 3}">
+                <h1><i class="fa-solid fa-star"></i></h1>
+            </bizy-button>
+
+            <bizy-button (onSelect)="value.setValue(2)" class="rating-popup__stars__star" [ngClass]="{'rating-popup__stars__star--selected': value.value === 2}">
+                <h1><i class="fa-solid fa-star"></i></h1>
+            </bizy-button>
+
+            <bizy-button (onSelect)="value.setValue(1)" class="rating-popup__stars__star" [ngClass]="{'rating-popup__stars__star--selected': value.value === 1}">
+                <h1><i class="fa-solid fa-star"></i></h1>
+            </bizy-button>
+
+        </span>
+    
+        <bizy-input
+            type="textarea"
+            [autofocus]="true"
+            [value]="description.value"
+            (onChange)="description.setValue($event)">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.COMMENTS' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h6>
+        </bizy-input>
+        
+    
+        <span class="tero-confirm-buttons">
+    
+            <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+                <h5><i class="fa-solid fa-xmark"></i></h5>
+                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+            </bizy-button>
+    
+            <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+                <h5><i class="fa-solid fa-check"></i></h5>
+            </bizy-button>
+    
+        </span>
+
+    </span>
+    
+</span>
