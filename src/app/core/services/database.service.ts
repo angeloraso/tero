@@ -1,7 +1,15 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { AuthService } from '@core/auth/auth.service';
-import { IContact, INeighbor, ISecurity, IUserSettings, ROLE, USER_STATUS } from '@core/model';
+import {
+  IContact,
+  INeighbor,
+  ISecurity,
+  ISecurityInvoice,
+  IUserSettings,
+  ROLE,
+  USER_STATUS
+} from '@core/model';
 import { BehaviorSubject } from 'rxjs';
 
 enum COLLECTION {
@@ -308,6 +316,39 @@ export class DatabaseService implements OnDestroy {
             }
           }
         );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postSecurityGroupInvoice(invoice: ISecurityInvoice): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data = await this.getSecurity();
+        if (!data) {
+          throw new Error('No security data');
+        }
+
+        if (!data.invoices) {
+          data.invoices = [invoice];
+        } else {
+          const index = data.invoices.findIndex(
+            _invoice => _invoice.timestamp === invoice.timestamp
+          );
+          if (index === -1) {
+            data.invoices.push(invoice);
+          }
+        }
+
+        const securityDocument = JSON.parse(JSON.stringify(data));
+        console.log(securityDocument);
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+          data: securityDocument
+        });
+        resolve();
       } catch (error) {
         reject(error);
       }

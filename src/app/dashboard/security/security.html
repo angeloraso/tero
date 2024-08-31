@@ -1,0 +1,80 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'SECURITY.TITLE' | translate}}</h1>
+
+</bizy-toolbar>
+
+<div class="security tero-wrapper">
+
+    <bizy-card>
+
+        <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-circle-info"></i></h4>
+        <h4 slot="header-start" class="tero-title">{{'SECURITY.INFO.TITLE' | translate}}</h4>
+
+        <span class="security__info__content">
+
+            <span class="security__info__content__section">
+                <h5>{{'SECURITY.INFO.SECURITY_FEE' | translate}}</h5>
+                <bizy-tag><h5 [bizyLoading]="loading">$ {{securityFee | number : '1.2-2'}}</h5></bizy-tag>
+            </span>
+    
+            <span class="security__info__content__section">
+                <h5>{{'SECURITY.INFO.MEMBERS' | translate}}</h5>
+                <bizy-tag><h5 [bizyLoading]="loading">{{members}}</h5></bizy-tag>
+            </span>
+    
+            <span class="security__info__content__section">
+                <h5>{{'SECURITY.INFO.MEMBERSHIP_FEE' | translate}}</h5>
+                <bizy-tag><h5 [bizyLoading]="loading">$ {{membershipFee | number : '1.2-2'}}</h5></bizy-tag>
+            </span>
+            
+        </span>
+
+    </bizy-card>
+
+    <bizy-card>
+
+        <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-user-shield"></i></h4>
+        <h4 slot="header-start" class="tero-title">{{'SECURITY.STAFF.TITLE' | translate}}</h4>
+
+        <span class="security__staff__content">
+
+            <span class="security__staff__content__guard" *ngFor="let guard of securityStaff">
+
+                <h5 [bizyLoading]="loading" [bizyLoadingType]="LOADING_TYPE.BAR"><strong>{{guard.name}}:</strong></h5>
+                <h5 *ngIf="!loading">{{guard.description}}</h5>
+    
+            </span>
+
+        </span>
+
+    </bizy-card>
+
+    <bizy-card>
+
+        <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-users"></i></h4>
+        <h4 slot="header-start" class="tero-title">{{'SECURITY.GROUPS.TITLE' | translate}}</h4>
+
+        <span class="security__groups__content">
+
+            <span class="security__groups__content__section" *ngFor="let group of groups">
+
+                <span class="security__groups__content__section__data">
+                    <h5><strong>{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}}</strong></h5>
+                    <h5>({{group.lots.size}})</h5>
+                    <bizy-tag *ngIf="!loading"><h6 *ngIf="group.debt">{{'SECURITY.GROUPS.DEBT' | translate}}</h6></bizy-tag>
+                </span>
+
+                <bizy-tag [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS" (onSelect)="setGroupDebt(group)">
+                    <h5 [bizyLoading]="loading">$ {{group.fee | number : '1.2-2'}}</h5>
+                </bizy-tag>
+    
+            </span>
+
+        </span>
+
+    </bizy-card>
+
+</div>

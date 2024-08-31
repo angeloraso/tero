@@ -8,67 +8,43 @@
 
 <div class="tero-wrapper">
 
-    <span class="tero-card dashboard__security" [bizyLoading]="loading">
+    <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo">
 
-        <span class="dashboard__security__header">
+        <h4 slot="header-start" class="dashboard__security__header__icon"><i class="fa-solid fa-shield-halved"></i></h4>
 
-            <span class="dashboard__security__header__title">
-                
-                <h1><i class="fa-solid fa-shield-halved dashboard__security__header__icon"></i></h1>
+        <h4 slot="header-start">{{'DASHBOARD.SECURITY.TITLE' | translate}}</h4>
 
-                <h1>{{'DASHBOARD.SECURITY.TITLE' | translate}}</h1>
-
-                <h5>({{contributors}})</h5>
-
-            </span>
-
-            <bizy-tag [type]="BIZY_TAG_TYPE.DEFAULT"><h5>${{securityFee ? (securityFee | number : '1.0-0') : '0.00'}}</h5></bizy-tag>
-
-        </span>
+        <bizy-tag slot="header-end"><h6 [bizyLoading]="loading">${{securityFee ? (securityFee | number : '1.0-0') : '0.00'}}</h6></bizy-tag>
 
         <span class="dashboard__security__content">
 
-            <span class="dashboard__security__content__title">
-                <h3>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}:</h3>
+            <span class="dashboard__security__content__section">
 
-                <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h4>${{contributorFee | number : '1.2-2'}}</h4></bizy-tag>
+                <h6>{{'DASHBOARD.SECURITY.MEMBERS' | translate}}</h6>
+
+                <bizy-tag><h6 [bizyLoading]="loading">{{members}}</h6></bizy-tag>
 
             </span>
 
-            <ng-container *ngFor="let group of groups">
-                <span class="dashboard__security__content__group" *ngIf="group">
+            <span class="dashboard__security__content__section">
 
-                    <span class="dashboard__security__content__group__name">
+                <h6>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}</h6>
 
-                        <span class="dashboard__security__content__group__name-color--{{group.value}}"></span>
-
-                        <h5 class="dashboard__security__content__group__name-value">{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}} ({{group.lots.size}}):</h5>
-
-                    </span>
-
-                    <h6 class="dashboard__security__content__group__fee">$ {{group.fee | number : '1.2-2'}}</h6>
-
-                </span>
-            </ng-container>
-
-        </span>
-
-        <span class="dashboard__security__content">
-
-            <span class="dashboard__security__content__title">
-                <h3>{{'DASHBOARD.SECURITY.STAFF' | translate}}</h3>
-            </span>
-
-            <span class="dashboard__security__content__guard" *ngFor="let guard of securityStaff">
-
-                <h5><i class="fa-solid fa-user-shield dashboard__security__content__guard__icon"></i></h5>
-
-                <h5><strong>{{guard.name}}:</strong> {{guard.description}}</h5>
+                <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h6 [bizyLoading]="loading">${{membershipFee | number : '1.2-2'}}</h6></bizy-tag>
 
             </span>
 
         </span>
 
-    </span>
+        <span slot="footer-start" *ngFor="let group of groups">
+            <bizy-tag [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS"><h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6></bizy-tag>
+        </span>
+
+        <bizy-button slot="footer-end" class="tero-action tero-action--info" (onSelect)="goToSecurity()">
+            <h6><i class="fa-solid fa-plus"></i></h6>
+            <h6>{{'CORE.MORE_INFO' | translate}}</h6>
+        </bizy-button>
+
+    </bizy-card>
 
 </div>

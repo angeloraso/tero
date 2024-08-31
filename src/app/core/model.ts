@@ -73,9 +73,15 @@ export interface ISecurityGuard {
   description: string;
 }
 
+export interface ISecurityInvoice {
+  timestamp: number;
+  group: number;
+}
+
 export interface ISecurity {
   fee: number;
   staff: Array<ISecurityGuard>;
+  invoices: Array<ISecurityInvoice>;
 }
 
 export type Rating = 1 | 2 | 3 | 4 | 5;

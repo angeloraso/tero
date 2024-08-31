@@ -20,6 +20,15 @@
             "polyfills": [
               "zone.js"
             ],
+            "allowedCommonJsDependencies": [
+              "lodash/throttle.js",
+              "namespace-emitter",
+              "classnames",
+              "is-shallow-equal",
+              "lodash/debounce.js",
+              "flatpickr/dist/l10n/es.js",
+              "html2canvas"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {

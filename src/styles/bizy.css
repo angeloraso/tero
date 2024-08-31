@@ -10,9 +10,9 @@
 @import '/node_modules/@bizy/components/styles/overlay.css';
 
 :root {
-    --bizy-loading-color-1st-line: var(--light-primary-color);
-    --bizy-loading-color-2nd-line: var(--primary-color);
-    --bizy-loading-color-3rd-line: var(--dark-primary-color);
+    --bizy-loading-spinner-color-1st-line: var(--light-primary-color);
+    --bizy-loading-spinner-color-2nd-line: var(--primary-color);
+    --bizy-loading-spinner-color-3rd-line: var(--dark-primary-color);
 
     --bizy-table-column-min-width: 4.3rem;
     --bizy-table-background-color: var(--background-color);

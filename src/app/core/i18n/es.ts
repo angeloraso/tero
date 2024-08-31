@@ -7,7 +7,8 @@ export const locale = {
       EMPTY: 'Sin información',
       TOTAL: 'Total',
       YES: 'Si',
-      No: 'No',
+      NO: 'No',
+      MORE_INFO: 'Más info',
       MENU: {
         DASHBOARD: 'Panel',
         NEIGHBORHOOD: 'Barrio',

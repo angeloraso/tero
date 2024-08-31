@@ -9,7 +9,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
-import { Empty } from '@core/model';
+import { ISecurityGuard } from '@core/model';
 import {
   NeighborsService,
   SecurityService,
@@ -17,22 +17,27 @@ import {
   UtilsService
 } from '@core/services';
 import { PopupComponent } from '@shared/components';
-import { PATH } from './dashboard.routing';
 interface IGroup {
   value: number;
   lots: Set<number>;
   fee: number;
   debt: boolean;
 }
+
 @Component({
-  selector: 'tero-dashboard',
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  selector: 'tero-security',
+  templateUrl: './security.html',
+  styleUrls: ['./security.css']
 })
-export class DashboardComponent implements OnInit {
+export class SecurityComponent implements OnInit {
   loading = false;
   showInfo = false;
-  securityFee: number | Empty;
+  securityStaff: Array<ISecurityGuard> = Array.from({ length: 4 }, () => ({
+    name: '',
+    picture: '',
+    description: ''
+  }));
+  securityFee: number = 0;
   groups: Array<IGroup> = Array.from({ length: 6 }, (_, i) => ({
     value: i + 1,
     lots: new Set(),
@@ -75,6 +80,12 @@ export class DashboardComponent implements OnInit {
         return;
       }
 
+      this.securityStaff = Array.from({ length: 4 }, () => ({
+        name: '',
+        picture: '',
+        description: ''
+      }));
+
       this.groups = Array.from({ length: 6 }, (_, i) => ({
         value: i + 1,
         lots: new Set(),
@@ -95,6 +106,7 @@ export class DashboardComponent implements OnInit {
       });
 
       if (security) {
+        this.securityStaff = security.staff;
         this.securityFee = security.fee;
         this.groups.forEach(_group => {
           this.members += _group.lots.size;
@@ -124,7 +136,7 @@ export class DashboardComponent implements OnInit {
       }
     } catch (error) {
       this.log.error({
-        fileName: 'dashboard.component',
+        fileName: 'security.component',
         functionName: 'ngOnInit',
         param: error
       });
@@ -134,8 +146,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  goToSecurity() {
-    this.router.goTo({ path: PATH.SECURITY });
+  goBack() {
+    this.router.goBack();
   }
 
   setGroupDebt(group: IGroup) {
@@ -147,8 +159,8 @@ export class DashboardComponent implements OnInit {
       {
         component: PopupComponent,
         data: {
-          title: `${this.translate.get('DASHBOARD.SECURITY.GROUP_DEBT_POPUP.TITLE')} ${group.value}`,
-          msg: this.translate.get('DASHBOARD.SECURITY.GROUP_DEBT_POPUP.MSG')
+          title: `${this.translate.get('SECURITY.GROUPS.DEBT_POPUP.TITLE')} ${group.value}`,
+          msg: this.translate.get('SECURITY.GROUPS.DEBT_POPUP.MSG')
         }
       },
       async res => {
@@ -161,7 +173,7 @@ export class DashboardComponent implements OnInit {
           }
         } catch (error) {
           this.log.error({
-            fileName: 'dashboard.component',
+            fileName: 'security.component',
             functionName: 'setGroupDebt',
             param: error
           });
