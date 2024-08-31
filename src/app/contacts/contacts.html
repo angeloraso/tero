@@ -61,7 +61,7 @@
     </span>
 
     <bizy-virtual-scroll itemMinHeight="9rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let contactArray in contacts 
+        <div virtual-scroll-grid *virtualNgFor="let contactArray in contacts 
                                                                     | bizySearch: search : searchKeys
                                                                     | bizyFilter : 'tags' : filterTags
                                                                     | bizyOrderBy: order : orderBy">

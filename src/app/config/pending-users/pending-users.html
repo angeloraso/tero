@@ -36,7 +36,7 @@
     </span>
 
     <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtualScrollGrid *virtualNgFor="let pendingUsersArray in pendingUsers | bizySearch: search : 'email' | bizyOrderBy: order : orderBy">
+        <div virtual-scroll-grid *virtualNgFor="let pendingUsersArray in pendingUsers | bizySearch: search : 'email' | bizyOrderBy: order : orderBy">
 
             <ng-container *ngFor="let pendingUser of pendingUsersArray">
 

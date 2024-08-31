@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BIZY_TAG_TYPE } from '@bizy/components';
+import { LOADING_TYPE } from '@bizy/directives';
 import { BizyLogService, BizyToastService } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
 import { Empty, ISecurityGuard } from '@core/model';
@@ -29,6 +30,7 @@ export class DashboardComponent implements OnInit {
   contributorFee = 0;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
+  readonly LOADING_TYPE = LOADING_TYPE;
 
   constructor(
     @Inject(NeighborsService) private neighborsService: NeighborsService,

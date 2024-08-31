@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
         this.mobile.hideSplash();
       }
 
-      this.auth.signedIn$.subscribe(signedIn => {
+      this.auth.signedIn$.subscribe(async signedIn => {
         if (!signedIn) {
           this.database.destroy();
           this.router.goTo({ path: `/${PATH.AUTH}` });
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
           if (ENV.mobile) {
             this.router.goTo({ path: `/${PATH.HOME}` });
           }
-          this.userSettingsService.postUserSettings();
+          await this.userSettingsService.postUserSettings();
         }
       });
     } catch (error) {

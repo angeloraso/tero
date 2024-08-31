@@ -19,3 +19,7 @@
     row-gap: 1rem;
     text-align: center;
 }
+
+.about-popup__content * {
+    text-align: center;
+}

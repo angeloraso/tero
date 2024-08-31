@@ -328,7 +328,7 @@ export class DatabaseService implements OnDestroy {
         }
 
         await FirebaseFirestore.addDocumentSnapshotListener<IUserSettings>(
-          { reference: `${COLLECTION.USERS}/${this.auth.getEmail()}` },
+          { reference: `${COLLECTION.USERS}/${userEmail}` },
           (event, error) => {
             if (error) {
               console.log(error);
