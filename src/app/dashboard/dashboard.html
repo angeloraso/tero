@@ -36,9 +36,13 @@
 
         </span>
 
-        <span slot="footer-start" *ngFor="let group of groups">
-            <bizy-tag [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS"><h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6></bizy-tag>
-        </span>
+        <bizy-tag 
+            slot="footer-start"
+            *ngFor="let group of groups"
+            (onSelect)="setGroupDebt(group); $event.stopPropagation()"
+            [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS">
+            <h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6>
+        </bizy-tag>
 
         <bizy-button slot="footer-end" class="tero-action tero-action--info" (onSelect)="goToSecurity()">
             <h6><i class="fa-solid fa-plus"></i></h6>
