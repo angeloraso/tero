@@ -20,7 +20,7 @@
     "typescript"
   ],
   "eslint.run": "onSave",
-  "cSpell.userWords": ["tero"],
+  "cSpell.userWords": ["tero", "ecommerce"],
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {

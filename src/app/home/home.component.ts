@@ -4,7 +4,9 @@ import { BizyRouterService, BizyStorageService } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import pkg from 'package.json';
 import { Subscription } from 'rxjs';
+
 interface IOption {
   icon: string;
   label: string;
@@ -56,6 +58,7 @@ export class HomeComponent implements OnDestroy {
   #subscription = new Subscription();
   readonly #CLOSED_SIDEBAR = 'CLOSED_SIDEBAR';
   readonly LOGO_PATH = LOGO_PATH;
+  readonly DESCRIPTION: string = pkg.description;
 
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,

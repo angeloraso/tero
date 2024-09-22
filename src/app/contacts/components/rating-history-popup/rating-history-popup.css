@@ -1,6 +1,5 @@
 :host {
     --bizy-card-background-color: var(--dark-input-background-color);
-    --bizy-virtual-scroll-height: 30rem;
 }
 
 .rating-history-popup__rating-wrapper {

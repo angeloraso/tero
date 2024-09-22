@@ -13,12 +13,12 @@ import { BizyPopupService } from '@bizy/services';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
 import { AuthService } from '@core/auth/auth.service';
 import {
-  DEFAULT_PICTURE,
+  DEFAULT_USER_PICTURE,
   LONG_TEXT_MAX_LENGTH,
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH
 } from '@core/constants';
-import { Empty, IContact, IContactRating } from '@core/model';
+import { IContact, IContactRating } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
@@ -55,16 +55,16 @@ export class ContactFormComponent {
     this.selectedTags = [...tags.selected];
   }
 
-  @Input() set picture(picture: string | Empty) {
+  @Input() set picture(picture: string) {
     if (!picture) {
-      this._picture.setValue(DEFAULT_PICTURE);
+      this._picture.setValue(DEFAULT_USER_PICTURE);
       return;
     }
 
     this._picture.setValue(picture);
   }
 
-  @Input() set surname(surname: string | Empty) {
+  @Input() set surname(surname: string) {
     if (!surname) {
       return;
     }
@@ -72,7 +72,7 @@ export class ContactFormComponent {
     this._surname.setValue(surname);
   }
 
-  @Input() set name(name: string | Empty) {
+  @Input() set name(name: string) {
     if (!name) {
       return;
     }
@@ -80,7 +80,7 @@ export class ContactFormComponent {
     this._name.setValue(name);
   }
 
-  @Input() set phone(phone: string | Empty) {
+  @Input() set phone(phone: string) {
     if (!phone) {
       return;
     }
@@ -88,7 +88,7 @@ export class ContactFormComponent {
     this._phone.setValue(phone);
   }
 
-  @Input() set description(description: string | Empty) {
+  @Input() set description(description: string) {
     if (!description) {
       return;
     }
@@ -105,7 +105,7 @@ export class ContactFormComponent {
   ) {
     this.isMobile = this.mobile.isMobile();
     this.form = this.fb.group({
-      picture: [DEFAULT_PICTURE, [Validators.required]],
+      picture: [DEFAULT_USER_PICTURE, [Validators.required]],
       name: [
         null,
         [

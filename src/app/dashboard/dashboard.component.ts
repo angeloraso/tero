@@ -9,8 +9,9 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
-import { Empty } from '@core/model';
+import { IEcommerceProduct } from '@core/model';
 import {
+  EcommerceService,
   NeighborsService,
   SecurityService,
   UserSettingsService,
@@ -32,7 +33,7 @@ interface IGroup {
 export class DashboardComponent implements OnInit {
   loading = false;
   showInfo = false;
-  securityFee: number | Empty;
+  securityFee: number | null = null;
   groups: Array<IGroup> = Array.from({ length: 6 }, (_, i) => ({
     value: i + 1,
     lots: new Set(),
@@ -42,6 +43,7 @@ export class DashboardComponent implements OnInit {
   members = 0;
   membershipFee = 0;
   isSecurity: boolean = false;
+  products: Array<IEcommerceProduct> = [];
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly LOADING_TYPE = LOADING_TYPE;
@@ -49,6 +51,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     @Inject(NeighborsService) private neighborsService: NeighborsService,
     @Inject(SecurityService) private security: SecurityService,
+    @Inject(EcommerceService) private ecommerce: EcommerceService,
     @Inject(UtilsService) private utils: UtilsService,
     @Inject(BizyPopupService) private popup: BizyPopupService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
@@ -62,13 +65,15 @@ export class DashboardComponent implements OnInit {
     try {
       this.loading = true;
 
-      const [isConfig, isNeighbor, isSecurity] = await Promise.all([
+      const [isConfig, isNeighbor, isSecurity, products] = await Promise.all([
         this.userSettingsService.isConfig(),
         this.userSettingsService.isNeighbor(),
-        this.userSettingsService.isSecurity()
+        this.userSettingsService.isSecurity(),
+        this.ecommerce.getProducts()
       ]);
 
       this.isSecurity = isSecurity;
+      this.products = products;
 
       this.showInfo = isNeighbor || isSecurity || isConfig;
       if (!this.showInfo) {
@@ -136,6 +141,10 @@ export class DashboardComponent implements OnInit {
 
   goToSecurity() {
     this.router.goTo({ path: PATH.SECURITY });
+  }
+
+  goToEcommerce() {
+    this.router.goTo({ path: PATH.ECOMMERCE });
   }
 
   setGroupDebt(group: IGroup) {

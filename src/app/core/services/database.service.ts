@@ -3,6 +3,7 @@ import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { AuthService } from '@core/auth/auth.service';
 import {
   IContact,
+  IEcommerceProduct,
   INeighbor,
   ISecurity,
   ISecurityInvoice,
@@ -20,7 +21,8 @@ enum COLLECTION {
 enum CORE_DOCUMENT {
   NEIGHBORS = 'neighbors',
   CONTACTS = 'contacts',
-  SECURITY = 'security'
+  SECURITY = 'security',
+  ECOMMERCE = 'ecommerce'
 }
 
 /* enum OPERATOR {
@@ -43,6 +45,9 @@ export class DatabaseService implements OnDestroy {
   );
   #security = new BehaviorSubject<ISecurity | undefined>(undefined);
   #userSettings = new BehaviorSubject<IUserSettings | undefined>(undefined);
+  #ecommerceData = new BehaviorSubject<
+    { data: Array<IEcommerceProduct>; tags: Array<string> } | undefined
+  >(undefined);
 
   constructor(@Inject(AuthService) private auth: AuthService) {}
 
@@ -551,9 +556,159 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
+  getEcommerceTags() {
+    return new Promise<Array<string>>(async (resolve, reject) => {
+      try {
+        if (typeof this.#ecommerceData.value !== 'undefined') {
+          resolve(this.#ecommerceData.value.tags);
+          return;
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<{
+          data: Array<IEcommerceProduct>;
+          tags: Array<string>;
+        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
+          if (error) {
+            console.log(error);
+          } else if (event && event.snapshot && event.snapshot.data) {
+            this.#ecommerceData.next(event.snapshot.data);
+            resolve(event.snapshot.data.tags ?? []);
+          } else {
+            resolve([]);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getEcommerceProducts() {
+    return new Promise<Array<IEcommerceProduct>>(async (resolve, reject) => {
+      try {
+        if (typeof this.#ecommerceData.value !== 'undefined') {
+          resolve(this.#ecommerceData.value.data);
+          return;
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<{
+          data: Array<IEcommerceProduct>;
+          tags: Array<string>;
+        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
+          if (error) {
+            console.log(error);
+          } else if (event && event.snapshot && event.snapshot.data) {
+            this.#ecommerceData.next(event.snapshot.data);
+            resolve(event.snapshot.data.data ?? []);
+          } else {
+            resolve([]);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getEcommerceProduct(id: string) {
+    return new Promise<IEcommerceProduct | null>(async (resolve, reject) => {
+      try {
+        if (typeof this.#ecommerceData.value !== 'undefined') {
+          resolve(
+            this.#ecommerceData.value.data.find(_ecommerceProduct => _ecommerceProduct.id === id) ||
+              null
+          );
+          return;
+        }
+
+        const data = await this.getEcommerceProducts();
+        const ecommerceProduct =
+          data.find(_ecommerceProduct => _ecommerceProduct.id === id) || null;
+        resolve(ecommerceProduct as IEcommerceProduct);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postEcommerceProduct(ecommerceProduct: IEcommerceProduct): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data = await this.getEcommerceProducts();
+        const index = data.findIndex(
+          _ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id
+        );
+        if (index !== -1) {
+          data[index] = ecommerceProduct;
+        } else {
+          data.push(ecommerceProduct);
+        }
+
+        const tags = await this.getEcommerceTags();
+
+        const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
+          data: ecommerceProductsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  putEcommerceProduct(ecommerceProduct: IEcommerceProduct): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data = await this.getEcommerceProducts();
+        const index = data.findIndex(
+          _ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id
+        );
+        if (index !== -1) {
+          data[index] = ecommerceProduct;
+
+          const tags = await this.getEcommerceTags();
+
+          const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+          await FirebaseFirestore.setDocument({
+            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
+            data: ecommerceProductsDocument
+          });
+        }
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  deleteEcommerceProduct(id: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        let data = await this.getEcommerceProducts();
+        data = data.filter(_ecommerceProduct => _ecommerceProduct.id !== id);
+
+        const tags = await this.getEcommerceTags();
+
+        const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
+          data: ecommerceProductsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
   destroy = () => {
     this.#neighbors.next(undefined);
     this.#contactData.next(undefined);
+    this.#ecommerceData.next(undefined);
     this.#security.next(undefined);
     this.#userSettings.next(undefined);
     return FirebaseFirestore.removeAllListeners();

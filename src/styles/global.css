@@ -169,6 +169,7 @@ h6 {
     padding: 0.5rem;
     flex: 1;
     min-height: fit-content;
+    height: 100%;
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -186,16 +187,6 @@ h6 {
 
 .tero-content {
     padding: 0.5rem;
-}
-
-.tero-form {
-    max-width: 40rem;
-    display: flex;
-    flex-direction: column;
-    row-gap: 1.5em;
-    overflow: hidden;
-
-    --bizy-input-max-width: 100%;
 }
 
 .tero-form__section {
@@ -289,4 +280,30 @@ h6 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.tero-text-ellipsis--2 {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tero-text-ellipsis--3 {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
 }

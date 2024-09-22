@@ -1,0 +1,119 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'ECOMMERCE.TITLE' | translate}}</h1>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="addEcommerceProduct()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <span class="tero-section">
+
+        <span class="tero-section__end">
+
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((products | bizySearch: search : searchKeys | bizyFilter : 'tags' : filterTags).length + '/' + products.length) : products.length">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
+
+            <bizy-input 
+                [disabled]="loading"
+                [(value)]="search"
+                (onChange)="checkFilters(!!search)"
+                [autofocus]="!isMobile">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+            </bizy-input>
+
+            <bizy-button class="tero-button--success" [disabled]="loading" *ngIf="filterTags && filterTags.length > 0">
+    
+                <bizy-filter (onChange)="checkFilters($event)">
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+                    
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.TAG' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let tag of filterTags | bizyOrderBy : 'asc' : 'value'" 
+                            [id]="tag.id"
+                            [selected]="tag.selected"
+                            (onChange)="tag.selected = $event; refresh()">
+                            <h6>{{tag.value}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+            </bizy-button>
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
+        </span>
+
+    </span>
+    
+    <bizy-grid>
+
+        <bizy-card 
+            (onSelect)="editEcommerceProduct(product)"
+            *gridFor="let product of products 
+                                        | bizySearch: search : searchKeys
+                                        | bizyFilter : 'tags' : filterTags
+                                        | bizyOrderBy: order : orderBy">
+
+            <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-cube"></i></h4>
+
+            <h4 slot="header-start" class="tero-title"><strong>{{product.name}}</strong></h4>
+
+            <bizy-button 
+                *ngIf="isMobile"
+                slot="header-end"
+                class="tero-action tero-action--default ecommerce__card__action"
+                (onSelect)="onShare(product); $event.stopPropagation()">
+                <i class="fa-solid fa-share-nodes"></i>
+            </bizy-button>
+
+            <bizy-button 
+                slot="header-end"
+                class="tero-action tero-action--info ecommerce__card__action"
+                (onSelect)="onCall(product); $event.stopPropagation()">
+                <i class="fa-solid fa-phone"></i>
+            </bizy-button>
+
+            <bizy-button 
+                slot="header-end"
+                class="tero-action tero-action--success ecommerce__card__action"
+                (onSelect)="onWhatsapp(product); $event.stopPropagation()">
+                <i class="fa-brands fa-whatsapp"></i>
+            </bizy-button>
+
+            <span class="ecommerce__card__content">
+
+                <span class="ecommerce__card__content__description" *ngIf="product.description">
+                    <h6><i class="fa-regular fa-message"></i></h6>
+                    <h6 class="tero-text-ellipsis">{{product.description}}</h6>
+                </span>
+
+                <span class="ecommerce__card__phones__phone" *ngFor="let phone of product._phones">
+
+                    <h6><strong>{{phone}}</strong></h6>
+
+                    <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
+
+                </span>
+            </span>
+            
+            <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let tag of product.tags" class="ecommerce__card__tag"><h6>{{tag}}</h6></bizy-tag>
+
+        </bizy-card>
+
+
+    </bizy-grid>
+
+</div>

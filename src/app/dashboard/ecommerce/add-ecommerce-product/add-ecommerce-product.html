@@ -1,0 +1,18 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'ECOMMERCE.ADD_ECOMMERCE_PRODUCT.TITLE' | translate}}</h1>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <tero-ecommerce-product-form
+        [bizyLoading]="loading"
+        [tags]="{available: tags, selected: []}"
+        (cancel)="goBack()"
+        (save)="save($event)">
+    </tero-ecommerce-product-form>
+
+</div>

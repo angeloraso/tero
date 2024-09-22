@@ -5,7 +5,8 @@ import { DashboardComponent } from './dashboard.component';
 
 export enum PATH {
   EMPTY = '',
-  SECURITY = 'security'
+  SECURITY = 'security',
+  ECOMMERCE = 'ecommerce'
 }
 
 const routes: Routes = [
@@ -34,6 +35,10 @@ const routes: Routes = [
         );
       }
     ]
+  },
+  {
+    path: PATH.ECOMMERCE,
+    loadChildren: () => import('@dashboard/ecommerce/ecommerce.module').then(m => m.EcommerceModule)
   }
 ];
 

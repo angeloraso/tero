@@ -8,7 +8,7 @@
 
         <img class="home__sidebar__header__logo" [src]="LOGO_PATH" alt="logo"/>
 
-        <h1 class="home__sidebar__header__name" *ngIf="!closedSidebar">Bizy</h1>
+        <h1 class="home__sidebar__header__name" *ngIf="!closedSidebar">{{DESCRIPTION}}</h1>
       </span>
 
     </bizy-sidebar-option>
@@ -27,7 +27,7 @@
 
     </bizy-sidebar-option>
 
-    <bizy-sidebar-option slot="end" [disabled]="true">
+    <bizy-sidebar-option slot="end">
   
       <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
         <i *ngIf="!profilePic" class="fa-solid fa-user-circle"></i>

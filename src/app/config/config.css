@@ -1,7 +1,11 @@
-.config {
+:host {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+}
+
+.config__card {
+    height: fit-content;
 }
 
 .config__credential__profile-pic {

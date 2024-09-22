@@ -1,5 +1,6 @@
 export { ContactsService } from './contacts.service';
 export { DatabaseService } from './database.service';
+export { EcommerceService } from './ecommerce.service';
 export { MobileService } from './mobile.service';
 export { NeighborsService } from './neighbors.service';
 export { SecurityService } from './security.service';

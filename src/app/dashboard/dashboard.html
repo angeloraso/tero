@@ -8,47 +8,70 @@
 
 <div class="tero-wrapper">
 
-    <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo">
-
-        <h4 slot="header-start" class="dashboard__security__header__icon"><i class="fa-solid fa-shield-halved"></i></h4>
-
-        <h4 slot="header-start">{{'DASHBOARD.SECURITY.TITLE' | translate}}</h4>
-
-        <bizy-tag slot="header-end"><h6 [bizyLoading]="loading">${{securityFee ? (securityFee | number : '1.0-0') : '0.00'}}</h6></bizy-tag>
-
-        <span class="dashboard__security__content">
-
-            <span class="dashboard__security__content__section">
-
-                <h6>{{'DASHBOARD.SECURITY.MEMBERS' | translate}}</h6>
-
-                <bizy-tag><h6 [bizyLoading]="loading">{{members}}</h6></bizy-tag>
-
+    <span class="tero-section">
+        
+        <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo" class="dashboard__card">
+    
+            <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-shield-halved"></i></h4>
+    
+            <h4 slot="header-start">{{'DASHBOARD.SECURITY.TITLE' | translate}}</h4>
+    
+            <bizy-tag slot="header-end"><h6 [bizyLoading]="loading">${{securityFee ? (securityFee | number : '1.0-0') : '0.00'}}</h6></bizy-tag>
+    
+            <span class="dashboard__security__content">
+    
+                <span class="dashboard__security__content__section">
+    
+                    <h6>{{'DASHBOARD.SECURITY.MEMBERS' | translate}}</h6>
+    
+                    <bizy-tag><h6 [bizyLoading]="loading">{{members}}</h6></bizy-tag>
+    
+                </span>
+    
+                <span class="dashboard__security__content__section">
+    
+                    <h6>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}</h6>
+    
+                    <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h6 [bizyLoading]="loading">${{membershipFee | number : '1.2-2'}}</h6></bizy-tag>
+    
+                </span>
+    
             </span>
+    
+            <bizy-tag 
+                slot="footer-start"
+                *ngFor="let group of groups"
+                (onSelect)="setGroupDebt(group); $event.stopPropagation()"
+                [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS">
+                <h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6>
+            </bizy-tag>
+    
+            <bizy-button slot="footer-end" class="tero-action tero-action--info tero-no-padding" (onSelect)="goToSecurity()">
+                <h6><i class="fa-solid fa-plus"></i></h6>
+                <h6>{{'CORE.MORE_INFO' | translate}}</h6>
+            </bizy-button>
+    
+        </bizy-card>
 
-            <span class="dashboard__security__content__section">
+    </span>
 
-                <h6>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}</h6>
+    <span class="tero-section">
 
-                <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h6 [bizyLoading]="loading">${{membershipFee | number : '1.2-2'}}</h6></bizy-tag>
+        <bizy-card (onSelect)="goToEcommerce()" *ngIf="showInfo" class="dashboard__card">
+    
+            <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-cart-shopping"></i></h4>
+    
+            <h4 slot="header-start">{{'DASHBOARD.ECOMMERCE.TITLE' | translate}}</h4>
+    
+            <h6 slot="footer-start">{{products.length}} {{'DASHBOARD.ECOMMERCE.PRODUCTS_FOR_SALE' | translate}}</h6>
+    
+            <bizy-button slot="footer-end" class="tero-action tero-action--info tero-no-padding" (onSelect)="goToEcommerce()">
+                <h6><i class="fa-solid fa-plus"></i></h6>
+                <h6>{{'CORE.MORE_INFO' | translate}}</h6>
+            </bizy-button>
+    
+        </bizy-card>
 
-            </span>
-
-        </span>
-
-        <bizy-tag 
-            slot="footer-start"
-            *ngFor="let group of groups"
-            (onSelect)="setGroupDebt(group); $event.stopPropagation()"
-            [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS">
-            <h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6>
-        </bizy-tag>
-
-        <bizy-button slot="footer-end" class="tero-action tero-action--info" (onSelect)="goToSecurity()">
-            <h6><i class="fa-solid fa-plus"></i></h6>
-            <h6>{{'CORE.MORE_INFO' | translate}}</h6>
-        </bizy-button>
-
-    </bizy-card>
-
+    </span>
+    
 </div>

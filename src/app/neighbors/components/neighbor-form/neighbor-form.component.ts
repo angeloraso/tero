@@ -10,11 +10,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   AVAILABLE_LOTS,
   AVAILABLE_SECURITY_GROUPS,
-  DEFAULT_PICTURE,
+  DEFAULT_USER_PICTURE,
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH
 } from '@core/constants';
-import { Empty, INeighbor } from '@core/model';
+import { INeighbor } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
@@ -35,7 +35,7 @@ export class NeighborFormComponent {
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly GROUPS = AVAILABLE_SECURITY_GROUPS;
 
-  @Input() set id(id: string | Empty) {
+  @Input() set id(id: string) {
     if (!id) {
       return;
     }
@@ -43,7 +43,7 @@ export class NeighborFormComponent {
     this._id.setValue(id);
   }
 
-  @Input() set created(created: number | Empty) {
+  @Input() set created(created: number) {
     if (!created) {
       return;
     }
@@ -51,7 +51,7 @@ export class NeighborFormComponent {
     this._created.setValue(created);
   }
 
-  @Input() set updated(updated: number | Empty) {
+  @Input() set updated(updated: number) {
     if (!updated) {
       return;
     }
@@ -59,23 +59,23 @@ export class NeighborFormComponent {
     this._updated.setValue(updated);
   }
 
-  @Input() set picture(picture: string | Empty) {
+  @Input() set picture(picture: string) {
     if (!picture) {
-      this._picture.setValue(DEFAULT_PICTURE);
+      this._picture.setValue(DEFAULT_USER_PICTURE);
       return;
     }
 
     this._picture.setValue(picture);
   }
 
-  @Input() set group(group: number | Empty) {
+  @Input() set group(group: number) {
     if (!group) {
       return;
     }
 
     this._group.setValue(group);
   }
-  @Input() set surname(surname: string | Empty) {
+  @Input() set surname(surname: string) {
     if (!surname) {
       return;
     }
@@ -83,7 +83,7 @@ export class NeighborFormComponent {
     this._surname.setValue(surname);
   }
 
-  @Input() set name(name: string | Empty) {
+  @Input() set name(name: string) {
     if (!name) {
       return;
     }
@@ -91,7 +91,7 @@ export class NeighborFormComponent {
     this._name.setValue(name);
   }
 
-  @Input() set lot(lot: number | Empty) {
+  @Input() set lot(lot: number) {
     if (!lot) {
       return;
     }
@@ -99,7 +99,7 @@ export class NeighborFormComponent {
     this._lot.setValue(lot);
   }
 
-  @Input() set security(security: boolean | Empty) {
+  @Input() set security(security: boolean) {
     if (typeof security === 'undefined' || security === null) {
       return;
     }
@@ -116,7 +116,7 @@ export class NeighborFormComponent {
       id: [null],
       created: [null],
       updated: [null],
-      picture: [DEFAULT_PICTURE, [Validators.required]],
+      picture: [DEFAULT_USER_PICTURE, [Validators.required]],
       group: [null, [Validators.required]],
       surname: [null, [Validators.required]],
       name: [null, [Validators.required]],

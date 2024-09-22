@@ -3,6 +3,8 @@ import {
   BizyButtonModule,
   BizyCardModule,
   BizyFilterModule,
+  BizyFormModule,
+  BizyGridModule,
   BizyInputModule,
   BizySelectModule,
   BizySidebarModule,
@@ -10,8 +12,7 @@ import {
   BizyTabsModule,
   BizyTagModule,
   BizyToggleModule,
-  BizyToolbarModule,
-  BizyVirtualScrollModule
+  BizyToolbarModule
 } from '@bizy/components';
 import { BizyDirectivesModule } from '@bizy/directives';
 import { BizyPipesModule } from '@bizy/pipes';
@@ -24,7 +25,6 @@ import {
 
 @NgModule({
   exports: [
-    BizyVirtualScrollModule,
     BizyDirectivesModule,
     BizyPipesModule,
     BizyPopupModule,
@@ -41,7 +41,9 @@ import {
     BizyTranslatePipeModule,
     BizyFilterModule,
     BizyTagModule,
-    BizyCardModule
+    BizyCardModule,
+    BizyFormModule,
+    BizyGridModule
   ]
 })
 export class BizyModule {}

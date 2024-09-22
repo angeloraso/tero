@@ -1,19 +1,13 @@
 :host {
-    --bizy-virtual-scroll-height: calc(100vh - var(--bizy-toolbar-height) - 8rem);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     --bizy-card-cursor: pointer;
+    --bizy-grid-row-height: 9rem;
 }
 
-.conctacts__card__action {
+.contacts__card__action {
     align-self: flex-start;
-}
-
-.contacts__card__title {
-    text-align: start;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
 
 .contacts__card__content {

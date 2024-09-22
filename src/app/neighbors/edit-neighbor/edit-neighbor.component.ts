@@ -7,7 +7,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { Empty, INeighbor } from '@core/model';
+import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
 
@@ -17,8 +17,8 @@ import { PopupComponent } from '@shared/components';
   styleUrls: ['./edit-neighbor.css']
 })
 export class EditNeighborComponent implements OnInit {
-  neighbor: INeighbor | Empty;
-  neighborId: string | Empty;
+  neighbor: INeighbor | null = null;
+  neighborId: string | null = null;
   loading = false;
 
   constructor(

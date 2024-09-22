@@ -7,7 +7,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { Empty, IContact } from '@core/model';
+import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
 
@@ -17,8 +17,8 @@ import { PopupComponent } from '@shared/components';
   styleUrls: ['./edit-contact.css']
 })
 export class EditContactComponent implements OnInit {
-  contact: IContact | Empty;
-  contactId: string | Empty;
+  contact: IContact | null = null;
+  contactId: string | null = null;
   loading = false;
   tags: Array<string> = [];
 

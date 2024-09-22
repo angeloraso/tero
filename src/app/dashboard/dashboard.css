@@ -1,5 +1,17 @@
-.dashboard__security__header__icon {
-    color: var(--warning-color);
+:host {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    --bizy-card-cursor: pointer;
+}
+
+.dashboard__card {
+    height: fit-content;
+}
+
+.dashboard__header__icon {
+    color: var(--primary-color);
 }
 
 .dashboard__security__content {

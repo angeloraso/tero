@@ -14,6 +14,10 @@ export const locale = {
           TITLE: 'Registrar pago del grupo',
           MSG: 'El grupo dejará de mostrarse como deudor durante el resto del mes'
         }
+      },
+      ECOMMERCE: {
+        TITLE: 'Tienda Tero',
+        PRODUCTS_FOR_SALE: 'productos a la venta'
       }
     }
   }

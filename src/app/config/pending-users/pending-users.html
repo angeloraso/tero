@@ -35,37 +35,30 @@
 
     </span>
 
-    <bizy-virtual-scroll itemMinHeight="8rem" itemMinWidth="16rem" [bizyLoading]="loading">
-        <div virtual-scroll-grid *virtualNgFor="let pendingUsersArray in pendingUsers | bizySearch: search : 'email' | bizyOrderBy: order : orderBy">
+    <bizy-grid>
 
-            <ng-container *ngFor="let pendingUser of pendingUsersArray">
+        <bizy-card *gridFor="let pendingUser of pendingUsers | bizySearch: search : 'email' | bizyOrderBy: order : orderBy">
 
-                <bizy-card>
+            <tero-img slot="header-start" [height]="40" alt="Pending user picture"></tero-img>
 
-                    <tero-img slot="header-start" [height]="40" alt="Pending user picture"></tero-img>
+            <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{pendingUser.email}}</strong></h4>
 
-                    <h4 slot="header-start" class="contacts__card__title"><strong>{{pendingUser.email}}</strong></h4>
+            <span class="tero-confirm-buttons" slot="footer-end">
 
+                <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="onReject(pendingUser.email)">
+                    <h5><i class="fa-solid fa-xmark"></i></h5>
+                    <h5>{{'CORE.BUTTON.REJECT' | translate}}</h5>
+                </bizy-button>
+        
+                <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="onAccept(pendingUser.email)">
+                    <h5>{{'CORE.BUTTON.ACCEPT' | translate}}</h5>
+                    <h5><i class="fa-solid fa-check"></i></h5>
+                </bizy-button>
+        
+            </span>
 
-                    <span class="tero-confirm-buttons" slot="footer-end">
+        </bizy-card>
 
-                        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="onReject(pendingUser.email)">
-                            <h5><i class="fa-solid fa-xmark"></i></h5>
-                            <h5>{{'CORE.BUTTON.REJECT' | translate}}</h5>
-                        </bizy-button>
-                
-                        <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="onAccept(pendingUser.email)">
-                            <h5>{{'CORE.BUTTON.ACCEPT' | translate}}</h5>
-                            <h5><i class="fa-solid fa-check"></i></h5>
-                        </bizy-button>
-                
-                    </span>
-
-                </bizy-card>
-
-            </ng-container>
-
-        </div>
-    </bizy-virtual-scroll>
+    </bizy-grid>
 
 </div>

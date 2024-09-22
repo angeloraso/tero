@@ -32,7 +32,7 @@
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
-            <bizy-button class="tero-button--success" [disabled]="loading">
+            <bizy-button class="tero-button--success" [disabled]="loading" *ngIf="filterTags && filterTags.length > 0">
     
                 <bizy-filter (onChange)="checkFilters($event)">
                     <h6><i class="fa-solid fa-filter"></i></h6>
@@ -60,78 +60,74 @@
 
     </span>
 
-    <bizy-virtual-scroll itemMinHeight="9rem" itemMinWidth="16rem">
-        <div virtual-scroll-grid *virtualNgFor="let contactArray in contacts 
-                                                                    | bizySearch: search : searchKeys
-                                                                    | bizyFilter : 'tags' : filterTags
-                                                                    | bizyOrderBy: order : orderBy">
+    <bizy-grid>
 
-            <ng-container *ngFor="let contact of contactArray">
+        <bizy-card 
+            (onSelect)="editContact(contact)"
+            *gridFor="let contact of contacts 
+                                        | bizySearch: search : searchKeys
+                                        | bizyFilter : 'tags' : filterTags
+                                        | bizyOrderBy: order : orderBy">
 
-                <bizy-card (onSelect)="editContact(contact)">
+            <tero-img slot="header-start" [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
 
-                    <tero-img slot="header-start" [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
+            <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
 
-                    <h4 slot="header-start" class="contacts__card__title"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
+            <bizy-button 
+                *ngIf="isMobile"
+                slot="header-end"
+                class="tero-action tero-action--default contacts__card__action"
+                (onSelect)="onShare(contact); $event.stopPropagation()">
+                <i class="fa-solid fa-share-nodes"></i>
+            </bizy-button>
 
-                    <bizy-button 
-                        *ngIf="isMobile"
-                        slot="header-end"
-                        class="tero-action tero-action--default conctacts__card__action"
-                        (onSelect)="onShare(contact); $event.stopPropagation()">
-                        <i class="fa-solid fa-share-nodes"></i>
-                    </bizy-button>
+            <bizy-button 
+                slot="header-end"
+                class="tero-action tero-action--info contacts__card__action"
+                (onSelect)="onCall(contact); $event.stopPropagation()">
+                <i class="fa-solid fa-phone"></i>
+            </bizy-button>
 
-                    <bizy-button 
-                        slot="header-end"
-                        class="tero-action tero-action--info conctacts__card__action"
-                        (onSelect)="onCall(contact); $event.stopPropagation()">
-                        <i class="fa-solid fa-phone"></i>
-                    </bizy-button>
+            <bizy-button 
+                slot="header-end"
+                class="tero-action tero-action--success contacts__card__action"
+                (onSelect)="onWhatsapp(contact); $event.stopPropagation()">
+                <i class="fa-brands fa-whatsapp"></i>
+            </bizy-button>
 
-                    <bizy-button 
-                        slot="header-end"
-                        class="tero-action tero-action--success conctacts__card__action"
-                        (onSelect)="onWhatsapp(contact); $event.stopPropagation()">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </bizy-button>
+            <span class="contacts__card__content">
 
-                    <span class="contacts__card__content">
+                <span class="contacts__card__content__description" *ngIf="contact.description">
+                    <h6><i class="fa-regular fa-message"></i></h6>
+                    <h6 class="tero-text-ellipsis">{{contact.description}}</h6>
+                </span>
 
-                        <span class="contacts__card__content__description" *ngIf="contact.description">
-                            <h6><i class="fa-regular fa-message"></i></h6>
-                            <h6 class="tero-text-ellipsis">{{contact.description}}</h6>
-                        </span>
+                <span class="contacts__card__phones__phone" *ngFor="let phone of contact._phones">
 
-                        <span class="contacts__card__phones__phone" *ngFor="let phone of contact._phones">
-    
-                            <h6><strong>{{phone}}</strong></h6>
-    
-                            <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
-    
-                        </span>
-                    </span>
-                    
+                    <h6><strong>{{phone}}</strong></h6>
 
-                    <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
+                    <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
 
-                    <bizy-tag slot="footer-end" *ngIf="!contact.rating || contact.rating.length === 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
-                        <h6><i class="fa-solid fa-star"></i></h6>
-                    </bizy-tag>
+                </span>
+            </span>
+            
 
-                    <bizy-tag slot="footer-end" *ngIf="contact.rating && contact.rating.length > 0" (onSelect)="openRatingHistoryPopup(contact); $event.stopPropagation()">
-                        <h6><i class="fa-regular fa-comment"></i></h6>
-                    </bizy-tag>
+            <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
 
-                    <bizy-tag slot="footer-end" [type]="BIZY_TAG_TYPE.WARNING" *ngIf="contact.rating && contact.rating.length > 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
-                        <h6>{{contact.rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h6>
-                    </bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="!contact.rating || contact.rating.length === 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
+                <h6><i class="fa-solid fa-star"></i></h6>
+            </bizy-tag>
 
-                </bizy-card>
+            <bizy-tag slot="footer-end" *ngIf="contact.rating && contact.rating.length > 0" (onSelect)="openRatingHistoryPopup(contact); $event.stopPropagation()">
+                <h6><i class="fa-regular fa-comment"></i></h6>
+            </bizy-tag>
 
-            </ng-container>
+            <bizy-tag slot="footer-end" [type]="BIZY_TAG_TYPE.WARNING" *ngIf="contact.rating && contact.rating.length > 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
+                <h6>{{contact.rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h6>
+            </bizy-tag>
 
-        </div>
-    </bizy-virtual-scroll>
+        </bizy-card>
+
+    </bizy-grid>
 
 </div>

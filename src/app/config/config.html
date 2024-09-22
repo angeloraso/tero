@@ -10,45 +10,52 @@
 
 </bizy-toolbar>
 
-<div class="config tero-wrapper" [bizyLoading]="loading">
+<div class="tero-wrapper" [bizyLoading]="loading">
 
-    <bizy-card class="config__credential">
-        
-        <img *ngIf="profilePic" class="config__credential__profile-pic" slot="header-start" height="50" [src]="profilePic" alt="User picture"/>
+    <span class="tero-section">
 
-        <tero-img *ngIf="!profilePic" class="config__credential__profile-pic" slot="header-start" [height]="50" alt="User picture"></tero-img>
-
-        <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{id}}</strong></h4>
-
-        <span class="config__credential__content">
-
-            <h3><strong>{{name}}</strong></h3>
-
-            <h5>{{email}}</h5>
-
-        </span>
-
-        <bizy-tag slot="footer-start" [type]="statusTagType"><h5>{{('CONFIG.USER_STATUS.' + status) | translate}}</h5></bizy-tag>
-
-        <h1 slot="footer-end" *ngIf="isConfig" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
-
-    </bizy-card>
-
-    <bizy-card *ngIf="isConfig" (onSelect)="goToPendingUsers()">
-        
-        <span slot="header-start" class="config__requests">
-            <h1 class="config__requests__icon"><i class="fa-solid fa-envelope"></i></h1>
+        <bizy-card class="config__card">
+            
+            <img *ngIf="profilePic" class="config__credential__profile-pic" slot="header-start" height="50" [src]="profilePic" alt="User picture"/>
     
-            <span  *ngIf="pendingUsers.length > 0" class="config__requests__icon--badge"></span>
-        </span>
+            <tero-img *ngIf="!profilePic" class="config__credential__profile-pic" slot="header-start" [height]="50" alt="User picture"></tero-img>
+    
+            <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{id}}</strong></h4>
+    
+            <span class="config__credential__content">
+    
+                <h3><strong>{{name}}</strong></h3>
+    
+                <h5>{{email}}</h5>
+    
+            </span>
+    
+            <bizy-tag slot="footer-start" [type]="statusTagType"><h5>{{('CONFIG.USER_STATUS.' + status) | translate}}</h5></bizy-tag>
+    
+            <h1 slot="footer-end" *ngIf="isConfig" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
+    
+        </bizy-card>
 
-        <h3 slot="header-start"><strong>{{'CONFIG.REQUESTS' | translate}}</strong></h3>
+    </span>
 
-        <h5 slot="header-start">({{pendingUsers.length > 9 ? '9+': pendingUsers.length}})</h5>
+    <span class="tero-section">
 
-        <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
+        <bizy-card *ngIf="isConfig" (onSelect)="goToPendingUsers()" class="config__card">
+            
+            <span slot="header-start" class="config__requests">
+                <h1 class="config__requests__icon"><i class="fa-solid fa-envelope"></i></h1>
+        
+                <span  *ngIf="pendingUsers.length > 0" class="config__requests__icon--badge"></span>
+            </span>
+    
+            <h3 slot="header-start"><strong>{{'CONFIG.REQUESTS' | translate}}</strong></h3>
+    
+            <h5 slot="header-start">({{pendingUsers.length > 9 ? '9+': pendingUsers.length}})</h5>
+    
+            <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
+    
+        </bizy-card>
 
-    </bizy-card>
-
+    </span>
 
 </div>

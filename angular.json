@@ -27,7 +27,8 @@
               "is-shallow-equal",
               "lodash/debounce.js",
               "flatpickr/dist/l10n/es.js",
-              "html2canvas"
+              "html2canvas",
+              "flatpickr/dist/plugins/monthSelect/index.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [

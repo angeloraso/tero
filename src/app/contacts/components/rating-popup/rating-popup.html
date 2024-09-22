@@ -1,10 +1,8 @@
 <span class="tero-wrapper">
 
-    <span class="tero-section">
-        <h1 class="tero-title">{{'CONTACTS.RATING_POPUP.TITLE' | translate}}</h1>
-    </span>
+    <bizy-form>
 
-    <span class="tero-form">
+        <h1 class="tero-title">{{'CONTACTS.RATING_POPUP.TITLE' | translate}}</h1>
         
         <span class="rating-popup__stars">
 
@@ -47,13 +45,13 @@
                 <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
             </bizy-button>
     
-            <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+            <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
                 <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
                 <h5><i class="fa-solid fa-check"></i></h5>
             </bizy-button>
     
         </span>
 
-    </span>
+    </bizy-form>
     
 </span>

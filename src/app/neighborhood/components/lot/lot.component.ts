@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Empty } from '@core/model';
 import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
@@ -8,6 +7,6 @@ import { ILot } from '@neighborhood/neighborhood.model';
   styleUrls: ['./lot.css']
 })
 export class LotComponent {
-  @Input() lot: ILot | Empty;
+  @Input() lot: ILot | null = null;
   @Output() onClick = new EventEmitter<void>();
 }

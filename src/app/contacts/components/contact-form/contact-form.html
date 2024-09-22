@@ -1,4 +1,4 @@
-<form class="tero-form" [formGroup]="form">
+<bizy-form>
 
 
     <span class="contact-form__picture">
@@ -76,12 +76,12 @@
             <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
         </bizy-button>
 
-        <bizy-button class="tero-confirm-buttons__confirm" (onSelect)="_confirm()">
+        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="_confirm()">
             <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
             <h5><i class="fa-solid fa-check"></i></h5>
         </bizy-button>
 
     </span>
 
-</form>
+</bizy-form>
 

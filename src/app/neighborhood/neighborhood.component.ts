@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { BizyPopupService } from '@bizy/services';
 import { AVAILABLE_LOTS, LOGO_PATH } from '@core/constants';
-import { Empty } from '@core/model';
 import { NeighborsService, UserSettingsService } from '@core/services';
 import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
@@ -12,7 +11,7 @@ import { ILot } from './neighborhood.model';
   styleUrls: ['./neighborhood.css']
 })
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
-  @ViewChild('mainEntrance') mainEntrance: ElementRef | Empty;
+  @ViewChild('mainEntrance') mainEntrance: ElementRef | null = null;
   loading = false;
   showInfo: boolean = false;
   lots: Array<ILot> = Array.from({ length: AVAILABLE_LOTS + 1 }, (_, index) => ({
