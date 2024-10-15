@@ -5,6 +5,7 @@ export const locale = {
   translations: {
     CONTACTS: {
       TITLE: 'Contactos',
+      EMPTY: 'No hay contactos para mostrar',
       CSV_FILE_NAME: 'tero_contactos.csv',
       SHARE_CONTACT: 'Compartir contacto',
       RATING_POPUP: {

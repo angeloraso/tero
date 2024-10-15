@@ -38,7 +38,10 @@ export const locale = {
           COMMENTS: 'Comentarios',
           PHONE: 'Teléfono',
           DESCRIPTION: 'Descripción',
-          TAG: 'Categoría'
+          TAG: 'Categoría',
+          PRICE: 'Precio',
+          STATE: 'Estado',
+          ROLE: 'Rol'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',
@@ -51,6 +54,18 @@ export const locale = {
           APP: 'No posee una aplicación para leer el archivo',
           SHARE: 'El dispositivo no permite compartir la información'
         }
+      },
+      USER_STATE: {
+        ACTIVE: 'Activo',
+        PENDING: 'Pendiente',
+        SUSPENDED: 'Suspendido',
+        REJECTED: 'Rechazado'
+      },
+      USER_ROLE: {
+        NEIGHBOR: 'Vecino/a',
+        ADMIN: 'Admin',
+        SECURITY: 'Seguridad',
+        CONFIG: 'Configuración'
       }
     }
   }

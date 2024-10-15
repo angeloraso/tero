@@ -1,0 +1,135 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'USERS.TITLE' | translate}}</h1>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <span class="tero-section">
+
+        <span class="tero-section__end">
+
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((users 
+                                                | bizySearch: search : searchKeys
+                                                | bizyFilter : 'status' : filterStates
+                                                | bizyFilter : 'roles' : filterRoles).length + '/' + users.length) : users.length">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
+
+            <bizy-input 
+                [disabled]="loading"
+                [(value)]="search"
+                (onChange)="checkFilters(!!search)"
+                [autofocus]="!isMobile">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+            </bizy-input>
+
+            <bizy-button class="tero-button--success" [disabled]="loading" *ngIf="filterStates && filterStates.length > 0">
+    
+                <bizy-filter (onChange)="checkFilters($event)">
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+                    
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.STATE' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let state of filterStates | bizyOrderBy : 'asc' : 'value'" 
+                            [id]="state.id"
+                            [selected]="state.selected"
+                            (onChange)="state.selected = $event; refresh()">
+                            <h6>{{state.value | translate}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ROLE' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let role of filterRoles | bizyOrderBy : 'asc' : 'value'" 
+                            [id]="role.id"
+                            [selected]="role.selected"
+                            (onChange)="role.selected = $event; refresh()">
+                            <h6>{{role.value | translate}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+            </bizy-button>
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
+        </span>
+
+    </span>
+
+    <bizy-grid *ngIf="!loading" class="animated fade-in">
+
+        <bizy-card 
+            (onSelect)="editUser(user)"
+            [disabled]="loading || user._isAdmin"
+            *gridFor="let user of users 
+                                        | bizySearch: search : searchKeys
+                                        | bizyFilter : 'status' : filterStates
+                                        | bizyFilter : 'roles' : filterRoles
+                                        | bizyOrderBy: order : orderBy">
+
+            <img *ngIf="user.picture" class="users__card__profile-pic" slot="header-start" height="50" [src]="user.picture" alt="User picture"/>
+
+            <tero-img *ngIf="!user.picture" class="users__card__profile-pic" slot="header-start" [height]="50" alt="User picture"></tero-img>
+
+            <h4 slot="header-start" *ngIf="user.name" class="tero-text-ellipsis--2"><strong>{{user.name}}</strong></h4>
+
+            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
+
+            <span class="users__card__content">
+
+                <span class="users__card__content__description" *ngIf="user.email">
+                    <h6><i class="fa-solid fa-envelope"></i></h6>
+                    <h6 class="tero-text-ellipsis">{{user.email}}</h6>
+                </span>
+
+            </span>
+
+            <bizy-tag slot="footer-start" *ngFor="let role of user._roles"><h5>{{role | translate}}</h5></bizy-tag>
+
+        </bizy-card>
+
+    </bizy-grid>
+
+    <bizy-grid *ngIf="loading" class="animated fade-in">
+        <bizy-skeleton-card *gridFor="let i of users.length > 0 ? users : 30 | bizyRepeat"></bizy-skeleton-card>
+    </bizy-grid>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.INFO" 
+        class="animated fade-in tero-no-matches"
+        *ngIf="users.length !== 0 && (users 
+                                            | bizySearch: search : searchKeys
+                                            | bizyFilter : 'roles' : filterRoles
+                                            | bizyFilter : 'status' : filterStates).length === 0">
+        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
+    </bizy-tag>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="!loading && users.length === 0">
+        <h4>{{'CONTACTS.EMPTY' | translate}}</h4>
+    </bizy-tag>
+
+</div>

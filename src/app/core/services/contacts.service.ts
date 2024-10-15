@@ -31,18 +31,7 @@ export class ContactsService {
   }
 
   getContact(contactId: string) {
-    return new Promise<IContact>(async (resolve, reject) => {
-      try {
-        const contact = await this.database.getContact(contactId);
-        if (contact) {
-          resolve(contact);
-        } else {
-          throw new Error('Not exists');
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return this.database.getContact(contactId);
   }
 
   postContact(contact: Omit<IContact, 'id'>): Promise<void> {

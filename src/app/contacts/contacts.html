@@ -60,7 +60,7 @@
 
     </span>
 
-    <bizy-grid>
+    <bizy-grid *ngIf="!loading" class="animated fade-in">
 
         <bizy-card 
             (onSelect)="editContact(contact)"
@@ -129,5 +129,25 @@
         </bizy-card>
 
     </bizy-grid>
+
+    <bizy-grid *ngIf="loading" class="animated fade-in">
+        <bizy-skeleton-card *gridFor="let i of contacts.length > 0 ? contacts : 30 | bizyRepeat"></bizy-skeleton-card>
+    </bizy-grid>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.INFO" 
+        class="animated fade-in tero-no-matches"
+        *ngIf="contacts.length !== 0 && (contacts 
+                                            | bizySearch: search : searchKeys
+                                            | bizyFilter : 'tags' : filterTags).length === 0">
+        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
+    </bizy-tag>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="!loading && contacts.length === 0">
+        <h4>{{'CONTACTS.EMPTY' | translate}}</h4>
+    </bizy-tag>
 
 </div>

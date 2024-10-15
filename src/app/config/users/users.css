@@ -1,0 +1,29 @@
+:host {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    --bizy-card-cursor: pointer;
+    --bizy-grid-row-height: 8rem;
+}
+
+.users__card__profile-pic {
+    border-radius: 50%;
+}
+
+.users__card__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.users__card__content__description {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    column-gap: 0.3rem;
+    width: 100%;
+}
+
+.users__card__content__description * {
+    color: var(--default-color);
+}

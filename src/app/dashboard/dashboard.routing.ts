@@ -1,6 +1,6 @@
 import { inject, NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
-import { UserSettingsService } from '@core/services';
+import { UsersService } from '@core/services';
 import { DashboardComponent } from './dashboard.component';
 
 export enum PATH {
@@ -21,8 +21,8 @@ const routes: Routes = [
     canActivate: [
       () => {
         const router = inject(Router);
-        const userSettings = inject(UserSettingsService);
-        return Promise.all([userSettings.isNeighbor(), userSettings.isSecurity()]).then(
+        const usersService = inject(UsersService);
+        return Promise.all([usersService.isNeighbor(), usersService.isSecurity()]).then(
           ([isNeighbor, isSecurity]) => {
             if (!isNeighbor && !isSecurity) {
               router.navigateByUrl('/', { replaceUrl: true });

@@ -20,18 +20,7 @@ export class NeighborsService {
   }
 
   getNeighbor(neighborId: string) {
-    return new Promise<INeighbor>(async (resolve, reject) => {
-      try {
-        const neighbor = await this.database.getNeighbor(neighborId);
-        if (neighbor) {
-          resolve(neighbor);
-        } else {
-          throw new Error('Not exists');
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return this.database.getNeighbor(neighborId);
   }
 
   postNeighbor(neighbor: Omit<INeighbor, 'id'>): Promise<void> {

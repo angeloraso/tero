@@ -9,9 +9,9 @@ import {
 } from '@bizy/services';
 import { AboutPopupComponent } from '@config/components';
 import { AuthService } from '@core/auth/auth.service';
-import { DEFAULT_USER_ID, LOGO_PATH } from '@core/constants';
-import { IUserSettings, USER_STATUS } from '@core/model';
-import { UserSettingsService } from '@core/services';
+import { LOGO_PATH } from '@core/constants';
+import { IUser, USER_STATE } from '@core/model';
+import { UsersService } from '@core/services';
 import { PopupComponent } from '@shared/components';
 import { PATH } from './config.routing';
 
@@ -24,14 +24,17 @@ export class ConfigComponent implements OnInit {
   loading = false;
 
   readonly LOGO_PATH = LOGO_PATH;
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly USER_STATE = USER_STATE;
+  readonly DEFAULT_USER_ID = '00000000000000';
   isConfig: boolean = false;
   profilePic: string = '';
   name: string = '';
   email: string = '';
-  id: string = DEFAULT_USER_ID;
-  status: USER_STATUS | null = null;
-  statusTagType: BIZY_TAG_TYPE = BIZY_TAG_TYPE.DEFAULT;
-  pendingUsers: Array<IUserSettings> = [];
+  phone: string = '';
+  users: Array<IUser> = [];
+  pendingUsers: Array<IUser> = [];
+  currentUser: IUser | null = null;
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,
@@ -39,7 +42,7 @@ export class ConfigComponent implements OnInit {
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(UserSettingsService) private userSettings: UserSettingsService,
+    @Inject(UsersService) private usersService: UsersService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService
   ) {}
 
@@ -49,23 +52,19 @@ export class ConfigComponent implements OnInit {
       this.profilePic = this.auth.getProfilePicture() ?? '';
       this.name = this.auth.getName() ?? '';
       this.email = this.auth.getEmail() ?? '';
-      const [status, id, isConfig] = await Promise.all([
-        this.userSettings.getStatus(),
-        this.userSettings.getId(),
-        this.userSettings.isConfig()
+      this.phone = this.auth.getPhone() ?? '';
+      const [currentUser, isConfig] = await Promise.all([
+        this.usersService.getCurrentUser(),
+        this.usersService.isConfig()
       ]);
 
-      this.id = id ? String(id) : DEFAULT_USER_ID;
-
-      if (status) {
-        this.status = status;
-        this.statusTagType = this.#getStatusTagType(status);
-      }
+      this.currentUser = currentUser;
 
       this.isConfig = isConfig;
 
       if (this.isConfig) {
-        this.pendingUsers = await this.userSettings.getPendingUsers();
+        this.users = await this.usersService.getUsers();
+        this.pendingUsers = this.users.filter(_user => _user.status === USER_STATE.PENDING);
       }
     } catch (error) {
       this.log.error({
@@ -83,12 +82,12 @@ export class ConfigComponent implements OnInit {
     this.popup.open({ component: AboutPopupComponent });
   }
 
-  goToPendingUsers(): void {
-    if (!this.isConfig || this.pendingUsers.length === 0) {
+  goToUsers(): void {
+    if (!this.isConfig) {
       return;
     }
 
-    this.router.goTo({ path: PATH.PENDING_USERS });
+    this.router.goTo({ path: PATH.USERS });
   }
 
   onSignOut(): void {
@@ -111,20 +110,5 @@ export class ConfigComponent implements OnInit {
         }
       }
     );
-  }
-
-  #getStatusTagType(status: USER_STATUS): BIZY_TAG_TYPE {
-    switch (status) {
-      case USER_STATUS.ACTIVE:
-        return BIZY_TAG_TYPE.SUCCESS;
-      case USER_STATUS.PENDING:
-        return BIZY_TAG_TYPE.INFO;
-      case USER_STATUS.SUSPENDED:
-        return BIZY_TAG_TYPE.WARNING;
-      case USER_STATUS.REJECTED:
-        return BIZY_TAG_TYPE.DANGER;
-      default:
-        return BIZY_TAG_TYPE.DEFAULT;
-    }
   }
 }

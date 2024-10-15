@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { BizyToastService } from '@bizy/services';
+import { BizyLogService, BizyToastService } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class SignInComponent {
 
   constructor(
     @Inject(AuthService) private auth: AuthService,
+    @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
@@ -25,6 +26,12 @@ export class SignInComponent {
       this.ref.detectChanges();
       await this.auth.signIn();
     } catch (error) {
+      this.log.error({
+        fileName: 'sign-in.component',
+        functionName: 'onSignIn',
+        param: error
+      });
+
       this.toast.danger();
       this.loading = false;
     }

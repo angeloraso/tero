@@ -2,14 +2,14 @@ import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { AuthService } from '@core/auth/auth.service';
 import {
+  ERROR,
   IContact,
   IEcommerceProduct,
   INeighbor,
   ISecurity,
   ISecurityInvoice,
-  IUserSettings,
-  ROLE,
-  USER_STATUS
+  IUser,
+  USER_STATE
 } from '@core/model';
 import { BehaviorSubject } from 'rxjs';
 
@@ -44,7 +44,8 @@ export class DatabaseService implements OnDestroy {
     undefined
   );
   #security = new BehaviorSubject<ISecurity | undefined>(undefined);
-  #userSettings = new BehaviorSubject<IUserSettings | undefined>(undefined);
+  #users = new BehaviorSubject<Array<IUser> | undefined>(undefined);
+  #currentUser = new BehaviorSubject<IUser | undefined>(undefined);
   #ecommerceData = new BehaviorSubject<
     { data: Array<IEcommerceProduct>; tags: Array<string> } | undefined
   >(undefined);
@@ -78,16 +79,27 @@ export class DatabaseService implements OnDestroy {
   }
 
   getNeighbor(id: string) {
-    return new Promise<INeighbor | null>(async (resolve, reject) => {
+    return new Promise<INeighbor>(async (resolve, reject) => {
       try {
         if (typeof this.#neighbors.value !== 'undefined') {
-          resolve(this.#neighbors.value.find(_neighbor => _neighbor.id === id) || null);
+          const neighbor = this.#neighbors.value.find(_neighbor => _neighbor.id === id);
+          if (!neighbor) {
+            reject(new Error(ERROR.ITEM_NOT_FOUND));
+            return;
+          }
+
+          resolve(neighbor);
           return;
         }
 
         const neighbors = await this.getNeighbors();
-        const neighbor = neighbors.find(_neighbor => _neighbor.id === id) || null;
-        resolve(neighbor as INeighbor);
+        const neighbor = neighbors.find(_neighbor => _neighbor.id === id);
+        if (!neighbor) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        resolve(neighbor);
       } catch (error) {
         reject(error);
       }
@@ -214,16 +226,27 @@ export class DatabaseService implements OnDestroy {
   }
 
   getContact(id: string) {
-    return new Promise<IContact | null>(async (resolve, reject) => {
+    return new Promise<IContact>(async (resolve, reject) => {
       try {
         if (typeof this.#contactData.value !== 'undefined') {
-          resolve(this.#contactData.value.data.find(_contact => _contact.id === id) || null);
+          const contact = this.#contactData.value.data.find(_contact => _contact.id === id);
+          if (!contact) {
+            reject(new Error(ERROR.ITEM_NOT_FOUND));
+            return;
+          }
+
+          resolve(contact);
           return;
         }
 
         const data = await this.getContacts();
-        const contact = data.find(_contact => _contact.id === id) || null;
-        resolve(contact as IContact);
+        const contact = data.find(_contact => _contact.id === id);
+        if (!contact) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        resolve(contact);
       } catch (error) {
         reject(error);
       }
@@ -332,7 +355,8 @@ export class DatabaseService implements OnDestroy {
       try {
         const data = await this.getSecurity();
         if (!data) {
-          throw new Error('No security data');
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
         }
 
         if (!data.invoices) {
@@ -360,28 +384,55 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  getUserSettings() {
-    return new Promise<IUserSettings | null>(async (resolve, reject) => {
+  getUsers() {
+    return new Promise<Array<IUser>>(async (resolve, reject) => {
       try {
-        if (typeof this.#userSettings.value !== 'undefined') {
-          resolve(this.#userSettings.value);
+        const res = await FirebaseFirestore.getCollection<IUser>({ reference: COLLECTION.USERS });
+        if (res.snapshots) {
+          const users = res.snapshots.map(_snap => {
+            return _snap.data as IUser;
+          }) as Array<IUser>;
+          this.#users.next(users);
+          resolve(users);
+        } else {
+          this.#users.next([]);
+          resolve([]);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getCurrentUser() {
+    return new Promise<IUser>(async (resolve, reject) => {
+      try {
+        if (typeof this.#currentUser.value !== 'undefined') {
+          resolve(this.#currentUser.value);
           return;
         }
 
         const userEmail = this.auth.getEmail();
         if (!userEmail) {
-          throw new Error('No user email');
+          reject(new Error(ERROR.AUTH_ERROR));
+          return;
         }
 
-        await FirebaseFirestore.addDocumentSnapshotListener<IUserSettings>(
+        await FirebaseFirestore.addDocumentSnapshotListener<IUser>(
           { reference: `${COLLECTION.USERS}/${userEmail}` },
           (event, error) => {
             if (error) {
               console.log(error);
             } else {
-              const settings = event && event.snapshot.data ? event.snapshot.data : undefined;
-              this.#userSettings.next(settings);
-              resolve(settings ?? null);
+              const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
+              this.#currentUser.next(currentUser);
+
+              if (!currentUser) {
+                reject(new Error(ERROR.ITEM_NOT_FOUND));
+                return;
+              }
+
+              resolve(currentUser);
             }
           }
         );
@@ -391,18 +442,50 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  postUserSettings() {
+  getUser(email: string) {
+    return new Promise<IUser>(async (resolve, reject) => {
+      try {
+        if (typeof this.#users.value !== 'undefined') {
+          const user = this.#users.value.find(_user => _user.email === email);
+          if (!user) {
+            reject(new Error(ERROR.ITEM_NOT_FOUND));
+            return;
+          }
+
+          resolve(user);
+          return;
+        }
+
+        const users = await this.getUsers();
+        const user = users.find(_user => _user.email === email);
+        if (!user) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        resolve(user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postUser() {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const userEmail = this.auth.getEmail();
         if (!userEmail) {
-          throw new Error('No user email');
+          reject(new Error(ERROR.AUTH_ERROR));
+          return;
         }
 
-        const userSettings: IUserSettings = {
+        const userSettings: IUser = {
           roles: [],
-          status: USER_STATUS.PENDING,
-          id: Date.now()
+          status: USER_STATE.PENDING,
+          id: Date.now(),
+          email: userEmail,
+          name: this.auth.getName(),
+          picture: this.auth.getProfilePicture()
         };
 
         const userDocument = JSON.parse(JSON.stringify(userSettings));
@@ -418,135 +501,21 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
-  getUserRoles() {
-    return new Promise<Array<ROLE>>(async (resolve, reject) => {
+  putUser(user: IUser): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
       try {
-        if (typeof this.#userSettings.value !== 'undefined') {
-          resolve(this.#userSettings.value.roles ?? []);
-          return;
-        }
+        const userDocument = JSON.parse(JSON.stringify(user));
 
-        const settings = await this.getUserSettings();
-
-        if (settings && settings.roles) {
-          resolve(settings.roles);
-        } else {
-          resolve([]);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getUserStatus() {
-    return new Promise<USER_STATUS | null>(async (resolve, reject) => {
-      try {
-        if (typeof this.#userSettings.value !== 'undefined') {
-          resolve(this.#userSettings.value.status ?? null);
-          return;
-        }
-
-        const settings = await this.getUserSettings();
-
-        if (settings && settings.status) {
-          resolve(settings.status);
-        } else {
-          resolve(null);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getUserId() {
-    return new Promise<number | null>(async (resolve, reject) => {
-      try {
-        if (typeof this.#userSettings.value !== 'undefined') {
-          resolve(this.#userSettings.value.id ?? null);
-          return;
-        }
-
-        const settings = await this.getUserSettings();
-
-        if (settings && settings.id) {
-          resolve(settings.id);
-        } else {
-          resolve(null);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getPendingUsers() {
-    return new Promise<Array<IUserSettings & { email: string }>>(async (resolve, reject) => {
-      try {
-        const res = await FirebaseFirestore.getCollection<IUserSettings>({
-          reference: COLLECTION.USERS,
-          compositeFilter: {
-            type: 'and',
-            queryConstraints: [
-              {
-                type: 'where',
-                fieldPath: 'status',
-                opStr: '==',
-                value: USER_STATUS.PENDING
-              }
-            ]
-          }
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.USERS}/${user.email}`,
+          data: userDocument
         });
-        resolve(
-          res.snapshots
-            ? res.snapshots.map(_snap => {
-                return { ..._snap.data, email: _snap.id } as IUserSettings & { email: string };
-              })
-            : []
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
 
-  acceptPendingUser(email: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const pendingUsers = await this.getPendingUsers();
-        const index = pendingUsers.findIndex(_pendingUser => _pendingUser.email === email);
+        const users = this.#users.value ?? [];
+        const index = users.findIndex(_user => _user.email === user.email);
         if (index !== -1) {
-          pendingUsers[index].status = USER_STATUS.ACTIVE;
-          pendingUsers[index].roles = [ROLE.NEIGHBOR];
-
-          const userDocument = JSON.parse(JSON.stringify(pendingUsers[index]));
-          await FirebaseFirestore.setDocument({
-            reference: `${COLLECTION.USERS}/${email}`,
-            data: userDocument
-          });
-        }
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  rejectPendingUser(email: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const pendingUsers = await this.getPendingUsers();
-        const index = pendingUsers.findIndex(_pendingUser => _pendingUser.email === email);
-        if (index !== -1) {
-          pendingUsers[index].status = USER_STATUS.REJECTED;
-
-          const userDocument = JSON.parse(JSON.stringify(pendingUsers[index]));
-          await FirebaseFirestore.setDocument({
-            reference: `${COLLECTION.USERS}/${email}`,
-            data: userDocument
-          });
+          users[index] = user;
+          this.#users.next(users);
         }
 
         resolve();
@@ -611,20 +580,29 @@ export class DatabaseService implements OnDestroy {
   }
 
   getEcommerceProduct(id: string) {
-    return new Promise<IEcommerceProduct | null>(async (resolve, reject) => {
+    return new Promise<IEcommerceProduct>(async (resolve, reject) => {
       try {
         if (typeof this.#ecommerceData.value !== 'undefined') {
-          resolve(
-            this.#ecommerceData.value.data.find(_ecommerceProduct => _ecommerceProduct.id === id) ||
-              null
+          const product = this.#ecommerceData.value.data.find(
+            _ecommerceProduct => _ecommerceProduct.id === id
           );
+          if (!product) {
+            reject(new Error(ERROR.ITEM_NOT_FOUND));
+            return;
+          }
+
+          resolve(product);
           return;
         }
 
         const data = await this.getEcommerceProducts();
-        const ecommerceProduct =
-          data.find(_ecommerceProduct => _ecommerceProduct.id === id) || null;
-        resolve(ecommerceProduct as IEcommerceProduct);
+        const product = data.find(_ecommerceProduct => _ecommerceProduct.id === id);
+        if (!product) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        resolve(product);
       } catch (error) {
         reject(error);
       }
@@ -710,7 +688,8 @@ export class DatabaseService implements OnDestroy {
     this.#contactData.next(undefined);
     this.#ecommerceData.next(undefined);
     this.#security.next(undefined);
-    this.#userSettings.next(undefined);
+    this.#users.next(undefined);
+    this.#currentUser.next(undefined);
     return FirebaseFirestore.removeAllListeners();
   };
 

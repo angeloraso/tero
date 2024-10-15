@@ -5,7 +5,7 @@ export const locale = {
   translations: {
     CONFIG: {
       TITLE: 'Configuración',
-      REQUESTS: 'Solicitudes',
+      USERS: 'Usuarios',
       SIGN_OUT_POPUP: {
         TITLE: 'Cerrar sesión',
         MSG: 'Se cerrará la sesión de'

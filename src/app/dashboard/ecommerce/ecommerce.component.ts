@@ -10,9 +10,10 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
+import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IEcommerceProduct } from '@core/model';
-import { EcommerceService, MobileService, UserSettingsService } from '@core/services';
+import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as ECOMMERCE_PATH } from '@dashboard/ecommerce/ecommerce.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -34,7 +35,7 @@ export class EcommerceComponent implements OnInit {
   products: Array<IEcommerceProductCard> = [];
   search: string | number = '';
   searchKeys = ['name', 'tags', 'description', '_phones'];
-  order: 'asc' | 'desc' | null = 'asc';
+  order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
   isMobile = true;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
@@ -46,6 +47,7 @@ export class EcommerceComponent implements OnInit {
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(EcommerceService) private ecommerce: EcommerceService,
+    @Inject(AuthService) private auth: AuthService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
@@ -54,7 +56,7 @@ export class EcommerceComponent implements OnInit {
     @Inject(BizyCopyToClipboardService) private bizyToClipboard: BizyCopyToClipboardService,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
+    @Inject(UsersService) private usersService: UsersService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -64,8 +66,8 @@ export class EcommerceComponent implements OnInit {
       this.loading = true;
       const [products, isConfig, isNeighbor] = await Promise.all([
         this.ecommerce.getProducts(),
-        this.userSettingsService.isConfig(),
-        this.userSettingsService.isNeighbor()
+        this.usersService.isConfig(),
+        this.usersService.isNeighbor()
       ]);
 
       this.isConfig = isConfig;
@@ -108,8 +110,8 @@ export class EcommerceComponent implements OnInit {
     });
   }
 
-  editEcommerceProduct(product: IEcommerceProduct) {
-    if (!product || !this.isNeighbor) {
+  selectEcommerceProduct(product: IEcommerceProduct) {
+    if (!product || !this.isNeighbor || product.accountId !== this.auth.getId()) {
       return;
     }
 
@@ -131,8 +133,6 @@ export class EcommerceComponent implements OnInit {
     this.filterTags.forEach(_tag => {
       _tag.selected = true;
     });
-    this.orderBy = '';
-    this.order = null;
     this.activatedFilters = 0;
     this.refresh();
   }
@@ -211,6 +211,8 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
       if (!this.products || this.products.length === 0) {
         return;
       }
+
+      this.csvLoading = true;
 
       const items = this.#filter(this.products);
 

@@ -8,6 +8,7 @@ import {
   BizyInputModule,
   BizySelectModule,
   BizySidebarModule,
+  BizySkeletonCardModule,
   BizyTableModule,
   BizyTabsModule,
   BizyTagModule,
@@ -43,7 +44,8 @@ import {
     BizyTagModule,
     BizyCardModule,
     BizyFormModule,
-    BizyGridModule
+    BizyGridModule,
+    BizySkeletonCardModule
   ]
 })
 export class BizyModule {}

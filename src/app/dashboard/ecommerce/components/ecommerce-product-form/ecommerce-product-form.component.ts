@@ -27,6 +27,7 @@ export class EcommerceProductFormComponent {
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<{
     name: string;
+    price: number;
     description: string;
     pictures: Array<string>;
     phones: Array<IPhone>;
@@ -36,7 +37,8 @@ export class EcommerceProductFormComponent {
   tagSearch: string | number = '';
   availableTags: Array<string> = [];
   selectedTags: Array<string> = [];
-  isMobile = true;
+  isMobile: boolean = true;
+  checkPrice: boolean = false;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
@@ -58,6 +60,14 @@ export class EcommerceProductFormComponent {
     }
 
     this._name.setValue(name);
+  }
+
+  @Input() set price(price: number) {
+    if (!price) {
+      return;
+    }
+
+    this._price.setValue(price);
   }
 
   @Input() set phone(phone: string) {
@@ -91,6 +101,7 @@ export class EcommerceProductFormComponent {
           Validators.required
         ]
       ],
+      price: [null, [Validators.required]],
       phone: [null, [Validators.required]],
       description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
     });
@@ -100,12 +111,28 @@ export class EcommerceProductFormComponent {
     return this.form.get('name') as FormControl;
   }
 
+  get _price() {
+    return this.form.get('price') as FormControl;
+  }
+
   get _description() {
     return this.form.get('description') as FormControl;
   }
 
   get _phone() {
     return this.form.get('phone') as FormControl;
+  }
+
+  onCheckPrice() {
+    if (this.checkPrice) {
+      this._price.disable();
+      this._price.setValidators([]);
+      this._price.updateValueAndValidity();
+    } else {
+      this._price.enable();
+      this._price.setValidators([Validators.required]);
+      this._price.updateValueAndValidity();
+    }
   }
 
   addTag(tag: string) {
@@ -150,6 +177,7 @@ export class EcommerceProductFormComponent {
       name: this._name.value ? this._name.value.trim() : '',
       description: this._description.value ? this._description.value.trim() : '',
       pictures: [],
+      price: 0,
       phones: [{ number: this._phone.value, description: '' }],
       tags: Array.from(this.selectedTags)
     });

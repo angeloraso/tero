@@ -16,7 +16,7 @@
         [description]="product.description"
         [phone]="product.phones[0].number"
         [bizyLoading]="loading"
-        [tags]="{available: tags, selected: []}"
+        [tags]="{available: tags, selected: product.tags}"
         (cancel)="goBack()"
         (save)="save($event)">
     </tero-ecommerce-product-form>

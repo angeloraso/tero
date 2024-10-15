@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { BIZY_TAG_TYPE } from '@bizy/components';
+import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
   BizyCopyToClipboardService,
@@ -15,7 +15,7 @@ import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactRating } from '@core/model';
-import { ContactsService, MobileService, UserSettingsService } from '@core/services';
+import { ContactsService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from './components';
 
@@ -33,11 +33,10 @@ export class ContactsComponent implements OnInit {
   csvLoading = false;
   isNeighbor = false;
   isConfig = false;
-  securityLoading = false;
   contacts: Array<IContactCard> = [];
   search: string | number = '';
   searchKeys = ['name', 'tags', 'surname', '_phones', 'score'];
-  order: 'asc' | 'desc' | null = 'asc';
+  order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
   isMobile = true;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
@@ -58,7 +57,8 @@ export class ContactsComponent implements OnInit {
     @Inject(BizyCopyToClipboardService) private bizyToClipboard: BizyCopyToClipboardService,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
+    @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
+    @Inject(UsersService) private usersService: UsersService,
     @Inject(BizyPopupService) private popup: BizyPopupService
   ) {
     this.isMobile = this.mobile.isMobile();
@@ -69,8 +69,8 @@ export class ContactsComponent implements OnInit {
       this.loading = true;
       const [contacts, isConfig, isNeighbor] = await Promise.all([
         this.contactsService.getContacts(),
-        this.userSettingsService.isConfig(),
-        this.userSettingsService.isNeighbor()
+        this.usersService.isConfig(),
+        this.usersService.isNeighbor()
       ]);
 
       this.isConfig = isConfig;
@@ -213,8 +213,6 @@ export class ContactsComponent implements OnInit {
     this.filterTags.forEach(_tag => {
       _tag.selected = true;
     });
-    this.orderBy = '';
-    this.order = null;
     this.activatedFilters = 0;
     this.refresh();
   }
@@ -290,9 +288,11 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
 
   async export() {
     try {
-      if (!this.contacts || this.contacts.length === 0) {
+      if (this.csvLoading || this.loading || !this.contacts || this.contacts.length === 0) {
         return;
       }
+
+      this.csvLoading = true;
 
       const items = this.#filter(this.contacts);
 
@@ -327,6 +327,7 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
 
   #filter(items: Array<IContact>): Array<IContact> {
     let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.bizyFilterPipe.transform(_items, 'tags', this.filterTags);
     _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }

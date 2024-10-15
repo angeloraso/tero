@@ -1,0 +1,80 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'USERS.EDIT_USER.TITLE' | translate}}</h1>
+
+    <span slot=start [bizyLoading]="loading"></span>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <bizy-form>
+
+        <span class="edit-user__header">
+
+            <img *ngIf="user && user.picture" class="edit-user__header__profile-pic" slot="header-start" height="70" [src]="user.picture" alt="Imagen de usuario"/>
+    
+            <tero-img *ngIf="!user || !user.picture" class="edit-user__header__profile-pic" slot="header-start" [height]="70" alt="Imagen de usuario"></tero-img>
+
+        </span>
+
+        <bizy-input 
+            [disabled]="loading"
+            [readonly]="true"
+            [value]="user ? user.email : ''">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.EMAIL' | translate}}</strong></h6>
+        </bizy-input>
+
+        <bizy-input 
+            [disabled]="loading"
+            [autofocus]="true"
+            [value]="user && user.name ? user.name : ''"
+            (onChange)="name.setValue($event)">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+        </bizy-input>
+
+        <bizy-select [disabled]="loading">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
+            <bizy-select-option 
+                *ngFor="let s of USER_STATES"
+                [selected]="status.value === s"
+                (onSelect)="setStatus(s)">
+                <h6>{{'CORE.USER_STATE.' + s | translate}}</h6>
+            </bizy-select-option>
+        </bizy-select>
+
+        <bizy-input [(value)]="roleSearch" [disabled]="loading || status.value !== USER_STATE.ACTIVE">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>
+    
+            <bizy-input-option 
+                *ngFor="let role of availableRoles | bizySearch : roleSearch | bizyOrderBy : 'asc'"
+                (onSelect)="addRole(role); roleSearch = ''">
+                <h5>{{'CORE.USER_ROLE.' + role | translate}}</h5>
+            </bizy-input-option>
+    
+            <bizy-tag slot="prefix" *ngFor="let role of selectedRoles" [type]="BIZY_TAG_TYPE.INFO" (onSelect)="removeRole(role)">
+                <h6>{{'CORE.USER_ROLE.' + role | translate}}</h6>
+                <h6><i class="fa-solid fa-xmark"></i></h6>
+            </bizy-tag>
+    
+        </bizy-input>
+
+        <span class="tero-confirm-buttons">
+
+            <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="goBack()" [disabled]="loading">
+                <h5><i class="fa-solid fa-xmark"></i></h5>
+                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+            </bizy-button>
+    
+            <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="save()" [disabled]="loading">
+                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+                <h5><i class="fa-solid fa-check"></i></h5>
+            </bizy-button>
+    
+        </span>
+
+    </bizy-form>
+
+</div>

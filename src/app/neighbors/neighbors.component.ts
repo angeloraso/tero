@@ -12,7 +12,7 @@ import {
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
-import { MobileService, NeighborsService, UserSettingsService } from '@core/services';
+import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
 import { PopupComponent } from '@shared/components';
@@ -37,7 +37,7 @@ export class NeighborsComponent implements OnInit {
   filterGroups: Array<{ id: number; value: number; selected: boolean }> = [];
   activatedFilters: number = 0;
   orderBy: string = 'lot';
-  order: 'asc' | 'desc' | null = 'asc';
+  order: 'asc' | 'desc' = 'asc';
   isMobile = true;
 
   readonly LOGO_PATH = LOGO_PATH;
@@ -46,7 +46,7 @@ export class NeighborsComponent implements OnInit {
   constructor(
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(UserSettingsService) private userSettingsService: UserSettingsService,
+    @Inject(UsersService) private usersService: UsersService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(MobileService) private mobile: MobileService,
@@ -64,9 +64,9 @@ export class NeighborsComponent implements OnInit {
     try {
       this.loading = true;
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
-        this.userSettingsService.isConfig(),
-        this.userSettingsService.isNeighbor(),
-        this.userSettingsService.isSecurity()
+        this.usersService.isConfig(),
+        this.usersService.isNeighbor(),
+        this.usersService.isSecurity()
       ]);
 
       this.isNeighbor = isNeighbor;
@@ -154,7 +154,13 @@ export class NeighborsComponent implements OnInit {
 
   async export() {
     try {
-      if (this.csvLoading || !this.neighbors || this.neighbors.length === 0 || !this.isConfig) {
+      if (
+        this.csvLoading ||
+        this.loading ||
+        !this.neighbors ||
+        this.neighbors.length === 0 ||
+        !this.isConfig
+      ) {
         return;
       }
 
@@ -227,8 +233,6 @@ export class NeighborsComponent implements OnInit {
     this.lotSearch = '';
     this.surnameSearch = '';
     this.nameSearch = '';
-    this.orderBy = '';
-    this.order = null;
     this.filterGroups.forEach(_group => {
       _group.selected = true;
     });
@@ -242,6 +246,6 @@ export class NeighborsComponent implements OnInit {
 
   onSort(property: string) {
     this.orderBy = property;
-    this.order = this.order === 'asc' ? 'desc' : this.order === 'desc' ? null : 'asc';
+    this.order = this.order === 'asc' ? 'desc' : 'asc';
   }
 }

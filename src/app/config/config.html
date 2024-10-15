@@ -10,52 +10,56 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper" [bizyLoading]="loading">
+<div class="tero-wrapper config">
 
-    <span class="tero-section">
+    <ng-container *ngIf="loading">
+        <bizy-skeleton-card *ngFor="let i of 2 | bizyRepeat"></bizy-skeleton-card>
+    </ng-container>
+
+    <ng-container *ngIf="!loading">
 
         <bizy-card class="config__card">
             
             <img *ngIf="profilePic" class="config__credential__profile-pic" slot="header-start" height="50" [src]="profilePic" alt="User picture"/>
-    
+
             <tero-img *ngIf="!profilePic" class="config__credential__profile-pic" slot="header-start" [height]="50" alt="User picture"></tero-img>
-    
-            <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{id}}</strong></h4>
-    
+
+            <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{currentUser ? currentUser.id : DEFAULT_USER_ID}}</strong></h4>
+
             <span class="config__credential__content">
-    
+
                 <h3><strong>{{name}}</strong></h3>
-    
+
                 <h5>{{email}}</h5>
-    
+
+                <h5><i class="fa-solid fa-phone"></i>&nbsp;{{phone}}</h5>
+
             </span>
-    
-            <bizy-tag slot="footer-start" [type]="statusTagType"><h5>{{('CONFIG.USER_STATUS.' + status) | translate}}</h5></bizy-tag>
-    
+
+            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
+
             <h1 slot="footer-end" *ngIf="isConfig" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
-    
+
         </bizy-card>
 
-    </span>
-
-    <span class="tero-section">
-
-        <bizy-card *ngIf="isConfig" (onSelect)="goToPendingUsers()" class="config__card">
+        <bizy-card *ngIf="isConfig" (onSelect)="goToUsers()" class="config__card">
             
-            <span slot="header-start" class="config__requests">
-                <h1 class="config__requests__icon"><i class="fa-solid fa-envelope"></i></h1>
-        
-                <span  *ngIf="pendingUsers.length > 0" class="config__requests__icon--badge"></span>
-            </span>
-    
-            <h3 slot="header-start"><strong>{{'CONFIG.REQUESTS' | translate}}</strong></h3>
-    
-            <h5 slot="header-start">({{pendingUsers.length > 9 ? '9+': pendingUsers.length}})</h5>
-    
-            <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
-    
-        </bizy-card>
+            <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-users"></i></h1>
 
-    </span>
+            <h3 slot="header-start"><strong>{{'CONFIG.USERS' | translate}}</strong></h3>
+
+            <h5 slot="header-start">({{users.length}})</h5>
+
+            <span slot="header-start" *ngIf="pendingUsers.length > 0" class="config__icon--badge"></span>
+
+            <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
+
+        </bizy-card>
+        
+        
+    </ng-container>
 
 </div>

@@ -6,9 +6,13 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<div class="tero-wrapper dashboard">
 
-    <span class="tero-section">
+    <ng-container *ngIf="loading">
+        <bizy-skeleton-card *ngFor="let i of 2 | bizyRepeat"></bizy-skeleton-card>
+    </ng-container>
+
+    <ng-container *ngIf="!loading">
         
         <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo" class="dashboard__card">
     
@@ -52,11 +56,7 @@
             </bizy-button>
     
         </bizy-card>
-
-    </span>
-
-    <span class="tero-section">
-
+    
         <bizy-card (onSelect)="goToEcommerce()" *ngIf="showInfo" class="dashboard__card">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-cart-shopping"></i></h4>
@@ -72,6 +72,6 @@
     
         </bizy-card>
 
-    </span>
-    
+    </ng-container>
+
 </div>

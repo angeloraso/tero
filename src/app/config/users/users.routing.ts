@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { configGuard } from '@core/guards';
-import { ConfigComponent } from './config.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { UsersComponent } from './users.component';
 
 export enum PATH {
-  EMPTY = '',
-  USERS = 'users'
+  EMPTY = ''
 }
 
 const routes: Routes = [
   {
     path: PATH.EMPTY,
-    component: ConfigComponent,
+    component: UsersComponent,
     pathMatch: 'full'
   },
   {
-    path: PATH.USERS,
-    loadChildren: () => import('@config/users/users.module').then(m => m.UsersModule),
+    path: ':userEmail',
+    component: EditUserComponent,
     canActivate: [configGuard]
   }
 ];
@@ -25,6 +25,6 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ConfigRoutingModule {
-  static COMPONENTS: Array<any> = [ConfigComponent];
+export class UsersRoutingModule {
+  static COMPONENTS: Array<any> = [UsersComponent, EditUserComponent];
 }

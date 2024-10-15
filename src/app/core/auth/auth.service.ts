@@ -60,7 +60,7 @@ export class AuthService {
 
   async signIn() {
     return FirebaseAuthentication.signInWithGoogle({
-      mode: 'redirect'
+      mode: this.mobile.isMobile() ? 'redirect' : 'popup'
     });
   }
 
@@ -70,6 +70,18 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  getPhone(): string | null {
+    if (this.#USER && this.#USER.providerData[0]) {
+      return this.#USER.providerData[0].phoneNumber;
+    }
+
+    return null;
+  }
+
+  linkWithPhoneNumber(phoneNumber: number): void {
+    FirebaseAuthentication.linkWithPhoneNumber({ phoneNumber: String(phoneNumber) });
   }
 
   getName(): string | null {
@@ -97,15 +109,6 @@ export class AuthService {
   }
 
   signOut() {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        await FirebaseAuthentication.signOut();
-        this.#USER = null;
-        this.#signedIn.next(false);
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return FirebaseAuthentication.signOut();
   }
 }

@@ -2,10 +2,15 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+
+    --bizy-card-cursor: pointer;
 }
 
-.config__card {
-    height: fit-content;
+.config {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 12rem 4rem;
+    gap: 1rem;
 }
 
 .config__credential__profile-pic {
@@ -13,7 +18,7 @@
 }
 
 .config__credential__content {
-    height: 4rem;
+    height: 5rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -30,19 +35,7 @@
     color: var(--primary-color);
 }
 
-.config__requests {
-    position: relative;
-    padding: 0.3rem;
-}
-
-.config__requests__icon {
-    color: var(--info-color);
-}
-
-.config__requests__icon--badge {
-    position: absolute;
-    top: 0.1em;
-    right: 0rem;
+.config__icon--badge {
     border-radius: 50%;
     height: 0.7rem;
     width: 0.7rem;

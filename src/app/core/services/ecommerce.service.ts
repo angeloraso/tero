@@ -31,18 +31,7 @@ export class EcommerceService {
   }
 
   getProduct(productId: string) {
-    return new Promise<IEcommerceProduct>(async (resolve, reject) => {
-      try {
-        const product = await this.database.getEcommerceProduct(productId);
-        if (product) {
-          resolve(product);
-        } else {
-          throw new Error('Not exists');
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return this.database.getEcommerceProduct(productId);
   }
 
   postProduct(product: Omit<IEcommerceProduct, 'id' | 'created' | 'updated'>): Promise<void> {
@@ -54,6 +43,7 @@ export class EcommerceService {
       id: product.id,
       accountId: product.accountId,
       name: product.name,
+      price: product.price,
       description: product.description,
       pictures: product.pictures,
       phones: product.phones,

@@ -6,24 +6,33 @@ export interface IPhone {
   description: string;
 }
 
-export enum ROLE {
+export enum ERROR {
+  ITEM_NOT_FOUND = 'ITEM_NOT_FOUND',
+  AUTH_ERROR = 'AUTH_ERROR',
+  NOT_SUPPORTED = 'NOT_SUPPORTED'
+}
+
+export enum USER_ROLE {
   NEIGHBOR = 'NEIGHBOR',
   ADMIN = 'ADMIN',
   SECURITY = 'SECURITY',
   CONFIG = 'CONFIG'
 }
 
-export enum USER_STATUS {
+export enum USER_STATE {
   ACTIVE = 'ACTIVE',
   PENDING = 'PENDING',
   SUSPENDED = 'SUSPENDED',
   REJECTED = 'REJECTED'
 }
 
-export interface IUserSettings {
+export interface IUser {
   id: number;
-  roles: Array<ROLE>;
-  status: USER_STATUS;
+  roles: Array<USER_ROLE>;
+  status: USER_STATE;
+  email: string;
+  picture?: string | null;
+  name?: string | null;
 }
 
 export interface INeighbor {
@@ -136,6 +145,7 @@ export interface IEcommerceProduct {
   id: string;
   accountId: string;
   name: string;
+  price: number;
   description: string;
   pictures: Array<string>;
   phones: Array<IPhone>;
@@ -149,6 +159,7 @@ export class EcommerceProduct implements IEcommerceProduct {
   accountId: string;
   name: string;
   description: string;
+  price: number;
   pictures: Array<string>;
   phones: Array<IPhone>;
   tags: Array<string>;
@@ -159,6 +170,7 @@ export class EcommerceProduct implements IEcommerceProduct {
     this.id = uuid4();
     this.accountId = product.accountId;
     this.name = product.name;
+    this.price = product.price;
     this.description = product.description ?? '';
     this.pictures = product.pictures ?? [];
     this.phones = product.phones ?? [];

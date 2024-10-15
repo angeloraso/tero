@@ -61,7 +61,7 @@
     <bizy-grid>
 
         <bizy-card 
-            (onSelect)="editEcommerceProduct(product)"
+            (onSelect)="selectEcommerceProduct(product)"
             *gridFor="let product of products 
                                         | bizySearch: search : searchKeys
                                         | bizyFilter : 'tags' : filterTags

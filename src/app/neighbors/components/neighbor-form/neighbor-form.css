@@ -15,5 +15,5 @@
 }
 
 .neighbor-form__security-card bizy-select {
-    width: 10rem;
+    --bizy-select-max-width: 8rem;
 }

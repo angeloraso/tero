@@ -10,12 +10,7 @@ import {
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
 import { ISecurityGuard } from '@core/model';
-import {
-  NeighborsService,
-  SecurityService,
-  UserSettingsService,
-  UtilsService
-} from '@core/services';
+import { NeighborsService, SecurityService, UsersService, UtilsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
 interface IGroup {
   value: number;
@@ -60,7 +55,7 @@ export class SecurityComponent implements OnInit {
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
+    @Inject(UsersService) private usersService: UsersService
   ) {}
 
   async ngOnInit() {
@@ -68,9 +63,9 @@ export class SecurityComponent implements OnInit {
       this.loading = true;
 
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
-        this.userSettingsService.isConfig(),
-        this.userSettingsService.isNeighbor(),
-        this.userSettingsService.isSecurity()
+        this.usersService.isConfig(),
+        this.usersService.isNeighbor(),
+        this.usersService.isSecurity()
       ]);
 
       this.isSecurity = isSecurity;

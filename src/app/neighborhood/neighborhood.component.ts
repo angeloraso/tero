@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { BizyPopupService } from '@bizy/services';
 import { AVAILABLE_LOTS, LOGO_PATH } from '@core/constants';
-import { NeighborsService, UserSettingsService } from '@core/services';
+import { NeighborsService, UsersService } from '@core/services';
 import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
 
@@ -25,16 +25,16 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,
     @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(UserSettingsService) private userSettingsService: UserSettingsService
+    @Inject(UsersService) private usersService: UsersService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
-        this.userSettingsService.isConfig(),
-        this.userSettingsService.isNeighbor(),
-        this.userSettingsService.isSecurity()
+        this.usersService.isConfig(),
+        this.usersService.isNeighbor(),
+        this.usersService.isSecurity()
       ]);
 
       this.showInfo = isNeighbor || isSecurity || isConfig;

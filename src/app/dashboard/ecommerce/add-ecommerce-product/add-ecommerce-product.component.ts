@@ -43,6 +43,7 @@ export class AddEcommerceProductComponent implements OnInit {
 
   async save(product: {
     name: string;
+    price: number;
     description: string;
     pictures: Array<string>;
     phones: Array<IPhone>;

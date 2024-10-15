@@ -2,6 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { CoreModule } from '@core/core.module';
+import { BizyModule } from '@shared/bizy.module';
 import { AppInitService } from './app-init.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -15,7 +16,7 @@ export function initApp(appInit: AppInitService) {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [AppRoutingModule, CoreModule],
+  imports: [AppRoutingModule, BizyModule, CoreModule],
   providers: [
     AppInitService,
     {
