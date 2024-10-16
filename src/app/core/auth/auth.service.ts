@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { FirebaseAuthentication, Persistence, User } from '@capacitor-firebase/authentication';
 import { MobileService } from '@core/services';
-import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -70,18 +70,6 @@ export class AuthService {
     }
 
     return null;
-  }
-
-  getPhone(): string | null {
-    if (this.#USER && this.#USER.providerData[0]) {
-      return this.#USER.providerData[0].phoneNumber;
-    }
-
-    return null;
-  }
-
-  linkWithPhoneNumber(phoneNumber: number): void {
-    FirebaseAuthentication.linkWithPhoneNumber({ phoneNumber: String(phoneNumber) });
   }
 
   getName(): string | null {

@@ -4,11 +4,15 @@
     flex-direction: column;
 
     --bizy-card-cursor: pointer;
-    --bizy-grid-row-height: 8rem;
+    --bizy-grid-row-height: 10rem;
 }
 
 .users__card__profile-pic {
     border-radius: 50%;
+}
+
+.users__card__action {
+    align-self: flex-start;
 }
 
 .users__card__content {
@@ -18,7 +22,7 @@
 
 .users__card__content__description {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 1rem auto 1rem;
     align-items: center;
     column-gap: 0.3rem;
     width: 100%;

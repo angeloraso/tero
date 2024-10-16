@@ -7,7 +7,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { AboutPopupComponent } from '@config/components';
+import { AboutPopupComponent, UserPhonePopupComponent } from '@config/components';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
@@ -31,7 +31,6 @@ export class ConfigComponent implements OnInit {
   profilePic: string = '';
   name: string = '';
   email: string = '';
-  phone: string = '';
   users: Array<IUser> = [];
   pendingUsers: Array<IUser> = [];
   currentUser: IUser | null = null;
@@ -52,7 +51,6 @@ export class ConfigComponent implements OnInit {
       this.profilePic = this.auth.getProfilePicture() ?? '';
       this.name = this.auth.getName() ?? '';
       this.email = this.auth.getEmail() ?? '';
-      this.phone = this.auth.getPhone() ?? '';
       const [currentUser, isConfig] = await Promise.all([
         this.usersService.getCurrentUser(),
         this.usersService.isConfig()
@@ -78,8 +76,35 @@ export class ConfigComponent implements OnInit {
     }
   }
 
-  openPopup(): void {
+  openAboutPopup(): void {
     this.popup.open({ component: AboutPopupComponent });
+  }
+
+  openUserPhonePopup(): void {
+    this.popup.open<string>(
+      {
+        component: UserPhonePopupComponent,
+        data: { phone: this.currentUser?.phone || null }
+      },
+      async phone => {
+        try {
+          if (phone && this.currentUser) {
+            this.loading = true;
+            await this.usersService.putUser({ ...this.currentUser, phone });
+            this.currentUser.phone = phone;
+          }
+        } catch (error) {
+          this.log.error({
+            fileName: 'config.component',
+            functionName: 'openUserPhonePopup',
+            param: error
+          });
+          this.toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
   }
 
   goToUsers(): void {

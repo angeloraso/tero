@@ -21,9 +21,13 @@ export class EditUserComponent implements OnInit {
 
   form: FormGroup<{
     name: FormControl<any>;
+    phone: FormControl<any>;
     status: FormControl<any>;
   }>;
 
+  readonly MIN = 0;
+  readonly MIN_LENGTH = 10;
+  readonly MAX_LENGTH = 10;
   readonly USER_STATE = USER_STATE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly USER_STATES: Array<USER_STATE> = [
@@ -43,12 +47,25 @@ export class EditUserComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       name: [''],
+      phone: [
+        null,
+        [
+          Validators.min(this.MIN),
+          Validators.minLength(this.MIN_LENGTH),
+          Validators.maxLength(this.MAX_LENGTH),
+          Validators.required
+        ]
+      ],
       status: [null, [Validators.required]]
     });
   }
 
   get name() {
     return this.form.get('name') as FormControl<string | number>;
+  }
+
+  get phone() {
+    return this.form.get('phone') as FormControl<string | number>;
   }
 
   get status() {
@@ -70,6 +87,10 @@ export class EditUserComponent implements OnInit {
 
       if (user.name) {
         this.name.setValue(user.name);
+      }
+
+      if (user.phone) {
+        this.phone.setValue(user.phone);
       }
 
       if (user.roles) {
@@ -139,7 +160,7 @@ export class EditUserComponent implements OnInit {
 
   async save() {
     try {
-      if (this.loading || !this.user) {
+      if (this.loading || !this.user || this.form.invalid) {
         return;
       }
 
@@ -147,6 +168,7 @@ export class EditUserComponent implements OnInit {
       await this.usersService.putUser({
         ...this.user,
         name: String(this.name.value),
+        phone: String(this.phone.value),
         roles: this.selectedRoles,
         status: this.status.value
       });

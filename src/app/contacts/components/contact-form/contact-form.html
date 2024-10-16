@@ -23,7 +23,7 @@
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="_name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
-        <h6 slot="error" *ngIf="_name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
     </bizy-input>
 
     <bizy-input
@@ -33,7 +33,7 @@
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_surname.hasError('required') && surnameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="_surname.hasError('minlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
-        <h6 slot="error" *ngIf="_surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
     </bizy-input>
 
     <bizy-input

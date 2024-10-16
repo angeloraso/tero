@@ -33,6 +33,7 @@ export interface IUser {
   email: string;
   picture?: string | null;
   name?: string | null;
+  phone?: string | null;
 }
 
 export interface INeighbor {

@@ -4,7 +4,7 @@
 
     <h1 slot=start>{{'CONFIG.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="openPopup()"><h2><i class="fa-solid fa-circle-info"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="openAboutPopup()"><h2><i class="fa-solid fa-circle-info"></i></h2></bizy-button>
 
     <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="onSignOut()"><h2><i class="fa-solid fa-right-from-bracket"></i></h2></bizy-button>
 
@@ -28,11 +28,15 @@
 
             <span class="config__credential__content">
 
-                <h3><strong>{{name}}</strong></h3>
+                <h3><strong>{{currentUser?.name || name}}</strong></h3>
 
-                <h5>{{email}}</h5>
+                <h5>{{currentUser?.email || email}}</h5>
 
-                <h5><i class="fa-solid fa-phone"></i>&nbsp;{{phone}}</h5>
+                <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserPhonePopup()">
+                    <h5 *ngIf="currentUser?.phone" class="tero-title"><i class="fa-solid fa-phone"></i></h5>
+                    <h5>{{currentUser?.phone || ('CONFIG.ADD_PHONE' | translate)}}</h5>
+                    <h5 *ngIf="!currentUser?.phone"><i class="fa-solid fa-circle-plus"></i></h5>
+                </bizy-button>
 
             </span>
 
@@ -58,6 +62,8 @@
             <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
 
         </bizy-card>
+
+    <span id="firebase-auth-recaptcha-container"></span>
         
         
     </ng-container>

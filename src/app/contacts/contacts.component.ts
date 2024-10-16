@@ -54,7 +54,7 @@ export class ContactsComponent implements OnInit {
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
     @Inject(MobileService) private mobile: MobileService,
     @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
-    @Inject(BizyCopyToClipboardService) private bizyToClipboard: BizyCopyToClipboardService,
+    @Inject(BizyCopyToClipboardService) private bizyCopyToClipboard: BizyCopyToClipboardService,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
@@ -223,7 +223,7 @@ export class ContactsComponent implements OnInit {
 
   async copyPhone(phone: string) {
     try {
-      await this.bizyToClipboard.copy(phone);
+      await this.bizyCopyToClipboard.copy(phone);
       this.toast.success();
     } catch (error) {
       this.log.error({

@@ -3,6 +3,7 @@ import { PATH as APP_PATH } from '@app/app.routing';
 import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
+  BizyCopyToClipboardService,
   BizyExportToCSVService,
   BizyLogService,
   BizyRouterService,
@@ -10,6 +11,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { PATH as CONFIG_PATH } from '@config/config.routing';
+import { WHATSAPP_URL } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -49,6 +51,7 @@ export class UsersComponent implements OnInit {
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(BizyTranslateService) private translate: BizyTranslateService,
     @Inject(MobileService) private mobile: MobileService,
+    @Inject(BizyCopyToClipboardService) private bizyCopyToClipboard: BizyCopyToClipboardService,
     @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
@@ -116,6 +119,45 @@ export class UsersComponent implements OnInit {
     this.router.goTo({
       path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}/${user.email}`
     });
+  }
+
+  async onCall(user: IUserCard) {
+    try {
+      if (this.loading || !user.phone) {
+        return;
+      }
+
+      await this.mobile.call(user.phone);
+    } catch (error) {
+      this.log.error({
+        fileName: 'users.component',
+        functionName: 'onCall',
+        param: error
+      });
+      this.toast.danger();
+    }
+  }
+
+  async copyText(text: string) {
+    try {
+      await this.bizyCopyToClipboard.copy(text);
+      this.toast.success();
+    } catch (error) {
+      this.log.error({
+        fileName: 'users.component',
+        functionName: 'copyText',
+        param: error
+      });
+      this.toast.danger();
+    }
+  }
+
+  onWhatsapp(user: IUserCard) {
+    if (this.loading || !user.phone) {
+      return;
+    }
+
+    window.open(`${WHATSAPP_URL}${user.phone}`, '_blank');
   }
 
   goBack() {

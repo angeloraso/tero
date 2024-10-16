@@ -9,7 +9,7 @@
 .config {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 12rem 4rem;
+    grid-template-rows: 12rem 4rem 1rem;
     gap: 1rem;
 }
 

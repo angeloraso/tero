@@ -78,7 +78,7 @@
 
         <bizy-card 
             (onSelect)="editUser(user)"
-            [disabled]="loading || user._isAdmin"
+            [disabled]="loading "
             *gridFor="let user of users 
                                         | bizySearch: search : searchKeys
                                         | bizyFilter : 'status' : filterStates
@@ -91,21 +91,44 @@
 
             <h4 slot="header-start" *ngIf="user.name" class="tero-text-ellipsis--2"><strong>{{user.name}}</strong></h4>
 
-            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
-            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>
-            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
-            <bizy-tag slot="header-end" *ngIf="user.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
+            <bizy-button 
+                slot="header-end"
+                *ngIf="user.phone"
+                class="tero-action tero-action--info users__card__action"
+                (onSelect)="onCall(user); $event.stopPropagation()">
+                <i class="fa-solid fa-phone"></i>
+            </bizy-button>
+
+            <bizy-button 
+                slot="header-end"
+                *ngIf="user.phone"
+                class="tero-action tero-action--success users__card__action"
+                (onSelect)="onWhatsapp(user); $event.stopPropagation()">
+                <i class="fa-brands fa-whatsapp"></i>
+            </bizy-button>
 
             <span class="users__card__content">
 
                 <span class="users__card__content__description" *ngIf="user.email">
                     <h6><i class="fa-solid fa-envelope"></i></h6>
                     <h6 class="tero-text-ellipsis">{{user.email}}</h6>
+                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.email); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
+                </span>
+
+                <span class="users__card__content__description" *ngIf="user.phone">
+                    <h6><i class="fa-solid fa-phone"></i></h6>
+                    <h6 class="tero-text-ellipsis">{{user.phone}}</h6>
+                    <bizy-button class="tero-action tero-action--info tero-no" (onSelect)="copyText(user.phone); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
                 </span>
 
             </span>
 
             <bizy-tag slot="footer-start" *ngFor="let role of user._roles"><h5>{{role | translate}}</h5></bizy-tag>
+
+            <bizy-tag slot="footer-end" *ngIf="user.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="user.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="user.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="user.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
 
         </bizy-card>
 

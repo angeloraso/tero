@@ -1,0 +1,32 @@
+<bizy-form class="tero-wrapper">
+
+    <h4 class="tero-title"><strong>{{'CONFIG.USER_PHONE_POPUP.TITLE' | translate}}</strong></h4>
+
+    <bizy-input
+        #phoneInput
+        [autofocus]="true"
+        [value]="phone.value"
+        type="number"
+        (onChange)="phone.setValue($event)">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="phone.hasError('required') && phoneInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+        <h6 slot="error" *ngIf="phone.hasError('min') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>
+        <h6 slot="error" *ngIf="phone.hasError('minlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="phone.hasError('maxlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX_LENGTH}}</h6>
+    </bizy-input>
+
+    <span class="tero-confirm-buttons">
+
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+            <h5><i class="fa-solid fa-xmark"></i></h5>
+            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+        </bizy-button>
+
+        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+            <h5>{{'CORE.BUTTON.SAVE' | translate}}</h5>
+            <h5><i class="fa-solid fa-check"></i></h5>
+        </bizy-button>
+
+    </span>
+
+</bizy-form>
