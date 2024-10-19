@@ -1,17 +1,20 @@
 <bizy-form>
 
+    <h5 class="ecommerce-product-form__title"><strong>{{'ECOMMERCE.ECOMMERCE_PRODUCT_FORM.PRODUCT' | translate}}</strong></h5>
+
     <bizy-input
-        #nameInput
-        [value]="_name.value"
+        #productNameInput
+        [disabled]="disabled"
+        [value]="_productName.value"
         [autofocus]="!isMobile"
-        (onChange)="_name.setValue($event)">
+        (onChange)="_productName.setValue($event)">
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
-        <h6 slot="error" *ngIf="_name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
-        <h6 slot="error" *ngIf="_name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
-        <h6 slot="error" *ngIf="_name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_productName.hasError('required') && productNameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+        <h6 slot="error" *ngIf="_productName.hasError('minlength') && productNameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_productName.hasError('maxlength') && productNameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
     </bizy-input>
 
-    <bizy-input [(value)]="tagSearch">
+    <bizy-input [(value)]="tagSearch" [disabled]="disabled">
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.TAG' | translate}}</strong></h6>
 
         <bizy-input-option 
@@ -29,6 +32,7 @@
 
     <bizy-input
         type="textarea"
+        [disabled]="disabled"
         [value]="_description.value"
         (onChange)="_description.setValue($event)">
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
@@ -39,6 +43,7 @@
 
         <bizy-input
             #priceInput
+            [disabled]="disabled"
             type="number"
             [disabled]="_price.disabled"
             [value]="_price.value"
@@ -48,14 +53,28 @@
             <h6 slot="error" *ngIf="_price.hasError('required') && priceInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         </bizy-input>
 
-        <bizy-toggle [(selected)]="checkPrice" (onSelect)="onCheckPrice()">
+        <bizy-toggle [(selected)]="checkPrice" (onSelect)="onCheckPrice()" [disabled]="disabled">
             <h6 slot="start"><strong>{{'ECOMMERCE.ECOMMERCE_PRODUCT_FORM.CHECK_PRICE' | translate}}</strong></h6>
         </bizy-toggle>
 
     </span>
 
+    <h5 class="ecommerce-product-form__title"><strong>{{'ECOMMERCE.ECOMMERCE_PRODUCT_FORM.CONTACT' | translate}}</strong></h5>
+
+    <bizy-input
+        #contactNameInput
+        [disabled]="disabled"
+        [value]="_contactName.value"
+        (onChange)="_contactName.setValue($event)">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="_contactName.hasError('required') && contactNameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+        <h6 slot="error" *ngIf="_contactName.hasError('minlength') && contactNameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="_contactName.hasError('maxlength') && contactNameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+    </bizy-input>
+
     <bizy-input
         #phoneInput
+        [disabled]="disabled"
         type="tel"
         [value]="_phone.value"
         (onChange)="_phone.setValue($event)">
@@ -65,12 +84,12 @@
 
     <span class="tero-confirm-buttons">
 
-        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="_cancel()">
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="_cancel()" [disabled]="disabled">
             <h5><i class="fa-solid fa-xmark"></i></h5>
             <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
         </bizy-button>
 
-        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="_confirm()">
+        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="_confirm()" [disabled]="disabled">
             <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
             <h5><i class="fa-solid fa-check"></i></h5>
         </bizy-button>

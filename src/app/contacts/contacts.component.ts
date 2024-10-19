@@ -111,8 +111,8 @@ export class ContactsComponent implements OnInit {
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${CONTACTS_PATH.ADD}` });
   }
 
-  editContact(contact: IContactCard) {
-    if (!contact || !this.isNeighbor) {
+  selectContact(contact: IContactCard) {
+    if (!contact || !this.isNeighbor || contact.accountId !== this.auth.getId()) {
       return;
     }
 

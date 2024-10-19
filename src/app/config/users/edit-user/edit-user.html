@@ -42,9 +42,7 @@
             type="number"
             (onChange)="phone.setValue($event)">
             <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
-            <h6 slot="error" *ngIf="phone.hasError('required') && phoneInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
             <h6 slot="error" *ngIf="phone.hasError('min') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>
-            <h6 slot="error" *ngIf="phone.hasError('minlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{MIN_LENGTH}}</h6>
             <h6 slot="error" *ngIf="phone.hasError('maxlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX_LENGTH}}</h6>
         </bizy-input>
 
@@ -58,7 +56,7 @@
             </bizy-select-option>
         </bizy-select>
 
-        <bizy-input [(value)]="roleSearch" [disabled]="loading || status.value !== USER_STATE.ACTIVE">
+        <bizy-input #roleInput [(value)]="roleSearch" [disabled]="loading || status.value !== USER_STATE.ACTIVE">
             <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>
     
             <bizy-input-option 
@@ -71,6 +69,8 @@
                 <h6>{{'CORE.USER_ROLE.' + role | translate}}</h6>
                 <h6><i class="fa-solid fa-xmark"></i></h6>
             </bizy-tag>
+
+            <h6 slot="error" *ngIf="selectedRoles.length === 0 && status.value === USER_STATE.ACTIVE && roleInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
     
         </bizy-input>
 

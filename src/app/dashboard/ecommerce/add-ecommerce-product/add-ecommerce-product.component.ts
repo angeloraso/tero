@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
-import { IPhone } from '@core/model';
-import { EcommerceService } from '@core/services';
+import { IPhone, IUser } from '@core/model';
+import { EcommerceService, UsersService } from '@core/services';
 
 @Component({
   selector: 'tero-add-ecommerce-product',
@@ -12,9 +12,11 @@ import { EcommerceService } from '@core/services';
 export class AddEcommerceProductComponent implements OnInit {
   loading: boolean = false;
   tags: Array<string> = [];
+  currentUser: IUser | null = null;
 
   constructor(
-    @Inject(EcommerceService) private ecommerce: EcommerceService,
+    @Inject(EcommerceService) private ecommerceService: EcommerceService,
+    @Inject(UsersService) private usersService: UsersService,
     @Inject(AuthService) private auth: AuthService,
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyToastService) private toast: BizyToastService,
@@ -24,7 +26,13 @@ export class AddEcommerceProductComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-      this.tags = await this.ecommerce.getTags();
+      const [tags, currentUser] = await Promise.all([
+        this.ecommerceService.getTags(),
+        this.usersService.getCurrentUser()
+      ]);
+
+      this.tags = tags || [];
+      this.currentUser = currentUser || null;
     } catch (error) {
       this.log.error({
         fileName: 'add-ecommerce-product.component',
@@ -42,8 +50,9 @@ export class AddEcommerceProductComponent implements OnInit {
   }
 
   async save(product: {
-    name: string;
-    price: number;
+    productName: string;
+    contactName: string;
+    price: number | null;
     description: string;
     pictures: Array<string>;
     phones: Array<IPhone>;
@@ -60,7 +69,21 @@ export class AddEcommerceProductComponent implements OnInit {
         throw new Error();
       }
 
-      await this.ecommerce.postProduct({ ...product, accountId });
+      await this.ecommerceService.postProduct({ ...product, accountId });
+
+      if (
+        this.currentUser &&
+        !this.currentUser.phone &&
+        product.phones[0] &&
+        product.phones[0].number
+      ) {
+        await this.usersService.putUser({ ...this.currentUser, phone: product.phones[0].number });
+      }
+
+      if (this.currentUser && !this.currentUser.name && product.contactName) {
+        await this.usersService.putUser({ ...this.currentUser, name: product.contactName });
+      }
+
       this.goBack();
     } catch (error) {
       this.log.error({

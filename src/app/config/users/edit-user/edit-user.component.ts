@@ -26,7 +26,6 @@ export class EditUserComponent implements OnInit {
   }>;
 
   readonly MIN = 0;
-  readonly MIN_LENGTH = 10;
   readonly MAX_LENGTH = 10;
   readonly USER_STATE = USER_STATE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -47,15 +46,7 @@ export class EditUserComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       name: [''],
-      phone: [
-        null,
-        [
-          Validators.min(this.MIN),
-          Validators.minLength(this.MIN_LENGTH),
-          Validators.maxLength(this.MAX_LENGTH),
-          Validators.required
-        ]
-      ],
+      phone: [null, [Validators.min(this.MIN), Validators.maxLength(this.MAX_LENGTH)]],
       status: [null, [Validators.required]]
     });
   }
@@ -160,15 +151,20 @@ export class EditUserComponent implements OnInit {
 
   async save() {
     try {
-      if (this.loading || !this.user || this.form.invalid) {
+      if (
+        this.loading ||
+        !this.user ||
+        this.form.invalid ||
+        (this.selectedRoles.length === 0 && this.status.value === USER_STATE.ACTIVE)
+      ) {
         return;
       }
 
       this.loading = true;
       await this.usersService.putUser({
         ...this.user,
-        name: String(this.name.value),
-        phone: String(this.phone.value),
+        name: this.name.value ? String(this.name.value) : null,
+        phone: this.phone.value ? String(this.phone.value) : null,
         roles: this.selectedRoles,
         status: this.status.value
       });

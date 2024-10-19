@@ -20,14 +20,14 @@ import { MobileService } from '@core/services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EcommerceProductFormComponent {
-  @Input() id: string = '';
-  @Input() accountId: string = '';
+  @Input() disabled: boolean = false;
   @Input() created: number = 0;
   @Input() updated: number = 0;
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<{
-    name: string;
-    price: number;
+    productName: string;
+    contactName: string;
+    price: number | null;
     description: string;
     pictures: Array<string>;
     phones: Array<IPhone>;
@@ -54,20 +54,30 @@ export class EcommerceProductFormComponent {
     this.selectedTags = [...tags.selected];
   }
 
-  @Input() set name(name: string) {
-    if (!name) {
+  @Input() set productName(productName: string) {
+    if (!productName) {
       return;
     }
 
-    this._name.setValue(name);
+    this._productName.setValue(productName);
   }
 
-  @Input() set price(price: number) {
-    if (!price) {
+  @Input() set price(price: number | null) {
+    if (typeof price === 'undefined') {
       return;
     }
 
     this._price.setValue(price);
+    this.checkPrice = price === null;
+    this.onCheckPrice();
+  }
+
+  @Input() set contactName(contactName: string) {
+    if (!contactName) {
+      return;
+    }
+
+    this._contactName.setValue(contactName);
   }
 
   @Input() set phone(phone: string) {
@@ -93,7 +103,7 @@ export class EcommerceProductFormComponent {
   ) {
     this.isMobile = this.mobile.isMobile();
     this.form = this.fb.group({
-      name: [
+      productName: [
         null,
         [
           Validators.minLength(NAME_MIN_LENGTH),
@@ -103,12 +113,24 @@ export class EcommerceProductFormComponent {
       ],
       price: [null, [Validators.required]],
       phone: [null, [Validators.required]],
+      contactName: [
+        null,
+        [
+          Validators.minLength(NAME_MIN_LENGTH),
+          Validators.maxLength(NAME_MAX_LENGTH),
+          Validators.required
+        ]
+      ],
       description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
     });
   }
 
-  get _name() {
-    return this.form.get('name') as FormControl;
+  get _productName() {
+    return this.form.get('productName') as FormControl;
+  }
+
+  get _contactName() {
+    return this.form.get('contactName') as FormControl;
   }
 
   get _price() {
@@ -174,10 +196,14 @@ export class EcommerceProductFormComponent {
     }
 
     this.save.emit({
-      name: this._name.value ? this._name.value.trim() : '',
+      productName: this._productName.value ? this._productName.value.trim() : '',
+      contactName: this._contactName.value ? this._contactName.value.trim() : '',
       description: this._description.value ? this._description.value.trim() : '',
       pictures: [],
-      price: 0,
+      price:
+        !this.checkPrice && (this._price.value || this._price.value === 0)
+          ? Number(this._price.value)
+          : null,
       phones: [{ number: this._phone.value, description: '' }],
       tags: Array.from(this.selectedTags)
     });

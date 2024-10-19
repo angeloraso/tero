@@ -4,20 +4,11 @@
     flex-direction: column;
 
     --bizy-card-cursor: pointer;
-    --bizy-grid-row-height: 9rem;
+    --bizy-grid-row-height: 10rem;
 }
 
 .ecommerce__card__action {
     align-self: flex-start;
-}
-
-.ecommerce__card__title {
-    text-align: start;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
 
 .ecommerce__card__content {
@@ -31,6 +22,7 @@
     column-gap: 0.3rem;
     width: 100%;
     overflow: hidden;
+    margin-bottom: 0.2rem;
 }
 
 .ecommerce__card__content__description * {

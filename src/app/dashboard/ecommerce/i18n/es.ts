@@ -5,10 +5,15 @@ export const locale = {
   translations: {
     ECOMMERCE: {
       TITLE: 'Tienda Tero',
+      EMPTY: 'No hay productos para mostrar',
+      CHECK_PRICE: 'Consultar precio',
+      FREE: 'Gratis',
       ADD_ECOMMERCE_PRODUCT: {
         TITLE: 'Agregar producto'
       },
       ECOMMERCE_PRODUCT_FORM: {
+        PRODUCT: 'Producto',
+        CONTACT: 'Contacto',
         CHECK_PRICE: 'Consultar'
       },
       EDIT_ECOMMERCE_PRODUCT: {

@@ -1,21 +1,25 @@
 <bizy-toolbar>
 
-    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"  [disabled]="loading"><i class="fa-solid fa-angle-left"></i></bizy-button>
 
     <h1 slot=start>{{'ECOMMERCE.EDIT_ECOMMERCE_PRODUCT.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteEcommerceProduct()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
+    <span slot=start [bizyLoading]="loading"></span>
+
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteEcommerceProduct()" [disabled]="loading"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
-<div class="tero-wrapper" [bizyLoading]="loading">
+<div class="tero-wrapper">
 
     <tero-ecommerce-product-form
         *ngIf="product"
-        [name]="product.name"
+        [disabled]="loading"
+        [productName]="product.productName"
+        [contactName]="product.contactName"
+        [price]="product.price"
         [description]="product.description"
         [phone]="product.phones[0].number"
-        [bizyLoading]="loading"
         [tags]="{available: tags, selected: product.tags}"
         (cancel)="goBack()"
         (save)="save($event)">

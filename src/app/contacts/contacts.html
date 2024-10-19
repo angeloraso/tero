@@ -63,7 +63,7 @@
     <bizy-grid *ngIf="!loading" class="animated fade-in">
 
         <bizy-card 
-            (onSelect)="editContact(contact)"
+            (onSelect)="selectContact(contact)"
             *gridFor="let contact of contacts 
                                         | bizySearch: search : searchKeys
                                         | bizyFilter : 'tags' : filterTags

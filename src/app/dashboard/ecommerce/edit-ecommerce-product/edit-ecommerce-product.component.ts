@@ -70,7 +70,7 @@ export class EditEcommerceProductComponent implements OnInit {
         component: PopupComponent,
         data: {
           title: this.translate.get('ECOMMERCE.EDIT_ECOMMERCE_PRODUCT.DELETE_POPUP.TITLE'),
-          msg: `${this.translate.get('ECOMMERCE.EDIT_ECOMMERCE_PRODUCT.DELETE_POPUP.MSG')}: ${this.product.name}`
+          msg: `${this.translate.get('ECOMMERCE.EDIT_ECOMMERCE_PRODUCT.DELETE_POPUP.MSG')}: ${this.product.productName}`
         }
       },
       async res => {
@@ -99,8 +99,10 @@ export class EditEcommerceProductComponent implements OnInit {
   }
 
   async save(product: {
-    name: string;
+    productName: string;
+    contactName: string;
     description: string;
+    price: number | null;
     pictures: Array<string>;
     phones: Array<IPhone>;
     tags: Array<string>;

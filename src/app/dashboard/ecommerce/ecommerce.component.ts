@@ -180,8 +180,8 @@ export class EcommerceComponent implements OnInit {
 
       await this.mobile.share({
         dialogTitle: this.translate.get('ECOMMERCE.SHARE_PRODUCT'),
-        title: product.name,
-        text: `${this.translate.get('CORE.FORM.FIELD.NAME')}: ${product.name}
+        title: product.productName,
+        text: `${this.translate.get('CORE.FORM.FIELD.NAME')}: ${product.productName}
 ${this.translate.get('CORE.FORM.FIELD.PHONE')}: ${product.phones[0].number}
 ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
       });

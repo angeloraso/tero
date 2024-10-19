@@ -42,7 +42,8 @@ export class EcommerceService {
     return this.database.putEcommerceProduct({
       id: product.id,
       accountId: product.accountId,
-      name: product.name,
+      productName: product.productName,
+      contactName: product.contactName,
       price: product.price,
       description: product.description,
       pictures: product.pictures,

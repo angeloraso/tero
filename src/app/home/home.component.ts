@@ -97,9 +97,8 @@ export class HomeComponent implements OnDestroy {
     }
   }
 
-  onToggle(closed: boolean) {
-    this.closedSidebar = closed;
-    this.storage.set(this.#CLOSED_SIDEBAR, closed);
+  onToggle() {
+    this.storage.set(this.#CLOSED_SIDEBAR, this.closedSidebar);
   }
 
   goTo(path: string) {
