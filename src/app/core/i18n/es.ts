@@ -5,6 +5,7 @@ export const locale = {
   translations: {
     CORE: {
       EMPTY: 'Sin información',
+      NO_MATCHES: 'Sin coincidencias',
       TOTAL: 'Total',
       YES: 'Si',
       NO: 'No',
