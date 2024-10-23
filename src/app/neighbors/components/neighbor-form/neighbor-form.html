@@ -2,7 +2,7 @@
 
     <span class="neighbor-form__picture">
 
-        <tero-img [src]="_picture.value" alt="Neighbor picture"></tero-img>
+        <tero-img [src]="DEFAULT_USER_PICTURE" alt="Neighbor picture"></tero-img>
 
     </span>
 
@@ -22,7 +22,6 @@
         [value]="_surname.value"
         (onChange)="_surname.setValue($event)">
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
-        <h6 slot="error" *ngIf="_surname.hasError('required') && surnameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="_surname.hasError('minlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
         <h6 slot="error" *ngIf="_surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
     </bizy-input>
@@ -35,8 +34,38 @@
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_lot.hasError('required') && lotInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="_lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</h6>
-        <h6 slot="error" *ngIf="_lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_VALUE}}</h6>
+        <h6 slot="error" *ngIf="_lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_LOT_VALUE}}</h6>
     </bizy-input>
+
+    <span class="tero-form__section">
+
+        <bizy-select>
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}}</strong></h6>
+            <bizy-select-option 
+                *ngFor="let a of ALARMS"
+                [selected]="alarmNumber === a"
+                (onSelect)="alarmNumber = a">
+                <h6>{{a}}</h6>
+            </bizy-select-option>
+        </bizy-select>
+
+        <bizy-input [(value)]="alarmControlSearch">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}</strong></h6>
+    
+            <bizy-input-option 
+                *ngFor="let alarmControl of availableAlarmControls | bizySearch : alarmControlSearch"
+                (onSelect)="addControl(alarmControl); alarmControlSearch = ''">
+                <h5>{{alarmControl}}</h5>
+            </bizy-input-option>
+    
+            <bizy-tag slot="prefix" *ngFor="let alarmControl of selectedAlarmControls" [type]="BIZY_TAG_TYPE.INFO" (onSelect)="removeControl(alarmControl)">
+                <h6>{{alarmControl}}</h6>
+                <h6><i class="fa-solid fa-xmark"></i></h6>
+            </bizy-tag>
+    
+        </bizy-input>
+
+    </span>
 
     <span class="neighbor-form__security-card">
 

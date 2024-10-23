@@ -8,5 +8,5 @@ import { ILot } from '@neighborhood/neighborhood.model';
 })
 export class LotComponent {
   @Input() lot: ILot | null = null;
-  @Output() onClick = new EventEmitter<void>();
+  @Output() onSelect = new EventEmitter<void>();
 }

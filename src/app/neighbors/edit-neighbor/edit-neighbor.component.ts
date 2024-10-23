@@ -94,6 +94,8 @@ export class EditNeighborComponent implements OnInit {
   async save(data: {
     group: number;
     surname: string;
+    alarmNumber: number | null;
+    alarmControls: Array<number>;
     name: string;
     security: boolean;
     lot: number;
@@ -109,6 +111,8 @@ export class EditNeighborComponent implements OnInit {
         group: data.group,
         surname: data.surname,
         name: data.name,
+        alarmNumber: data.alarmNumber,
+        alarmControls: data.alarmControls,
         security: data.security,
         lot: data.lot
       });

@@ -29,6 +29,8 @@ export const locale = {
       FORM: {
         FIELD: {
           LOT: 'Lote',
+          ALARM_NUMBER: 'Número de alarma',
+          ALARM_CONTROLS: 'Controles',
           SURNAME: 'Apellido',
           NAME: 'Nombre',
           GROUP: 'Grupo',

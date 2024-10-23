@@ -4,8 +4,9 @@
     height: 2rem;
     width: 6rem;
     text-align: center;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.3rem;
     align-items: center;
     cursor: pointer;
 
@@ -14,6 +15,11 @@
     }
 }
 
+.lot__number {
+    justify-self: end;
+}
+
 .lot__security {
+    justify-self: start;
     color: var(--primary-color);
 }

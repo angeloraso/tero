@@ -32,6 +32,8 @@ export class NeighborsService {
       id: neighbor.id,
       lot: neighbor.lot,
       group: neighbor.group,
+      alarmNumber: neighbor.alarmNumber,
+      alarmControls: neighbor.alarmControls,
       name: neighbor.name,
       surname: neighbor.surname,
       security: neighbor.security,

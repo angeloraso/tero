@@ -42,6 +42,8 @@ export interface INeighbor {
   name: string;
   surname: string;
   security: boolean;
+  alarmNumber: number | null;
+  alarmControls: Array<number>;
   group: number;
   created: number;
   updated: number;
@@ -52,8 +54,10 @@ export class Neighbor implements INeighbor {
   lot: number;
   name: string;
   surname: string;
-  group: number;
   security: boolean;
+  alarmNumber: number | null;
+  alarmControls: Array<number>;
+  group: number;
   created: number;
   updated: number;
 
@@ -61,6 +65,8 @@ export class Neighbor implements INeighbor {
     this.id = uuid4();
     this.lot = neighbor.lot;
     this.group = neighbor.group;
+    this.alarmNumber = neighbor.alarmNumber ?? null;
+    this.alarmControls = neighbor.alarmControls ?? [];
     this.name = neighbor.name ?? '';
     this.surname = neighbor.surname ?? '';
     this.security = neighbor.security ?? false;

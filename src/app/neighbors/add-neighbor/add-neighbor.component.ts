@@ -23,6 +23,8 @@ export class AddNeighborComponent {
     group: number;
     surname: string;
     name: string;
+    alarmNumber: number | null;
+    alarmControls: Array<number>;
     security: boolean;
     lot: number;
   }) {

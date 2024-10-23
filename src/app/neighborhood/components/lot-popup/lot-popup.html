@@ -1,19 +1,48 @@
 <span class="lot-popup">
 
     <span class="tero-section">
-        <h1 class="tero-title">{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</h1>
+        <span class="tero-section__start">
+            <h2 class="tero-title"><strong>{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</strong></h2>
+            <h2 class="lot-popup__security" *ngIf="data?.security"><i class="fa-solid fa-shield-halved"></i></h2>
+        </span>
     </span>
 
-    <span class="lot-popup__neighbors">
+    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0">
+        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.NEIGHBORS' | translate}}</strong></h5>
+    </span>
 
-        <span class="lot-popup__neighbors__neighbor" *ngFor="let neighbor of data?.neighbors">
+    <span class="tero-section" *ngFor="let neighbor of data?.neighbors">
+    
+        <bizy-tag>
+            <h5><i class="fa-solid fa-user"></i></h5>
+            <h5>{{neighbor.surname}} {{neighbor.name}}</h5>
+        </bizy-tag>
+    
+    </span>
 
-            <h2><i class="fa-solid fa-user lot-popup__neighbors__neighbor__icon"></i></h2>
+    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
+        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.ALARM_NUMBER' | translate}}</strong></h5>
+    </span>
+
+    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmNumber">
+        <bizy-tag [type]="BIZY_TAG_TYPE.INFO">
+            <h6><i class="fa-solid fa-land-mine-on"></i></h6>
+            <h6>{{data.neighbors[0].alarmNumber}}</h6>
+        </bizy-tag>
+    </span>
     
-            <h2 class="lot-popup__neighbors__neighbor__name">{{neighbor.surname}} {{neighbor.name}}</h2>
-    
+
+    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
+        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.ALARM_CONTROLS' | translate}}</strong></h5>
+    </span>
+
+    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
+        <span class="tero-section__start">
+            <bizy-tag [type]="BIZY_TAG_TYPE.INFO" *ngFor="let control of data.neighbors[0].alarmControls">
+                <h6><i class="fa-solid fa-mobile-retro"></i></h6>
+                <h6>{{control}}</h6>
+            </bizy-tag>
         </span>
-
     </span>
 
     <span *ngIf="!data?.neighbors || data?.neighbors?.length === 0">{{'CORE.EMPTY' | translate}}</span>

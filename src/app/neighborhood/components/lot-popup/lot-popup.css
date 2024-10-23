@@ -1,10 +1,11 @@
 .lot-popup {
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
-    justify-content: center;
-    align-items: center;
     padding: 1rem;
+}
+
+.lot-popup__security {
+    color: var(--primary-color);
 }
 
 .lot-popup__neighbors {

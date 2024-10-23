@@ -7,6 +7,7 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
   AVAILABLE_LOTS,
   AVAILABLE_SECURITY_GROUPS,
@@ -23,22 +24,34 @@ import { MobileService } from '@core/services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NeighborFormComponent {
+  @Input() alarmNumber: number | null = null;
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<{
     group: number;
     surname: string;
     name: string;
+    alarmNumber: number | null;
+    alarmControls: Array<number>;
     security: boolean;
     lot: number;
   }>();
   form: FormGroup;
   isMobile = true;
 
+  alarmControlSearch: string | number = '';
+  selectedAlarmControls: Array<number> = [];
+  availableAlarmControls: Array<number> = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+  ];
+
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly MIN_VALUE = 0;
-  readonly MAX_VALUE = AVAILABLE_LOTS;
+  readonly MAX_LOT_VALUE = AVAILABLE_LOTS;
+  readonly ALARMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly GROUPS = AVAILABLE_SECURITY_GROUPS;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
 
   @Input() set group(group: number) {
     if (!group) {
@@ -47,6 +60,18 @@ export class NeighborFormComponent {
 
     this._group.setValue(group);
   }
+
+  @Input() set alarmControls(alarmControls: Array<number>) {
+    if (!alarmControls) {
+      return;
+    }
+
+    this.selectedAlarmControls = [...alarmControls];
+    this.availableAlarmControls = this.availableAlarmControls.filter(
+      _control => !alarmControls.includes(_control)
+    );
+  }
+
   @Input() set surname(surname: string) {
     if (!surname) {
       return;
@@ -88,14 +113,13 @@ export class NeighborFormComponent {
       id: [null],
       created: [null],
       updated: [null],
-      picture: [DEFAULT_USER_PICTURE, [Validators.required]],
-      group: [null, [Validators.required]],
-      surname: [null, [Validators.required]],
+      group: [null],
+      surname: [null],
       name: [null, [Validators.required]],
-      security: [true, [Validators.required]],
+      security: [true],
       lot: [
         null,
-        [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_VALUE), Validators.required]
+        [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]
       ]
     });
   }
@@ -110,10 +134,6 @@ export class NeighborFormComponent {
 
   get _updated() {
     return this.form.get('updated') as FormControl;
-  }
-
-  get _picture() {
-    return this.form.get('picture') as FormControl;
   }
 
   get _group() {
@@ -148,6 +168,38 @@ export class NeighborFormComponent {
     this._group.updateValueAndValidity();
   }
 
+  addControl(control: number) {
+    if (!control) {
+      return;
+    }
+
+    this.selectedAlarmControls.push(control);
+
+    const index = this.availableAlarmControls.findIndex(_control => _control === control);
+    if (index !== -1) {
+      this.availableAlarmControls.splice(index, 1);
+    }
+
+    this.selectedAlarmControls = [...this.selectedAlarmControls].sort((a, b) => a - b);
+    this.availableAlarmControls = [...this.availableAlarmControls].sort((a, b) => a - b);
+  }
+
+  removeControl(control: number) {
+    if (!control) {
+      return;
+    }
+
+    this.availableAlarmControls.push(control);
+
+    const index = this.selectedAlarmControls.findIndex(_control => _control === control);
+    if (index !== -1) {
+      this.selectedAlarmControls.splice(index, 1);
+    }
+
+    this.selectedAlarmControls = [...this.selectedAlarmControls].sort((a, b) => a - b);
+    this.availableAlarmControls = [...this.availableAlarmControls].sort((a, b) => a - b);
+  }
+
   _confirm() {
     if (this.form.invalid) {
       return;
@@ -155,6 +207,8 @@ export class NeighborFormComponent {
 
     this.save.emit({
       group: this._group.value,
+      alarmNumber: this.alarmNumber,
+      alarmControls: this.selectedAlarmControls,
       surname: this._surname.value.trim(),
       name: this._name.value.trim(),
       security: this._security.value,
