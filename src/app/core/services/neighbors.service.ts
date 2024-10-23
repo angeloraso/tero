@@ -23,7 +23,7 @@ export class NeighborsService {
     return this.database.getNeighbor(neighborId);
   }
 
-  postNeighbor(neighbor: Omit<INeighbor, 'id'>): Promise<void> {
+  postNeighbor(neighbor: Omit<INeighbor, 'id' | 'created' | 'updated'>): Promise<void> {
     return this.database.postNeighbor(new Neighbor(neighbor));
   }
 
@@ -35,8 +35,6 @@ export class NeighborsService {
       name: neighbor.name,
       surname: neighbor.surname,
       security: neighbor.security,
-      picture: neighbor.picture,
-      phones: neighbor.phones,
       created: Number(neighbor.created) || Date.now(),
       updated: Date.now()
     });

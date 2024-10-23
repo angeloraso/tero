@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { BizyRouterService } from '@bizy/services';
-import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 
 @Component({
@@ -20,14 +19,20 @@ export class AddNeighborComponent {
     this.router.goBack();
   }
 
-  async save(neighbor: INeighbor) {
+  async save(data: {
+    group: number;
+    surname: string;
+    name: string;
+    security: boolean;
+    lot: number;
+  }) {
     try {
-      if (!neighbor || this.loading) {
+      if (!data || this.loading) {
         return;
       }
 
       this.loading = true;
-      await this.neighbors.postNeighbor(neighbor);
+      await this.neighbors.postNeighbor(data);
       this.goBack();
     } catch (error) {
       console.error(error);

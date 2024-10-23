@@ -39,12 +39,10 @@ export interface IUser {
 export interface INeighbor {
   id: string;
   lot: number;
-  surname: string;
   name: string;
+  surname: string;
   security: boolean;
-  picture: string;
   group: number;
-  phones: Array<IPhone>;
   created: number;
   updated: number;
 }
@@ -52,24 +50,20 @@ export interface INeighbor {
 export class Neighbor implements INeighbor {
   id: string;
   lot: number;
-  surname: string;
   name: string;
+  surname: string;
   group: number;
   security: boolean;
-  picture: string;
-  phones: Array<IPhone>;
   created: number;
   updated: number;
 
-  constructor(neighbor: Omit<INeighbor, 'id'>) {
+  constructor(neighbor: Omit<INeighbor, 'id' | 'created' | 'updated'>) {
     this.id = uuid4();
     this.lot = neighbor.lot;
     this.group = neighbor.group;
-    this.surname = neighbor.surname ?? '';
     this.name = neighbor.name ?? '';
+    this.surname = neighbor.surname ?? '';
     this.security = neighbor.security ?? false;
-    this.picture = neighbor.picture ?? DEFAULT_USER_PICTURE;
-    this.phones = neighbor.phones ?? [];
     this.created = Date.now();
     this.updated = Date.now();
   }

@@ -91,14 +91,27 @@ export class EditNeighborComponent implements OnInit {
     this.router.goBack();
   }
 
-  async save(neighbor: INeighbor) {
+  async save(data: {
+    group: number;
+    surname: string;
+    name: string;
+    security: boolean;
+    lot: number;
+  }) {
     try {
-      if (!neighbor) {
+      if (!data || this.loading || !this.neighbor) {
         return;
       }
 
       this.loading = true;
-      await this.neighborsService.putNeighbor(neighbor);
+      await this.neighborsService.putNeighbor({
+        ...this.neighbor,
+        group: data.group,
+        surname: data.surname,
+        name: data.name,
+        security: data.security,
+        lot: data.lot
+      });
       this.goBack();
     } catch (error) {
       this.log.error({

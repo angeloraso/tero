@@ -14,7 +14,6 @@ import {
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH
 } from '@core/constants';
-import { INeighbor } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
@@ -25,7 +24,13 @@ import { MobileService } from '@core/services';
 })
 export class NeighborFormComponent {
   @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<INeighbor>();
+  @Output() save = new EventEmitter<{
+    group: number;
+    surname: string;
+    name: string;
+    security: boolean;
+    lot: number;
+  }>();
   form: FormGroup;
   isMobile = true;
 
@@ -34,39 +39,6 @@ export class NeighborFormComponent {
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly GROUPS = AVAILABLE_SECURITY_GROUPS;
-
-  @Input() set id(id: string) {
-    if (!id) {
-      return;
-    }
-
-    this._id.setValue(id);
-  }
-
-  @Input() set created(created: number) {
-    if (!created) {
-      return;
-    }
-
-    this._created.setValue(created);
-  }
-
-  @Input() set updated(updated: number) {
-    if (!updated) {
-      return;
-    }
-
-    this._updated.setValue(updated);
-  }
-
-  @Input() set picture(picture: string) {
-    if (!picture) {
-      this._picture.setValue(DEFAULT_USER_PICTURE);
-      return;
-    }
-
-    this._picture.setValue(picture);
-  }
 
   @Input() set group(group: number) {
     if (!group) {
@@ -182,16 +154,11 @@ export class NeighborFormComponent {
     }
 
     this.save.emit({
-      id: this._id.value,
-      created: this._created.value,
-      updated: this._updated.value,
-      picture: this._picture.value,
       group: this._group.value,
       surname: this._surname.value.trim(),
       name: this._name.value.trim(),
       security: this._security.value,
-      lot: this._lot.value,
-      phones: []
+      lot: this._lot.value
     });
   }
 
