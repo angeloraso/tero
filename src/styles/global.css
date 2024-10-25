@@ -78,7 +78,11 @@ h6 {
 }
 
 .tero-table-column-center {
-    justify-content: center;
+    --bizy-table-column-justify-content: center;
+}
+
+.tero-table-column-end {
+    --bizy-table-column-justify-content: flex-end;
 }
 
 .tero-button--accent {

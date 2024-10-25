@@ -41,7 +41,8 @@ export class NeighborFormComponent {
   alarmControlSearch: string | number = '';
   selectedAlarmControls: Array<number> = [];
   availableAlarmControls: Array<number> = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29, 30
   ];
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -209,8 +210,8 @@ export class NeighborFormComponent {
       group: this._group.value,
       alarmNumber: this.alarmNumber,
       alarmControls: this.selectedAlarmControls,
-      surname: this._surname.value.trim(),
-      name: this._name.value.trim(),
+      surname: this._surname.value ? this._surname.value.trim() : '',
+      name: this._name.value ? this._name.value.trim() : '',
       security: this._security.value,
       lot: this._lot.value
     });
