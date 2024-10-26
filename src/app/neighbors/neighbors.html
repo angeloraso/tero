@@ -20,10 +20,12 @@
                 class="tero-counter"
                 [readonly]="true"
                 [value]="activatedFilters ? ((neighbors 
-                    | bizySearch: search : ['group', 'lot', 'surname', 'name']
+                    | bizySearch: search : searchKeys
                     | bizySearch: lotSearch : 'lot'
                     | bizySearch: surnameSearch : 'surname'
                     | bizySearch: nameSearch : 'name'
+                    | bizyFilter : 'alarmNumber' : filterAlarmNumbers
+                    | bizyFilter : 'alarmControls' : filterAlarmControls
                     | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
@@ -142,17 +144,58 @@
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'group'"></bizy-table-column-arrows>
             </bizy-table-column>
 
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('alarmNumber')">
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                    
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ALARM_NUMBER' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let alarmNumber of filterAlarmNumbers"
+                            [selected]="alarmNumber.selected"
+                            (onChange)="alarmNumber.selected = $event; refresh()">
+                            <h5>{{alarmNumber.value}}</h5>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+                <h6><strong>{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}}</strong></h6>
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'alarmNumber'"></bizy-table-column-arrows>
+            </bizy-table-column>
+
             <bizy-table-column [ngStyle]="{flex: 4}">
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                    
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ALARM_CONTROLS' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let alarmControl of filterAlarmControls"
+                            [selected]="alarmControl.selected"
+                            (onChange)="alarmControl.selected = $event; refresh()">
+                            <h5>{{alarmControl.value}}</h5>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
                 <h6><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}</strong></h6>
             </bizy-table-column>
     
         </bizy-table-header>
     
         <bizy-table-row *tableFor="let neighbor in: neighbors 
-                                                    | bizySearch: search : ['group', 'lot', 'surname', 'name']
+                                                    | bizySearch: search : searchKeys
                                                     | bizySearch: lotSearch : 'lot'
                                                     | bizySearch: surnameSearch : 'surname'
                                                     | bizySearch: nameSearch : 'name'
+                                                    | bizyFilter : 'alarmNumber' : filterAlarmNumbers
+                                                    | bizyFilter : 'alarmNumber' : filterAlarmControls
                                                     | bizyFilter : 'group' : filterGroups
                                                     | bizyOrderBy: order : orderBy">
     
@@ -167,6 +210,11 @@
             </bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 2}" class="tero-table-column-center" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.group || '---'}}</h6></bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 4}" class="tero-table-column-center" (onSelect)="editNeighbor(neighbor)">
+                <bizy-tag *ngIf="neighbor.alarmNumber"><h6>{{neighbor.alarmNumber}}</h6></bizy-tag>
+                <h6 *ngIf="!neighbor.alarmNumber">---</h6>
+            </bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="editNeighbor(neighbor)">
                 <bizy-tag [type]="BIZY_TAG_TYPE.INFO" *ngFor="let control of neighbor.alarmControls"><h6>{{control}}</h6></bizy-tag>

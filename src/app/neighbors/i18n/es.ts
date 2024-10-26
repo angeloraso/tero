@@ -6,6 +6,10 @@ export const locale = {
     NEIGHBORS: {
       TITLE: 'Vecinos',
       CSV_FILE_NAME: 'tero_vecinos.csv',
+      NO_GROUP: 'Sin grupo',
+      NO_ALARM: 'Sin alarma',
+      NO_CONTROL: 'Sin control',
+      CONTROL: 'Con control',
       SECURITY: {
         TITLE: 'Dar de baja',
         MSG: 'Se dará de baja del servicio de seguridad al vecino/a'

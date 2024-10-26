@@ -31,10 +31,14 @@ export class NeighborsComponent implements OnInit {
   isSecurity = false;
   neighbors: Array<INeighbor> = [];
   search: string | number = '';
+  searchKeys: Array<string> = ['group', 'lot', 'surname', 'name', 'alarmNumber', 'alarmControls'];
   lotSearch: string = '';
   surnameSearch: string = '';
   nameSearch: string = '';
-  filterGroups: Array<{ id: number; value: number; selected: boolean }> = [];
+  filterGroups: Array<{ id: number | boolean; value: number | string; selected: boolean }> = [];
+  filterAlarmNumbers: Array<{ id: number | boolean; value: number | string; selected: boolean }> =
+    [];
+  filterAlarmControls: Array<{ id: boolean; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
   orderBy: string = 'lot';
   order: 'asc' | 'desc' = 'asc';
@@ -79,18 +83,46 @@ export class NeighborsComponent implements OnInit {
       this.neighbors = (await this.neighborsService.getNeighbors()) ?? [];
 
       const groups = new Set<number>();
+      const alarmNumbers = new Set<number>();
 
       this.neighbors.forEach(_neighbor => {
         if (_neighbor.group) {
           groups.add(_neighbor.group);
         }
+
+        if (_neighbor.alarmNumber) {
+          alarmNumbers.add(_neighbor.alarmNumber);
+        }
       });
 
       this.filterGroups = Array.from(groups)
-        .sort()
+        .sort((a, b) => a - b)
         .map(_group => {
           return { id: _group, value: _group, selected: true };
         });
+
+      this.filterGroups.unshift({
+        id: false,
+        value: this.translate.get('NEIGHBORS.NO_GROUP'),
+        selected: true
+      });
+
+      this.filterAlarmNumbers = Array.from(alarmNumbers)
+        .sort((a, b) => a - b)
+        .map(_alarmNumber => {
+          return { id: _alarmNumber, value: _alarmNumber, selected: true };
+        });
+
+      this.filterAlarmNumbers.unshift({
+        id: false,
+        value: this.translate.get('NEIGHBORS.NO_ALARM'),
+        selected: true
+      });
+
+      this.filterAlarmControls = [
+        { id: true, value: this.translate.get('NEIGHBORS.CONTROL'), selected: true },
+        { id: false, value: this.translate.get('NEIGHBORS.NO_CONTROL'), selected: true }
+      ];
     } catch (error) {
       this.log.error({
         fileName: 'neighbors.component',
