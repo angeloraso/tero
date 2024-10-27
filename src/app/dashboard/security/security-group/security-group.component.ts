@@ -5,12 +5,14 @@ import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
   BizyExportToCSVService,
   BizyLogService,
+  BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
 import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
+import { RegisterPaymentPopupComponent } from '../components';
 
 interface INeighborCard extends INeighbor {
   _debt: boolean;
@@ -31,6 +33,9 @@ export class SecurityGroupComponent implements OnInit {
   searchKeys = ['name', 'surname', 'lot'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'lot';
+  lotSearch: string = '';
+  surnameSearch: string = '';
+  nameSearch: string = '';
   isMobile = true;
   filterDebts: Array<{ id: boolean; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
@@ -51,7 +56,8 @@ export class SecurityGroupComponent implements OnInit {
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
-    @Inject(UsersService) private usersService: UsersService
+    @Inject(UsersService) private usersService: UsersService,
+    @Inject(BizyPopupService) private popup: BizyPopupService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -130,12 +136,45 @@ export class SecurityGroupComponent implements OnInit {
     this.router.goBack();
   }
 
-  registerPayment(neighbor: INeighborCard) {
-    if (this.loading || !neighbor || !neighbor._debt) {
+  async openRegisterPaymentPopup(neighbor: INeighborCard) {
+    if (this.loading || !neighbor || !neighbor._debt || !this.isSecurityGroupAdmin) {
       return;
     }
 
-    console.log(neighbor);
+    this.popup.open<{ transactionId: string }>(
+      {
+        component: RegisterPaymentPopupComponent,
+        data: {
+          neighbor
+        }
+      },
+      async res => {
+        try {
+          if (res && this.group) {
+            this.loading = true;
+            await this.securityService.postNeighborInvoice({
+              neighborId: neighbor.id,
+              group: this.group,
+              transactionId: res.transactionId
+            });
+            const index = this.neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
+            if (index !== -1) {
+              this.neighbors[index]._debt = false;
+              this.neighbors = [...this.neighbors];
+            }
+          }
+        } catch (error) {
+          this.log.error({
+            fileName: 'neighbors.component',
+            functionName: 'openRegisterPaymentPopup',
+            param: error
+          });
+          this.toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
   }
 
   checkFilters(activated: boolean) {
@@ -153,6 +192,11 @@ export class SecurityGroupComponent implements OnInit {
     });
     this.activatedFilters = 0;
     this.refresh();
+  }
+
+  onSort(property: string) {
+    this.orderBy = property;
+    this.order = this.order === 'asc' ? 'desc' : 'asc';
   }
 
   refresh() {

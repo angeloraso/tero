@@ -19,6 +19,9 @@
                 [readonly]="true"
                 [value]="activatedFilters ? ((neighbors
                                                 | bizySearch: search : searchKeys
+                                                | bizySearch: lotSearch : 'lot'
+                                                | bizySearch: surnameSearch : 'surname'
+                                                | bizySearch: nameSearch : 'name'
                                                 | bizyFilter : '_debt' : filterDebts).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
@@ -32,25 +35,6 @@
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
-            <bizy-button class="tero-button--success" [disabled]="loading">
-    
-                <bizy-filter (onChange)="checkFilters($event)">
-                    <h6><i class="fa-solid fa-filter"></i></h6>
-                    
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'SECURITY.SECURITY_GROUP.FILTER.DEBT.TITLE' | translate }}</strong></h6>
-
-                        <bizy-filter-section-checkbox-option 
-                            *ngFor="let debt of filterDebts" 
-                            [selected]="debt.selected"
-                            (onChange)="debt.selected = $event; refresh()">
-                            <h6>{{debt.value}}</h6>
-                        </bizy-filter-section-checkbox-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-            </bizy-button>
-
             <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
@@ -59,54 +43,122 @@
 
     </span>
 
-    <bizy-grid *ngIf="!loading" class="animated fade-in">
+    <bizy-table [bizyLoading]="loading">
 
-        <bizy-card 
-            [ngClass]="{'security-group__card--debt': neighbor._debt, 'security-group__card--no-debt': !neighbor._debt, }"
-            *gridFor="let neighbor of neighbors 
-                                        | bizySearch: search : searchKeys
-                                        | bizyFilter : '_debt' : filterDebts
-                                        | bizyOrderBy: order : orderBy">
+        <bizy-table-header>
 
-            <tero-img slot="header-start" [height]="40" alt="Imagen de usuario"></tero-img>
+            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="onSort('lot')">
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                    
+                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
-            <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{neighbor.name}} {{neighbor.surname}}</strong></h4>
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h6>
 
-            <bizy-tag slot="header-end" [type]="BIZY_TAG_TYPE.DANGER"><h6>{{'SECURITY.SECURITY_GROUP.DEBT' | translate}}</h6></bizy-tag>
+                        <bizy-filter-section-search-option 
+                            [(value)]="lotSearch"
+                            (onChange)="refresh()">
+                        </bizy-filter-section-search-option>
+                    </bizy-filter-section>
 
-            <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO"><h6>{{neighbor.lot}}</h6></bizy-tag>
+                </bizy-filter>
 
-            <bizy-button 
-                slot="footer-end"
-                *ngIf="neighbor._debt && isSecurityGroupAdmin"
-                class="tero-button--accent"
-                (onSelect)="registerPayment(neighbor)">
-                <h6>{{'SECURITY.SECURITY_GROUP.REGISTER_PAYMENT' | translate}}</h6>
-                <h6><i class="fa-solid fa-check"></i></h6>
-            </bizy-button>
+                <h6><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'lot'"></bizy-table-column-arrows>
+            </bizy-table-column>
 
-        </bizy-card>
+            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="onSort('name')">
 
-    </bizy-grid>
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                        
+                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
-    <bizy-grid *ngIf="loading" class="animated fade-in">
-        <bizy-skeleton-card *gridFor="let i of neighbors.length > 0 ? neighbors : 30 | bizyRepeat"></bizy-skeleton-card>
-    </bizy-grid>
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
 
-    <bizy-tag 
-        [type]="BIZY_TAG_TYPE.INFO" 
-        class="animated fade-in tero-no-matches"
-        *ngIf="neighbors.length !== 0 && (neighbors 
-                                            | bizySearch: search : searchKeys
-                                            | bizyFilter : '_debt' : filterDebts).length === 0">
-        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
-    </bizy-tag>
+                        <bizy-filter-section-search-option 
+                            [(value)]="nameSearch"
+                            (onChange)="refresh()">
 
-    <bizy-tag 
-        [type]="BIZY_TAG_TYPE.WARNING"
-        class="animated fade-in tero-no-matches"
-        *ngIf="!loading && neighbors.length === 0">
-        <h4>{{'CONTACTS.EMPTY' | translate}}</h4>
-    </bizy-tag>
+                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+                            
+                        </bizy-filter-section-search-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+                <h6><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'name'"></bizy-table-column-arrows>
+            </bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="onSort('surname')">
+
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                        
+                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h6>
+
+                        <bizy-filter-section-search-option 
+                            [(value)]="surnameSearch"
+                            (onChange)="refresh()">
+
+                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+                            
+                        </bizy-filter-section-search-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+                <h6><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'surname'"></bizy-table-column-arrows>
+            </bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="onSort('_debt')">
+
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                    
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'SECURITY.SECURITY_GROUP.FILTER.DEBT.TITLE' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let debt of filterDebts"
+                            [selected]="debt.selected"
+                            (onChange)="debt.selected = $event; refresh()">
+                            <h5>{{debt.value}}</h5>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === '_debt'"></bizy-table-column-arrows>
+            </bizy-table-column>
+
+        </bizy-table-header>
+    
+        <bizy-table-row 
+            [ngClass]="{'security-group__table-row--no-debt': !neighbor._debt, 'security-group__table-row--debt': neighbor._debt}"
+            *tableFor="let neighbor in: neighbors 
+                | bizySearch: search : searchKeys
+                | bizySearch: lotSearch : 'lot'
+                | bizySearch: surnameSearch : 'surname'
+                | bizySearch: nameSearch : 'name'
+                | bizyFilter : '_debt' : filterDebts
+                | bizyOrderBy: order : orderBy">
+    
+            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="openRegisterPaymentPopup(neighbor)"><h6>{{neighbor.lot}}</h6></bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="openRegisterPaymentPopup(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="openRegisterPaymentPopup(neighbor)"><h6>{{neighbor.surname}}</h6></bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="openRegisterPaymentPopup(neighbor)"><bizy-tag [type]="BIZY_TAG_TYPE.DANGER" *ngIf="neighbor._debt"><h6>{{'SECURITY.SECURITY_GROUP.DEBT' | translate}}</h6></bizy-tag></bizy-table-column>
+
+        </bizy-table-row>
+    
+    </bizy-table>
 
 </div>

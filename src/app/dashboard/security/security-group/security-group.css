@@ -6,10 +6,10 @@
     --bizy-grid-row-height: 6rem;
 }
 
-.security-group__card--debt {
-    --bizy-card-background-color: var(--light-danger-color);
+.security-group__table-row--debt {
+    --bizy-table-row-background-color: var(--light-danger-color) !important;
 }
 
-.security-group__card--no-debt {
-    --bizy-card-background-color: var(--light-success-color);
+.security-group__table-row--no-debt {
+    --bizy-table-row-background-color: var(--light-success-color) !important;
 }

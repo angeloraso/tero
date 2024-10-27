@@ -44,7 +44,8 @@ export const locale = {
           TAG: 'Categoría',
           PRICE: 'Precio',
           STATE: 'Estado',
-          ROLE: 'Rol'
+          ROLE: 'Rol',
+          TRANSACTION_ID: 'Identificador de pago (recomendado)'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

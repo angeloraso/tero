@@ -16,7 +16,17 @@ export class EditUserComponent implements OnInit {
   userEmail: string | null = null;
   loading = false;
   roleSearch: string | number = '';
-  availableRoles: Array<USER_ROLE> = [USER_ROLE.CONFIG, USER_ROLE.NEIGHBOR, USER_ROLE.SECURITY];
+  availableRoles: Array<USER_ROLE> = [
+    USER_ROLE.CONFIG,
+    USER_ROLE.NEIGHBOR,
+    USER_ROLE.SECURITY,
+    USER_ROLE.SECURITY_GROUP_1,
+    USER_ROLE.SECURITY_GROUP_2,
+    USER_ROLE.SECURITY_GROUP_3,
+    USER_ROLE.SECURITY_GROUP_4,
+    USER_ROLE.SECURITY_GROUP_5,
+    USER_ROLE.SECURITY_GROUP_6
+  ];
   selectedRoles: Array<USER_ROLE> = [];
 
   form: FormGroup<{

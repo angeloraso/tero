@@ -8,6 +8,7 @@ import {
   INeighbor,
   ISecurity,
   ISecurityInvoice,
+  ISecurityNeighborInvoice,
   IUser,
   USER_STATE
 } from '@core/model';
@@ -367,6 +368,40 @@ export class DatabaseService implements OnDestroy {
           );
           if (index === -1) {
             data.invoices.push(invoice);
+          }
+        }
+
+        const securityDocument = JSON.parse(JSON.stringify(data));
+        console.log(securityDocument);
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+          data: securityDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data = await this.getSecurity();
+        if (!data) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        if (!data.neighborInvoices) {
+          data.neighborInvoices = [invoice];
+        } else {
+          const index = data.neighborInvoices.findIndex(
+            _invoice => _invoice.timestamp === invoice.timestamp
+          );
+          if (index === -1) {
+            data.neighborInvoices.push(invoice);
           }
         }
 

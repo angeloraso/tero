@@ -20,13 +20,15 @@ export class SecurityService {
   }
 
   postGroupInvoice(group: number) {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        await this.database.postSecurityGroupInvoice({ group, timestamp: Date.now() });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+    return this.database.postSecurityGroupInvoice({ group, timestamp: Date.now() });
+  }
+
+  postNeighborInvoice(data: { neighborId: string; group: number; transactionId?: string }) {
+    return this.database.postSecurityNeighborInvoice({
+      neighborId: data.neighborId,
+      group: data.group,
+      transactionId: data.transactionId || null,
+      timestamp: Date.now()
     });
   }
 }
