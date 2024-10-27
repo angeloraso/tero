@@ -4,6 +4,13 @@
     flex-direction: column;
 }
 
+.security {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 9rem 11rem 14rem;
+    gap: 1rem;
+}
+
 .security__info__content {
     margin-top: 0.5rem;
     width: 100%;

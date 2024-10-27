@@ -68,7 +68,13 @@ export const locale = {
         NEIGHBOR: 'Vecino/a',
         ADMIN: 'Admin',
         SECURITY: 'Seguridad',
-        CONFIG: 'Configuración'
+        CONFIG: 'Configuración',
+        SECURITY_GROUP_1: 'Admin de Grupo 1',
+        SECURITY_GROUP_2: 'Admin de Grupo 2',
+        SECURITY_GROUP_3: 'Admin de Grupo 3',
+        SECURITY_GROUP_4: 'Admin de Grupo 4',
+        SECURITY_GROUP_5: 'Admin de Grupo 5',
+        SECURITY_GROUP_6: 'Admin de Grupo 6'
       }
     }
   }

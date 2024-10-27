@@ -95,11 +95,9 @@ export class NeighborsComponent implements OnInit {
         }
       });
 
-      this.filterGroups = Array.from(groups)
-        .sort((a, b) => a - b)
-        .map(_group => {
-          return { id: _group, value: _group, selected: true };
-        });
+      this.filterGroups = Array.from(groups).map(_group => {
+        return { id: _group, value: _group, selected: true };
+      });
 
       this.filterGroups.unshift({
         id: false,
@@ -107,11 +105,9 @@ export class NeighborsComponent implements OnInit {
         selected: true
       });
 
-      this.filterAlarmNumbers = Array.from(alarmNumbers)
-        .sort((a, b) => a - b)
-        .map(_alarmNumber => {
-          return { id: _alarmNumber, value: _alarmNumber, selected: true };
-        });
+      this.filterAlarmNumbers = Array.from(alarmNumbers).map(_alarmNumber => {
+        return { id: _alarmNumber, value: _alarmNumber, selected: true };
+      });
 
       this.filterAlarmNumbers.unshift({
         id: false,

@@ -131,7 +131,7 @@
                         <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
-                            *ngFor="let group of filterGroups"
+                            *ngFor="let group of filterGroups | bizyOrderBy : 'asc' : 'value'"
                             [selected]="group.selected"
                             (onChange)="group.selected = $event; refresh()">
                             <h5>{{group.value}}</h5>
@@ -153,7 +153,7 @@
                         <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ALARM_NUMBER' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
-                            *ngFor="let alarmNumber of filterAlarmNumbers"
+                            *ngFor="let alarmNumber of filterAlarmNumbers | bizyOrderBy : 'asc' : 'value'"
                             [selected]="alarmNumber.selected"
                             (onChange)="alarmNumber.selected = $event; refresh()">
                             <h5>{{alarmNumber.value}}</h5>

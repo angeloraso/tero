@@ -145,6 +145,14 @@ export class SecurityComponent implements OnInit {
     this.router.goBack();
   }
 
+  goToSecurityGroup(group: IGroup) {
+    if (this.loading || !group) {
+      return;
+    }
+
+    this.router.goTo({ path: String(group.value) });
+  }
+
   setGroupDebt(group: IGroup) {
     if (this.loading || !group || !group.debt || !this.isSecurity) {
       return;

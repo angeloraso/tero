@@ -14,7 +14,7 @@
 
     <ng-container *ngIf="!loading">
         
-        <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo" class="dashboard__card">
+        <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-shield-halved"></i></h4>
     
@@ -45,7 +45,7 @@
             <bizy-tag 
                 slot="footer-start"
                 *ngFor="let group of groups"
-                (onSelect)="setGroupDebt(group); $event.stopPropagation()"
+                (onSelect)="setGroupDebt(group, $event)"
                 [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS">
                 <h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6>
             </bizy-tag>
@@ -57,7 +57,7 @@
     
         </bizy-card>
     
-        <bizy-card (onSelect)="goToEcommerce()" *ngIf="showInfo" class="dashboard__card">
+        <bizy-card (onSelect)="goToEcommerce()" *ngIf="showInfo">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-cart-shopping"></i></h4>
     

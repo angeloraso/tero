@@ -6,9 +6,13 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<div class="tero-wrapper security">
 
-    <span class="tero-section">
+    <ng-container *ngIf="loading">
+        <bizy-skeleton-card *ngFor="let i of 3 | bizyRepeat"></bizy-skeleton-card>
+    </ng-container>
+
+    <ng-container *ngIf="!loading">
 
         <bizy-card>
     
@@ -19,26 +23,22 @@
     
                 <span class="security__info__content__section">
                     <h5>{{'SECURITY.INFO.SECURITY_FEE' | translate}}</h5>
-                    <bizy-tag><h5 [bizyLoading]="loading">$ {{securityFee | number : '1.2-2'}}</h5></bizy-tag>
+                    <bizy-tag><h5>$ {{securityFee | number : '1.2-2'}}</h5></bizy-tag>
                 </span>
         
                 <span class="security__info__content__section">
                     <h5>{{'SECURITY.INFO.MEMBERS' | translate}}</h5>
-                    <bizy-tag><h5 [bizyLoading]="loading">{{members}}</h5></bizy-tag>
+                    <bizy-tag><h5>{{members}}</h5></bizy-tag>
                 </span>
         
                 <span class="security__info__content__section">
                     <h5>{{'SECURITY.INFO.MEMBERSHIP_FEE' | translate}}</h5>
-                    <bizy-tag><h5 [bizyLoading]="loading">$ {{membershipFee | number : '1.2-2'}}</h5></bizy-tag>
+                    <bizy-tag><h5>$ {{membershipFee | number : '1.2-2'}}</h5></bizy-tag>
                 </span>
                 
             </span>
     
         </bizy-card>
-
-    </span>
-
-    <span class="tero-section">
 
         <bizy-card>
     
@@ -49,18 +49,14 @@
     
                 <span class="security__staff__content__guard" *ngFor="let guard of securityStaff">
     
-                    <h5 [bizyLoading]="loading" [bizyLoadingType]="LOADING_TYPE.BAR"><strong>{{guard.name}}:</strong></h5>
-                    <h5 *ngIf="!loading">{{guard.description}}</h5>
+                    <h5><strong>{{guard.name}}:</strong></h5>
+                    <h5>{{guard.description}}</h5>
         
                 </span>
     
             </span>
     
         </bizy-card>
-
-    </span>
-
-    <span class="tero-section">
 
         <bizy-card>
     
@@ -71,14 +67,23 @@
     
                 <span class="security__groups__content__section" *ngFor="let group of groups">
     
-                    <span class="security__groups__content__section__data">
-                        <h5><strong>{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}}</strong></h5>
-                        <h5>({{group.lots.size}})</h5>
-                        <bizy-tag *ngIf="!loading && group.debt"><h6>{{'SECURITY.GROUPS.DEBT' | translate}}</h6></bizy-tag>
+                    <span class="tero-section__start">
+
+                        <bizy-tag (onSelect)="goToSecurityGroup(group)">
+                            <h5><strong>{{'CORE.FORM.FIELD.GROUP' | translate}} {{group.value}}</strong> ({{group.lots.size}})</h5>
+                        </bizy-tag>
+
+                        <bizy-tag 
+                            *ngIf="group.debt"
+                            [type]="BIZY_TAG_TYPE.DANGER"
+                            (onSelect)="goToSecurityGroup(group)">
+                            <h6>{{'SECURITY.GROUPS.DEBT' | translate}}</h6>
+                        </bizy-tag>
+
                     </span>
     
                     <bizy-tag [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS" (onSelect)="setGroupDebt(group)">
-                        <h5 [bizyLoading]="loading">$ {{group.fee | number : '1.2-2'}}</h5>
+                        <h5>$ {{group.fee | number : '1.2-2'}}</h5>
                     </bizy-tag>
         
                 </span>
@@ -87,6 +92,6 @@
     
         </bizy-card>
 
-    </span>
+    </ng-container>
 
 </div>

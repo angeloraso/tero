@@ -43,7 +43,6 @@
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let state of filterStates | bizyOrderBy : 'asc' : 'value'" 
-                            [id]="state.id"
                             [selected]="state.selected"
                             (onChange)="state.selected = $event; refresh()">
                             <h6>{{state.value | translate}}</h6>
@@ -55,7 +54,6 @@
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let role of filterRoles | bizyOrderBy : 'asc' : 'value'" 
-                            [id]="role.id"
                             [selected]="role.selected"
                             (onChange)="role.selected = $event; refresh()">
                             <h6>{{role.value | translate}}</h6>
@@ -85,9 +83,9 @@
                                         | bizyFilter : 'roles' : filterRoles
                                         | bizyOrderBy: order : orderBy">
 
-            <img *ngIf="user.picture" class="users__card__profile-pic" slot="header-start" height="50" [src]="user.picture" alt="User picture"/>
+            <img *ngIf="user.picture" class="users__card__profile-pic" slot="header-start" height="50" [src]="user.picture" alt="Imagen de usuario"/>
 
-            <tero-img *ngIf="!user.picture" class="users__card__profile-pic" slot="header-start" [height]="50" alt="User picture"></tero-img>
+            <tero-img *ngIf="!user.picture" class="users__card__profile-pic" slot="header-start" [height]="50" alt="Imagen de usuario"></tero-img>
 
             <h4 slot="header-start" *ngIf="user.name" class="tero-text-ellipsis--2"><strong>{{user.name}}</strong></h4>
 

@@ -16,7 +16,13 @@ export enum USER_ROLE {
   NEIGHBOR = 'NEIGHBOR',
   ADMIN = 'ADMIN',
   SECURITY = 'SECURITY',
-  CONFIG = 'CONFIG'
+  CONFIG = 'CONFIG',
+  SECURITY_GROUP_1 = 'SECURITY_GROUP_1',
+  SECURITY_GROUP_2 = 'SECURITY_GROUP_2',
+  SECURITY_GROUP_3 = 'SECURITY_GROUP_3',
+  SECURITY_GROUP_4 = 'SECURITY_GROUP_4',
+  SECURITY_GROUP_5 = 'SECURITY_GROUP_5',
+  SECURITY_GROUP_6 = 'SECURITY_GROUP_6'
 }
 
 export enum USER_STATE {
@@ -86,11 +92,21 @@ export interface ISecurityInvoice {
   group: number;
 }
 
+export interface ISecurityNeighborInvoice {
+  timestamp: number;
+  group: number;
+  neighborId: string;
+  transactionId: string | null;
+}
+
 export interface ISecurity {
   fee: number;
   staff: Array<ISecurityGuard>;
   invoices: Array<ISecurityInvoice>;
+  neighborInvoices: Array<ISecurityNeighborInvoice>;
 }
+
+export interface ISecurityGroup {}
 
 export type Rating = 1 | 2 | 3 | 4 | 5;
 

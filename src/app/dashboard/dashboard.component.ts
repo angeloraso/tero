@@ -147,11 +147,12 @@ export class DashboardComponent implements OnInit {
     this.router.goTo({ path: PATH.ECOMMERCE });
   }
 
-  setGroupDebt(group: IGroup) {
+  setGroupDebt(group: IGroup, event: PointerEvent) {
     if (this.loading || !group || !group.debt || !this.isSecurity) {
       return;
     }
 
+    event.stopPropagation();
     this.popup.open<boolean>(
       {
         component: PopupComponent,
