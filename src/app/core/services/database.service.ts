@@ -398,7 +398,8 @@ export class DatabaseService implements OnDestroy {
           data.neighborInvoices = [invoice];
         } else {
           const index = data.neighborInvoices.findIndex(
-            _invoice => _invoice.timestamp === invoice.timestamp
+            _invoice =>
+              _invoice.timestamp === invoice.timestamp && _invoice.neighborId === invoice.neighborId
           );
           if (index === -1) {
             data.neighborInvoices.push(invoice);

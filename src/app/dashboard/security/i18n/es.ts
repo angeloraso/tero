@@ -30,6 +30,7 @@ export const locale = {
         CSV_FILE_NAME: 'tero_vecinos_grupo_seguridad.csv',
         EMPTY: 'No hay vecinos para mostrar',
         DEBT: 'Deudor',
+        TOTAL_CONTRIBUTORS: 'Total de contribuyentes',
         REGISTER_PAYMENT: 'Registrar pago',
         FILTER: {
           DEBT: {

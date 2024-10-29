@@ -95,8 +95,8 @@ export class SecurityComponent implements OnInit {
       ]);
 
       neighbors.forEach(_neighbor => {
-        if (_neighbor.security && this.groups[this.utils.getGroup(_neighbor) - 1]) {
-          this.groups[this.utils.getGroup(_neighbor) - 1].lots.add(_neighbor.lot);
+        if (_neighbor.security && this.groups[_neighbor.group - 1]) {
+          this.groups[_neighbor.group - 1].lots.add(_neighbor.lot);
         }
       });
 

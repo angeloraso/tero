@@ -40,6 +40,7 @@ export class SecurityGroupComponent implements OnInit {
   filterDebts: Array<{ id: boolean; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
   isSecurityGroupAdmin: boolean = false;
+  contributors: number = 0;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
 
@@ -108,6 +109,14 @@ export class SecurityGroupComponent implements OnInit {
           };
         });
 
+      const lots = new Set<number>();
+
+      this.neighbors.forEach(_neighbor => {
+        lots.add(_neighbor.lot);
+      });
+
+      this.contributors = lots.size;
+
       this.filterDebts = [
         {
           id: true,
@@ -152,16 +161,29 @@ export class SecurityGroupComponent implements OnInit {
         try {
           if (res && this.group) {
             this.loading = true;
-            await this.securityService.postNeighborInvoice({
-              neighborId: neighbor.id,
-              group: this.group,
-              transactionId: res.transactionId
+            const neighbors = this.neighbors.filter(_neighbor => _neighbor.lot === neighbor.lot);
+            const promises: Array<Promise<void>> = [];
+
+            neighbors.forEach(_neighbor => {
+              promises.push(
+                this.securityService.postNeighborInvoice({
+                  neighborId: _neighbor.id,
+                  group: _neighbor.group,
+                  transactionId: res.transactionId
+                })
+              );
             });
-            const index = this.neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
-            if (index !== -1) {
-              this.neighbors[index]._debt = false;
-              this.neighbors = [...this.neighbors];
-            }
+
+            await Promise.all(promises);
+
+            neighbors.forEach(_neighbor => {
+              const index = this.neighbors.findIndex(__neighbor => __neighbor.id === _neighbor.id);
+              if (index !== -1) {
+                this.neighbors[index]._debt = false;
+              }
+            });
+
+            this.refresh();
           }
         } catch (error) {
           this.log.error({
