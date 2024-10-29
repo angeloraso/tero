@@ -40,6 +40,7 @@ export interface IUser {
   picture?: string | null;
   name?: string | null;
   phone?: string | null;
+  lot?: number | null;
 }
 
 export interface INeighbor {

@@ -93,7 +93,11 @@ export class UsersComponent implements OnInit {
       });
 
       this.filterStates = Array.from(states).map(_state => {
-        return { id: _state, value: `CORE.USER_STATE.${_state}`, selected: true };
+        return {
+          id: _state,
+          value: `CORE.USER_STATE.${_state}`,
+          selected: _state !== USER_STATE.REJECTED
+        };
       });
 
       this.filterRoles = Array.from(roles).map(_role => {

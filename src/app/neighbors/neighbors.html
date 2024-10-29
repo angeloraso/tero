@@ -25,7 +25,7 @@
                     | bizySearch: surnameSearch : 'surname'
                     | bizySearch: nameSearch : 'name'
                     | bizyFilter : 'alarmNumber' : filterAlarmNumbers
-                    | bizyFilter : 'alarmControls' : filterAlarmControls
+                    | bizyFilter : 'alarmNumber' : filterAlarmControls
                     | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
@@ -71,7 +71,7 @@
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'lot'"></bizy-table-column-arrows>
             </bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="onSort('name')">
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('name')">
 
                 <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
                         
@@ -95,7 +95,7 @@
                 <bizy-table-column-arrows [order]="order" [show]="orderBy === 'name'"></bizy-table-column-arrows>
             </bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="onSort('surname')">
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('surname')">
 
                 <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
                         
@@ -201,9 +201,9 @@
     
             <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.lot}}</h6></bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.surname}}</h6></bizy-table-column>
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.surname}}</h6></bizy-table-column>
 
             <bizy-table-column [ngStyle]="{flex: 1, minWidth: '2rem'}" (onSelect)="removeNeighborFromSecurity(neighbor)">
                 <bizy-tag *ngIf="neighbor.security" [type]="BIZY_TAG_TYPE.WARNING"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>

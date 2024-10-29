@@ -36,10 +36,21 @@
         </bizy-input>
 
         <bizy-input
+            #lotInput
+            [disabled]="loading"
+            [value]="lot.value"
+            type="number"
+            (onChange)="lot.setValue($event)">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>
+            <h6 slot="error" *ngIf="lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX}}</h6>
+        </bizy-input>
+
+        <bizy-input
             #phoneInput
             [disabled]="loading"
             [value]="phone.value"
-            type="number"
+            type="tel"
             (onChange)="phone.setValue($event)">
             <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="phone.hasError('min') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>

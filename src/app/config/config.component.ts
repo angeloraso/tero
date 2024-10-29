@@ -7,7 +7,11 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { AboutPopupComponent, UserPhonePopupComponent } from '@config/components';
+import {
+  AboutPopupComponent,
+  UserLotPopupComponent,
+  UserPhonePopupComponent
+} from '@config/components';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
@@ -97,6 +101,33 @@ export class ConfigComponent implements OnInit {
           this.log.error({
             fileName: 'config.component',
             functionName: 'openUserPhonePopup',
+            param: error
+          });
+          this.toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
+  }
+
+  openUserLotPopup(): void {
+    this.popup.open<number>(
+      {
+        component: UserLotPopupComponent,
+        data: { lot: this.currentUser?.lot || null }
+      },
+      async lot => {
+        try {
+          if (lot && this.currentUser) {
+            this.loading = true;
+            await this.usersService.putUser({ ...this.currentUser, lot });
+            this.currentUser.lot = lot;
+          }
+        } catch (error) {
+          this.log.error({
+            fileName: 'config.component',
+            functionName: 'openUserLotPopup',
             param: error
           });
           this.toast.danger();

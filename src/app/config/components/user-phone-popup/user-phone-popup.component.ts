@@ -13,7 +13,6 @@ export class UserPhonePopupComponent implements OnInit {
     phone: FormControl<any>;
   }>;
 
-  readonly MIN = 0;
   readonly MIN_LENGTH = 10;
   readonly MAX_LENGTH = 10;
 
@@ -25,7 +24,6 @@ export class UserPhonePopupComponent implements OnInit {
       phone: [
         null,
         [
-          Validators.min(this.MIN),
           Validators.minLength(this.MIN_LENGTH),
           Validators.maxLength(this.MAX_LENGTH),
           Validators.required

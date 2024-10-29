@@ -6,11 +6,10 @@
         #phoneInput
         [autofocus]="true"
         [value]="phone.value"
-        type="number"
+        type="tel"
         (onChange)="phone.setValue($event)">
         <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="phone.hasError('required') && phoneInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
-        <h6 slot="error" *ngIf="phone.hasError('min') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>
         <h6 slot="error" *ngIf="phone.hasError('minlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{MIN_LENGTH}}</h6>
         <h6 slot="error" *ngIf="phone.hasError('maxlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX_LENGTH}}</h6>
     </bizy-input>

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { AVAILABLE_LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 
@@ -31,11 +32,13 @@ export class EditUserComponent implements OnInit {
 
   form: FormGroup<{
     name: FormControl<any>;
+    lot: FormControl<any>;
     phone: FormControl<any>;
     status: FormControl<any>;
   }>;
 
   readonly MIN = 0;
+  readonly MAX = AVAILABLE_LOTS;
   readonly MAX_LENGTH = 10;
   readonly USER_STATE = USER_STATE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -56,6 +59,7 @@ export class EditUserComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       name: [''],
+      lot: [null, [Validators.min(this.MIN), Validators.max(this.MAX)]],
       phone: [null, [Validators.min(this.MIN), Validators.maxLength(this.MAX_LENGTH)]],
       status: [null, [Validators.required]]
     });
@@ -63,6 +67,10 @@ export class EditUserComponent implements OnInit {
 
   get name() {
     return this.form.get('name') as FormControl<string | number>;
+  }
+
+  get lot() {
+    return this.form.get('lot') as FormControl<string | number>;
   }
 
   get phone() {
@@ -88,6 +96,10 @@ export class EditUserComponent implements OnInit {
 
       if (user.name) {
         this.name.setValue(user.name);
+      }
+
+      if (user.lot) {
+        this.lot.setValue(user.lot);
       }
 
       if (user.phone) {
@@ -174,6 +186,7 @@ export class EditUserComponent implements OnInit {
       await this.usersService.putUser({
         ...this.user,
         name: this.name.value ? String(this.name.value) : null,
+        lot: this.lot.value ? Number(this.lot.value) : null,
         phone: this.phone.value ? String(this.phone.value) : null,
         roles: this.selectedRoles,
         status: this.status.value
