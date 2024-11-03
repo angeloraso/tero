@@ -372,7 +372,39 @@ export class DatabaseService implements OnDestroy {
         }
 
         const securityDocument = JSON.parse(JSON.stringify(data));
-        console.log(securityDocument);
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+          data: securityDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  deleteSecurityGroupInvoice(invoice: ISecurityInvoice): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data = await this.getSecurity();
+        if (!data || !data.invoices || data.invoices.length === 0) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        const index = data.invoices.findIndex(
+          _invoice => _invoice.timestamp === invoice.timestamp && _invoice.group === invoice.group
+        );
+
+        if (index === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        data.invoices.splice(index, 1);
+
+        const securityDocument = JSON.parse(JSON.stringify(data));
 
         await FirebaseFirestore.setDocument({
           reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
@@ -719,6 +751,7 @@ export class DatabaseService implements OnDestroy {
       }
     });
   }
+
   destroy = () => {
     this.#neighbors.next(undefined);
     this.#contactData.next(undefined);

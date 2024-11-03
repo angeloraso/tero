@@ -12,6 +12,7 @@ import { LOGO_PATH } from '@core/constants';
 import { ISecurityGuard } from '@core/model';
 import { NeighborsService, SecurityService, UsersService, UtilsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
+import { PATH } from './security.routing';
 interface IGroup {
   value: number;
   lots: Set<number>;
@@ -143,6 +144,14 @@ export class SecurityComponent implements OnInit {
 
   goBack() {
     this.router.goBack();
+  }
+
+  goToSecurityInvoices() {
+    if (this.loading) {
+      return;
+    }
+
+    this.router.goTo({ path: PATH.INVOICES });
   }
 
   goToSecurityGroup(group: IGroup) {

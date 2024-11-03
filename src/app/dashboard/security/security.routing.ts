@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SecurityGroupComponent } from './security-group/security-group.component';
+import { SecurityInvoicesComponent } from './security-invoices/security-invoices.component';
 import { SecurityComponent } from './security.component';
 
 export enum PATH {
-  EMPTY = ''
+  EMPTY = '',
+  INVOICES = 'invoices'
 }
 
 const routes: Routes = [
@@ -12,6 +14,10 @@ const routes: Routes = [
     path: PATH.EMPTY,
     component: SecurityComponent,
     pathMatch: 'full'
+  },
+  {
+    path: PATH.INVOICES,
+    component: SecurityInvoicesComponent
   },
   {
     path: ':group',
@@ -24,5 +30,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class SecurityRoutingModule {
-  static COMPONENTS = [SecurityComponent, SecurityGroupComponent];
+  static COMPONENTS = [SecurityComponent, SecurityGroupComponent, SecurityInvoicesComponent];
 }

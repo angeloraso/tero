@@ -76,7 +76,7 @@ export class NeighborsComponent implements OnInit {
       this.isNeighbor = isNeighbor;
       this.isSecurity = isSecurity;
       this.isConfig = isConfig;
-      if (!this.isNeighbor && !this.isConfig) {
+      if ((!this.isNeighbor && !this.isConfig) || !this.isSecurity) {
         return;
       }
 
@@ -147,7 +147,7 @@ export class NeighborsComponent implements OnInit {
   }
 
   removeNeighborFromSecurity(neighbor: INeighbor) {
-    if (!neighbor || this.securityLoading || (!this.isConfig && !this.isSecurity)) {
+    if (!neighbor || this.securityLoading || !this.isConfig) {
       return;
     }
 

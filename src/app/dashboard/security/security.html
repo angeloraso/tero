@@ -62,6 +62,11 @@
     
             <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-users"></i></h4>
             <h4 slot="header-start" class="tero-title">{{'SECURITY.GROUPS.TITLE' | translate}}</h4>
+
+            <bizy-button slot="header-end" class="tero-action tero-action--info" (onSelect)="goToSecurityInvoices()">
+                <h6><i class="fa-solid fa-clock-rotate-left"></i></h6>
+                <h6>{{'SECURITY.GROUPS.HISTORY' | translate}}</h6>
+            </bizy-button>
     
             <span class="security__groups__content">
     

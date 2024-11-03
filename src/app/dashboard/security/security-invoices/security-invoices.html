@@ -1,0 +1,99 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'SECURITY.SECURITY_INVOICES.TITLE' | translate}}</h1>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <span class="tero-section">
+
+        <span class="tero-section__end">
+
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((invoices 
+                                                | bizySearch: search : searchKeys
+                                                | bizyFilter : 'group' : filterGroups).length + '/' + invoices.length) : invoices.length">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
+
+            <bizy-input 
+                [disabled]="loading"
+                [(value)]="search"
+                (onChange)="checkFilters(!!search)"
+                [autofocus]="!isMobile">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+            </bizy-input>
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
+        </span>
+
+    </span>
+
+    <bizy-table [bizyLoading]="loading">
+
+        <bizy-table-header>
+
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('timestamp')">
+                <h6><strong>{{'CORE.FORM.FIELD.DATE' | translate}}</strong></h6>
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'timestamp'"></bizy-table-column-arrows>
+            </bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('group')" class="tero-table-column-center">
+
+                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
+                    
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let group of filterGroups | bizyOrderBy : 'asc' : 'value'"
+                            [selected]="group.selected"
+                            (onChange)="group.selected = $event; refresh()">
+                            <h5>{{group.value}}</h5>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+                <h6><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h6>
+                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'group'"></bizy-table-column-arrows>
+            </bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 1}" class="tero-table-column-end"></bizy-table-column>
+
+        </bizy-table-header>
+    
+        <bizy-table-row 
+            *tableFor="let invoice in: invoices 
+                | bizySearch: search : searchKeys
+                | bizyFilter : 'group' : filterGroups
+                | bizyOrderBy: order : orderBy">
+    
+            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="deleteInvoice(invoice)"><h6>{{invoice._date}}</h6></bizy-table-column>
+
+            <bizy-table-column [ngStyle]="{flex: 4}" class="tero-table-column-center" (onSelect)="deleteInvoice(invoice)"><h6>{{invoice.group}}</h6></bizy-table-column>
+            
+            <bizy-table-column [ngStyle]="{flex: 1}" class="tero-table-column-end" (onSelect)="deleteInvoice(invoice)">
+                <bizy-button class="tero-action tero-action--danger" (onSelect)="deleteInvoice(invoice)">
+                    <h6><i class="fa-solid fa-trash-can"></i></h6>
+                </bizy-button>
+            </bizy-table-column>
+
+        </bizy-table-row>
+    
+    </bizy-table>
+
+</div>

@@ -16,10 +16,19 @@ export const locale = {
       },
       GROUPS: {
         TITLE: 'Grupos',
+        HISTORY: 'Historial',
         DEBT: 'Deudor',
         DEBT_POPUP: {
           TITLE: 'Registrar pago del grupo',
           MSG: 'El grupo dejará de mostrarse como deudor durante el resto del mes'
+        }
+      },
+      SECURITY_INVOICES: {
+        TITLE: 'Historial de pagos',
+        CSV_FILE_NAME: 'tero_seguridad_historial_pagos.csv',
+        DELETE_POPUP: {
+          TITLE: 'Borrar registro de pago',
+          MSG: 'Se borrará el siguiente registro de pago'
         }
       },
       REGISTER_PAYMENT_POPUP: {

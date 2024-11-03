@@ -28,6 +28,7 @@ export const locale = {
       },
       FORM: {
         FIELD: {
+          DATE: 'Fecha',
           LOT: 'Lote',
           ALARM_NUMBER: 'Alarma',
           ALARM_CONTROLS: 'Controles',
