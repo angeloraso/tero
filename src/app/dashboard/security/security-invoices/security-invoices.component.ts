@@ -31,7 +31,7 @@ export class SecurityInvoicesComponent implements OnInit {
   invoices: Array<ISecurityInvoiceRow> = [];
   search: string | number = '';
   searchKeys = ['_date', 'group'];
-  order: 'asc' | 'desc' = 'asc';
+  order: 'asc' | 'desc' = 'desc';
   orderBy = '_date';
   isMobile = true;
   filterGroups: Array<{ id: number | boolean; value: number | string; selected: boolean }> = [];
@@ -120,7 +120,14 @@ export class SecurityInvoicesComponent implements OnInit {
           if (res) {
             this.loading = true;
             await this.securityService.deleteGroupInvoice(invoice);
-            this.refresh();
+            const index = this.invoices.findIndex(
+              _invoice =>
+                _invoice.group === invoice.group && _invoice.timestamp === invoice.timestamp
+            );
+            if (index !== -1) {
+              this.invoices.splice(index, 1);
+              this.refresh();
+            }
           }
         } catch (error) {
           this.log.error({
