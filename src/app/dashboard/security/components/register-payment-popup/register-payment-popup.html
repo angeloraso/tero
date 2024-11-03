@@ -5,7 +5,6 @@
         <h1 class="tero-title">{{'SECURITY.REGISTER_PAYMENT_POPUP.TITLE' | translate}} {{neighbor ? neighbor.lot + ' - ' + neighbor.name + ' ' + neighbor.surname : ''}}</h1>
         
         <bizy-input
-            [autofocus]="true"
             [value]="transactionId.value"
             (onChange)="transactionId.setValue($event)">
             <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}</strong></h6>
