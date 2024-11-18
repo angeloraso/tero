@@ -9,9 +9,9 @@ import {
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
-  AVAILABLE_LOTS,
   AVAILABLE_SECURITY_GROUPS,
   DEFAULT_USER_PICTURE,
+  LOTS,
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH
 } from '@core/constants';
@@ -47,7 +47,7 @@ export class NeighborFormComponent {
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly MIN_VALUE = 0;
-  readonly MAX_LOT_VALUE = AVAILABLE_LOTS;
+  readonly MAX_LOT_VALUE = LOTS.length;
   readonly ALARMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;

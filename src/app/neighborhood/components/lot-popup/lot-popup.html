@@ -3,12 +3,12 @@
     <span class="tero-section">
         <span class="tero-section__start">
             <h2 class="tero-title"><strong>{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</strong></h2>
-            <h2 class="lot-popup__security" *ngIf="data?.security"><i class="fa-solid fa-shield-halved"></i></h2>
+            <h2 class="lot-popup__security" *ngIf="data && data.neighbors.length > 0 && data.neighbors[0].security"><i class="fa-solid fa-shield-halved"></i></h2>
         </span>
     </span>
 
     <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0">
-        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.NEIGHBORS' | translate}}</strong></h5>
+        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.NEIGHBORS.TITLE' | translate}}</strong></h5>
     </span>
 
     <span class="tero-section" *ngFor="let neighbor of data?.neighbors">
@@ -21,30 +21,84 @@
     </span>
 
     <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
-        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.ALARM_NUMBER' | translate}}</strong></h5>
+        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.ALARM.TITLE' | translate}}</strong></h5>
     </span>
 
-    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmNumber">
-        <bizy-tag [type]="BIZY_TAG_TYPE.INFO">
-            <h6><i class="fa-solid fa-land-mine-on"></i></h6>
-            <h6>{{data.neighbors[0].alarmNumber}}</h6>
-        </bizy-tag>
-    </span>
+    <span class="lot-popup__section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
     
-
-    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
-        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.ALARM_CONTROLS' | translate}}</strong></h5>
-    </span>
-
-    <span class="tero-section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
         <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.ALARM.NUMBER' | translate}}:</strong></h5>
+            <bizy-tag [type]="BIZY_TAG_TYPE.INFO">
+                <h6><i class="fa-solid fa-land-mine-on"></i></h6>
+                <h6>{{data.neighbors[0].alarmNumber}}</h6>
+            </bizy-tag>
+        </span>
+    
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.ALARM.CONTROLS' | translate}}:</strong></h5>
             <bizy-tag [type]="BIZY_TAG_TYPE.INFO" *ngFor="let control of data.neighbors[0].alarmControls">
                 <h6><i class="fa-solid fa-mobile-retro"></i></h6>
                 <h6>{{control}}</h6>
             </bizy-tag>
         </span>
+
     </span>
 
-    <span *ngIf="!data?.neighbors || data?.neighbors?.length === 0">{{'CORE.EMPTY' | translate}}</span>
+    <span class="tero-section">
+        <h5 class="tero-title"><strong>{{'NEIGHBORHOOD.DATA.TITLE' | translate}}</strong></h5>
+    </span>
 
+    <span class="lot-popup__section">
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.DISTRICT' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.district}}</h6>
+            </bizy-tag>
+        </span>
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.CADASTRAL_JURISDICTION' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.cadastralJurisdiction}}</h6>
+            </bizy-tag>
+        </span>
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.SECTION' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.section}}</h6>
+            </bizy-tag>
+        </span>
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.SUBDIVISION' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.subdivision}}</h6>
+            </bizy-tag>
+        </span>
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.BLOCK' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.block}}</h6>
+            </bizy-tag>
+        </span>
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.PARCEL' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.parcel}}</h6>
+            </bizy-tag>
+        </span>
+
+        <span class="tero-section__start">
+            <h5><strong>{{'NEIGHBORHOOD.DATA.CADASTRAL_NUMBER' | translate}}:</strong></h5>
+            <bizy-tag>
+                <h6>{{data.cadastralNumber}}</h6>
+            </bizy-tag>
+        </span>
+        
+    </span>
+    
 </span>

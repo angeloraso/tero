@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BizyPopupService } from '@bizy/services';
-import { AVAILABLE_LOTS } from '@core/constants';
+import { LOTS } from '@core/constants';
 
 @Component({
   selector: 'tero-user-lot-popup',
@@ -15,7 +15,7 @@ export class UserLotPopupComponent implements OnInit {
   }>;
 
   readonly MIN = 1;
-  readonly MAX = AVAILABLE_LOTS;
+  readonly MAX = LOTS.length;
 
   constructor(
     @Inject(BizyPopupService) private popup: BizyPopupService,

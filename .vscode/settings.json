@@ -53,7 +53,8 @@
     "editor.formatOnSave": false
   },
   "cSpell.words": [
-    "unlistening"
+    "unlistening",
+    "bizy"
   ],
   "[css][javascript][json][typescript]": {
     "editor.codeActionsOnSave": {

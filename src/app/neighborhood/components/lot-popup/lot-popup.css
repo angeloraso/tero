@@ -29,3 +29,10 @@
     position: relative;
     top: 0.1rem;
 }
+
+.lot-popup__section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3rem;
+    margin-bottom: 1rem;
+}

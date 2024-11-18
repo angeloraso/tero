@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { BizyPopupService } from '@bizy/services';
-import { AVAILABLE_LOTS, LOGO_PATH } from '@core/constants';
+import { LOGO_PATH, LOTS } from '@core/constants';
 import { NeighborsService, UsersService } from '@core/services';
 import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
@@ -14,11 +14,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   @ViewChild('mainEntrance') mainEntrance: ElementRef | null = null;
   loading = false;
   showInfo: boolean = false;
-  lots: Array<ILot> = Array.from({ length: AVAILABLE_LOTS + 1 }, (_, index) => ({
-    number: index,
-    security: false,
-    neighbors: []
-  }));
+  lots: Array<ILot> = LOTS;
 
   readonly LOGO_PATH = LOGO_PATH;
 
@@ -43,13 +39,11 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
       }
 
       const neighbors = await this.neighborsService.getNeighbors();
+      this.lots.forEach(_lot => {
+        _lot.neighbors.length = 0;
+      });
       neighbors.forEach(_neighbor => {
-        if (this.lots[_neighbor.lot]) {
-          if (!this.lots[_neighbor.lot].security) {
-            this.lots[_neighbor.lot].security = _neighbor.security;
-          }
-          this.lots[_neighbor.lot].neighbors.push(_neighbor);
-        }
+        this.lots[_neighbor.lot].neighbors.push(_neighbor);
       });
     } catch (error) {
       console.error(error);

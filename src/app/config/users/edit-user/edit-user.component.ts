@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
-import { AVAILABLE_LOTS } from '@core/constants';
+import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 
@@ -38,7 +38,7 @@ export class EditUserComponent implements OnInit {
   }>;
 
   readonly MIN = 0;
-  readonly MAX = AVAILABLE_LOTS;
+  readonly MAX = LOTS.length;
   readonly MAX_LENGTH = 10;
   readonly USER_STATE = USER_STATE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
