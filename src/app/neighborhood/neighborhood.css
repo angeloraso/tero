@@ -39,7 +39,7 @@
 }
 
 .neighborhood__block__column__lot {
-    border: 0.1rem solid var(--default-color);
+    border: 0.1rem solid var(--bizy-default-color);
     height: 2rem;
     width: 6rem;
     text-align: center;
@@ -67,14 +67,14 @@
 }
 
 .street__icon {
-    color: var(--info-color);
+    color: var(--bizy-info-color);
     background-color: #fff;
     border-radius: 50%;
     display: grid;
     place-items: center;
     height: 2.2rem;
     width: 2.2rem;
-    border: 0.1rem solid var(--info-color);
+    border: 0.1rem solid var(--bizy-info-color);
     transform: rotate(180deg);
 }
 

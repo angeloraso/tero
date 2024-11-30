@@ -24,7 +24,7 @@
 }
 
 .contacts__card__content__description * {
-    color: var(--default-color);
+    color: var(--bizy-default-color);
 }
 
 .contacts__card__phones__phone {

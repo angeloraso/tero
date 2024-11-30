@@ -53,23 +53,23 @@ h6 {
 }
 
 .tero-action--success {
-    --bizy-button-color: var(--success-color);
+    --bizy-button-color: var(--bizy-success-color);
 }
 
 .tero-action--default {
-    --bizy-button-color: var(--default-color);
+    --bizy-button-color: var(--bizy-default-color);
 }
 
 .tero-action--info {
-    --bizy-button-color: var(--info-color);
+    --bizy-button-color: var(--bizy-info-color);
 }
 
 .tero-action--warning {
-    --bizy-button-color: var(--warning-color);
+    --bizy-button-color: var(--bizy-warning-color);
 }
 
 .tero-action--danger {
-    --bizy-button-color: var(--danger-color);
+    --bizy-button-color: var(--bizy-danger-color);
 }
 
 .tero-toolbar-action {
@@ -86,27 +86,27 @@ h6 {
 }
 
 .tero-button--accent {
-    --bizy-button-background-color: var(--accent-color) !important;
+    --bizy-button-background-color: var(--bizy-accent-color) !important;
 }
 
 .tero-button--success {
-    --bizy-button-background-color: var(--success-color) !important;
+    --bizy-button-background-color: var(--bizy-success-color) !important;
 }
 
 .tero-button--default {
-    --bizy-button-background-color: var(--default-color) !important;
+    --bizy-button-background-color: var(--bizy-default-color) !important;
 }
 
 .tero-button--info {
-    --bizy-button-background-color: var(--info-color) !important;
+    --bizy-button-background-color: var(--bizy-info-color) !important;
 }
 
 .tero-button--warning {
-    --bizy-button-background-color: var(--warning-color) !important;
+    --bizy-button-background-color: var(--bizy-warning-color) !important;
 }
 
 .tero-button--danger {
-    --bizy-button-background-color: var(--danger-color) !important;
+    --bizy-button-background-color: var(--bizy-danger-color) !important;
 }
 
 .tero-logo {
@@ -253,7 +253,7 @@ h6 {
 }
 
 .tero-title {
-    color: var(--info-color);
+    color: var(--bizy-info-color);
 }
 
 .tero-form__toggle-field {
@@ -264,7 +264,7 @@ h6 {
 }
 
 .tero-form__toggle-field__label {
-    color: var(--info-color);
+    color: var(--bizy-info-color);
 }
 
 .tero-confirm-buttons {
@@ -276,11 +276,11 @@ h6 {
 }
 
 .tero-confirm-buttons__cancel {
-    --bizy-button-background-color: var(--danger-color);
+    --bizy-button-background-color: var(--bizy-danger-color);
 }
 
 .tero-confirm-buttons__confirm {
-    --bizy-button-background-color: var(--accent-color);
+    --bizy-button-background-color: var(--bizy-accent-color);
 }
 
 .tero-text-ellipsis {

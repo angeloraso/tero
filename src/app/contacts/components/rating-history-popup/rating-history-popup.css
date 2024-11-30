@@ -32,9 +32,9 @@
 }
 
 .rating-history-popup__stars__star--selected {
-    color: var(--warning-color);
+    color: var(--bizy-warning-color);
 }
 
 .rating-history-popup__stars .rating-history-popup__stars__star--selected~.rating-history-popup__stars__star {
-    color: var(--warning-color);
+    color: var(--bizy-warning-color);
 }

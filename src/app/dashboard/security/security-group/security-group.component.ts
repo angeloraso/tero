@@ -12,7 +12,8 @@ import {
 } from '@bizy/services';
 import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
-import { RegisterPaymentPopupComponent } from '../components';
+import { RegisterPaymentPopupComponent } from './components';
+import { PATH } from './security-group.routing';
 
 interface INeighborCard extends INeighbor {
   _debt: boolean;
@@ -27,7 +28,6 @@ export class SecurityGroupComponent implements OnInit {
   loading = false;
   group: number | null = null;
   csvLoading = false;
-  isConfig = false;
   neighbors: Array<INeighborCard> = [];
   search: string | number = '';
   searchKeys = ['name', 'surname', 'lot'];
@@ -40,6 +40,7 @@ export class SecurityGroupComponent implements OnInit {
   filterDebts: Array<{ id: boolean; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
   isSecurityGroupAdmin: boolean = false;
+  isConfig: boolean = false;
   contributors: number = 0;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -120,12 +121,12 @@ export class SecurityGroupComponent implements OnInit {
       this.filterDebts = [
         {
           id: true,
-          value: this.translate.get('SECURITY.SECURITY_GROUP.FILTER.DEBT.DEBT'),
+          value: this.translate.get('SECURITY_GROUP.FILTER.DEBT.DEBT'),
           selected: true
         },
         {
           id: false,
-          value: this.translate.get('SECURITY.SECURITY_GROUP.FILTER.DEBT.NO_DEBT'),
+          value: this.translate.get('SECURITY_GROUP.FILTER.DEBT.NO_DEBT'),
           selected: true
         }
       ];
@@ -143,6 +144,14 @@ export class SecurityGroupComponent implements OnInit {
 
   goBack() {
     this.router.goBack();
+  }
+
+  goToSecurityInvoices() {
+    if (this.loading) {
+      return;
+    }
+
+    this.router.goTo({ path: PATH.INVOICES });
   }
 
   async openRegisterPaymentPopup(neighbor: INeighborCard) {
@@ -209,6 +218,9 @@ export class SecurityGroupComponent implements OnInit {
 
   onRemoveFilters() {
     this.search = '';
+    this.lotSearch = '';
+    this.nameSearch = '';
+    this.surnameSearch = '';
     this.filterDebts.forEach(_debt => {
       _debt.selected = true;
     });
@@ -227,7 +239,13 @@ export class SecurityGroupComponent implements OnInit {
 
   async export() {
     try {
-      if (this.csvLoading || this.loading || !this.neighbors || this.neighbors.length === 0) {
+      if (
+        this.csvLoading ||
+        this.loading ||
+        !this.neighbors ||
+        this.neighbors.length === 0 ||
+        !this.isConfig
+      ) {
         return;
       }
 
@@ -235,12 +253,12 @@ export class SecurityGroupComponent implements OnInit {
 
       const items = this.#filter(this.neighbors);
 
-      const fileName = this.translate.get('SECURITY.SECURITY_GROUP.CSV_FILE_NAME');
+      const fileName = this.translate.get('SECURITY_GROUP.CSV_FILE_NAME');
       const model = {
         lot: this.translate.get('CORE.FORM.FIELD.LOT'),
         name: this.translate.get('CORE.FORM.FIELD.NAME'),
         surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
-        _debt: this.translate.get('SECURITY.SECURITY_GROUP.FILTER.DEBT.TITLE')
+        _debt: this.translate.get('SECURITY_GROUP.FILTER.DEBT.TITLE')
       };
 
       if (this.isMobile) {
@@ -266,6 +284,9 @@ export class SecurityGroupComponent implements OnInit {
 
   #filter(items: Array<INeighborCard>): Array<INeighborCard> {
     let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.bizySearchPipe.transform(items, this.lotSearch, 'lot');
+    _items = this.bizySearchPipe.transform(items, this.nameSearch, 'name');
+    _items = this.bizySearchPipe.transform(items, this.surnameSearch, 'surname');
     _items = this.bizyFilterPipe.transform(_items, '_debt', this.filterDebts);
     _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
     return _items;

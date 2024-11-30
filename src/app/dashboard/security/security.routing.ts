@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { SecurityGroupComponent } from './security-group/security-group.component';
+import { inject, NgModule } from '@angular/core';
+import { Router, RouterModule, Routes } from '@angular/router';
+import { UsersService } from '@core/services';
 import { SecurityInvoicesComponent } from './security-invoices/security-invoices.component';
 import { SecurityComponent } from './security.component';
 
@@ -17,11 +17,31 @@ const routes: Routes = [
   },
   {
     path: PATH.INVOICES,
-    component: SecurityInvoicesComponent
+    component: SecurityInvoicesComponent,
+    canMatch: [
+      () => {
+        const router = inject(Router);
+        const usersService = inject(UsersService);
+        return Promise.all([usersService.isNeighbor(), usersService.isSecurity()]).then(
+          ([isNeighbor, isSecurity]) => {
+            if (!isNeighbor && !isSecurity) {
+              router.navigateByUrl('/', { replaceUrl: true });
+              console.error('Role error: User has not security or neighbor role');
+              return false;
+            }
+
+            return true;
+          }
+        );
+      }
+    ]
   },
   {
     path: ':group',
-    component: SecurityGroupComponent
+    loadChildren: () =>
+      import('@dashboard/security/security-group/security-group.module').then(
+        m => m.SecurityGroupModule
+      )
   }
 ];
 
@@ -30,5 +50,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class SecurityRoutingModule {
-  static COMPONENTS = [SecurityComponent, SecurityGroupComponent, SecurityInvoicesComponent];
+  static COMPONENTS = [SecurityComponent, SecurityInvoicesComponent];
 }

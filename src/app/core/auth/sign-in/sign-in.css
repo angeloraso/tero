@@ -70,22 +70,22 @@
 
 .top:before {
   transform: rotate(45deg);
-  background: var(--info-color);
+  background: var(--bizy-info-color);
 }
 
 .top:after {
   transform: rotate(135deg);
-  background: var(--primary-color);
+  background: var(--bizy-primary-color);
 }
 
 .bottom:before {
   transform: rotate(-45deg);
-  background: var(--primary-color);
+  background: var(--bizy-primary-color);
 }
 
 .bottom:after {
   transform: rotate(-135deg);
-  background: var(--info-color);
+  background: var(--bizy-info-color);
 }
 
 .center {

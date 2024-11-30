@@ -2,7 +2,9 @@
 
     <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
 
-    <h1 slot=start>{{'SECURITY.SECURITY_GROUP.TITLE' | translate}} {{group || ''}}</h1>
+    <h1 slot=start>{{'SECURITY_GROUP.TITLE' | translate}} {{group || ''}}</h1>
+
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="goToSecurityInvoices()"><h2><i class="fa-solid fa-clock-rotate-left"></i></h2></bizy-button>
 
     <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
@@ -44,7 +46,7 @@
     </span>
 
     <span class="tero-section">
-        <h6>* {{'SECURITY.SECURITY_GROUP.TOTAL_CONTRIBUTORS' | translate}}: <strong class="tero-title">{{contributors}}</strong></h6>
+        <h6>* {{'SECURITY_GROUP.TOTAL_CONTRIBUTORS' | translate}}: <strong class="tero-title">{{contributors}}</strong></h6>
     </span>
 
     <bizy-table [bizyLoading]="loading">
@@ -126,7 +128,7 @@
                     <h6><i class="fa-solid fa-filter"></i></h6>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'SECURITY.SECURITY_GROUP.FILTER.DEBT.TITLE' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'SECURITY_GROUP.FILTER.DEBT.TITLE' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let debt of filterDebts"
@@ -159,7 +161,7 @@
 
             <bizy-table-column [ngStyle]="{flex: 3}" (onSelect)="openRegisterPaymentPopup(neighbor)"><h6>{{neighbor.surname}}</h6></bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="openRegisterPaymentPopup(neighbor)"><bizy-tag [type]="BIZY_TAG_TYPE.DANGER" *ngIf="neighbor._debt"><h6>{{'SECURITY.SECURITY_GROUP.DEBT' | translate}}</h6></bizy-tag></bizy-table-column>
+            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="openRegisterPaymentPopup(neighbor)"><bizy-tag [type]="BIZY_TAG_TYPE.DANGER" *ngIf="neighbor._debt"><h6>{{'SECURITY_GROUP.DEBT' | translate}}</h6></bizy-tag></bizy-table-column>
 
         </bizy-table-row>
     

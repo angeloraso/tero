@@ -86,6 +86,7 @@ export interface ISecurityGuard {
   name: string;
   picture: string;
   description: string;
+  phone?: string;
 }
 
 export interface ISecurityInvoice {

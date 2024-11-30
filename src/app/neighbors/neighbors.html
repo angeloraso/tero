@@ -4,9 +4,9 @@
 
     <h1 slot=start>{{'NEIGHBORS.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
-
     <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" (onSelect)="addNeighbor()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
@@ -20,13 +20,13 @@
                 class="tero-counter"
                 [readonly]="true"
                 [value]="activatedFilters ? ((neighbors 
-                    | bizySearch: search : searchKeys
-                    | bizySearch: lotSearch : 'lot'
-                    | bizySearch: surnameSearch : 'surname'
-                    | bizySearch: nameSearch : 'name'
-                    | bizyFilter : 'alarmNumber' : filterAlarmNumbers
-                    | bizyFilter : 'alarmNumber' : filterAlarmControls
-                    | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
+                                                | bizySearch: search : searchKeys
+                                                | bizySearch: lotSearch : 'lot'
+                                                | bizySearch: surnameSearch : 'surname'
+                                                | bizySearch: nameSearch : 'name'
+                                                | bizyFilter : 'alarmNumber' : filterAlarmNumbers
+                                                | bizyFilter : 'alarmNumber' : filterAlarmControls
+                                                | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 

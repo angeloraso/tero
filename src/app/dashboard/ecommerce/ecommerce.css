@@ -26,7 +26,7 @@
 }
 
 .ecommerce__card__content__description * {
-    color: var(--default-color);
+    color: var(--bizy-default-color);
 }
 
 .ecommerce__card__phones__phone {

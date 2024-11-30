@@ -12,17 +12,17 @@
 }
 
 .rating-popup__stars__star--selected {
-    --bizy-button-color: var(--warning-color) !important;
+    --bizy-button-color: var(--bizy-warning-color) !important;
 }
 
 .rating-popup__stars .rating-popup__stars__star--selected~.rating-popup__stars__star {
-    --bizy-button-color: var(--warning-color);
+    --bizy-button-color: var(--bizy-warning-color);
 }
 
 .rating-popup__stars__star:hover {
-    --bizy-button-color: var(--warning-color);
+    --bizy-button-color: var(--bizy-warning-color);
 }
 
 .rating-popup__stars .rating-popup__stars__star:hover~.rating-popup__stars__star {
-    --bizy-button-color: var(--warning-color);
+    --bizy-button-color: var(--bizy-warning-color);
 }

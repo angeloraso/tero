@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { ISecurity, ISecurityInvoice } from '@core/model';
+import { ISecurity, ISecurityInvoice, ISecurityNeighborInvoice } from '@core/model';
 import { DatabaseService } from './database.service';
 
 @Injectable({
@@ -25,6 +25,10 @@ export class SecurityService {
 
   deleteGroupInvoice(invoice: ISecurityInvoice) {
     return this.database.deleteSecurityGroupInvoice(invoice);
+  }
+
+  deleteNeighborInvoice(invoice: ISecurityNeighborInvoice) {
+    return this.database.deleteSecurityNeighborInvoice(invoice);
   }
 
   postNeighborInvoice(data: { neighborId: string; group: number; transactionId?: string }) {

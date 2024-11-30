@@ -8,9 +8,15 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { LOGO_PATH } from '@core/constants';
+import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { ISecurityGuard } from '@core/model';
-import { NeighborsService, SecurityService, UsersService, UtilsService } from '@core/services';
+import {
+  MobileService,
+  NeighborsService,
+  SecurityService,
+  UsersService,
+  UtilsService
+} from '@core/services';
 import { PopupComponent } from '@shared/components';
 import { PATH } from './security.routing';
 interface IGroup {
@@ -56,7 +62,8 @@ export class SecurityComponent implements OnInit {
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(UsersService) private usersService: UsersService
+    @Inject(UsersService) private usersService: UsersService,
+    @Inject(MobileService) private mobile: MobileService
   ) {}
 
   async ngOnInit() {
@@ -144,6 +151,31 @@ export class SecurityComponent implements OnInit {
 
   goBack() {
     this.router.goBack();
+  }
+
+  async onCall(phone: string) {
+    try {
+      if (this.loading || !phone) {
+        return;
+      }
+
+      await this.mobile.call(phone);
+    } catch (error) {
+      this.log.error({
+        fileName: 'security.component',
+        functionName: 'onCall',
+        param: error
+      });
+      this.toast.danger();
+    }
+  }
+
+  onWhatsapp(phone: string) {
+    if (this.loading || !phone) {
+      return;
+    }
+
+    window.open(`${WHATSAPP_URL}${phone}`, '_blank');
   }
 
   goToSecurityInvoices() {

@@ -5,9 +5,9 @@ html:root {
     --secondary-color: #6798C0;
     --light-secondary-color: #98c2e4;
     --dark-secondary-color: #34648b;
-    --accent-color: #008375;
-    --light-accent-color: #12B9A8;
-    --dark-accent-color: #004D45;
+    --bizy-accent-color: #008375;
+    --bizy-light-accent-color: #12B9A8;
+    --bizy-dark-accent-color: #004D45;
 
     --hover-color: #d9edff;
     --background-color: #c1d6fe;
@@ -16,32 +16,4 @@ html:root {
     --free-color: #b0cfaf;
     --street-color: #f3f3f3;
     --dark-input-background-color: #f3f3f3;
-
-    --success-color: #5fbc5a;
-    --x-light-success-color: #f5fbf6;
-    --light-success-color: #eff6ee;
-    --dark-success-color: #3f8e3a;
-    --default-color: #666;
-    --light-default-color: #eee;
-    --dark-default-color: #333;
-    --info-color: #2484c6;
-    --light-info-color: #e2eefa;
-    --dark-info-color: #1a3d5d;
-    --alert-color: #fffe56;
-    --light-alert-color: #fffdc8;
-    --dark-alert-color: #7e7915;
-    --warning-color: #f7a64c;
-    --x-light-warning-color: #fef9f2;
-    --light-warning-color: #fde5c9;
-    --dark-warning-color: #c07b2d;
-    --danger-color: #e76565;
-    --light-danger-color: #ffe0e0;
-    --dark-danger-color: #c34b4b;
-
-    --group-1-color: #75afe4;
-    --group-2-color: #e59fcb;
-    --group-3-color: #cfb38f;
-    --group-4-color: #cac980;
-    --group-5-color: #ac87c6;
-    --group-6-color: #8cbe83;
 }

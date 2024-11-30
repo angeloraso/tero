@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: PATH.SECURITY,
     loadChildren: () => import('@dashboard/security/security.module').then(m => m.SecurityModule),
-    canActivate: [
+    canMatch: [
       () => {
         const router = inject(Router);
         const usersService = inject(UsersService);

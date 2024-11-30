@@ -417,6 +417,41 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
+  deleteSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data = await this.getSecurity();
+        if (!data || !data.neighborInvoices || data.neighborInvoices.length === 0) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        const index = data.neighborInvoices.findIndex(
+          _invoice =>
+            _invoice.timestamp === invoice.timestamp &&
+            _invoice.transactionId === invoice.transactionId
+        );
+
+        if (index === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        data.neighborInvoices.splice(index, 1);
+
+        const securityDocument = JSON.parse(JSON.stringify(data));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+          data: securityDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   postSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {

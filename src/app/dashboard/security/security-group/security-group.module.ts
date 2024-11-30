@@ -2,14 +2,16 @@ import { Inject, NgModule } from '@angular/core';
 import { BizyTranslateService } from '@bizy/services';
 import { ImageModule } from '@components/image';
 import { SharedModule } from '@shared/shared.module';
+import { RegisterPaymentPopupComponent } from './components';
 import { es } from './i18n';
-import { SecurityRoutingModule } from './security.routing';
+import { SecurityGroupRoutingModule } from './security-group.routing';
 
+const COMPONENTS: Array<any> = [RegisterPaymentPopupComponent];
 @NgModule({
-  imports: [SharedModule, SecurityRoutingModule, ImageModule],
-  declarations: SecurityRoutingModule.COMPONENTS
+  imports: [SharedModule, SecurityGroupRoutingModule, ImageModule],
+  declarations: SecurityGroupRoutingModule.COMPONENTS.concat(COMPONENTS)
 })
-export class SecurityModule {
+export class SecurityGroupModule {
   constructor(@Inject(BizyTranslateService) private translate: BizyTranslateService) {
     this.translate.loadTranslations(es);
   }

@@ -50,7 +50,24 @@
                 <span class="security__staff__content__guard" *ngFor="let guard of securityStaff">
     
                     <h5><strong>{{guard.name}}:</strong></h5>
-                    <h5>{{guard.description}}</h5>
+
+                    <span class="security__staff__content__guard__data">
+                        <h5>{{guard.description}}</h5>
+    
+                        <bizy-button 
+                            *ngIf="guard.phone"
+                            class="tero-action tero-action--info tero-no-padding"
+                            (onSelect)="onCall(guard.phone); $event.stopPropagation()">
+                            <h5><i class="fa-solid fa-phone"></i></h5>
+                        </bizy-button>
+    
+                        <bizy-button 
+                            *ngIf="guard.phone"
+                            class="tero-action tero-action--success tero-no-padding"
+                            (onSelect)="onWhatsapp(guard.phone); $event.stopPropagation()">
+                            <h5><i class="fa-brands fa-whatsapp"></i></h5>
+                        </bizy-button>
+                    </span>
         
                 </span>
     
