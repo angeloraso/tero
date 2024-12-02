@@ -74,7 +74,7 @@ export class SecurityInvoicesComponent implements OnInit {
         security && security.invoices
           ? security.invoices.map(_invoice => {
               if (_invoice.group) {
-                groups.add(_invoice.group);
+                groups.add(Number(_invoice.group));
               }
               return {
                 ..._invoice,

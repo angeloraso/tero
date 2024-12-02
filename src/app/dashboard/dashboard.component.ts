@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
 
       neighbors.forEach(_neighbor => {
         if (_neighbor.security && this.groups[_neighbor.group - 1]) {
-          this.groups[_neighbor.group - 1].lots.add(_neighbor.lot);
+          this.groups[_neighbor.group - 1].lots.add(Number(_neighbor.lot));
         }
       });
 

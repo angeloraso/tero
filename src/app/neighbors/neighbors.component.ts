@@ -87,11 +87,11 @@ export class NeighborsComponent implements OnInit {
 
       this.neighbors.forEach(_neighbor => {
         if (_neighbor.group) {
-          groups.add(_neighbor.group);
+          groups.add(Number(_neighbor.group));
         }
 
         if (_neighbor.alarmNumber) {
-          alarmNumbers.add(_neighbor.alarmNumber);
+          alarmNumbers.add(Number(_neighbor.alarmNumber));
         }
       });
 

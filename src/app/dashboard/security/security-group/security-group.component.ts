@@ -113,7 +113,9 @@ export class SecurityGroupComponent implements OnInit {
       const lots = new Set<number>();
 
       this.neighbors.forEach(_neighbor => {
-        lots.add(_neighbor.lot);
+        if (_neighbor.lot) {
+          lots.add(Number(_neighbor.lot));
+        }
       });
 
       this.contributors = lots.size;
