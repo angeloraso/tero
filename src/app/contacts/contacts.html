@@ -68,7 +68,7 @@
                                         | bizyFilter : 'tags' : filterTags
                                         | bizyOrderBy: order : orderBy">
 
-            <tero-img slot="header-start" [src]="contact.picture" [height]="40" alt="Contact picture"></tero-img>
+            <tero-img slot="header-start" [src]="contact.picture" [height]="30"></tero-img>
 
             <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
 
@@ -110,7 +110,6 @@
                 </span>
             </span>
             
-
             <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
 
             <bizy-tag slot="footer-end" *ngIf="!contact.rating || contact.rating.length === 0" (onSelect)="openRatingPopup(contact); $event.stopPropagation()">
