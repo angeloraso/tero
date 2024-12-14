@@ -24,7 +24,7 @@
     "@angular/service-worker": "16.2.12",
     "@awesome-cordova-plugins/call-number": "6.4.0",
     "@awesome-cordova-plugins/core": "6.4.0",
-    "@bizy/components": "1.18.0",
+    "@bizy/components": "1.19.0",
     "@bizy/directives": "1.5.1",
     "@bizy/pipes": "1.7.2",
     "@bizy/services": "1.7.0",
