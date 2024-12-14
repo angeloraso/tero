@@ -4,9 +4,11 @@
 
     <h1 slot=start>{{'NEIGHBORHOOD.TITLE' | translate}}</h1>
 
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="showInfo" [bizyLoading]="downloading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+
 </bizy-toolbar>
 
-<div class="neighborhood tero-wrapper" [bizyLoading]="loading">
+<div class="neighborhood tero-wrapper" [bizyLoading]="loading" #neighborhood>
 
     <span class="neighborhood__block-row">
 
@@ -37,7 +39,7 @@
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span *ngIf="!showInfo"></span>
             <h4 *ngIf="showInfo" class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
-            <h5>Calle 170 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 170 Nte</h5>
             <h4 class="street__icon"><i class="fa-solid fa-person-walking"></i></h4>
         </span>    
         
@@ -87,7 +89,7 @@
 
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
-            <h5>Calle 171</h5>
+            <h5 *ngIf="!downloading">Calle 171</h5>
             <h4 class="street__icon"><i class="fa-solid fa-xmark"></i></h4>
         </span>
 
@@ -137,7 +139,7 @@
 
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
-            <h5>Calle 171 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 171 Nte</h5>
             <h4 class="street__icon"><i class="fa-solid fa-car"></i></h4>
         </span>
 
@@ -187,7 +189,7 @@
 
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 16.6rem;">
             <span></span>
-            <h5>Calle 172</h5>
+            <h5 *ngIf="!downloading">Calle 172</h5>
             <h4 #mainEntrance class="street__icon"><i class="fa-solid fa-car"></i></h4>
         </span>
 
@@ -244,7 +246,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 12.6rem;">
-            <h5>Calle 170 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 170 Nte</h5>
         </span>
 
         <span class="neighborhood__block">
@@ -292,7 +294,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 20.6rem;">
-            <h5>Calle 171</h5>
+            <h5 *ngIf="!downloading">Calle 171</h5>
         </span>
 
         <span class="neighborhood__block">
@@ -348,7 +350,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 20.6rem;">
-            <h5>Calle 171 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 171 Nte</h5>
         </span>
 
         <span class="neighborhood__block">
@@ -405,7 +407,7 @@
 
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 20.6rem;">
             <span></span>
-            <h5>Calle 172</h5>
+            <h5 *ngIf="!downloading">Calle 172</h5>
             <span *ngIf="!showInfo"></span>
             <h4 *ngIf="showInfo" class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
         </span>
@@ -451,7 +453,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 8.6rem; align-self: flex-end;">
-            <h5>Calle 172 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 172 Nte</h5>
         </span>
 
         <span class="neighborhood__block" style="align-self: flex-end;">
@@ -502,7 +504,7 @@
 
         <span class="neighborhood__vertical-street neighborhood__vertical-street--main" style="height: 24.6rem">
             <span></span>
-            <h5>Calle 171</h5>
+            <h5 *ngIf="!downloading">Calle 171</h5>
             <span *ngIf="!showInfo"></span>
             <h4 *ngIf="showInfo" class="street__icon"><i class="fa-solid fa-building-shield"></i></h4>
         </span>
@@ -568,7 +570,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 24.6rem">
-            <h5>Calle 171 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 171 Nte</h5>
         </span>
 
         <span class="neighborhood__block">
@@ -632,7 +634,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 24.6rem">
-            <h5>Calle 172</h5>
+            <h5 *ngIf="!downloading">Calle 172</h5>
         </span>
 
         <span class="neighborhood__block">
@@ -696,7 +698,7 @@
         </span>
 
         <span class="neighborhood__vertical-street" style="height: 24.6rem">
-            <h5>Calle 172 Nte</h5>
+            <h5 *ngIf="!downloading">Calle 172 Nte</h5>
         </span>
 
         <span class="neighborhood__block">

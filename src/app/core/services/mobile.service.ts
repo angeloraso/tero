@@ -68,14 +68,14 @@ export class MobileService {
     });
   }
 
-  downloadFile(file: { data: string; name: string }) {
+  downloadFile(file: { data: string; name: string; type?: 'png' | 'csv' }) {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const { uri } = await Filesystem.writeFile({
           path: file.name,
           data: file.data,
           directory: Directory.Documents,
-          encoding: Encoding.UTF8
+          encoding: file.type === 'png' ? undefined : Encoding.UTF8
         });
 
         await FileOpener.open({ filePath: uri, openWithDefault: true });

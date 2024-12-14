@@ -1,7 +1,22 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { BizyPopupService } from '@bizy/services';
+import { DOCUMENT } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import {
+  BizyLogService,
+  BizyPopupService,
+  BizyToastService,
+  BizyTranslateService
+} from '@bizy/services';
 import { LOGO_PATH, LOTS } from '@core/constants';
-import { NeighborsService, UsersService } from '@core/services';
+import { MobileService, NeighborsService, UsersService } from '@core/services';
+import html2canvas from 'html2canvas';
 import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
 
@@ -12,25 +27,32 @@ import { ILot } from './neighborhood.model';
 })
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
   @ViewChild('mainEntrance') mainEntrance: ElementRef | null = null;
+  @ViewChild('neighborhood') neighborhood: ElementRef | null = null;
+
+  readonly #translate = inject(BizyTranslateService);
+  readonly #popup = inject(BizyPopupService);
+  readonly #mobile = inject(MobileService);
+  readonly #neighborsService = inject(NeighborsService);
+  readonly #usersService = inject(UsersService);
+  readonly #document = inject(DOCUMENT);
+  readonly #renderer = inject(Renderer2);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+
   loading = false;
   showInfo: boolean = false;
   lots: Array<ILot> = LOTS;
+  downloading: boolean = false;
 
   readonly LOGO_PATH = LOGO_PATH;
-
-  constructor(
-    @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(UsersService) private usersService: UsersService
-  ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor(),
-        this.usersService.isSecurity()
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor(),
+        this.#usersService.isSecurity()
       ]);
 
       this.showInfo = isNeighbor || isSecurity || isConfig;
@@ -38,7 +60,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      const neighbors = await this.neighborsService.getNeighbors();
+      const neighbors = await this.#neighborsService.getNeighbors();
       this.lots.forEach(_lot => {
         _lot.neighbors.length = 0;
       });
@@ -67,9 +89,69 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.popup.open<void>({
+    this.#popup.open<void>({
       component: LotPopupComponent,
       data: lot
     });
   }
+
+  export = async () => {
+    if (!this.neighborhood) {
+      return;
+    }
+
+    try {
+      this.downloading = true;
+
+      setTimeout(async () => {
+        const mapElement = this.neighborhood!.nativeElement;
+
+        const originalPosition = mapElement.style.position;
+        const originalTopPosition = mapElement.style.top;
+        const originalLeftPosition = mapElement.style.left;
+        const originalWidth = mapElement.style.width;
+        const originalHeight = mapElement.style.height;
+        this.#renderer.setStyle(mapElement, 'position', 'absolute');
+        this.#renderer.setStyle(mapElement, 'top', '0');
+        this.#renderer.setStyle(mapElement, 'left', '0');
+        this.#renderer.setStyle(mapElement, 'width', `${mapElement.scrollWidth}px`);
+        this.#renderer.setStyle(mapElement, 'height', `${mapElement.scrollHeight}px`);
+
+        const canvas = await html2canvas(mapElement);
+        const pngDataUrl = canvas.toDataURL('image/png');
+
+        this.#renderer.setStyle(mapElement, 'position', originalPosition);
+        this.#renderer.setStyle(mapElement, 'top', originalTopPosition);
+        this.#renderer.setStyle(mapElement, 'left', originalLeftPosition);
+        this.#renderer.setStyle(mapElement, 'width', originalWidth);
+        this.#renderer.setStyle(mapElement, 'height', originalHeight);
+
+        if (this.#mobile.isMobile()) {
+          const base64Data = pngDataUrl.split(',')[1];
+          await this.#mobile.downloadFile({
+            name: this.#translate.get('NEIGHBORHOOD.PNG_FILE_NAME'),
+            data: base64Data,
+            type: 'png'
+          });
+        } else {
+          const link = this.#renderer.createElement('a');
+          link.href = pngDataUrl;
+          link.download = this.#translate.get('NEIGHBORHOOD.PNG_FILE_NAME');
+          this.#renderer.appendChild(this.#document.body, link);
+          link.click();
+          this.#renderer.removeChild(this.#document.body, link);
+        }
+
+        this.downloading = false;
+      }, 1);
+    } catch (error) {
+      this.#log.error({
+        fileName: 'neighborhood.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
+      this.#toast.danger();
+      this.downloading = false;
+    }
+  };
 }

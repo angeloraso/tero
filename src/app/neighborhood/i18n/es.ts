@@ -5,6 +5,7 @@ export const locale = {
   translations: {
     NEIGHBORHOOD: {
       TITLE: 'Plano',
+      PNG_FILE_NAME: 'tero-plano.png',
       NEIGHBORS: {
         TITLE: 'Vecinos/as'
       },
