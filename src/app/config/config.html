@@ -51,6 +51,8 @@
             <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
             <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
 
+            <bizy-tag slot="footer-start" *ngFor="let role of currentUser?.roles"><h5>{{'CORE.USER_ROLE.' + role | translate}}</h5></bizy-tag>
+
             <h1 slot="footer-end" *ngIf="isConfig" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
 
         </bizy-card>
