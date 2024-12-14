@@ -24,7 +24,8 @@ export const locale = {
         EXPORT: 'Exportar',
         CLEAN: 'Limpiar',
         ACCEPT: 'Aceptar',
-        REJECT: 'Rechazar'
+        REJECT: 'Rechazar',
+        ORDER_BY: 'Ordenar por'
       },
       FORM: {
         FIELD: {

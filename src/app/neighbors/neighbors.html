@@ -24,7 +24,6 @@
                                                 | bizySearch: lotSearch : 'lot'
                                                 | bizySearch: surnameSearch : 'surname'
                                                 | bizySearch: nameSearch : 'name'
-                                                | bizyFilter : 'alarmNumber' : filterAlarmNumbers
                                                 | bizyFilter : 'alarmNumber' : filterAlarmControls
                                                 | bizyFilter : 'group' : filterGroups).length + '/' + neighbors.length) : neighbors.length">
                 <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
@@ -39,6 +38,70 @@
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
+            <bizy-button class="tero-button--default" [disabled]="loading">
+
+                <bizy-menu [hideArrow]="true">
+
+                    <h5 *ngIf="order === 'desc'"><i class="fa-solid fa-arrow-up-a-z"></i></h5>
+                    <h5 *ngIf="order !== 'desc'"><i class="fa-solid fa-arrow-down-a-z"></i></h5>
+
+                    <bizy-menu-title>{{ 'CORE.BUTTON.ORDER_BY' | translate }}</bizy-menu-title>
+
+                    <bizy-menu-option (onSelect)="onSort('lot')">
+                        <h5><i class="fa-solid fa-location-dot"></i></h5>
+                        <h5>{{ 'CORE.FORM.FIELD.LOT' | translate }}</h5>
+                    </bizy-menu-option>
+
+                    <bizy-menu-option (onSelect)="onSort('name')">
+                        <h5><i class="fa-solid fa-user"></i></h5>
+                        <h5>{{ 'CORE.FORM.FIELD.NAME' | translate }}</h5>
+                    </bizy-menu-option>
+
+                    <bizy-menu-option (onSelect)="onSort('surname')">
+                        <h5><i class="fa-solid fa-user"></i></h5>
+                        <h5>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</h5>
+                    </bizy-menu-option>
+
+                    <bizy-menu-option (onSelect)="onSort('group')">
+                        <h5><i class="fa-solid fa-shield-halved"></i></h5>
+                        <h5>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</h5>
+                    </bizy-menu-option>
+
+                </bizy-menu>
+
+            </bizy-button>
+
+            <bizy-button class="tero-button--success" [disabled]="loading">
+    
+                <bizy-filter (onChange)="checkFilters($event)">
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+                    
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.SECURITY' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let group of filterGroups | bizyOrderBy : 'asc' : 'value'" 
+                            [selected]="group.selected"
+                            (onChange)="group.selected = $event; refresh()">
+                            <h6>{{group.value}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ALARM_CONTROLS' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let alarmControl of filterAlarmControls | bizyOrderBy : 'asc' : 'value'" 
+                            [selected]="alarmControl.selected"
+                            (onChange)="alarmControl.selected = $event; refresh()">
+                            <h6>{{alarmControl.value}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+
+            </bizy-button>
+
             <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
@@ -46,182 +109,73 @@
         </span>
 
     </span>
-
-    <bizy-table [bizyLoading]="loading">
-
-        <bizy-table-header>
-
-            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="onSort('lot')">
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                    
-                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
-
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h6>
-
-                        <bizy-filter-section-search-option 
-                            [(value)]="lotSearch"
-                            (onChange)="refresh()">
-                        </bizy-filter-section-search-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-
-                <h6><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'lot'"></bizy-table-column-arrows>
-            </bizy-table-column>
-
-            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('name')">
-
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                        
-                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
-
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
-
-                        <bizy-filter-section-search-option 
-                            [(value)]="nameSearch"
-                            (onChange)="refresh()">
-
-                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
-                            
-                        </bizy-filter-section-search-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-
-                <h6><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'name'"></bizy-table-column-arrows>
-            </bizy-table-column>
-
-            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('surname')">
-
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                        
-                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
-
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h6>
-
-                        <bizy-filter-section-search-option 
-                            [(value)]="surnameSearch"
-                            (onChange)="refresh()">
-
-                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
-                            
-                        </bizy-filter-section-search-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-
-                <h6><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'surname'"></bizy-table-column-arrows>
-            </bizy-table-column>
-
-            <bizy-table-column [ngStyle]="{flex: 1, minWidth: '2rem'}"></bizy-table-column>
-
-            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="onSort('group')">
-
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                    
-                    <h6><i class="fa-solid fa-filter"></i></h6>
-
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.GROUP' | translate }}</strong></h6>
-
-                        <bizy-filter-section-checkbox-option 
-                            *ngFor="let group of filterGroups | bizyOrderBy : 'asc' : 'value'"
-                            [selected]="group.selected"
-                            (onChange)="group.selected = $event; refresh()">
-                            <h5>{{group.value}}</h5>
-                        </bizy-filter-section-checkbox-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-
-                <h6><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'group'"></bizy-table-column-arrows>
-            </bizy-table-column>
-
-            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="onSort('alarmNumber')">
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                    
-                    <h6><i class="fa-solid fa-filter"></i></h6>
-
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ALARM_NUMBER' | translate }}</strong></h6>
-
-                        <bizy-filter-section-checkbox-option 
-                            *ngFor="let alarmNumber of filterAlarmNumbers | bizyOrderBy : 'asc' : 'value'"
-                            [selected]="alarmNumber.selected"
-                            (onChange)="alarmNumber.selected = $event; refresh()">
-                            <h5>{{alarmNumber.value}}</h5>
-                        </bizy-filter-section-checkbox-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-
-                <h6><strong>{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'alarmNumber'"></bizy-table-column-arrows>
-            </bizy-table-column>
-
-            <bizy-table-column [ngStyle]="{flex: 4}">
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                    
-                    <h6><i class="fa-solid fa-filter"></i></h6>
-
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ALARM_CONTROLS' | translate }}</strong></h6>
-
-                        <bizy-filter-section-checkbox-option 
-                            *ngFor="let alarmControl of filterAlarmControls"
-                            [selected]="alarmControl.selected"
-                            (onChange)="alarmControl.selected = $event; refresh()">
-                            <h5>{{alarmControl.value}}</h5>
-                        </bizy-filter-section-checkbox-option>
-                    </bizy-filter-section>
-
-                </bizy-filter>
-
-                <h6><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}</strong></h6>
-            </bizy-table-column>
     
-        </bizy-table-header>
-    
-        <bizy-table-row *tableFor="let neighbor in: neighbors 
-                                                    | bizySearch: search : searchKeys
-                                                    | bizySearch: lotSearch : 'lot'
-                                                    | bizySearch: surnameSearch : 'surname'
-                                                    | bizySearch: nameSearch : 'name'
-                                                    | bizyFilter : 'alarmNumber' : filterAlarmNumbers
-                                                    | bizyFilter : 'alarmNumber' : filterAlarmControls
-                                                    | bizyFilter : 'group' : filterGroups
-                                                    | bizyOrderBy: order : orderBy">
-    
-            <bizy-table-column [ngStyle]="{flex: 2}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.lot}}</h6></bizy-table-column>
+    <bizy-grid *ngIf="!loading" class="animated fade-in">
 
-            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.name}}</h6></bizy-table-column>
+        <bizy-card 
+            (onSelect)="selectNeighbor(neighbor)"
+            *gridFor="let neighbor of neighbors 
+                                        | bizySearch: search : searchKeys
+                                        | bizySearch: lotSearch : 'lot'
+                                        | bizySearch: surnameSearch : 'surname'
+                                        | bizySearch: nameSearch : 'name'
+                                        | bizyFilter : 'alarmNumber' : filterAlarmControls
+                                        | bizyFilter : 'group' : filterGroups
+                                        | bizyOrderBy: order : orderBy">
 
-            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.surname}}</h6></bizy-table-column>
+            <tero-img slot="header-start" [src]="neighbor.picture" [height]="30"></tero-img>
 
-            <bizy-table-column [ngStyle]="{flex: 1, minWidth: '2rem'}" (onSelect)="removeNeighborFromSecurity(neighbor)">
-                <bizy-tag *ngIf="neighbor.security" [type]="BIZY_TAG_TYPE.WARNING"><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></bizy-tag>
-            </bizy-table-column>
+            <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{neighbor.name}} {{neighbor.surname}}</strong></h4>
 
-            <bizy-table-column [ngStyle]="{flex: 2}" class="tero-table-column-center" (onSelect)="editNeighbor(neighbor)"><h6>{{neighbor.group || '---'}}</h6></bizy-table-column>
+            <bizy-tag 
+                *ngIf="neighbor.security"
+                slot="header-end"
+                [type]="BIZY_TAG_TYPE.WARNING">
+                <h6>{{neighbor.group}}</h6>
+                <h6><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></h6>
+            </bizy-tag>
 
-            <bizy-table-column [ngStyle]="{flex: 4}" class="tero-table-column-center" (onSelect)="editNeighbor(neighbor)">
-                <bizy-tag *ngIf="neighbor.alarmNumber"><h6>{{neighbor.alarmNumber}}</h6></bizy-tag>
-                <h6 *ngIf="!neighbor.alarmNumber">---</h6>
-            </bizy-table-column>
+            <span slot="footer-start" class="tero-section__start" *ngIf="neighbor.alarmNumber">
+                <h6><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}:</strong></h6>
+                <bizy-tag *ngFor="let control of neighbor.alarmControls">
+                    <h6><i class="fa-solid fa-mobile-retro"></i></h6>
+                    <h6>{{control}}</h6>
+                </bizy-tag>
+            </span>
 
-            <bizy-table-column [ngStyle]="{flex: 4}" (onSelect)="editNeighbor(neighbor)">
-                <bizy-tag [type]="BIZY_TAG_TYPE.INFO" *ngFor="let control of neighbor.alarmControls"><h6>{{control}}</h6></bizy-tag>
-            </bizy-table-column>
+            <bizy-tag 
+                slot="footer-end"
+                [type]="BIZY_TAG_TYPE.INFO">
+                <h6><i class="fa-solid fa-location-dot"></i></h6>
+                <h6>{{neighbor.lot}}</h6>
+            </bizy-tag>
 
-        </bizy-table-row>
-    
-    </bizy-table>
+        </bizy-card>
+
+    </bizy-grid>
+
+    <bizy-grid *ngIf="loading" class="animated fade-in">
+        <bizy-skeleton-card *gridFor="let i of neighbors.length > 0 ? neighbors : 30 | bizyRepeat"></bizy-skeleton-card>
+    </bizy-grid>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.INFO" 
+        class="animated fade-in tero-no-matches"
+        *ngIf="neighbors.length !== 0 && (neighbors 
+                                            | bizySearch: search : searchKeys
+                                            | bizySearch: lotSearch : 'lot'
+                                            | bizySearch: surnameSearch : 'surname'
+                                            | bizySearch: nameSearch : 'name'
+                                            | bizyFilter : 'alarmNumber' : filterAlarmControls
+                                            | bizyFilter : 'group' : filterGroups).length === 0">
+        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
+    </bizy-tag>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="!loading && neighbors.length === 0">
+        <h4>{{'NEIGHBORS.EMPTY' | translate}}</h4>
+    </bizy-tag>
 
 </div>

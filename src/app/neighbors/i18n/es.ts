@@ -5,6 +5,7 @@ export const locale = {
   translations: {
     NEIGHBORS: {
       TITLE: 'Vecinos',
+      EMPTY: 'Sin información. Quizá se deba a un problema de permisos',
       CSV_FILE_NAME: 'tero_vecinos.csv',
       NO_GROUP: 'Sin grupo',
       NO_ALARM: 'Sin alarma',

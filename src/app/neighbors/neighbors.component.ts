@@ -17,6 +17,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
 import { PopupComponent } from '@shared/components';
 
+interface INeighborExtended extends INeighbor {
+  _alarmControls: Array<string>;
+}
+
 @Component({
   selector: 'tero-neighbors',
   templateUrl: './neighbors.html',
@@ -29,18 +33,16 @@ export class NeighborsComponent implements OnInit {
   isConfig = false;
   isNeighbor = false;
   isSecurity = false;
-  neighbors: Array<INeighbor> = [];
+  neighbors: Array<INeighborExtended> = [];
   search: string | number = '';
-  searchKeys: Array<string> = ['group', 'lot', 'surname', 'name', 'alarmNumber', 'alarmControls'];
+  searchKeys: Array<string> = ['group', 'lot', 'surname', 'name', 'alarmNumber', '_alarmControls'];
   lotSearch: string = '';
   surnameSearch: string = '';
   nameSearch: string = '';
   filterGroups: Array<{ id: number | boolean; value: number | string; selected: boolean }> = [];
-  filterAlarmNumbers: Array<{ id: number | boolean; value: number | string; selected: boolean }> =
-    [];
   filterAlarmControls: Array<{ id: boolean; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
-  orderBy: string = 'lot';
+  orderBy: string = 'name';
   order: 'asc' | 'desc' = 'asc';
   isMobile = true;
 
@@ -80,7 +82,18 @@ export class NeighborsComponent implements OnInit {
         return;
       }
 
-      this.neighbors = (await this.neighborsService.getNeighbors()) ?? [];
+      const neighbors = await this.neighborsService.getNeighbors();
+
+      this.neighbors = neighbors
+        ? neighbors.map(_neighbor => {
+            return {
+              ..._neighbor,
+              _alarmControls: _neighbor.alarmControls
+                ? _neighbor.alarmControls.map(_value => String(_value))
+                : []
+            };
+          })
+        : [];
 
       const groups = new Set<number>();
       const alarmNumbers = new Set<number>();
@@ -102,16 +115,6 @@ export class NeighborsComponent implements OnInit {
       this.filterGroups.unshift({
         id: false,
         value: this.translate.get('NEIGHBORS.NO_GROUP'),
-        selected: true
-      });
-
-      this.filterAlarmNumbers = Array.from(alarmNumbers).map(_alarmNumber => {
-        return { id: _alarmNumber, value: _alarmNumber, selected: true };
-      });
-
-      this.filterAlarmNumbers.unshift({
-        id: false,
-        value: this.translate.get('NEIGHBORS.NO_ALARM'),
         selected: true
       });
 
@@ -138,7 +141,7 @@ export class NeighborsComponent implements OnInit {
     this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}/${NEIGHBORS_PATH.ADD}` });
   }
 
-  editNeighbor(neighbor: INeighbor) {
+  selectNeighbor(neighbor: INeighbor) {
     if (!neighbor || !this.isConfig) {
       return;
     }
@@ -235,6 +238,7 @@ export class NeighborsComponent implements OnInit {
 
   #filter(items: Array<INeighbor>): Array<INeighbor> {
     let _items = this.bizyFilterPipe.transform(items, 'group', this.filterGroups);
+    _items = this.bizyFilterPipe.transform(items, 'alarmNumber', this.filterAlarmControls);
     _items = this.bizySearchPipe.transform(_items, this.search, [
       'group',
       'lot',
@@ -273,7 +277,7 @@ export class NeighborsComponent implements OnInit {
   }
 
   onSort(property: string) {
+    this.order = this.order === 'desc' || this.orderBy !== property ? 'asc' : 'desc';
     this.orderBy = property;
-    this.order = this.order === 'asc' ? 'desc' : 'asc';
   }
 }
