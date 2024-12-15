@@ -6,6 +6,22 @@
 
 .neighborhood {
     overflow: scroll;
+    width: 100%;
+    height: 100%;
+}
+
+.neighborhood--downloading {
+    display: block !important;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.6;
+    background-color: #fff;
+    pointer-events: none;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 .neighborhood__toolbar {

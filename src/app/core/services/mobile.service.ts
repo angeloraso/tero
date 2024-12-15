@@ -10,6 +10,11 @@ import { ERROR } from '@core/model';
 import { ENV } from '@env/environment';
 import { Observable, Subject } from 'rxjs';
 
+export enum FILE_TYPE {
+  IMAGE,
+  CSV
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -68,14 +73,19 @@ export class MobileService {
     });
   }
 
-  downloadFile(file: { data: string; name: string; type?: 'png' | 'csv' }) {
+  downloadFile(file: { data: string; name: string; type?: FILE_TYPE }) {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const { uri } = await Filesystem.writeFile({
           path: file.name,
           data: file.data,
           directory: Directory.Documents,
-          encoding: file.type === 'png' ? undefined : Encoding.UTF8
+          encoding:
+            file.type === FILE_TYPE.CSV
+              ? Encoding.UTF8
+              : file.type === FILE_TYPE.IMAGE
+                ? undefined
+                : Encoding.UTF8
         });
 
         await FileOpener.open({ filePath: uri, openWithDefault: true });

@@ -8,11 +8,13 @@
 
 </bizy-toolbar>
 
+<span style="display: none;" class="neighborhood--downloading" *ngIf="downloading"></span>
+
 <div class="neighborhood tero-wrapper" [bizyLoading]="loading" #neighborhood>
 
     <span class="neighborhood__block-row">
 
-        <span class="neighborhood__block">
+        <span class="neighborhood__block" #firstBlock>
 
             <span class="neighborhood__block__column">
 

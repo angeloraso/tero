@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DatePipe, DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -16,6 +16,7 @@ import {
 } from '@bizy/services';
 import { LOGO_PATH, LOTS } from '@core/constants';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
+import { FILE_TYPE } from '@core/services/mobile.service';
 import html2canvas from 'html2canvas';
 import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
@@ -26,6 +27,7 @@ import { ILot } from './neighborhood.model';
   styleUrls: ['./neighborhood.css']
 })
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
+  @ViewChild('firstBlock') firstBlock: ElementRef | null = null;
   @ViewChild('mainEntrance') mainEntrance: ElementRef | null = null;
   @ViewChild('neighborhood') neighborhood: ElementRef | null = null;
 
@@ -38,6 +40,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   readonly #renderer = inject(Renderer2);
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
+  readonly #datePipe = inject(DatePipe);
 
   loading = false;
   showInfo: boolean = false;
@@ -96,54 +99,61 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   }
 
   export = async () => {
-    if (!this.neighborhood) {
-      return;
-    }
-
     try {
+      if (!this.neighborhood) {
+        return;
+      }
+
       this.downloading = true;
 
-      setTimeout(async () => {
-        const mapElement = this.neighborhood!.nativeElement;
+      await new Promise(resolve => setTimeout(resolve, 1));
 
-        const originalPosition = mapElement.style.position;
-        const originalTopPosition = mapElement.style.top;
-        const originalLeftPosition = mapElement.style.left;
-        const originalWidth = mapElement.style.width;
-        const originalHeight = mapElement.style.height;
-        this.#renderer.setStyle(mapElement, 'position', 'absolute');
-        this.#renderer.setStyle(mapElement, 'top', '0');
-        this.#renderer.setStyle(mapElement, 'left', '0');
-        this.#renderer.setStyle(mapElement, 'width', `${mapElement.scrollWidth}px`);
-        this.#renderer.setStyle(mapElement, 'height', `${mapElement.scrollHeight}px`);
+      if (this.firstBlock) {
+        this.firstBlock.nativeElement.scrollIntoView();
+      }
 
-        const canvas = await html2canvas(mapElement);
-        const pngDataUrl = canvas.toDataURL('image/png');
+      const mapElement = this.neighborhood!.nativeElement;
 
-        this.#renderer.setStyle(mapElement, 'position', originalPosition);
-        this.#renderer.setStyle(mapElement, 'top', originalTopPosition);
-        this.#renderer.setStyle(mapElement, 'left', originalLeftPosition);
-        this.#renderer.setStyle(mapElement, 'width', originalWidth);
-        this.#renderer.setStyle(mapElement, 'height', originalHeight);
+      const originalPosition = mapElement.style.position;
+      const originalTopPosition = mapElement.style.top;
+      const originalLeftPosition = mapElement.style.left;
+      const originalWidth = mapElement.style.width;
+      const originalHeight = mapElement.style.height;
+      this.#renderer.setStyle(mapElement, 'position', 'absolute');
+      this.#renderer.setStyle(mapElement, 'top', '0');
+      this.#renderer.setStyle(mapElement, 'left', '0');
+      this.#renderer.setStyle(mapElement, 'width', `${mapElement.scrollWidth}px`);
+      this.#renderer.setStyle(mapElement, 'height', `${mapElement.scrollHeight}px`);
 
-        if (this.#mobile.isMobile()) {
-          const base64Data = pngDataUrl.split(',')[1];
-          await this.#mobile.downloadFile({
-            name: this.#translate.get('NEIGHBORHOOD.PNG_FILE_NAME'),
-            data: base64Data,
-            type: 'png'
-          });
-        } else {
-          const link = this.#renderer.createElement('a');
-          link.href = pngDataUrl;
-          link.download = this.#translate.get('NEIGHBORHOOD.PNG_FILE_NAME');
-          this.#renderer.appendChild(this.#document.body, link);
-          link.click();
-          this.#renderer.removeChild(this.#document.body, link);
-        }
+      const canvas = await html2canvas(mapElement);
+      const pngDataUrl = canvas.toDataURL('image/png');
 
-        this.downloading = false;
-      }, 1);
+      this.#renderer.setStyle(mapElement, 'position', originalPosition);
+      this.#renderer.setStyle(mapElement, 'top', originalTopPosition);
+      this.#renderer.setStyle(mapElement, 'left', originalLeftPosition);
+      this.#renderer.setStyle(mapElement, 'width', originalWidth);
+      this.#renderer.setStyle(mapElement, 'height', originalHeight);
+
+      const date = new Date();
+      const fileName = `${this.#datePipe.transform(date, 'yyyyMMddHHmmss')}_${this.#translate.get('NEIGHBORHOOD.PNG_FILE_NAME')}`;
+
+      if (this.#mobile.isMobile()) {
+        const base64Data = pngDataUrl.split(',')[1];
+        await this.#mobile.downloadFile({
+          name: fileName,
+          data: base64Data,
+          type: FILE_TYPE.IMAGE
+        });
+      } else {
+        const link = this.#renderer.createElement('a');
+        link.href = pngDataUrl;
+        link.download = fileName;
+        this.#renderer.appendChild(this.#document.body, link);
+        link.click();
+        this.#renderer.removeChild(this.#document.body, link);
+      }
+
+      this.downloading = false;
     } catch (error) {
       this.#log.error({
         fileName: 'neighborhood.component',
