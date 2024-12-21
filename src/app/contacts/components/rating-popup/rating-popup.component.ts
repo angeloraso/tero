@@ -11,11 +11,11 @@ import { Rating } from '@core/model';
 })
 export class RatingPopupComponent implements OnInit {
   form: FormGroup<{
-    accountId: FormControl<any>;
     value: FormControl<any>;
     description: FormControl<any>;
   }>;
 
+  showDelete: boolean = false;
   readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
 
   constructor(
@@ -23,7 +23,6 @@ export class RatingPopupComponent implements OnInit {
     @Inject(FormBuilder) private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      accountId: ['', [Validators.required]],
       value: [null, [Validators.required]],
       description: ['', [Validators.maxLength(this.LONG_TEXT_MAX_LENGTH)]]
     });
@@ -37,28 +36,25 @@ export class RatingPopupComponent implements OnInit {
     return this.form.get('description') as FormControl;
   }
 
-  get accountId() {
-    return this.form.get('accountId') as FormControl;
-  }
-
   ngOnInit() {
     const data = this.popup.getData<{ value: Rating; description: string; accountId: string }>();
 
     if (data.value) {
       this.value.setValue(data.value);
+      this.showDelete = true;
     }
 
     if (data.description) {
       this.description.setValue(data.description);
     }
-
-    if (data.accountId) {
-      this.accountId.setValue(data.accountId);
-    }
   }
 
   close() {
     this.popup.close();
+  }
+
+  onDelete() {
+    this.popup.close({ response: 'delete' });
   }
 
   apply() {
@@ -68,7 +64,6 @@ export class RatingPopupComponent implements OnInit {
 
     this.popup.close({
       response: {
-        accountId: this.accountId.value,
         value: this.value.value,
         description: this.description.value
       }

@@ -14,7 +14,7 @@ import {
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
-import { IContact, IContactRating } from '@core/model';
+import { IContact, IContactRating, Rating } from '@core/model';
 import { ContactsService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from './components';
@@ -144,30 +144,37 @@ export class ContactsComponent implements OnInit {
       }
     }
 
-    this.popup.open<IContactRating>(
+    this.popup.open<{ value: Rating; description: string } | 'delete'>(
       {
         component: RatingPopupComponent,
         data: {
-          accountId,
           value,
           description
         }
       },
-      async rating => {
+      async data => {
         try {
-          if (rating) {
-            this.loading = true;
-            if (contact.rating && contact.rating.length > 0) {
-              const index = contact.rating.findIndex(
-                _rating => _rating.accountId === rating.accountId
-              );
+          if (data) {
+            if (data === 'delete') {
+              const index = contact.rating.findIndex(_rating => _rating.accountId === accountId);
               if (index !== -1) {
-                contact.rating[index] = rating;
-              } else {
-                contact.rating.push(rating);
+                contact.rating.splice(index, 1);
               }
             } else {
-              contact.rating = [rating];
+              const contactRating: IContactRating = { ...data, accountId };
+              this.loading = true;
+              if (contact.rating && contact.rating.length > 0) {
+                const index = contact.rating.findIndex(
+                  _rating => _rating.accountId === contactRating.accountId
+                );
+                if (index !== -1) {
+                  contact.rating[index] = contactRating;
+                } else {
+                  contact.rating.push(contactRating);
+                }
+              } else {
+                contact.rating = [contactRating];
+              }
             }
 
             await this.contactsService.putContact(contact);

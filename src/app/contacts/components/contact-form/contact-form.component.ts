@@ -18,7 +18,7 @@ import {
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH
 } from '@core/constants';
-import { IContact, IContactRating } from '@core/model';
+import { IContact, IContactRating, Rating } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
@@ -160,26 +160,35 @@ export class ContactFormComponent {
       }
     }
 
-    this.popup.open<IContactRating>(
+    this.popup.open<{ value: Rating; description: string } | 'delete'>(
       {
         component: RatingPopupComponent,
         data: {
-          accountId,
           value,
           description
         }
       },
-      rating => {
-        if (rating) {
-          if (this.rating && this.rating.length > 0) {
-            const index = this.rating.findIndex(_rating => _rating.accountId === rating.accountId);
+      data => {
+        if (data) {
+          if (data === 'delete') {
+            const index = this.rating.findIndex(_rating => _rating.accountId === accountId);
             if (index !== -1) {
-              this.rating[index] = rating;
-            } else {
-              this.rating.push(rating);
+              this.rating.splice(index, 1);
             }
           } else {
-            this.rating = [rating];
+            const contactRating: IContactRating = { ...data, accountId };
+            if (this.rating && this.rating.length > 0) {
+              const index = this.rating.findIndex(
+                _rating => _rating.accountId === contactRating.accountId
+              );
+              if (index !== -1) {
+                this.rating[index] = contactRating;
+              } else {
+                this.rating.push(contactRating);
+              }
+            } else {
+              this.rating = [contactRating];
+            }
           }
 
           this.rating = [...this.rating];

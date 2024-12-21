@@ -2,7 +2,15 @@
 
     <bizy-form>
 
-        <h1 class="tero-title">{{'CONTACTS.RATING_POPUP.TITLE' | translate}}</h1>
+        <span class="rating-popup__header">
+
+            <h1 class="tero-title">{{'CONTACTS.RATING_POPUP.TITLE' | translate}}</h1>
+
+            <bizy-button *ngIf="showDelete" (onSelect)="onDelete()" class="tero-action tero-action--danger">
+                <h5><i class="fa-solid fa-trash-alt"></i></h5>
+            </bizy-button>
+
+        </span>
         
         <span class="rating-popup__stars">
 
