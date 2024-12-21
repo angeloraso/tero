@@ -3,7 +3,11 @@
 
     <span class="contact-form__picture">
 
-        <tero-img [src]="_picture.value" alt="Contact picture"></tero-img>
+        <img 
+            height="70"
+            [src]="_picture.value"
+            onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+            alt="Imagen de usuario"/>
 
         <bizy-tag [type]="BIZY_TAG_TYPE.WARNING" class="contact-form__picture__rating" (onSelect)="openRatingPopup()">
             <h3>{{rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h3>

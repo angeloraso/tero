@@ -1,6 +1,5 @@
 import { Inject, NgModule } from '@angular/core';
 import { BizyTranslateService } from '@bizy/services';
-import { ImageModule } from '@components/image';
 import { SharedModule } from '@shared/shared.module';
 import {
   ContactFormComponent,
@@ -16,7 +15,7 @@ const COMPONENTS: Array<any> = [
   RatingHistoryPopupComponent
 ];
 @NgModule({
-  imports: [SharedModule, ContactsRoutingModule, ImageModule],
+  imports: [SharedModule, ContactsRoutingModule],
   declarations: ContactsRoutingModule.COMPONENTS.concat(COMPONENTS)
 })
 export class ContactsModule {

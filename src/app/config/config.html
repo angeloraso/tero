@@ -20,9 +20,13 @@
 
         <bizy-card class="config__card">
             
-            <img *ngIf="profilePic" class="config__credential__profile-pic" slot="header-start" height="50" [src]="profilePic" alt="Imagen de usuario"/>
-
-            <tero-img *ngIf="!profilePic" class="config__credential__profile-pic" slot="header-start" [height]="50" alt="Imagen de usuario"></tero-img>
+            <img 
+                class="config__credential__profile-pic"
+                slot="header-start"
+                height="50"
+                [src]="profilePic"
+                onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                alt="Imagen de usuario"/>
 
             <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{currentUser ? currentUser.id : DEFAULT_USER_ID}}</strong></h4>
 

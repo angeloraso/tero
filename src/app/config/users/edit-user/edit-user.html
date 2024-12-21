@@ -14,9 +14,13 @@
 
         <span class="edit-user__header">
 
-            <img *ngIf="user && user.picture" class="edit-user__header__profile-pic" slot="header-start" height="70" [src]="user.picture" alt="Imagen de usuario"/>
-    
-            <tero-img *ngIf="!user || !user.picture" class="edit-user__header__profile-pic" slot="header-start" [height]="70" alt="Imagen de usuario"></tero-img>
+            <img 
+                class="edit-user__header__profile-pic"
+                slot="header-start"
+                height="70"
+                [src]="user?.picture"
+                onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                alt="Imagen de usuario"/>
 
         </span>
 

@@ -83,9 +83,13 @@
                                         | bizyFilter : 'roles' : filterRoles
                                         | bizyOrderBy: order : orderBy">
 
-            <img *ngIf="user.picture" class="users__card__profile-pic" slot="header-start" height="40" [src]="user.picture" alt="Imagen de usuario"/>
-
-            <tero-img *ngIf="!user.picture" class="users__card__profile-pic" slot="header-start" [height]="40" alt="Imagen de usuario"></tero-img>
+            <img 
+                class="users__card__profile-pic"
+                slot="header-start"
+                height="40"
+                [src]="user.picture"
+                onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                alt="Imagen de usuario"/>
 
             <h4 slot="header-start" *ngIf="user.name" class="tero-text-ellipsis--2"><strong>{{user.name}}</strong></h4>
 

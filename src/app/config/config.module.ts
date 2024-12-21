@@ -1,6 +1,5 @@
 import { Inject, NgModule } from '@angular/core';
 import { BizyTranslateService } from '@bizy/services';
-import { ImageModule } from '@components/image';
 import { SharedModule } from '@shared/shared.module';
 import { AboutPopupComponent, UserLotPopupComponent, UserPhonePopupComponent } from './components';
 import { ConfigRoutingModule } from './config.routing';
@@ -12,7 +11,7 @@ const COMPONENTS: Array<any> = [
   UserLotPopupComponent
 ];
 @NgModule({
-  imports: [SharedModule, ConfigRoutingModule, ImageModule],
+  imports: [SharedModule, ConfigRoutingModule],
   declarations: ConfigRoutingModule.COMPONENTS.concat(COMPONENTS)
 })
 export class ConfigModule {

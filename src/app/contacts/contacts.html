@@ -68,7 +68,12 @@
                                         | bizyFilter : 'tags' : filterTags
                                         | bizyOrderBy: order : orderBy">
 
-            <tero-img slot="header-start" [src]="contact.picture" [height]="30"></tero-img>
+            <img 
+                slot="header-start"
+                height="30"
+                [src]="contact?.picture"
+                onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                alt="Imagen de usuario"/>
 
             <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{contact.surname}} {{contact.name}}</strong></h4>
 

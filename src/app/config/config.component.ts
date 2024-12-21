@@ -13,7 +13,7 @@ import {
   UserPhonePopupComponent
 } from '@config/components';
 import { AuthService } from '@core/auth/auth.service';
-import { LOGO_PATH } from '@core/constants';
+import { DEFAULT_USER_PICTURE, LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { PopupComponent } from '@shared/components';
@@ -27,6 +27,7 @@ import { PATH } from './config.routing';
 export class ConfigComponent implements OnInit {
   loading = false;
 
+  defaultProfilePic: string = `/assets/img/${DEFAULT_USER_PICTURE}`;
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly USER_STATE = USER_STATE;
