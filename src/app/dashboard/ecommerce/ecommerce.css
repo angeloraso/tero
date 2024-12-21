@@ -4,7 +4,7 @@
     flex-direction: column;
 
     --bizy-card-cursor: pointer;
-    --bizy-grid-row-height: 10rem;
+    --bizy-grid-row-height: 12rem;
 }
 
 .ecommerce__card__action {
@@ -14,6 +14,7 @@
 .ecommerce__card__content {
     display: flex;
     flex-direction: column;
+    row-gap: 0.3rem;
 }
 
 .ecommerce__card__content__description {
