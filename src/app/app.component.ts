@@ -31,10 +31,10 @@ export class AppComponent implements OnInit {
       if (this.#mobile.isMobile()) {
         await this.#mobile.init();
         this.#mobile.backButton$.subscribe(() => {
-          if (ROOT_PATHS.includes(this.#router.getURL())) {
-            this.#mobile.exit();
-          } else if (this.#popup.openedPopups() > 0) {
+          if (this.#popup.openedPopups() > 0) {
             this.#popup.closeAll();
+          } else if (ROOT_PATHS.includes(this.#router.getURL())) {
+            this.#mobile.exit();
           } else {
             this.#router.goBack();
           }
