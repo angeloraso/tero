@@ -112,7 +112,11 @@ export class ContactsComponent implements OnInit {
   }
 
   selectContact(contact: IContactCard) {
-    if (!contact || !this.isNeighbor || contact.accountId !== this.auth.getId()) {
+    if (
+      !contact ||
+      !this.isNeighbor ||
+      (contact.accountId && contact.accountId !== this.auth.getId())
+    ) {
       return;
     }
 

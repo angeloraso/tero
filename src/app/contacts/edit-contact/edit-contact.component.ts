@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   BizyLogService,
@@ -7,6 +7,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
+import { AuthService } from '@core/auth/auth.service';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PopupComponent } from '@shared/components';
@@ -17,43 +18,42 @@ import { PopupComponent } from '@shared/components';
   styleUrls: ['./edit-contact.css']
 })
 export class EditContactComponent implements OnInit {
+  readonly #popup = inject(BizyPopupService);
+  readonly #contactsService = inject(ContactsService);
+  readonly #router = inject(BizyRouterService);
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #auth = inject(AuthService);
+
   contact: IContact | null = null;
   contactId: string | null = null;
   loading = false;
   tags: Array<string> = [];
 
-  constructor(
-    @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(ContactsService) private contactsService: ContactsService,
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService
-  ) {}
-
   async ngOnInit() {
     try {
       this.loading = true;
-      this.contactId = this.router.getId(this.activatedRoute, 'contactId');
+      this.contactId = this.#router.getId(this.#activatedRoute, 'contactId');
       if (!this.contactId) {
         this.goBack();
         return;
       }
 
       const [contact, tags] = await Promise.all([
-        this.contactsService.getContact(this.contactId),
-        this.contactsService.getTags()
+        this.#contactsService.getContact(this.contactId),
+        this.#contactsService.getTags()
       ]);
       this.contact = contact;
       this.tags = tags;
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'edit-contact.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
@@ -64,28 +64,28 @@ export class EditContactComponent implements OnInit {
       return;
     }
 
-    this.popup.open<boolean>(
+    this.#popup.open<boolean>(
       {
         component: PopupComponent,
         data: {
-          title: this.translate.get('CONTACTS.EDIT_CONTACT.DELETE_POPUP.TITLE'),
-          msg: `${this.translate.get('CONTACTS.EDIT_CONTACT.DELETE_POPUP.MSG')}: ${this.contact.surname} ${this.contact.name}`
+          title: this.#translate.get('CONTACTS.EDIT_CONTACT.DELETE_POPUP.TITLE'),
+          msg: `${this.#translate.get('CONTACTS.EDIT_CONTACT.DELETE_POPUP.MSG')}: ${this.contact.surname} ${this.contact.name}`
         }
       },
       async res => {
         try {
           if (res) {
             this.loading = true;
-            await this.contactsService.deleteContact(this.contact as IContact);
+            await this.#contactsService.deleteContact(this.contact as IContact);
             this.goBack();
           }
         } catch (error) {
-          this.log.error({
+          this.#log.error({
             fileName: 'edit-contact.component',
             functionName: 'deleteContact',
             param: error
           });
-          this.toast.danger();
+          this.#toast.danger();
         } finally {
           this.loading = false;
         }
@@ -94,7 +94,7 @@ export class EditContactComponent implements OnInit {
   };
 
   goBack() {
-    this.router.goBack();
+    this.#router.goBack();
   }
 
   async save(contact: IContact) {
@@ -104,15 +104,25 @@ export class EditContactComponent implements OnInit {
       }
 
       this.loading = true;
-      await this.contactsService.putContact(contact);
+
+      if (!contact.accountId) {
+        const accountId = await this.#auth.getId();
+        if (!accountId) {
+          throw new Error();
+        }
+
+        contact.accountId = accountId;
+      }
+
+      await this.#contactsService.putContact(contact);
       this.goBack();
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'edit-contact.component',
         functionName: 'save',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
