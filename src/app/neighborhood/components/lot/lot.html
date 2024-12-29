@@ -2,4 +2,13 @@
     <h4 class="lot__number">{{lot.number}}</h4>
     <h4 class="lot__security" *ngIf="lot.neighbors.length > 0 && lot.neighbors[0].security"><i class="fa-solid fa-shield-halved"></i></h4>
     <span *ngIf="lot.neighbors.length === 0 || !lot.neighbors[0].security"></span>
+
+    <ng-container *ngIf="showControls && lot.neighbors && lot.neighbors.length > 0 && lot.neighbors[0].alarmControls && lot.neighbors[0].alarmControls.length > 0">
+
+        <span class="lot__alarm-controls animated fade-in-up">
+            <bizy-tag *ngFor="let alarmControl of lot.neighbors[0].alarmControls" [type]="BIZY_TAG_TYPE.INFO"><h6>C.{{alarmControl}}</h6></bizy-tag>
+        </span>
+
+    </ng-container>
+
 </button>

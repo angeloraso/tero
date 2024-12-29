@@ -46,6 +46,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   showInfo: boolean = false;
   lots: Array<ILot> = LOTS;
   downloading: boolean = false;
+  showControls: boolean = true;
 
   readonly LOGO_PATH = LOGO_PATH;
 
