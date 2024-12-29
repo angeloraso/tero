@@ -588,7 +588,9 @@ export class DatabaseService implements OnDestroy {
           id: Date.now(),
           email: userEmail,
           name: this.auth.getName(),
-          picture: this.auth.getProfilePicture()
+          picture: this.auth.getProfilePicture(),
+          phone: null,
+          lot: null
         };
 
         const userDocument = JSON.parse(JSON.stringify(userSettings));
