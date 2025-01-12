@@ -325,14 +325,6 @@ h6 {
     width: 100%;
 }
 
-.tero-no-matches {
-    flex: 1;
-    display: grid;
-    place-items: center;
-    height: 100%;
-    width: 100%;
-}
-
 .tero-no-matches__text {
     text-wrap: auto;
     text-align: center;
