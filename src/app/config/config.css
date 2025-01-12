@@ -14,6 +14,7 @@
 }
 
 .config__credential__profile-pic {
+    height: 3rem;
     border-radius: 50%;
 }
 

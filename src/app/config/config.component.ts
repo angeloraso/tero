@@ -33,7 +33,7 @@ export class ConfigComponent implements OnInit {
   readonly USER_STATE = USER_STATE;
   readonly DEFAULT_USER_ID = '00000000000000';
   isConfig: boolean = false;
-  profilePic: string = '';
+  profilePic: string | null = null;
   name: string = '';
   email: string = '';
   users: Array<IUser> = [];
@@ -53,7 +53,8 @@ export class ConfigComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-      this.profilePic = this.auth.getProfilePicture() ?? '';
+      this.profilePic = await this.auth.getProfilePicture();
+      console.log(this.profilePic);
       this.name = this.auth.getName() ?? '';
       this.email = this.auth.getEmail() ?? '';
       const [currentUser, isConfig] = await Promise.all([

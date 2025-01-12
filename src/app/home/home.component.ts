@@ -1,6 +1,11 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { BizyRouterService, BizyStorageService } from '@bizy/services';
+import {
+  BizyLogService,
+  BizyRouterService,
+  BizyStorageService,
+  BizyToastService
+} from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -18,7 +23,13 @@ interface IOption {
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #router = inject(BizyRouterService);
+  readonly #storage = inject(BizyStorageService);
+  readonly #auth = inject(AuthService);
+  loading: boolean = false;
   closedSidebar: boolean = false;
   profilePic: string = '';
   email: string = '';
@@ -60,31 +71,40 @@ export class HomeComponent implements OnDestroy {
   readonly LOGO_PATH = LOGO_PATH;
   readonly DESCRIPTION: string = pkg.description;
 
-  constructor(
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(BizyStorageService) private storage: BizyStorageService,
-    @Inject(AuthService) private auth: AuthService
-  ) {
-    this.closedSidebar = this.storage.get<boolean>(this.#CLOSED_SIDEBAR) ?? true;
-    const profilePic = this.auth.getProfilePicture();
-    if (profilePic) {
-      this.profilePic = profilePic;
-    }
+  async ngOnInit() {
+    try {
+      this.loading = true;
+      this.closedSidebar = this.#storage.get<boolean>(this.#CLOSED_SIDEBAR) ?? true;
 
-    const email = this.auth.getEmail();
-    if (email) {
-      this.email = email;
-    }
+      const email = this.#auth.getEmail();
+      if (email) {
+        this.email = email;
+      }
 
-    this.#subscription.add(
-      this.router.transitionsEnd$.subscribe(() => {
-        const option = this.#getURLOption(this.options, this.router.getURL());
-        if (option) {
-          option.selected = true;
-          this.onSelect(option);
-        }
-      })
-    );
+      this.#subscription.add(
+        this.#router.transitionsEnd$.subscribe(() => {
+          const option = this.#getURLOption(this.options, this.#router.getURL());
+          if (option) {
+            option.selected = true;
+            this.onSelect(option);
+          }
+        })
+      );
+
+      const profilePic = await this.#auth.getProfilePicture();
+      if (profilePic) {
+        this.profilePic = profilePic;
+      }
+    } catch (error) {
+      this.#log.error({
+        fileName: 'home.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
+      this.#toast.danger();
+    } finally {
+      this.loading = false;
+    }
   }
 
   onSelect(option: IOption) {
@@ -98,11 +118,11 @@ export class HomeComponent implements OnDestroy {
   }
 
   onToggle() {
-    this.storage.set(this.#CLOSED_SIDEBAR, this.closedSidebar);
+    this.#storage.set(this.#CLOSED_SIDEBAR, this.closedSidebar);
   }
 
   goTo(path: string) {
-    this.router.goTo({ path });
+    this.#router.goTo({ path });
   }
 
   #getURLOption = (options: Array<IOption>, path: string): IOption | null => {

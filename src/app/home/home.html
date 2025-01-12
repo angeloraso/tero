@@ -31,7 +31,14 @@
   
       <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
         <i *ngIf="!profilePic" class="fa-solid fa-user-circle"></i>
-        <img *ngIf="profilePic" class="home__sidebar__option__profile-pic" src="{{profilePic}}" alt="profile_pic"/>
+
+        <img 
+            class="home__sidebar__option__profile-pic"
+            slot="header-start"
+            [bizyLoading]="loading"
+            [src]="profilePic"
+            onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+            alt="Imagen de usuario"/>
   
         <h6 class="home__sidebar__option__label" *ngIf="!closedSidebar">{{email}}</h6>
       </span>
