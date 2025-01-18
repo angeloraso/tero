@@ -5,6 +5,10 @@ export const locale = {
   translations: {
     DASHBOARD: {
       TITLE: 'Panel',
+      GARBAGE_TRUCK_POPUP: {
+        TITLE: 'Camión de basura!',
+        MSG: 'Avisar a los vecinos de Tero que el camión de basura esta pasando!'
+      },
       SECURITY: {
         TITLE: 'Seguridad',
         SECURITY_FEE: 'Costo total del servicio',

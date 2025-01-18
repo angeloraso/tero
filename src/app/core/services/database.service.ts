@@ -5,6 +5,7 @@ import {
   ERROR,
   IContact,
   IEcommerceProduct,
+  IGarbageTruckRecord,
   INeighbor,
   ISecurity,
   ISecurityInvoice,
@@ -23,7 +24,8 @@ enum CORE_DOCUMENT {
   NEIGHBORS = 'neighbors',
   CONTACTS = 'contacts',
   SECURITY = 'security',
-  ECOMMERCE = 'ecommerce'
+  ECOMMERCE = 'ecommerce',
+  GARBAGE = 'garbage'
 }
 
 /* enum OPERATOR {
@@ -41,6 +43,7 @@ enum CORE_DOCUMENT {
 })
 export class DatabaseService implements OnDestroy {
   #neighbors = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
+  #garbageTruckRecords = new BehaviorSubject<Array<IGarbageTruckRecord> | undefined>(undefined);
   #contactData = new BehaviorSubject<{ data: Array<IContact>; tags: Array<string> } | undefined>(
     undefined
   );
@@ -789,12 +792,68 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
+  getGarbageTruckRecords() {
+    return new Promise<Array<IGarbageTruckRecord>>(async (resolve, reject) => {
+      try {
+        if (typeof this.#garbageTruckRecords.value !== 'undefined') {
+          resolve(this.#garbageTruckRecords.value);
+          return;
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<IGarbageTruckRecord> }>(
+          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}` },
+          (event, error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              const garbageTruckRecords =
+                event && event.snapshot.data ? event.snapshot.data.data : [];
+              this.#garbageTruckRecords.next(garbageTruckRecords);
+              resolve(garbageTruckRecords);
+            }
+          }
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postGarbageTruckRecord(garbageTruckRecord: IGarbageTruckRecord): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const garbageTruckRecords = await this.getGarbageTruckRecords();
+        const index = garbageTruckRecords.findIndex(
+          _garbageTruckRecord => _garbageTruckRecord.id === garbageTruckRecord.id
+        );
+        if (index !== -1) {
+          garbageTruckRecords[index] = garbageTruckRecord;
+        } else {
+          garbageTruckRecords.push(garbageTruckRecord);
+        }
+
+        const garbageTruckRecordsDocument = JSON.parse(
+          JSON.stringify({ data: garbageTruckRecords })
+        );
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}`,
+          data: garbageTruckRecordsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   destroy = () => {
     this.#neighbors.next(undefined);
     this.#contactData.next(undefined);
     this.#ecommerceData.next(undefined);
     this.#security.next(undefined);
     this.#users.next(undefined);
+    this.#garbageTruckRecords.next(undefined);
     this.#currentUser.next(undefined);
     return FirebaseFirestore.removeAllListeners();
   };

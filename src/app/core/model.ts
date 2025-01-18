@@ -216,7 +216,7 @@ export interface ITopicMilestone {
 
 export interface ITopic {
   id: string;
-  accountId: string;
+  accountEmail: string;
   description: string;
   status: TOPIC_STATUS;
   milestones: Array<ITopicMilestone>;
@@ -226,20 +226,40 @@ export interface ITopic {
 
 export class Topic implements ITopic {
   id: string;
-  accountId: string;
+  accountEmail: string;
   description: string;
   status: TOPIC_STATUS;
   milestones: Array<ITopicMilestone>;
   created: number;
   updated: number;
 
-  constructor(product: Omit<IEcommerceProduct, 'id' | 'created' | 'updated'>) {
+  constructor(product: Omit<ITopic, 'id' | 'created' | 'updated'>) {
     this.id = uuid4();
-    this.accountId = product.accountId;
+    this.accountEmail = product.accountEmail;
     this.description = product.description;
     this.status = TOPIC_STATUS.OPEN;
     this.milestones = [];
     this.created = Date.now();
     this.updated = Date.now();
+  }
+}
+
+export interface IGarbageTruckRecord {
+  id: number;
+  accountEmail: string;
+  created: number;
+}
+
+export class GarbageTruckRecord implements IGarbageTruckRecord {
+  id: number;
+  accountEmail: string;
+  created: number;
+
+  constructor(record: Omit<IGarbageTruckRecord, 'id' | 'created'>) {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    this.id = date.getTime();
+    this.accountEmail = record.accountEmail;
+    this.created = Date.now();
   }
 }

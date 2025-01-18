@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { LOADING_TYPE } from '@bizy/directives';
 import {
@@ -8,10 +8,12 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
+import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { IEcommerceProduct, ITopic } from '@core/model';
 import {
   EcommerceService,
+  GarbageTruckService,
   NeighborsService,
   SecurityService,
   UsersService,
@@ -31,6 +33,19 @@ interface IGroup {
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
+  readonly #neighborsService = inject(NeighborsService);
+  readonly #securityService = inject(SecurityService);
+  readonly #ecommerceService = inject(EcommerceService);
+  readonly #garbageTruckService = inject(GarbageTruckService);
+  readonly #auth = inject(AuthService);
+  readonly #utils = inject(UtilsService);
+  readonly #popup = inject(BizyPopupService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #router = inject(BizyRouterService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #usersService = inject(UsersService);
+
   loading = false;
   showInfo = false;
   securityFee: number | null = null;
@@ -45,35 +60,24 @@ export class DashboardComponent implements OnInit {
   isSecurity: boolean = false;
   products: Array<IEcommerceProduct> = [];
   topics: Array<ITopic> = [];
+  isNeighbor: boolean = false;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly LOADING_TYPE = LOADING_TYPE;
-
-  constructor(
-    @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(SecurityService) private security: SecurityService,
-    @Inject(EcommerceService) private ecommerce: EcommerceService,
-    @Inject(UtilsService) private utils: UtilsService,
-    @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(UsersService) private usersService: UsersService
-  ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
 
       const [isConfig, isNeighbor, isSecurity, products] = await Promise.all([
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor(),
-        this.usersService.isSecurity(),
-        this.ecommerce.getProducts()
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor(),
+        this.#usersService.isSecurity(),
+        this.#ecommerceService.getProducts()
       ]);
 
       this.isSecurity = isSecurity;
+      this.isNeighbor = isNeighbor;
       this.products = products;
 
       this.showInfo = isNeighbor || isSecurity || isConfig;
@@ -90,8 +94,8 @@ export class DashboardComponent implements OnInit {
       this.members = 0;
       this.membershipFee = 0;
       const [neighbors, security] = await Promise.all([
-        this.neighborsService.getNeighbors(),
-        this.security.getSecurity()
+        this.#neighborsService.getNeighbors(),
+        this.#securityService.getSecurity()
       ]);
 
       neighbors.forEach(_neighbor => {
@@ -123,29 +127,69 @@ export class DashboardComponent implements OnInit {
           }
         });
 
-        this.membershipFee = this.utils.roundNumber(security.fee / this.members) ?? 0;
+        this.membershipFee = this.#utils.roundNumber(security.fee / this.members) ?? 0;
         this.groups = this.groups.map(_group => {
-          return { ..._group, fee: this.utils.roundNumber(this.membershipFee * _group.lots.size) };
+          return { ..._group, fee: this.#utils.roundNumber(this.membershipFee * _group.lots.size) };
         });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'dashboard.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
   }
 
+  showGarbageTruckPopup() {
+    if (this.loading || !this.isNeighbor) {
+      return;
+    }
+
+    this.#popup.open<boolean>(
+      {
+        component: PopupComponent,
+        data: {
+          title: this.#translate.get('DASHBOARD.GARBAGE_TRUCK_POPUP.TITLE'),
+          msg: this.#translate.get('DASHBOARD.GARBAGE_TRUCK_POPUP.MSG')
+        }
+      },
+      async res => {
+        try {
+          if (res) {
+            this.loading = true;
+            const email = await this.#auth.getEmail();
+            if (!email) {
+              return;
+            }
+
+            await this.#garbageTruckService.postRecord({ accountEmail: email });
+
+            this.#toast.success();
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'dashboard.component',
+            functionName: 'showGarbageTruckPopup',
+            param: error
+          });
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
+  }
+
   goToSecurity() {
-    this.router.goTo({ path: PATH.SECURITY });
+    this.#router.goTo({ path: PATH.SECURITY });
   }
 
   goToEcommerce() {
-    this.router.goTo({ path: PATH.ECOMMERCE });
+    this.#router.goTo({ path: PATH.ECOMMERCE });
   }
 
   setGroupDebt(group: IGroup, event: PointerEvent) {
@@ -154,29 +198,29 @@ export class DashboardComponent implements OnInit {
     }
 
     event.stopPropagation();
-    this.popup.open<boolean>(
+    this.#popup.open<boolean>(
       {
         component: PopupComponent,
         data: {
-          title: `${this.translate.get('DASHBOARD.SECURITY.GROUP_DEBT_POPUP.TITLE')} ${group.value}`,
-          msg: this.translate.get('DASHBOARD.SECURITY.GROUP_DEBT_POPUP.MSG')
+          title: `${this.#translate.get('DASHBOARD.SECURITY.GROUP_DEBT_POPUP.TITLE')} ${group.value}`,
+          msg: this.#translate.get('DASHBOARD.SECURITY.GROUP_DEBT_POPUP.MSG')
         }
       },
       async res => {
         try {
           if (res) {
             this.loading = true;
-            await this.security.postGroupInvoice(group.value);
+            await this.#securityService.postGroupInvoice(group.value);
             group.debt = false;
             this.groups = [...this.groups];
           }
         } catch (error) {
-          this.log.error({
+          this.#log.error({
             fileName: 'dashboard.component',
             functionName: 'setGroupDebt',
             param: error
           });
-          this.toast.danger();
+          this.#toast.danger();
         } finally {
           this.loading = false;
         }
