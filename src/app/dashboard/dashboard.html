@@ -72,6 +72,21 @@
     
         </bizy-card>
 
+        <bizy-card (onSelect)="goToEcommerce()" *ngIf="showInfo && false">
+    
+            <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-cart-shopping"></i></h4>
+    
+            <h4 slot="header-start">{{'DASHBOARD.TOPICS.TITLE' | translate}}</h4>
+    
+            <h6 slot="footer-start">{{topics.length}} {{'DASHBOARD.TOPICS.OPEN_TOPICS' | translate}}</h6>
+    
+            <bizy-button slot="footer-end" class="tero-action tero-action--info tero-no-padding" (onSelect)="goToEcommerce()">
+                <h6><i class="fa-solid fa-plus"></i></h6>
+                <h6>{{'CORE.MORE_INFO' | translate}}</h6>
+            </bizy-button>
+    
+        </bizy-card>
+
     </ng-container>
 
 </div>

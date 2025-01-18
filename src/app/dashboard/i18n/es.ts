@@ -18,6 +18,10 @@ export const locale = {
       ECOMMERCE: {
         TITLE: 'Tienda Tero',
         PRODUCTS_FOR_SALE: 'productos a la venta'
+      },
+      TOPICS: {
+        TITLE: 'Temario',
+        OPEN_TOPICS: 'temas en curso'
       }
     }
   }

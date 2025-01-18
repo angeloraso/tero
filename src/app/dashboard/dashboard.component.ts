@@ -9,7 +9,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { LOGO_PATH } from '@core/constants';
-import { IEcommerceProduct } from '@core/model';
+import { IEcommerceProduct, ITopic } from '@core/model';
 import {
   EcommerceService,
   NeighborsService,
@@ -44,6 +44,7 @@ export class DashboardComponent implements OnInit {
   membershipFee = 0;
   isSecurity: boolean = false;
   products: Array<IEcommerceProduct> = [];
+  topics: Array<ITopic> = [];
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly LOADING_TYPE = LOADING_TYPE;

@@ -201,3 +201,45 @@ export class EcommerceProduct implements IEcommerceProduct {
     this.updated = Date.now();
   }
 }
+
+export enum TOPIC_STATUS {
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
+  FREEZED = 'FREEZED'
+}
+
+export interface ITopicMilestone {
+  id: string;
+  created: number;
+  updated: number;
+}
+
+export interface ITopic {
+  id: string;
+  accountId: string;
+  description: string;
+  status: TOPIC_STATUS;
+  milestones: Array<ITopicMilestone>;
+  created: number;
+  updated: number;
+}
+
+export class Topic implements ITopic {
+  id: string;
+  accountId: string;
+  description: string;
+  status: TOPIC_STATUS;
+  milestones: Array<ITopicMilestone>;
+  created: number;
+  updated: number;
+
+  constructor(product: Omit<IEcommerceProduct, 'id' | 'created' | 'updated'>) {
+    this.id = uuid4();
+    this.accountId = product.accountId;
+    this.description = product.description;
+    this.status = TOPIC_STATUS.OPEN;
+    this.milestones = [];
+    this.created = Date.now();
+    this.updated = Date.now();
+  }
+}
