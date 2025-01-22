@@ -827,7 +827,7 @@ export class DatabaseService implements OnDestroy {
           _garbageTruckRecord => _garbageTruckRecord.id === garbageTruckRecord.id
         );
         if (index !== -1) {
-          garbageTruckRecords[index] = garbageTruckRecord;
+          throw new Error(ERROR.ITEM_ALREADY_EXISTS);
         } else {
           garbageTruckRecords.push(garbageTruckRecord);
         }

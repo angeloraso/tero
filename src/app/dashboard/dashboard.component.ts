@@ -10,10 +10,11 @@ import {
 } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
-import { IEcommerceProduct, ITopic } from '@core/model';
+import { ERROR, IEcommerceProduct, ITopic } from '@core/model';
 import {
   EcommerceService,
   GarbageTruckService,
+  MobileService,
   NeighborsService,
   SecurityService,
   UsersService,
@@ -44,6 +45,7 @@ export class DashboardComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
+  readonly #mobile = inject(MobileService);
   readonly #usersService = inject(UsersService);
 
   loading = false;
@@ -168,14 +170,22 @@ export class DashboardComponent implements OnInit {
 
             await this.#garbageTruckService.postRecord({ accountEmail: email });
 
+            await this.#mobile.sendGarbageNotification();
+
             this.#toast.success();
           }
-        } catch (error) {
+        } catch (error: any) {
           this.#log.error({
             fileName: 'dashboard.component',
             functionName: 'showGarbageTruckPopup',
             param: error
           });
+
+          if (error.message === ERROR.ITEM_ALREADY_EXISTS) {
+            this.#toast.info('Gracias por avisar!');
+            return;
+          }
+
           this.#toast.danger();
         } finally {
           this.loading = false;

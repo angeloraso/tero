@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { FileOpener } from '@capacitor-community/file-opener';
+import { FirebaseFunctions } from '@capacitor-firebase/functions';
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
 import { App } from '@capacitor/app';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
@@ -14,15 +16,22 @@ export enum FILE_TYPE {
   IMAGE,
   CSV
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class MobileService {
-  private _backButton = new Subject<void>();
+  readonly #backButton = new Subject<void>();
+
+  #MESSAGING_TOKEN: string | null = null;
+
+  readonly #GARBAGE_NOTIFICATION = {
+    TOPIC: 'garbage',
+    TITLE: 'Camión de basura!',
+    BODY: 'Esta pasando el camión de basura!'
+  };
 
   get backButton$(): Observable<void> {
-    return this._backButton.asObservable();
+    return this.#backButton.asObservable();
   }
 
   constructor(@Inject(CallNumber) private callNumber: CallNumber) {}
@@ -39,12 +48,14 @@ export class MobileService {
         }
 
         App.addListener('backButton', () => {
-          this._backButton.next();
+          this.#backButton.next();
         });
 
         await StatusBar.setBackgroundColor({ color: '#666666' });
-        resolve();
-      } catch {
+        await this.#initializeFirebaseMessaging();
+      } catch (error) {
+        console.error('mobile.service: Error al iniciar:', error);
+      } finally {
         resolve();
       }
     });
@@ -96,7 +107,53 @@ export class MobileService {
     });
   }
 
-  exit(): Promise<void> {
-    return App.exitApp();
+  sendGarbageNotification() {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!this.#MESSAGING_TOKEN) {
+          await this.#initializeFirebaseMessaging();
+        }
+
+        await FirebaseFunctions.callByName({
+          name: 'sendPushNotification',
+          data: {
+            title: this.#GARBAGE_NOTIFICATION.TITLE,
+            body: this.#GARBAGE_NOTIFICATION.BODY
+          }
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  #initializeFirebaseMessaging = async () => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        let permStatus = await FirebaseMessaging.checkPermissions();
+
+        if (permStatus.receive === 'prompt') {
+          permStatus = await FirebaseMessaging.requestPermissions();
+        }
+
+        if (permStatus.receive !== 'granted') {
+          throw new Error('Push notifications permissions rejected');
+        }
+
+        const event = await FirebaseMessaging.getToken();
+        this.#MESSAGING_TOKEN = event.token;
+
+        await FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC });
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  exit() {
+    return Promise.all([App.exitApp()]);
   }
 }
