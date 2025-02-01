@@ -11,7 +11,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
-import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
+import { WHATSAPP_URL } from '@core/constants';
 import { IEcommerceProduct } from '@core/model';
 import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -41,7 +41,6 @@ export class EcommerceComponent implements OnInit {
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
 
-  readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
 
   constructor(
@@ -101,7 +100,7 @@ export class EcommerceComponent implements OnInit {
   }
 
   addEcommerceProduct() {
-    if (!this.isNeighbor) {
+    if (!this.isNeighbor && !this.isConfig) {
       return;
     }
 
@@ -111,7 +110,11 @@ export class EcommerceComponent implements OnInit {
   }
 
   selectEcommerceProduct(product: IEcommerceProduct) {
-    if (!product || !this.isNeighbor || product.accountId !== this.auth.getId()) {
+    if (
+      !product ||
+      (!this.isNeighbor && !this.isConfig) ||
+      product.accountId !== this.auth.getId()
+    ) {
       return;
     }
 

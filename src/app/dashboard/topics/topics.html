@@ -1,0 +1,105 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'TOPICS.TITLE' | translate}}</h1>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="addTopic()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <span class="tero-section">
+
+        <span class="tero-section__end">
+
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((topics | bizySearch: search : searchKeys | bizyFilter : 'status' : filterStates).length + '/' + topics.length) : topics.length">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
+
+            <bizy-input 
+                [disabled]="loading"
+                [(value)]="search"
+                (onChange)="checkFilters(!!search)"
+                [autofocus]="!isMobile">
+                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+            </bizy-input>
+
+            <bizy-button class="tero-button--success" [disabled]="loading" *ngIf="filterStates && filterStates.length > 0">
+    
+                <bizy-filter (onChange)="checkFilters($event)">
+                    <h6><i class="fa-solid fa-filter"></i></h6>
+                    
+                    <bizy-filter-section>
+                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.STATE' | translate }}</strong></h6>
+
+                        <bizy-filter-section-checkbox-option 
+                            *ngFor="let state of filterStates | bizyOrderBy : 'asc' : 'value'" 
+                            [selected]="state.selected"
+                            (onChange)="state.selected = $event; refresh()">
+                            <h6>{{state.value}}</h6>
+                        </bizy-filter-section-checkbox-option>
+                    </bizy-filter-section>
+
+                </bizy-filter>
+            </bizy-button>
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
+        </span>
+
+    </span>
+    
+    <bizy-grid *ngIf="!loading" class="animated fade-in">
+
+        <bizy-card 
+            (onSelect)="selectTopic(topic)"
+            *gridFor="let topic of topics 
+                                        | bizySearch: search : searchKeys
+                                        | bizyFilter : 'states' : filterStates
+                                        | bizyOrderBy: order : orderBy">
+
+            <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-bookmark"></i></h4>
+
+            <h4 slot="header-start" class="tero-title"><strong>{{topic.title}}</strong></h4>
+
+            <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+
+            <bizy-tag 
+                slot="footer-end" 
+                [type]="topic.status === TOPIC_STATE.STOPPED ? BIZY_TAG_TYPE.DEFAULT : topic.status === TOPIC_STATE.ACTIVE ? BIZY_TAG_TYPE.SUCCESS : topic.status === TOPIC_STATE.CLOSED ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.DEFAULT">
+                <h6>{{'CORE.TOPIC_STATE.' + topic.status | translate}}</h6>
+            </bizy-tag>
+
+        </bizy-card>
+
+    </bizy-grid>
+
+    <bizy-grid *ngIf="loading" class="animated fade-in">
+        <bizy-skeleton-card *gridFor="let i of topics.length > 0 ? topics : 30 | bizyRepeat"></bizy-skeleton-card>
+    </bizy-grid>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.INFO" 
+        class="animated fade-in tero-no-matches"
+        *ngIf="topics.length !== 0 && (topics 
+                                            | bizySearch: search : searchKeys
+                                            | bizyFilter : 'tags' : filterStates).length === 0">
+        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
+    </bizy-tag>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="!loading && topics.length === 0">
+        <h4>{{'TOPICS.EMPTY' | translate}}</h4>
+    </bizy-tag>
+
+</div>

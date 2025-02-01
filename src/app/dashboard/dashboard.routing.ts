@@ -6,7 +6,8 @@ import { DashboardComponent } from './dashboard.component';
 export enum PATH {
   EMPTY = '',
   SECURITY = 'security',
-  ECOMMERCE = 'ecommerce'
+  ECOMMERCE = 'ecommerce',
+  TOPICS = 'topics'
 }
 
 const routes: Routes = [
@@ -39,6 +40,27 @@ const routes: Routes = [
   {
     path: PATH.ECOMMERCE,
     loadChildren: () => import('@dashboard/ecommerce/ecommerce.module').then(m => m.EcommerceModule)
+  },
+  {
+    path: PATH.TOPICS,
+    loadChildren: () => import('@dashboard/topics/topics.module').then(m => m.TopicsModule),
+    canMatch: [
+      () => {
+        const router = inject(Router);
+        const usersService = inject(UsersService);
+        return Promise.all([usersService.isNeighbor(), usersService.isConfig()]).then(
+          ([isNeighbor, isConfig]) => {
+            if (!isNeighbor && !isConfig) {
+              router.navigateByUrl('/', { replaceUrl: true });
+              console.error('Role error: User has not config or neighbor role');
+              return false;
+            }
+
+            return true;
+          }
+        );
+      }
+    ]
   }
 ];
 

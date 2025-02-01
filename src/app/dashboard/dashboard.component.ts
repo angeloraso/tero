@@ -10,13 +10,14 @@ import {
 } from '@bizy/services';
 import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
-import { ERROR, IEcommerceProduct, ITopic } from '@core/model';
+import { ERROR, IEcommerceProduct, ITopic, TOPIC_STATE } from '@core/model';
 import {
   EcommerceService,
   GarbageTruckService,
   MobileService,
   NeighborsService,
   SecurityService,
+  TopicsService,
   UsersService,
   UtilsService
 } from '@core/services';
@@ -37,6 +38,7 @@ export class DashboardComponent implements OnInit {
   readonly #neighborsService = inject(NeighborsService);
   readonly #securityService = inject(SecurityService);
   readonly #ecommerceService = inject(EcommerceService);
+  readonly #topicsService = inject(TopicsService);
   readonly #garbageTruckService = inject(GarbageTruckService);
   readonly #auth = inject(AuthService);
   readonly #utils = inject(UtilsService);
@@ -71,16 +73,18 @@ export class DashboardComponent implements OnInit {
     try {
       this.loading = true;
 
-      const [isConfig, isNeighbor, isSecurity, products] = await Promise.all([
+      const [isConfig, isNeighbor, isSecurity, products, topics] = await Promise.all([
         this.#usersService.isConfig(),
         this.#usersService.isNeighbor(),
         this.#usersService.isSecurity(),
-        this.#ecommerceService.getProducts()
+        this.#ecommerceService.getProducts(),
+        this.#topicsService.getTopics()
       ]);
 
       this.isSecurity = isSecurity;
       this.isNeighbor = isNeighbor;
       this.products = products;
+      this.topics = topics.filter(_topic => _topic.status !== TOPIC_STATE.CLOSED);
 
       this.showInfo = isNeighbor || isSecurity || isConfig;
       if (!this.showInfo) {
@@ -172,7 +176,7 @@ export class DashboardComponent implements OnInit {
 
             await this.#mobile.sendGarbageNotification();
 
-            this.#toast.success();
+            this.#toast.success(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
           }
         } catch (error: any) {
           this.#log.error({
@@ -182,7 +186,7 @@ export class DashboardComponent implements OnInit {
           });
 
           if (error.message === ERROR.ITEM_ALREADY_EXISTS) {
-            this.#toast.info('Gracias por avisar!');
+            this.#toast.info(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
             return;
           }
 
@@ -195,11 +199,27 @@ export class DashboardComponent implements OnInit {
   }
 
   goToSecurity() {
+    if (this.loading) {
+      return;
+    }
+
     this.#router.goTo({ path: PATH.SECURITY });
   }
 
   goToEcommerce() {
+    if (this.loading) {
+      return;
+    }
+
     this.#router.goTo({ path: PATH.ECOMMERCE });
+  }
+
+  goToTopics() {
+    if (this.loading) {
+      return;
+    }
+
+    this.#router.goTo({ path: PATH.TOPICS });
   }
 
   setGroupDebt(group: IGroup, event: PointerEvent) {

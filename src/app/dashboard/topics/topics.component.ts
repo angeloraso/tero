@@ -1,0 +1,142 @@
+import { Component, inject, OnInit } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
+import { BIZY_TAG_TYPE } from '@bizy/components';
+import {
+  BizyLogService,
+  BizyRouterService,
+  BizyToastService,
+  BizyTranslateService
+} from '@bizy/services';
+import { AuthService } from '@core/auth/auth.service';
+import { ITopic, TOPIC_STATE } from '@core/model';
+import { MobileService, TopicsService, UsersService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as TOPICS_PATH } from '@dashboard/topics/topics.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
+
+interface IExtendedTopic extends ITopic {
+  _status: string;
+}
+
+@Component({
+  selector: 'tero-topics',
+  templateUrl: './topics.html',
+  styleUrls: ['./topics.css']
+})
+export class TopicsComponent implements OnInit {
+  readonly #router = inject(BizyRouterService);
+  readonly #topicsService = inject(TopicsService);
+  readonly #auth = inject(AuthService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #mobile = inject(MobileService);
+  readonly #usersService = inject(UsersService);
+
+  loading = false;
+  csvLoading = false;
+  isNeighbor = false;
+  isConfig = false;
+  topics: Array<IExtendedTopic> = [];
+  search: string | number = '';
+  searchKeys = ['title', 'description', '_status'];
+  order: 'asc' | 'desc' = 'asc';
+  orderBy = 'title';
+  isMobile: boolean = this.#mobile.isMobile();
+  filterStates: Array<{ id: string; value: string; selected: boolean }> = [];
+  activatedFilters: number = 0;
+
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly TOPIC_STATE = TOPIC_STATE;
+
+  async ngOnInit() {
+    try {
+      this.loading = true;
+      const [topics, isConfig, isNeighbor] = await Promise.all([
+        this.#topicsService.getTopics(),
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor()
+      ]);
+
+      this.isConfig = isConfig;
+      this.isNeighbor = isNeighbor;
+
+      const states: Set<TOPIC_STATE> = new Set();
+
+      this.topics = topics.map(_topic => {
+        states.add(_topic.status);
+
+        return {
+          ..._topic,
+          _status: this.#translate.get(`CORE.TOPIC_STATE.${_topic.status}`)
+        };
+      });
+
+      this.filterStates = Array.from(states).map(_state => {
+        return {
+          id: _state,
+          value: `CORE.TOPIC_STATE.${_state}`,
+          selected: _state !== TOPIC_STATE.CLOSED
+        };
+      });
+    } catch (error) {
+      this.#log.error({
+        fileName: 'topics.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
+      this.#toast.danger();
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  addTopic() {
+    if (!this.isNeighbor && !this.isConfig) {
+      return;
+    }
+
+    this.#router.goTo({
+      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}/${TOPICS_PATH.ADD}`
+    });
+  }
+
+  selectTopic(topic: IExtendedTopic) {
+    if (
+      !topic ||
+      (!this.isNeighbor && !this.isConfig) ||
+      topic.accountEmail !== this.#auth.getEmail()
+    ) {
+      return;
+    }
+
+    this.#router.goTo({
+      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}/${topic.id}`
+    });
+  }
+
+  checkFilters(activated: boolean) {
+    if (activated) {
+      this.activatedFilters++;
+    } else if (this.activatedFilters > 0) {
+      this.activatedFilters--;
+    }
+  }
+
+  onRemoveFilters() {
+    this.search = '';
+    this.filterStates.forEach(_state => {
+      _state.selected = true;
+    });
+    this.activatedFilters = 0;
+    this.refresh();
+  }
+
+  refresh() {
+    this.topics = [...this.topics];
+  }
+
+  goBack() {
+    this.#router.goBack();
+  }
+}

@@ -203,10 +203,10 @@ export class EcommerceProduct implements IEcommerceProduct {
   }
 }
 
-export enum TOPIC_STATUS {
-  OPEN = 'OPEN',
+export enum TOPIC_STATE {
+  ACTIVE = 'ACTIVE',
   CLOSED = 'CLOSED',
-  FREEZED = 'FREEZED'
+  STOPPED = 'STOPPED'
 }
 
 export interface ITopicMilestone {
@@ -218,8 +218,9 @@ export interface ITopicMilestone {
 export interface ITopic {
   id: string;
   accountEmail: string;
+  title: string;
   description: string;
-  status: TOPIC_STATUS;
+  status: TOPIC_STATE;
   milestones: Array<ITopicMilestone>;
   created: number;
   updated: number;
@@ -228,17 +229,19 @@ export interface ITopic {
 export class Topic implements ITopic {
   id: string;
   accountEmail: string;
+  title: string;
   description: string;
-  status: TOPIC_STATUS;
+  status: TOPIC_STATE;
   milestones: Array<ITopicMilestone>;
   created: number;
   updated: number;
 
-  constructor(product: Omit<ITopic, 'id' | 'created' | 'updated'>) {
+  constructor(topic: Omit<ITopic, 'id' | 'milestones' | 'created' | 'updated'>) {
     this.id = uuid4();
-    this.accountEmail = product.accountEmail;
-    this.description = product.description;
-    this.status = TOPIC_STATUS.OPEN;
+    this.accountEmail = topic.accountEmail;
+    this.title = topic.title;
+    this.description = topic.description;
+    this.status = topic.status;
     this.milestones = [];
     this.created = Date.now();
     this.updated = Date.now();

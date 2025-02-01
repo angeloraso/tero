@@ -115,8 +115,7 @@ export class AuthService {
   }
 
   async getProfilePicture(): Promise<string | null> {
-    const image = await this.#getProfileImage();
-    return image;
+    return this.#getProfileImage();
   }
 
   signOut() {

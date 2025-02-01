@@ -9,6 +9,7 @@ export const locale = {
         TITLE: 'Camión de basura!',
         MSG: 'Avisar a los vecinos de Tero que el camión de basura esta pasando!'
       },
+      GARBAGE_TRUCK_MSG: 'Gracias por avisar!',
       SECURITY: {
         TITLE: 'Seguridad',
         SECURITY_FEE: 'Costo total del servicio',

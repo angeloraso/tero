@@ -10,6 +10,7 @@ import {
   ISecurity,
   ISecurityInvoice,
   ISecurityNeighborInvoice,
+  ITopic,
   IUser,
   USER_STATE
 } from '@core/model';
@@ -22,6 +23,7 @@ enum COLLECTION {
 
 enum CORE_DOCUMENT {
   NEIGHBORS = 'neighbors',
+  TOPICS = 'topics',
   CONTACTS = 'contacts',
   SECURITY = 'security',
   ECOMMERCE = 'ecommerce',
@@ -53,6 +55,7 @@ export class DatabaseService implements OnDestroy {
   #ecommerceData = new BehaviorSubject<
     { data: Array<IEcommerceProduct>; tags: Array<string> } | undefined
   >(undefined);
+  #topics = new BehaviorSubject<Array<ITopic> | undefined>(undefined);
 
   constructor(@Inject(AuthService) private auth: AuthService) {}
 
@@ -847,6 +850,125 @@ export class DatabaseService implements OnDestroy {
     });
   }
 
+  getTopics() {
+    return new Promise<Array<ITopic>>(async (resolve, reject) => {
+      try {
+        if (typeof this.#topics.value !== 'undefined') {
+          resolve(this.#topics.value);
+          return;
+        }
+
+        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<ITopic> }>(
+          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}` },
+          (event, error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              const topics = event && event.snapshot.data ? event.snapshot.data.data : [];
+              this.#topics.next(topics);
+              resolve(topics);
+            }
+          }
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getTopic(id: string) {
+    return new Promise<ITopic>(async (resolve, reject) => {
+      try {
+        if (typeof this.#topics.value !== 'undefined') {
+          const topic = this.#topics.value.find(_topic => _topic.id === id);
+          if (!topic) {
+            reject(new Error(ERROR.ITEM_NOT_FOUND));
+            return;
+          }
+
+          resolve(topic);
+          return;
+        }
+
+        const topics = await this.getTopics();
+        const topic = topics.find(_topic => _topic.id === id);
+        if (!topic) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        resolve(topic);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postTopic(topic: ITopic): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const topics = await this.getTopics();
+        const index = topics.findIndex(_topic => _topic.id === topic.id);
+        if (index !== -1) {
+          topics[index] = topic;
+        } else {
+          topics.push(topic);
+        }
+
+        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+          data: topicsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  putTopic(topic: ITopic): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const topics = await this.getTopics();
+        const index = topics.findIndex(_topic => _topic.id === topic.id);
+        if (index !== -1) {
+          topics[index] = topic;
+
+          const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+          await FirebaseFirestore.setDocument({
+            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+            data: topicsDocument
+          });
+        }
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  deleteTopic(id: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        let topics = await this.getTopics();
+        topics = topics.filter(_topic => _topic.id !== id);
+
+        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+          data: topicsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   destroy = () => {
     this.#neighbors.next(undefined);
     this.#contactData.next(undefined);
@@ -854,6 +976,7 @@ export class DatabaseService implements OnDestroy {
     this.#security.next(undefined);
     this.#users.next(undefined);
     this.#garbageTruckRecords.next(undefined);
+    this.#topics.next(undefined);
     this.#currentUser.next(undefined);
     return FirebaseFirestore.removeAllListeners();
   };

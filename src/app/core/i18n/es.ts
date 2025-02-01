@@ -47,7 +47,8 @@ export const locale = {
           PRICE: 'Precio',
           STATE: 'Estado',
           ROLE: 'Rol',
-          TRANSACTION_ID: 'Identificador de pago (recomendado)'
+          TRANSACTION_ID: 'Identificador de pago (recomendado)',
+          TITLE: 'Título'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',
@@ -78,6 +79,11 @@ export const locale = {
         SECURITY_GROUP_4: 'Admin de Grupo 4',
         SECURITY_GROUP_5: 'Admin de Grupo 5',
         SECURITY_GROUP_6: 'Admin de Grupo 6'
+      },
+      TOPIC_STATE: {
+        ACTIVE: 'Activo',
+        STOPPED: 'En pausa',
+        CLOSED: 'Cerrado'
       }
     }
   }

@@ -6,5 +6,6 @@ export { MobileService } from './mobile.service';
 export { NeighborsService } from './neighbors.service';
 export { SecurityService } from './security.service';
 export { ServiceWorkerService } from './service-worker.service';
+export { TopicsService } from './topics.service';
 export { UsersService } from './users.service';
 export { UtilsService } from './utils.service';
