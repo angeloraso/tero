@@ -5,11 +5,11 @@ vars:
     default: ar.com.tero
   VERSION_NAME:
   VERSION_CODE:
-    default: 28
+    default: 29
   MIN_SDK:
     default: '= 29'
   SDK:
-    default: '= 33'
+    default: '= 35'
 
 platforms:
   android:
