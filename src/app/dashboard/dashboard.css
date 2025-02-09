@@ -17,6 +17,10 @@
     color: var(--primary-color);
 }
 
+.dashboard__security--no-debt {
+    --bizy-card-background-color: var(--bizy-light-success-color);
+}
+
 .dashboard__security__content {
     width: 100%;
     display: flex;

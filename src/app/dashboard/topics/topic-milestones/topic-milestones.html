@@ -1,0 +1,94 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"  [disabled]="loading"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'TOPICS.TOPIC_MILESTONES.TITLE' | translate}}</h1>
+
+    <span slot=start [bizyLoading]="loading"></span>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="topic && topic._editEnabled" (onSelect)="openMilestonePopup()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper topic-milestones">
+
+    <bizy-skeleton-card *ngIf="loading" class="animated fade-in"></bizy-skeleton-card>
+
+    <bizy-card *ngIf="!loading && topic" class="animated fade-in">
+
+        <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-bookmark"></i></h4>
+
+        <h4 slot="header-start" class="tero-title"><strong>{{topic.title}}</strong></h4>
+
+        <span class="topics__card__content">
+
+            <ng-container *ngFor="let name of topic._names; let i = index">
+                <bizy-tag *ngIf="i < 2"><h6>{{name}}</h6></bizy-tag>
+            </ng-container>
+
+            <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+
+        </span>
+
+        <bizy-tag 
+            slot="footer-end" 
+            [type]="topic.status === TOPIC_STATE.STOPPED ? BIZY_TAG_TYPE.DEFAULT : topic.status === TOPIC_STATE.ACTIVE ? BIZY_TAG_TYPE.SUCCESS : topic.status === TOPIC_STATE.CLOSED ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.DEFAULT">
+            <h6>{{'CORE.TOPIC_STATE.' + topic.status | translate}}</h6>
+        </bizy-tag>
+
+    </bizy-card>
+
+    <span *ngIf="topic" class="topic-milestones__milestones">
+        
+        <ng-container *ngIf="!loading">
+
+            <ng-container *ngFor="let milestone of topic.milestones | bizyOrderBy : 'desc' : 'created'; let i = index; let first = first; let last = last;">
+        
+                <span class="topic-milestones__milestones__milestone__line"></span>
+        
+                <span class="topic-milestones__milestones__milestone">
+    
+                    <span class="topic-milestones__milestones__milestone__circle">
+                        <h6 class="topic-milestones__milestones__milestone__circle__index animated fade-in"><strong>{{topic.milestones.length - i}}</strong></h6>
+                    </span>
+        
+                    <bizy-card class="animated fade-in">
+    
+                        <h6 slot="header-start" class="tero-title"><strong>{{milestone.created | date: 'yyyy/MM/dd HH:mm' }}</strong></h6>
+    
+                        <bizy-button 
+                            slot="header-end"
+                            *ngIf="topic._editEnabled"
+                            [disabled]="loading"
+                            class="tero-action tero-action--warning"
+                            (onSelect)="openMilestonePopup(milestone); $event.stopPropagation()">
+                            <h6><i class="fa-solid fa-pencil-alt"></i></h6>
+                        </bizy-button>
+                
+                        <bizy-button 
+                            slot="header-end"
+                            *ngIf="topic._editEnabled"
+                            [disabled]="loading"
+                            class="tero-action tero-action--danger"
+                            (onSelect)="deleteTopicMilestone(milestone); $event.stopPropagation()">
+                            <h6><i class="fa-solid fa-trash-alt"></i></h6>
+                        </bizy-button>
+    
+                        <h5>{{milestone.description}}</h5>
+                        
+                    </bizy-card>
+        
+                </span>
+        
+            </ng-container>
+
+        </ng-container>
+
+        <bizy-grid *ngIf="loading" class="animated fade-in">
+            <bizy-skeleton-card *gridFor="let i of topic.milestones.length > 0 ? topic.milestones : 30 | bizyRepeat"></bizy-skeleton-card>
+        </bizy-grid>
+
+    </span>
+
+
+</div>

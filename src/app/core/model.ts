@@ -211,13 +211,28 @@ export enum TOPIC_STATE {
 
 export interface ITopicMilestone {
   id: string;
+  description: string;
   created: number;
   updated: number;
 }
 
+export class TopicMilestone implements ITopicMilestone {
+  id: string;
+  description: string;
+  created: number;
+  updated: number;
+
+  constructor(milestone: Omit<ITopicMilestone, 'id' | 'created' | 'updated'>) {
+    this.id = uuid4();
+    this.description = milestone.description;
+    this.created = Date.now();
+    this.updated = Date.now();
+  }
+}
+
 export interface ITopic {
   id: string;
-  accountEmail: string;
+  accountEmails: Array<string>;
   title: string;
   description: string;
   status: TOPIC_STATE;
@@ -228,7 +243,7 @@ export interface ITopic {
 
 export class Topic implements ITopic {
   id: string;
-  accountEmail: string;
+  accountEmails: Array<string>;
   title: string;
   description: string;
   status: TOPIC_STATE;
@@ -238,7 +253,7 @@ export class Topic implements ITopic {
 
   constructor(topic: Omit<ITopic, 'id' | 'milestones' | 'created' | 'updated'>) {
     this.id = uuid4();
-    this.accountEmail = topic.accountEmail;
+    this.accountEmails = topic.accountEmails;
     this.title = topic.title;
     this.description = topic.description;
     this.status = topic.status;

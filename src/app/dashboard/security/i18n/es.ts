@@ -7,7 +7,7 @@ export const locale = {
       TITLE: 'Seguridad',
       INFO: {
         TITLE: 'Información',
-        SECURITY_FEE: 'Costo total del servicio',
+        SECURITY_FEE: 'Costo del servicio',
         MEMBERS: 'Vecinos integrantes',
         MEMBERSHIP_FEE: 'Valor de cuota'
       },

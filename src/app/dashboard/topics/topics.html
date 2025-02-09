@@ -60,17 +60,49 @@
     <bizy-grid *ngIf="!loading" class="animated fade-in">
 
         <bizy-card 
-            (onSelect)="selectTopic(topic)"
+            (onSelect)="goToTopicMilestones(topic)"
             *gridFor="let topic of topics 
-                                        | bizySearch: search : searchKeys
-                                        | bizyFilter : 'states' : filterStates
-                                        | bizyOrderBy: order : orderBy">
+                                    | bizySearch: search : searchKeys
+                                    | bizyFilter : 'status' : filterStates
+                                    | bizyOrderBy: order : orderBy">
 
             <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-bookmark"></i></h4>
 
             <h4 slot="header-start" class="tero-title"><strong>{{topic.title}}</strong></h4>
 
-            <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+            <bizy-button 
+                slot="header-end"
+                *ngIf="topic._editEnabled"
+                class="tero-action tero-action--warning"
+                (onSelect)="editTopic(topic); $event.stopPropagation()">
+                <h4><i class="fa-solid fa-pencil-alt"></i></h4>
+            </bizy-button>
+
+            <span class="topics__card__content">
+
+                <span class="topics__card__names">
+                    <ng-container *ngFor="let name of topic._names; let i = index">
+                        <bizy-tag *ngIf="i < 2"><h6>{{name}}</h6></bizy-tag>
+                    </ng-container>
+                </span>
+    
+                <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+
+            </span>
+
+            <bizy-tag 
+                slot="footer-start" 
+                *ngIf="topic.milestones.length === 0"
+                [type]="BIZY_TAG_TYPE.DEFAULT">
+                <h6>{{'TOPICS.NO_MILESTONES' | translate}}</h6>
+            </bizy-tag>
+
+            <bizy-tag 
+                slot="footer-start" 
+                *ngIf="topic.milestones.length > 0"
+                [type]="BIZY_TAG_TYPE.INFO">
+                <h6>{{'TOPICS.MILESTONES' | translate}}: {{topic.milestones.length}}</h6>
+            </bizy-tag>
 
             <bizy-tag 
                 slot="footer-end" 
@@ -90,8 +122,8 @@
         [type]="BIZY_TAG_TYPE.INFO" 
         class="animated fade-in tero-no-matches"
         *ngIf="topics.length !== 0 && (topics 
-                                            | bizySearch: search : searchKeys
-                                            | bizyFilter : 'tags' : filterStates).length === 0">
+                                        | bizySearch: search : searchKeys
+                                        | bizyFilter : 'status' : filterStates).length === 0">
         <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
     </bizy-tag>
 

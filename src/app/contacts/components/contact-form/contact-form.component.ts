@@ -1,22 +1,22 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  Output
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    Inject,
+    Input,
+    Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyPopupService } from '@bizy/services';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
-import { AuthService } from '@core/auth/auth.service';
 import {
-  DEFAULT_USER_PICTURE,
-  LONG_TEXT_MAX_LENGTH,
-  NAME_MAX_LENGTH,
-  NAME_MIN_LENGTH
+    DEFAULT_USER_PICTURE,
+    LONG_TEXT_MAX_LENGTH,
+    NAME_MAX_LENGTH,
+    NAME_MIN_LENGTH
 } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { MobileService } from '@core/services';

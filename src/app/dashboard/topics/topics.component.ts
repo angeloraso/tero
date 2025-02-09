@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
   BizyLogService,
@@ -7,7 +8,6 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { ITopic, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -16,6 +16,8 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 
 interface IExtendedTopic extends ITopic {
   _status: string;
+  _editEnabled: boolean;
+  _names: Array<string>;
 }
 
 @Component({
@@ -41,10 +43,11 @@ export class TopicsComponent implements OnInit {
   search: string | number = '';
   searchKeys = ['title', 'description', '_status'];
   order: 'asc' | 'desc' = 'asc';
-  orderBy = 'title';
+  orderBy = 'updated';
   isMobile: boolean = this.#mobile.isMobile();
   filterStates: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
+  accountEmail = this.#auth.getEmail();
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly TOPIC_STATE = TOPIC_STATE;
@@ -52,8 +55,9 @@ export class TopicsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-      const [topics, isConfig, isNeighbor] = await Promise.all([
+      const [topics, users, isConfig, isNeighbor] = await Promise.all([
         this.#topicsService.getTopics(),
+        this.#usersService.getUsers(),
         this.#usersService.isConfig(),
         this.#usersService.isNeighbor()
       ]);
@@ -66,8 +70,18 @@ export class TopicsComponent implements OnInit {
       this.topics = topics.map(_topic => {
         states.add(_topic.status);
 
+        const _names: Array<string> = [];
+        _topic.accountEmails.forEach(_email => {
+          const user = users.find(_user => _user.email === _email);
+          if (user) {
+            _names.push(user.name || user.email);
+          }
+        });
+
         return {
           ..._topic,
+          _names,
+          _editEnabled: _topic.accountEmails.includes(this.accountEmail!),
           _status: this.#translate.get(`CORE.TOPIC_STATE.${_topic.status}`)
         };
       });
@@ -75,7 +89,7 @@ export class TopicsComponent implements OnInit {
       this.filterStates = Array.from(states).map(_state => {
         return {
           id: _state,
-          value: `CORE.TOPIC_STATE.${_state}`,
+          value: this.#translate.get(`CORE.TOPIC_STATE.${_state}`),
           selected: _state !== TOPIC_STATE.CLOSED
         };
       });
@@ -101,12 +115,18 @@ export class TopicsComponent implements OnInit {
     });
   }
 
-  selectTopic(topic: IExtendedTopic) {
-    if (
-      !topic ||
-      (!this.isNeighbor && !this.isConfig) ||
-      topic.accountEmail !== this.#auth.getEmail()
-    ) {
+  goToTopicMilestones(topic: IExtendedTopic) {
+    if (!topic || (!this.isNeighbor && !this.isConfig)) {
+      return;
+    }
+
+    this.#router.goTo({
+      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}/${topic.id}/${TOPICS_PATH.MILESTONES}`
+    });
+  }
+
+  editTopic(topic: IExtendedTopic) {
+    if (!topic || (!this.isNeighbor && !this.isConfig) || !topic._editEnabled) {
       return;
     }
 

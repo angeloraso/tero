@@ -31,4 +31,6 @@
     --bizy-tab-border-right: none;
     --bizy-tab-border-left: none;
     --bizy-tab-border-bottom: none;
+
+    --bizy-grid-row-height: 5rem;
 }

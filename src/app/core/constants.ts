@@ -20,7 +20,7 @@ export const ROOT_PATHS = [
 
 export const LOGO_PATH = '/assets/favicons/favicon.ico';
 export const NAME_MIN_LENGTH = 2;
-export const NAME_MAX_LENGTH = 64;
+export const NAME_MAX_LENGTH = 128;
 export const LONG_TEXT_MAX_LENGTH = 256;
 export const AVAILABLE_SECURITY_GROUPS = [1, 2, 3, 4, 5, 6];
 export const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=549';

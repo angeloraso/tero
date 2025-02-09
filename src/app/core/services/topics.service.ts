@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ITopic, Topic } from '@core/model';
+import { ITopic, ITopicMilestone, Topic, TopicMilestone } from '@core/model';
 import { DatabaseService } from '@core/services';
 
 @Injectable({
@@ -30,7 +30,7 @@ export class TopicsService {
   putTopic(topic: ITopic): Promise<void> {
     return this.#database.putTopic({
       id: topic.id,
-      accountEmail: topic.accountEmail,
+      accountEmails: topic.accountEmails,
       title: topic.title,
       description: topic.description,
       status: topic.status,
@@ -42,5 +42,34 @@ export class TopicsService {
 
   deleteTopic(topic: ITopic): Promise<void> {
     return this.#database.deleteTopic(topic.id);
+  }
+
+  postTopicMilestone(data: {
+    topicId: string;
+    milestone: Omit<ITopicMilestone, 'id' | 'created' | 'updated'>;
+  }): Promise<void> {
+    return this.#database.postTopicMilestone({
+      topicId: data.topicId,
+      milestone: new TopicMilestone(data.milestone)
+    });
+  }
+
+  putTopicMilestone(data: { topicId: string; milestone: ITopicMilestone }): Promise<void> {
+    return this.#database.putTopicMilestone({
+      topicId: data.topicId,
+      milestone: {
+        id: data.milestone.id,
+        description: data.milestone.description,
+        created: Number(data.milestone.created) || Date.now(),
+        updated: Date.now()
+      }
+    });
+  }
+
+  deleteTopicMilestone(data: { topic: ITopic; milestone: ITopicMilestone }): Promise<void> {
+    return this.#database.deleteTopicMilestone({
+      topicId: data.topic.id,
+      milestoneId: data.milestone.id
+    });
   }
 }

@@ -12,9 +12,8 @@ export const locale = {
       GARBAGE_TRUCK_MSG: 'Gracias por avisar!',
       SECURITY: {
         TITLE: 'Seguridad',
-        SECURITY_FEE: 'Costo total del servicio',
+        SECURITY_FEE: 'Costo del servicio',
         MEMBERS: 'Vecinos integrantes',
-        MEMBERSHIP_FEE: 'Valor de cuota',
         GROUP_DEBT_POPUP: {
           TITLE: 'Registrar pago del grupo',
           MSG: 'El grupo dejará de mostrarse como deudor durante el resto del mes'

@@ -1,12 +1,12 @@
 import { Inject, NgModule } from '@angular/core';
 import { BizyTranslateService } from '@bizy/services';
 import { SharedModule } from '@shared/shared.module';
-import { TopicFormComponent } from './components';
+import { MilestonePopupComponent, TopicFormComponent } from './components';
 import { BizyEnumToArrayPipe } from './enumToArray.pipe';
 import { es } from './i18n';
 import { TopicsRoutingModule } from './topics.routing';
 
-const COMPONENTS: Array<any> = [TopicFormComponent];
+const COMPONENTS: Array<any> = [TopicFormComponent, MilestonePopupComponent];
 const PIPES: Array<any> = [BizyEnumToArrayPipe];
 @NgModule({
   imports: [SharedModule, TopicsRoutingModule],

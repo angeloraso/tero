@@ -1,40 +1,59 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
-import { TOPIC_STATE } from '@core/model';
-import { TopicsService } from '@core/services';
+import { IUser, TOPIC_STATE } from '@core/model';
+import { MobileService, TopicsService, UsersService } from '@core/services';
 
 @Component({
   selector: 'tero-add-topic',
   templateUrl: './add-topic.html',
   styleUrls: ['./add-topic.css']
 })
-export class AddTopicComponent {
+export class AddTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);
-  readonly #auth = inject(AuthService);
   readonly #router = inject(BizyRouterService);
   readonly #toast = inject(BizyToastService);
+  readonly #mobile = inject(MobileService);
   readonly #log = inject(BizyLogService);
+  readonly #usersService = inject(UsersService);
 
   loading: boolean = false;
+  users: Array<IUser> = [];
+
+  async ngOnInit() {
+    try {
+      this.loading = true;
+      this.users = await this.#usersService.getUsers();
+    } catch (error) {
+      this.#log.error({
+        fileName: 'add-topic.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
+      this.#toast.danger();
+    } finally {
+      this.loading = false;
+    }
+  }
 
   goBack() {
     this.#router.goBack();
   }
 
-  async save(topic: { title: string; description: string; status: TOPIC_STATE }) {
+  async save(topic: {
+    title: string;
+    description: string;
+    accountEmails: Array<string>;
+    status: TOPIC_STATE;
+  }) {
     try {
       if (!topic || this.loading) {
         return;
       }
 
       this.loading = true;
-      const accountEmail = await this.#auth.getEmail();
-      if (!accountEmail) {
-        throw new Error();
-      }
 
-      await this.#topicsService.postTopic({ ...topic, accountEmail });
+      await this.#topicsService.postTopic(topic);
+      await this.#mobile.sendNewTopicNotification(topic.title);
       this.goBack();
     } catch (error) {
       this.#log.error({

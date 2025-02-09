@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 

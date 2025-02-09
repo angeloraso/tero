@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
   BizyLogService,
@@ -12,7 +13,6 @@ import {
   UserLotPopupComponent,
   UserPhonePopupComponent
 } from '@config/components';
-import { AuthService } from '@core/auth/auth.service';
 import { DEFAULT_USER_PICTURE, LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';

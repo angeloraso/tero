@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
@@ -10,7 +11,6 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { WHATSAPP_URL } from '@core/constants';
 import { IEcommerceProduct } from '@core/model';
 import { EcommerceService, MobileService, UsersService } from '@core/services';

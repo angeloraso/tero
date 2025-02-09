@@ -16,13 +16,16 @@
 
     <ng-container *ngIf="!loading">
         
-        <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo">
+        <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo" [ngClass]="{'dashboard__security--no-debt': securityNoDebt}">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-shield-halved"></i></h4>
     
             <h4 slot="header-start">{{'DASHBOARD.SECURITY.TITLE' | translate}}</h4>
     
-            <bizy-tag slot="header-end"><h6 [bizyLoading]="loading">${{securityFee ? (securityFee | number : '1.0-0') : '0.00'}}</h6></bizy-tag>
+            <bizy-tag slot="header-end" [type]="securityNoDebt ? BIZY_TAG_TYPE.SUCCESS : BIZY_TAG_TYPE.WARNING">
+                <h5><i class="fa-solid fa-user"></i></h5>
+                <h4 [bizyLoading]="loading">${{membershipFee ? (membershipFee | number : '1.2-2') : '0.00'}}</h4>
+            </bizy-tag>
     
             <span class="dashboard__security__content">
     
@@ -36,9 +39,9 @@
     
                 <span class="dashboard__security__content__section">
     
-                    <h6>{{'DASHBOARD.SECURITY.MEMBERSHIP_FEE' | translate}}</h6>
+                    <h6>{{'DASHBOARD.SECURITY.SECURITY_FEE' | translate}}</h6>
     
-                    <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h6 [bizyLoading]="loading">${{membershipFee | number : '1.2-2'}}</h6></bizy-tag>
+                    <bizy-tag><h6 [bizyLoading]="loading">${{securityFee ? (securityFee | number : '1.2-2') : '0.00'}}</h6></bizy-tag>
     
                 </span>
     

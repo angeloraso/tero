@@ -4,5 +4,19 @@
     flex-direction: column;
 
     --bizy-card-cursor: pointer;
-    --bizy-grid-row-height: 10rem;
+    --bizy-grid-row-height: 12rem;
+}
+
+.topics__card__content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.topics__card__names {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+    flex-wrap: wrap;
 }

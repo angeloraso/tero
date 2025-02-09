@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { PATH } from '@app/app.routing';
-import { AuthService } from '@core/auth/auth.service';
+import { AuthService } from '@auth/auth.service';
 import { map, take } from 'rxjs/operators';
 
 export const autoSignInGuard = () => {

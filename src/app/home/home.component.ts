@@ -1,12 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { AuthService } from '@auth/auth.service';
 import {
   BizyLogService,
   BizyRouterService,
   BizyStorageService,
   BizyToastService
 } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import pkg from 'package.json';

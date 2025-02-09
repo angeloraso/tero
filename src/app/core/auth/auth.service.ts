@@ -68,6 +68,9 @@ export class AuthService {
           this.#USER = change ? change.user : null;
           const signedIn = Boolean(change.user);
           this.#signedIn.next(signedIn);
+          if (!signedIn) {
+            Preferences.clear();
+          }
         });
         resolve();
       } catch (error) {

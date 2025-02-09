@@ -30,6 +30,18 @@ export class MobileService {
     BODY: 'Esta pasando el camión de basura!'
   };
 
+  readonly #NEW_TOPIC_NOTIFICATION = {
+    TOPIC: 'newTopic',
+    TITLE: 'Agregaron un nuevo asunto!',
+    BODY: 'Crearon el asunto'
+  };
+
+  readonly #TOPIC_UPDATE_NOTIFICATION = {
+    TOPIC: 'topicUpdate',
+    TITLE: 'Actualizaron un asunto',
+    BODY: 'Hay avances en el asunto'
+  };
+
   get backButton$(): Observable<void> {
     return this.#backButton.asObservable();
   }
@@ -117,8 +129,53 @@ export class MobileService {
         await FirebaseFunctions.callByName({
           name: 'sendPushNotification',
           data: {
+            topic: this.#GARBAGE_NOTIFICATION.TOPIC,
             title: this.#GARBAGE_NOTIFICATION.TITLE,
             body: this.#GARBAGE_NOTIFICATION.BODY
+          }
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  sendNewTopicNotification(topicTitle: string) {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!this.#MESSAGING_TOKEN) {
+          await this.#initializeFirebaseMessaging();
+        }
+
+        await FirebaseFunctions.callByName({
+          name: 'sendPushNotification',
+          data: {
+            topic: this.#NEW_TOPIC_NOTIFICATION.TOPIC,
+            title: this.#NEW_TOPIC_NOTIFICATION.TITLE,
+            body: `${this.#NEW_TOPIC_NOTIFICATION.BODY}: ${topicTitle}`
+          }
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  sendTopicUpdateNotification(topicTitle: string) {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!this.#MESSAGING_TOKEN) {
+          await this.#initializeFirebaseMessaging();
+        }
+
+        await FirebaseFunctions.callByName({
+          name: 'sendPushNotification',
+          data: {
+            topic: this.#TOPIC_UPDATE_NOTIFICATION.TOPIC,
+            title: this.#TOPIC_UPDATE_NOTIFICATION.TITLE,
+            body: `${this.#TOPIC_UPDATE_NOTIFICATION.BODY}: ${topicTitle}`
           }
         });
         resolve();
@@ -144,7 +201,10 @@ export class MobileService {
         const event = await FirebaseMessaging.getToken();
         this.#MESSAGING_TOKEN = event.token;
 
-        await FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC });
+        await Promise.all([
+          FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC }),
+          FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC })
+        ]);
 
         resolve();
       } catch (error) {

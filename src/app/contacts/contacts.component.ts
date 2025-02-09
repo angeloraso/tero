@@ -1,18 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
-  BizyCopyToClipboardService,
-  BizyExportToCSVService,
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
+    BizyCopyToClipboardService,
+    BizyExportToCSVService,
+    BizyLogService,
+    BizyPopupService,
+    BizyRouterService,
+    BizyToastService,
+    BizyTranslateService
 } from '@bizy/services';
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
-import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { ContactsService, MobileService, UsersService } from '@core/services';

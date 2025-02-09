@@ -1,13 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '@auth/auth.service';
 import {
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
+    BizyLogService,
+    BizyPopupService,
+    BizyRouterService,
+    BizyToastService,
+    BizyTranslateService
 } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PopupComponent } from '@shared/components';

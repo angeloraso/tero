@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { AuthService } from '@auth/auth.service';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
-import { AuthService } from '@core/auth/auth.service';
 import {
   ERROR,
   IContact,
@@ -12,6 +12,7 @@ import {
   ISecurityNeighborInvoice,
   ITopic,
   IUser,
+  TopicMilestone,
   USER_STATE
 } from '@core/model';
 import { BehaviorSubject } from 'rxjs';
@@ -955,6 +956,97 @@ export class DatabaseService implements OnDestroy {
       try {
         let topics = await this.getTopics();
         topics = topics.filter(_topic => _topic.id !== id);
+
+        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+          data: topicsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  postTopicMilestone(data: { topicId: string; milestone: TopicMilestone }): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const topics = await this.getTopics();
+        const index = topics.findIndex(_topic => _topic.id === data.topicId);
+        if (index === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        topics[index].milestones.push(data.milestone);
+
+        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+          data: topicsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  putTopicMilestone(data: { topicId: string; milestone: TopicMilestone }): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const topics = await this.getTopics();
+        const topicIndex = topics.findIndex(_topic => _topic.id === data.topicId);
+        if (topicIndex === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        const milestoneIndex = topics[topicIndex].milestones.findIndex(
+          _milestone => _milestone.id === data.milestone.id
+        );
+        if (milestoneIndex === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        topics[topicIndex].milestones[milestoneIndex] = data.milestone;
+
+        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+        await FirebaseFirestore.setDocument({
+          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+          data: topicsDocument
+        });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  deleteTopicMilestone(data: { topicId: string; milestoneId: string }): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const topics = await this.getTopics();
+        const topicIndex = topics.findIndex(_topic => _topic.id === data.topicId);
+        if (topicIndex === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        const milestoneIndex = topics[topicIndex].milestones.findIndex(
+          _milestone => _milestone.id === data.milestoneId
+        );
+        if (milestoneIndex === -1) {
+          reject(new Error(ERROR.ITEM_NOT_FOUND));
+          return;
+        }
+
+        topics[topicIndex].milestones.splice(milestoneIndex, 1);
 
         const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
 

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyToastService } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 
 @Component({
   selector: 'tero-sign-in',

@@ -8,10 +8,18 @@ admin.initializeApp({
 
 exports.sendPushNotification = onCall(async (request) => {
   try {
-    const { title, body } = request.data;
+    const { topic, title, body, ttl } = request.data;
 
-    if (!title || !body) {
-      throw new HttpsError("invalid-argument", "Faltan parámetros: title o body");
+    if (!topic) {
+      throw new HttpsError("invalid-argument", "Topic is required");
+    }
+
+    if (!title) {
+      throw new HttpsError("invalid-argument", "Title is required");
+    }
+
+    if (!body) {
+      throw new HttpsError("invalid-argument", "Body is required");
     }
 
     const message = {
@@ -21,10 +29,10 @@ exports.sendPushNotification = onCall(async (request) => {
       },
       android:{
         priority: 'high',
-        ttl: 5 * 60 * 1000, // 5 minutes
+        ttl: ttl || 5 * 60 * 1000, // 5 minutes
         restrictedPackageName: 'ar.com.tero',
       },
-      topic: 'garbage'
+      topic: topic || 'garbage'
     };
 
     const response = await getMessaging().send(message);

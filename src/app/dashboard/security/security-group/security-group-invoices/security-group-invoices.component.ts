@@ -143,6 +143,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
             functionName: 'deleteInvoice',
             param: error
           });
+          this.toast.danger();
         } finally {
           this.loading = false;
         }

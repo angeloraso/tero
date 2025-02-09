@@ -1,11 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { AuthService } from '@auth/auth.service';
 import {
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService
 } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { ROOT_PATHS } from '@core/constants';
 import { ERROR } from '@core/model';
 import { DatabaseService, MobileService, UsersService } from '@core/services';

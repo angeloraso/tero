@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { LOADING_TYPE } from '@bizy/directives';
 import {
@@ -8,7 +9,6 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { AuthService } from '@core/auth/auth.service';
 import { LOGO_PATH } from '@core/constants';
 import { ERROR, IEcommerceProduct, ITopic, TOPIC_STATE } from '@core/model';
 import {
@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
   products: Array<IEcommerceProduct> = [];
   topics: Array<ITopic> = [];
   isNeighbor: boolean = false;
+  securityNoDebt: boolean = false;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly LOADING_TYPE = LOADING_TYPE;
@@ -137,6 +138,8 @@ export class DashboardComponent implements OnInit {
         this.groups = this.groups.map(_group => {
           return { ..._group, fee: this.#utils.roundNumber(this.membershipFee * _group.lots.size) };
         });
+
+        this.securityNoDebt = !this.groups.find(_group => _group.debt);
       }
     } catch (error) {
       this.#log.error({
