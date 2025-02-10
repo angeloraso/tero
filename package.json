@@ -1,6 +1,6 @@
 {
   "name": "tero",
-  "version": "1.22.0",
+  "version": "1.22.1",
   "description": "Tero",
   "scripts": {
     "start": "ng serve -o --configuration=development",
