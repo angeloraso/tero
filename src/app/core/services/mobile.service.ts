@@ -64,6 +64,7 @@ export class MobileService {
         });
 
         await StatusBar.setBackgroundColor({ color: '#666666' });
+        await StatusBar.setOverlaysWebView({ overlay: false });
         await this.#initializeFirebaseMessaging();
       } catch (error) {
         console.error('mobile.service: Error al iniciar:', error);
