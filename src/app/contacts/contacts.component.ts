@@ -4,13 +4,13 @@ import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
 import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
-    BizyCopyToClipboardService,
-    BizyExportToCSVService,
-    BizyLogService,
-    BizyPopupService,
-    BizyRouterService,
-    BizyToastService,
-    BizyTranslateService
+  BizyCopyToClipboardService,
+  BizyExportToCSVService,
+  BizyLogService,
+  BizyPopupService,
+  BizyRouterService,
+  BizyToastService,
+  BizyTranslateService
 } from '@bizy/services';
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';

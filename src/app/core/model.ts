@@ -209,6 +209,18 @@ export enum TOPIC_STATE {
   STOPPED = 'STOPPED'
 }
 
+export enum TOPIC_DATA_TYPE {
+  DATA = 'DATA',
+  TEL = 'TEL',
+  LINK = 'LINK'
+}
+
+export interface ITopicData {
+  key: string;
+  value: string;
+  type: TOPIC_DATA_TYPE;
+}
+
 export interface ITopicMilestone {
   id: string;
   description: string;
@@ -237,6 +249,7 @@ export interface ITopic {
   description: string;
   status: TOPIC_STATE;
   milestones: Array<ITopicMilestone>;
+  data: Array<ITopicData>;
   created: number;
   updated: number;
 }
@@ -247,16 +260,18 @@ export class Topic implements ITopic {
   title: string;
   description: string;
   status: TOPIC_STATE;
+  data: Array<ITopicData>;
   milestones: Array<ITopicMilestone>;
   created: number;
   updated: number;
 
-  constructor(topic: Omit<ITopic, 'id' | 'milestones' | 'created' | 'updated'>) {
+  constructor(topic: Omit<ITopic, 'id' | 'data' | 'milestones' | 'created' | 'updated'>) {
     this.id = uuid4();
     this.accountEmails = topic.accountEmails;
     this.title = topic.title;
     this.description = topic.description;
     this.status = topic.status;
+    this.data = [];
     this.milestones = [];
     this.created = Date.now();
     this.updated = Date.now();

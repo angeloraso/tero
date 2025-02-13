@@ -145,6 +145,11 @@ export class MobileService {
   sendNewTopicNotification(topicTitle: string) {
     return new Promise<void>(async (resolve, reject) => {
       try {
+        if (!ENV.production || !ENV.mobile) {
+          resolve();
+          return;
+        }
+
         if (!this.#MESSAGING_TOKEN) {
           await this.#initializeFirebaseMessaging();
         }

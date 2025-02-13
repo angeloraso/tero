@@ -23,7 +23,9 @@ export class TopicsService {
     return this.#database.getTopic(topicId);
   }
 
-  postTopic(topic: Omit<ITopic, 'id' | 'milestones' | 'created' | 'updated'>): Promise<void> {
+  postTopic(
+    topic: Omit<ITopic, 'id' | 'data' | 'milestones' | 'created' | 'updated'>
+  ): Promise<void> {
     return this.#database.postTopic(new Topic(topic));
   }
 
@@ -34,6 +36,7 @@ export class TopicsService {
       title: topic.title,
       description: topic.description,
       status: topic.status,
+      data: topic.data,
       milestones: topic.milestones,
       created: Number(topic.created) || Date.now(),
       updated: Date.now()

@@ -11,7 +11,7 @@ import {
 } from '@bizy/services';
 import { ITopic, ITopicMilestone, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
-import { MilestonePopupComponent } from '@dashboard/topics/components';
+import { TopicMilestonePopupComponent } from '@dashboard/topics/components';
 import { PopupComponent } from '@shared/components';
 
 interface IExtendedTopic extends ITopic {
@@ -96,7 +96,7 @@ export class TopicMilestonesComponent implements OnInit {
 
     this.#popup.open<{ description: string }>(
       {
-        component: MilestonePopupComponent,
+        component: TopicMilestonePopupComponent,
         data: {
           description
         }
@@ -104,6 +104,7 @@ export class TopicMilestonesComponent implements OnInit {
       async data => {
         try {
           if (data && this.topic) {
+            this.loading = true;
             if (milestone) {
               await this.#topicsService.putTopicMilestone({
                 topicId: this.topic.id,

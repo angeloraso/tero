@@ -7,8 +7,8 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { ITopic, TOPIC_STATE } from '@core/model';
-import { TopicsService } from '@core/services';
+import { ITopic, IUser, TOPIC_STATE } from '@core/model';
+import { TopicsService, UsersService } from '@core/services';
 import { PopupComponent } from '@shared/components';
 
 @Component({
@@ -24,10 +24,12 @@ export class EditTopicComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #log = inject(BizyLogService);
   readonly #translate = inject(BizyTranslateService);
+  readonly #usersService = inject(UsersService);
 
   topic: ITopic | null = null;
   topicId: string | null = null;
   loading = false;
+  users: Array<IUser> = [];
 
   async ngOnInit() {
     try {
@@ -38,13 +40,17 @@ export class EditTopicComponent implements OnInit {
         return;
       }
 
-      const topic = await this.#topicsService.getTopic(this.topicId);
+      const [users, topic] = await Promise.all([
+        this.#usersService.getUsers(),
+        this.#topicsService.getTopic(this.topicId)
+      ]);
 
       if (!topic) {
         this.goBack();
         return;
       }
 
+      this.users = users;
       this.topic = topic;
     } catch (error) {
       this.#log.error({

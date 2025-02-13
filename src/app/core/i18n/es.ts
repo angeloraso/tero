@@ -48,7 +48,9 @@ export const locale = {
           STATE: 'Estado',
           ROLE: 'Rol',
           TRANSACTION_ID: 'Identificador de pago (recomendado)',
-          TITLE: 'Título'
+          TITLE: 'Título',
+          DATA_TYPE: 'Tipo de información',
+          VALUE: 'Valor'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',
@@ -84,6 +86,11 @@ export const locale = {
         ACTIVE: 'Activo',
         STOPPED: 'En pausa',
         CLOSED: 'Cerrado'
+      },
+      TOPIC_DATA_TYPE: {
+        DATA: 'Dato',
+        TEL: 'Teléfono',
+        LINK: 'Link'
       }
     }
   }

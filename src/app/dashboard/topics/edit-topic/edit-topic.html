@@ -14,10 +14,12 @@
 
     <tero-topic-form
         *ngIf="topic"
+        [users]="users"
         [disabled]="loading"
         [title]="topic.title"
         [description]="topic.description"
         [status]="topic.status"
+        [accountEmails]="topic.accountEmails"
         (cancel)="goBack()"
         (save)="save($event)">
     </tero-topic-form>

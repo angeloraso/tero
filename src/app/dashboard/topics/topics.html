@@ -57,11 +57,12 @@
 
     </span>
     
-    <bizy-grid *ngIf="!loading" class="animated fade-in">
+    <span *ngIf="!loading" class="topics__cards animated fade-in">
 
         <bizy-card 
             (onSelect)="goToTopicMilestones(topic)"
-            *gridFor="let topic of topics 
+            class="topics__cards__card"
+            *ngFor="let topic of topics 
                                     | bizySearch: search : searchKeys
                                     | bizyFilter : 'status' : filterStates
                                     | bizyOrderBy: order : orderBy">
@@ -69,6 +70,14 @@
             <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-bookmark"></i></h4>
 
             <h4 slot="header-start" class="tero-title"><strong>{{topic.title}}</strong></h4>
+
+            <bizy-button 
+                slot="header-end"
+                *ngIf="topic._editEnabled"
+                class="tero-action tero-action--info"
+                (onSelect)="openDataPopup(topic); $event.stopPropagation()">
+                <h4><i class="fa-solid fa-paperclip"></i></h4>
+            </bizy-button>
 
             <bizy-button 
                 slot="header-end"
@@ -87,6 +96,39 @@
                 </span>
     
                 <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+
+                <span class="topics__card__content__data" *ngFor="let data of topic.data">
+
+                    <span class="topics__card__content__data__key-value">
+                        <h6 class="tero-title">{{data.key}}</h6>
+                        <h6 class="tero-text-ellipsis--5">{{data.value}}</h6>
+                    </span>
+
+                    <span class="topics__card__content__data__actions">
+
+                        <bizy-button 
+                            class="tero-action tero-action--info"
+                            (onSelect)="onCopyToClipboard(data.value); $event.stopPropagation()">
+                            <i class="fa-solid fa-copy"></i>
+                        </bizy-button>
+
+                        <bizy-button 
+                            *ngIf="data.type === TOPIC_DATA_TYPE.TEL"
+                            class="tero-action tero-action--info"
+                            (onSelect)="onCall(data.value); $event.stopPropagation()">
+                            <i class="fa-solid fa-phone"></i>
+                        </bizy-button>
+
+                        <bizy-button 
+                            *ngIf="data.type === TOPIC_DATA_TYPE.TEL"
+                            class="tero-action tero-action--success"
+                            (onSelect)="onWhatsapp(data.value); $event.stopPropagation()">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </bizy-button>
+
+                    </span>
+        
+                </span>
 
             </span>
 
@@ -112,7 +154,7 @@
 
         </bizy-card>
 
-    </bizy-grid>
+    </span>
 
     <bizy-grid *ngIf="loading" class="animated fade-in">
         <bizy-skeleton-card *gridFor="let i of topics.length > 0 ? topics : 30 | bizyRepeat"></bizy-skeleton-card>

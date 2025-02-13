@@ -3,19 +3,19 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BizyPopupService } from '@bizy/services';
 import { LONG_TEXT_MAX_LENGTH } from '@core/constants';
 @Component({
-  selector: 'tero-milestone-popup',
-  templateUrl: 'milestone-popup.html',
-  styleUrls: ['milestone-popup.css'],
+  selector: 'tero-topic-milestone-popup',
+  templateUrl: 'topic-milestone-popup.html',
+  styleUrls: ['topic-milestone-popup.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MilestonePopupComponent implements OnInit {
+export class TopicMilestonePopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #fb = inject(FormBuilder);
 
   readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
 
   #form = this.#fb.group({
-    description: ['', [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
+    description: ['', [Validators.maxLength(LONG_TEXT_MAX_LENGTH), Validators.required]]
   });
 
   get description() {

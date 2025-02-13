@@ -18,8 +18,11 @@ export const locale = {
           MSG: 'Se borrará el registro'
         }
       },
-      MILESTONE_POPUP: {
+      TOPIC_MILESTONE_POPUP: {
         TITLE: 'Agregar avance'
+      },
+      TOPIC_DATA_POPUP: {
+        TITLE: 'Agregar información'
       },
       ADD_TOPIC: {
         TITLE: 'Agregar asunto'

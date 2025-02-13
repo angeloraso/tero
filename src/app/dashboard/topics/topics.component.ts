@@ -3,16 +3,20 @@ import { PATH as APP_PATH } from '@app/app.routing';
 import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
+  BizyCopyToClipboardService,
   BizyLogService,
+  BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
 } from '@bizy/services';
-import { ITopic, TOPIC_STATE } from '@core/model';
+import { WHATSAPP_URL } from '@core/constants';
+import { ITopic, TOPIC_DATA_TYPE, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as TOPICS_PATH } from '@dashboard/topics/topics.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { TopicDataPopupComponent } from './components';
 
 interface IExtendedTopic extends ITopic {
   _status: string;
@@ -33,7 +37,9 @@ export class TopicsComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
   readonly #mobile = inject(MobileService);
+  readonly #popup = inject(BizyPopupService);
   readonly #usersService = inject(UsersService);
+  readonly #copyToClipboard = inject(BizyCopyToClipboardService);
 
   loading = false;
   csvLoading = false;
@@ -42,7 +48,7 @@ export class TopicsComponent implements OnInit {
   topics: Array<IExtendedTopic> = [];
   search: string | number = '';
   searchKeys = ['title', 'description', '_status'];
-  order: 'asc' | 'desc' = 'asc';
+  order: 'asc' | 'desc' = 'desc';
   orderBy = 'updated';
   isMobile: boolean = this.#mobile.isMobile();
   filterStates: Array<{ id: string; value: string; selected: boolean }> = [];
@@ -51,6 +57,7 @@ export class TopicsComponent implements OnInit {
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly TOPIC_STATE = TOPIC_STATE;
+  readonly TOPIC_DATA_TYPE = TOPIC_DATA_TYPE;
 
   async ngOnInit() {
     try {
@@ -125,6 +132,36 @@ export class TopicsComponent implements OnInit {
     });
   }
 
+  openDataPopup(topic: IExtendedTopic) {
+    if (!topic || (!this.isNeighbor && !this.isConfig)) {
+      return;
+    }
+
+    this.#popup.open<{ key: string; value: string; type: TOPIC_DATA_TYPE }>(
+      {
+        component: TopicDataPopupComponent
+      },
+      async data => {
+        try {
+          if (data) {
+            this.loading = true;
+            topic.data = [...topic.data, data];
+            await this.#topicsService.putTopic(topic);
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'topics.component',
+            functionName: 'openDataPopup',
+            param: error
+          });
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
+  }
+
   editTopic(topic: IExtendedTopic) {
     if (!topic || (!this.isNeighbor && !this.isConfig) || !topic._editEnabled) {
       return;
@@ -133,6 +170,49 @@ export class TopicsComponent implements OnInit {
     this.#router.goTo({
       path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}/${topic.id}`
     });
+  }
+
+  async onCopyToClipboard(text: string) {
+    try {
+      if (this.loading || !text) {
+        return;
+      }
+
+      await this.#copyToClipboard.copy(text);
+      this.#toast.success();
+    } catch (error) {
+      this.#log.error({
+        fileName: 'topics.component',
+        functionName: 'onCopyToClipboard',
+        param: error
+      });
+      this.#toast.danger();
+    }
+  }
+
+  async onCall(tel: string) {
+    try {
+      if (this.loading || !tel) {
+        return;
+      }
+
+      await this.#mobile.call(tel);
+    } catch (error) {
+      this.#log.error({
+        fileName: 'topics.component',
+        functionName: 'onCall',
+        param: error
+      });
+      this.#toast.danger();
+    }
+  }
+
+  onWhatsapp(tel: string) {
+    if (this.loading || !tel) {
+      return;
+    }
+
+    window.open(`${WHATSAPP_URL}${tel}`, '_blank');
   }
 
   checkFilters(activated: boolean) {

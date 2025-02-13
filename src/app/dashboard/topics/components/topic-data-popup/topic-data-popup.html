@@ -1,0 +1,58 @@
+<span class="tero-wrapper">
+
+    <bizy-form>
+
+        <span class="milestone-popup__header">
+
+            <h1 class="tero-title">{{'TOPICS.TOPIC_DATA_POPUP.TITLE' | translate}}</h1>
+
+        </span>
+
+        <bizy-select>
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.DATA_TYPE' | translate}}</strong></h6>
+    
+            <bizy-select-option 
+                *ngFor="let tdt of TOPIC_DATA_TYPE | bizyEnumToArray"
+                [selected]="type.value === tdt.value"
+                (onSelect)="type.setValue(tdt.value)">
+                <h6>{{'CORE.TOPIC_DATA_TYPE.' + tdt.key | translate}}</h6>
+            </bizy-select-option>
+        </bizy-select>
+
+        <bizy-input
+            #keyInput
+            [value]="key.value"
+            (onChange)="key.setValue($event)">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="key.hasError('required') && keyInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="key.hasError('maxlength') && keyInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+
+        <bizy-input
+            #valueInput
+            [type]="type.value === TOPIC_DATA_TYPE.TEL ? 'tel' : 'text'"
+            [value]="value.value"
+            (onChange)="value.setValue($event)">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.VALUE' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="value.hasError('required') && valueInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="value.hasError('maxlength') && valueInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+        
+    
+        <span class="tero-confirm-buttons">
+    
+            <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+                <h5><i class="fa-solid fa-xmark"></i></h5>
+                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+            </bizy-button>
+    
+            <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+                <h5><i class="fa-solid fa-check"></i></h5>
+            </bizy-button>
+    
+        </span>
+
+    </bizy-form>
+    
+</span>
