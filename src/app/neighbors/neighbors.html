@@ -131,7 +131,7 @@
                 onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
                 alt="Imagen de usuario"/>
 
-            <h4 slot="header-start" class="tero-text-ellipsis--2"><strong>{{neighbor.name}} {{neighbor.surname}}</strong></h4>
+            <h4 slot="header-start" bizyTooltip [tooltipLineClamp]="2"><strong>{{neighbor.name}} {{neighbor.surname}}</strong></h4>
 
             <bizy-tag 
                 *ngIf="neighbor.security"

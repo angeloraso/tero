@@ -212,7 +212,9 @@ export enum TOPIC_STATE {
 export enum TOPIC_DATA_TYPE {
   DATA = 'DATA',
   TEL = 'TEL',
-  LINK = 'LINK'
+  LINK = 'LINK',
+  EMAIL = 'EMAIL',
+  NUMBER = 'NUMBER'
 }
 
 export interface ITopicData {

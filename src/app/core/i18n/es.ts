@@ -90,7 +90,9 @@ export const locale = {
       TOPIC_DATA_TYPE: {
         DATA: 'Dato',
         TEL: 'Teléfono',
-        LINK: 'Link'
+        LINK: 'Link',
+        EMAIL: 'Email',
+        NUMBER: 'Número'
       }
     }
   }

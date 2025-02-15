@@ -95,13 +95,13 @@
                     </ng-container>
                 </span>
     
-                <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+                <h6 bizyTooltip [tooltipLineClamp]="5">{{topic.description}}</h6>
 
-                <span class="topics__card__content__data" *ngFor="let data of topic.data">
+                <span class="topics__card__content__data" *ngFor="let data of topic.data; let j = index">
 
                     <span class="topics__card__content__data__key-value">
                         <h6 class="tero-title">{{data.key}}</h6>
-                        <h6 class="tero-text-ellipsis--5">{{data.value}}</h6>
+                        <h6 bizyTooltip [tooltipLineClamp]="1">{{data.value}}</h6>
                     </span>
 
                     <span class="topics__card__content__data__actions">
@@ -109,21 +109,42 @@
                         <bizy-button 
                             class="tero-action tero-action--info"
                             (onSelect)="onCopyToClipboard(data.value); $event.stopPropagation()">
-                            <i class="fa-solid fa-copy"></i>
+                            <h6><i class="fa-solid fa-copy"></i></h6>
                         </bizy-button>
 
                         <bizy-button 
                             *ngIf="data.type === TOPIC_DATA_TYPE.TEL"
                             class="tero-action tero-action--info"
                             (onSelect)="onCall(data.value); $event.stopPropagation()">
-                            <i class="fa-solid fa-phone"></i>
+                            <h6><i class="fa-solid fa-phone"></i></h6>
                         </bizy-button>
 
                         <bizy-button 
                             *ngIf="data.type === TOPIC_DATA_TYPE.TEL"
                             class="tero-action tero-action--success"
                             (onSelect)="onWhatsapp(data.value); $event.stopPropagation()">
-                            <i class="fa-brands fa-whatsapp"></i>
+                            <h6><i class="fa-brands fa-whatsapp"></i></h6>
+                        </bizy-button>
+
+                        <bizy-button 
+                            *ngIf="data.type === TOPIC_DATA_TYPE.LINK"
+                            class="tero-action tero-action--info"
+                            (onSelect)="onLink(data.value); $event.stopPropagation()">
+                            <h6><i class="fa-solid fa-arrow-up-right-from-square"></i></h6>
+                        </bizy-button>
+
+                        <bizy-button 
+                            *ngIf="data.type === TOPIC_DATA_TYPE.EMAIL"
+                            class="tero-action tero-action--info"
+                            (onSelect)="onEmail(data); $event.stopPropagation()">
+                            <h6><i class="fa-solid fa-envelope"></i></h6>
+                        </bizy-button>
+
+                        <bizy-button 
+                            *ngIf="topic._editEnabled"
+                            class="tero-action tero-action--danger"
+                            (onSelect)="deleteTopicData(topic, j); $event.stopPropagation()">
+                            <h6><i class="fa-solid fa-trash-alt"></i></h6>
                         </bizy-button>
 
                     </span>

@@ -11,7 +11,7 @@ import {
   BizyTranslateService
 } from '@bizy/services';
 import { WHATSAPP_URL } from '@core/constants';
-import { ITopic, TOPIC_DATA_TYPE, TOPIC_STATE } from '@core/model';
+import { ITopic, ITopicData, TOPIC_DATA_TYPE, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as TOPICS_PATH } from '@dashboard/topics/topics.routing';
@@ -213,6 +213,45 @@ export class TopicsComponent implements OnInit {
     }
 
     window.open(`${WHATSAPP_URL}${tel}`, '_blank');
+  }
+
+  onLink(link: string) {
+    if (this.loading || !link) {
+      return;
+    }
+
+    window.open(link, '_blank');
+  }
+
+  onEmail(data: ITopicData) {
+    if (this.loading || !data || !data.value || !data.key) {
+      return;
+    }
+
+    window.open(`mailto:${data.value}?subject=${data.key}`, '_blank');
+  }
+
+  async deleteTopicData(topic: ITopic, index: number) {
+    try {
+      if (this.loading || !topic || typeof index === 'undefined' || index === null) {
+        return;
+      }
+
+      this.loading = true;
+
+      topic.data.splice(index, 1);
+
+      await this.#topicsService.putTopic(topic);
+    } catch (error) {
+      this.#log.error({
+        fileName: 'topics.component',
+        functionName: 'deleteTopicData',
+        param: error
+      });
+      this.#toast.danger();
+    } finally {
+      this.loading = false;
+    }
   }
 
   checkFilters(activated: boolean) {

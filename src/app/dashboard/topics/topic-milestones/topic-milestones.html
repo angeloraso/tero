@@ -12,7 +12,7 @@
 
 <div class="tero-wrapper topic-milestones">
 
-    <bizy-skeleton-card *ngIf="loading" class="animated fade-in"></bizy-skeleton-card>
+    <bizy-skeleton-card *ngIf="loading" class="topic-milestones__skeleton animated fade-in"></bizy-skeleton-card>
 
     <bizy-card *ngIf="!loading && topic" class="animated fade-in">
 
@@ -26,7 +26,7 @@
                 <bizy-tag *ngIf="i < 2"><h6>{{name}}</h6></bizy-tag>
             </ng-container>
 
-            <h6 class="tero-text-ellipsis--5">{{topic.description}}</h6>
+            <h6>{{topic.description}}</h6>
 
         </span>
 

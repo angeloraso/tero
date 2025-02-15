@@ -92,7 +92,7 @@
                 onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
                 alt="Imagen de usuario"/>
 
-            <h4 slot="header-start" *ngIf="user.name" class="tero-text-ellipsis--2"><strong>{{user.name}}</strong></h4>
+            <h4 slot="header-start" *ngIf="user.name" bizyTooltip [tooltipLineClamp]="2"><strong>{{user.name}}</strong></h4>
 
             <bizy-button 
                 slot="header-end"
