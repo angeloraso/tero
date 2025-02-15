@@ -53,14 +53,16 @@ export class ConfigComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-      this.profilePic = await this.auth.getProfilePicture();
-      console.log(this.profilePic);
       this.name = this.auth.getName() ?? '';
       this.email = this.auth.getEmail() ?? '';
-      const [currentUser, isConfig] = await Promise.all([
+
+      const [profilePic, currentUser, isConfig] = await Promise.all([
+        this.auth.getProfilePicture(),
         this.usersService.getCurrentUser(),
         this.usersService.isConfig()
       ]);
+
+      this.profilePic = profilePic;
 
       this.currentUser = currentUser;
 
@@ -146,6 +148,14 @@ export class ConfigComponent implements OnInit {
     }
 
     this.router.goTo({ path: PATH.USERS });
+  }
+
+  goToGarbageHistory() {
+    if (!this.isConfig) {
+      return;
+    }
+
+    this.router.goTo({ path: PATH.GARBAGE_HISTORY });
   }
 
   onSignOut(): void {

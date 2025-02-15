@@ -17,6 +17,7 @@ import {
   UsersService,
   UtilsService
 } from '@core/services';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 import { PATH } from './security.routing';
 interface IGroup {
@@ -150,7 +151,7 @@ export class SecurityComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}` });
   }
 
   async onCall(phone: string) {

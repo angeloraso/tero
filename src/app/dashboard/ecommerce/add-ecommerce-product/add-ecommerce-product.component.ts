@@ -3,6 +3,8 @@ import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
 import { IPhone, IUser } from '@core/model';
 import { EcommerceService, UsersService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
   selector: 'tero-add-ecommerce-product',
@@ -46,7 +48,7 @@ export class AddEcommerceProductComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.ECOMMERCE}` });
   }
 
   async save(product: {

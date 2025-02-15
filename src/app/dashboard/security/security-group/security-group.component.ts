@@ -12,6 +12,8 @@ import {
 } from '@bizy/services';
 import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { RegisterPaymentPopupComponent } from './components';
 import { PATH } from './security-group.routing';
 
@@ -145,7 +147,7 @@ export class SecurityGroupComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}` });
   }
 
   goToSecurityInvoices() {

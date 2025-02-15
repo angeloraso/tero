@@ -1,0 +1,20 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'GARBAGE_HISTORY.TITLE' | translate}}</h1>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper">
+
+    <bizy-skeleton-card *ngIf="loading"></bizy-skeleton-card>
+
+    <bizy-calendar 
+        *ngIf="!loading"
+        [events]="calendarEvents"
+        [weekStartsOn]="BIZY_CALENDAR_DAY.MONDAY"
+        [mode]="BIZY_CALENDAR_MODE.MONTH">
+    </bizy-calendar>
+
+</div>

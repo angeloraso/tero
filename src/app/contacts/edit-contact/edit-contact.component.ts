@@ -2,14 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth/auth.service';
 import {
-    BizyLogService,
-    BizyPopupService,
-    BizyRouterService,
-    BizyToastService,
-    BizyTranslateService
+  BizyLogService,
+  BizyPopupService,
+  BizyRouterService,
+  BizyToastService,
+  BizyTranslateService
 } from '@bizy/services';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 
 @Component({
@@ -94,7 +95,7 @@ export class EditContactComponent implements OnInit {
   };
 
   goBack() {
-    this.#router.goBack();
+    this.#router.goBack({ path: `/${HOME_PATH.CONTACTS}` });
   }
 
   async save(contact: IContact) {

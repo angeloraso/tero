@@ -9,6 +9,7 @@ import {
 } from '@bizy/services';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 
 @Component({
@@ -88,7 +89,7 @@ export class EditNeighborComponent implements OnInit {
   };
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.NEIGHBORS}` });
   }
 
   async save(data: {

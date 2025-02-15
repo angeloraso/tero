@@ -248,7 +248,7 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}` });
   }
 
   #filter(items: Array<IEcommerceProductCard>): Array<IEcommerceProductCard> {

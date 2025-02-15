@@ -2,7 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
 import { IUser, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
-
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
 @Component({
   selector: 'tero-add-topic',
   templateUrl: './add-topic.html',
@@ -36,7 +37,7 @@ export class AddTopicComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack();
+    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 
   async save(topic: {

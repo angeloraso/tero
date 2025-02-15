@@ -3,6 +3,7 @@ import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
+import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
   selector: 'tero-add-contact',
@@ -38,7 +39,7 @@ export class AddContactComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.CONTACTS}` });
   }
 
   async save(contact: IContact) {

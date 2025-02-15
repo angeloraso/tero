@@ -3,10 +3,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
-
+import { PATH as HOME_PATH } from '@home/home.routing';
 @Component({
   selector: 'tero-edit-user',
   templateUrl: './edit-user.html',
@@ -168,7 +169,7 @@ export class EditUserComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}` });
   }
 
   async save() {

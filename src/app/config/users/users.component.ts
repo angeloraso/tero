@@ -165,7 +165,7 @@ export class UsersComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.CONFIG}` });
   }
 
   checkFilters(activated: boolean) {

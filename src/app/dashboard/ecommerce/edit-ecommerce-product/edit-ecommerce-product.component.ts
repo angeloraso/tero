@@ -9,8 +9,9 @@ import {
 } from '@bizy/services';
 import { IEcommerceProduct, IPhone } from '@core/model';
 import { EcommerceService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
-
 @Component({
   selector: 'tero-edit-ecommerce-product',
   templateUrl: './edit-ecommerce-product.html',
@@ -95,7 +96,7 @@ export class EditEcommerceProductComponent implements OnInit {
   };
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.ECOMMERCE}` });
   }
 
   async save(product: {

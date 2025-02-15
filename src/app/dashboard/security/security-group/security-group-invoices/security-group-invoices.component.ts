@@ -12,8 +12,9 @@ import {
 } from '@bizy/services';
 import { ISecurityNeighborInvoice, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
-
 interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
   _date: string;
   _neighborName: string;
@@ -107,7 +108,9 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack();
+    this.router.goBack({
+      path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}/${this.group}`
+    });
   }
 
   deleteInvoice(invoice: ISecurityInvoiceRow) {

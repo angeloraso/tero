@@ -5,6 +5,7 @@ export const locale = {
   translations: {
     CONFIG: {
       TITLE: 'Configuración',
+      GARBAGE: 'Historial recolección',
       USERS: 'Usuarios',
       ADD_PHONE: 'Agregar teléfono',
       ADD_LOT: 'Agregar lote',

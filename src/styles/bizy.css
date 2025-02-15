@@ -6,6 +6,8 @@
 @import '/node_modules/@bizy/services/styles/animations.css';
 @import '/node_modules/@bizy/services/styles/variables.css';
 @import '/node_modules/@bizy/components/styles/variables.css';
+@import '/node_modules/@bizy/components/styles/variables.css';
+@import '/node_modules/@bizy/components/styles/calendar.css';
 @import '/node_modules/@bizy/components/styles/normalize.css';
 @import '/node_modules/@bizy/components/styles/overlay.css';
 

@@ -276,6 +276,6 @@ export class TopicsComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack();
+    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}` });
   }
 }

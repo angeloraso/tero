@@ -11,9 +11,10 @@ import {
 } from '@bizy/services';
 import { ITopic, ITopicMilestone, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicMilestonePopupComponent } from '@dashboard/topics/components';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
-
 interface IExtendedTopic extends ITopic {
   _names: Array<string>;
   _editEnabled: boolean;
@@ -171,6 +172,6 @@ export class TopicMilestonesComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack();
+    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 }

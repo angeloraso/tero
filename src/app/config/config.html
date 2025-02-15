@@ -61,6 +61,16 @@
 
         </bizy-card>
 
+        <bizy-card *ngIf="isConfig" (onSelect)="goToGarbageHistory()" class="config__card">
+            
+            <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-truck"></i></h1>
+
+            <h3 slot="header-start"><strong>{{'CONFIG.GARBAGE' | translate}}</strong></h3>
+
+            <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
+
+        </bizy-card>
+
         <bizy-card *ngIf="isConfig" (onSelect)="goToUsers()" class="config__card">
             
             <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-users"></i></h1>
@@ -71,13 +81,12 @@
 
             <span slot="header-start" *ngIf="pendingUsers.length > 0" class="config__icon--badge"></span>
 
+            <h1 slot="header-start" *ngIf="isConfig && pendingUsers.length === 0" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
+
             <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
 
         </bizy-card>
 
-    <span id="firebase-auth-recaptcha-container"></span>
-        
-        
     </ng-container>
 
 </div>

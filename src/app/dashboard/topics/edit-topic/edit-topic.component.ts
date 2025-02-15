@@ -9,8 +9,9 @@ import {
 } from '@bizy/services';
 import { ITopic, IUser, TOPIC_STATE } from '@core/model';
 import { TopicsService, UsersService } from '@core/services';
+import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
-
 @Component({
   selector: 'tero-edit-topic',
   templateUrl: './edit-topic.html',
@@ -99,7 +100,7 @@ export class EditTopicComponent implements OnInit {
   };
 
   goBack() {
-    this.#router.goBack();
+    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 
   async save(topic: { title: string; description: string; status: TOPIC_STATE }) {
