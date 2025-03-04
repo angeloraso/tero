@@ -110,10 +110,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "tero:build:production"
+              "buildTarget": "tero:build:production"
             },
             "development": {
-              "browserTarget": "tero:build:development"
+              "buildTarget": "tero:build:development"
             }
           },
           "defaultConfiguration": "development"
