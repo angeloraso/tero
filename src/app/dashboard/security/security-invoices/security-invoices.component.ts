@@ -21,9 +21,10 @@ interface ISecurityInvoiceRow extends ISecurityInvoice {
 }
 
 @Component({
-  selector: 'tero-security-invoices',
-  templateUrl: './security-invoices.html',
-  styleUrls: ['./security-invoices.css']
+    selector: 'tero-security-invoices',
+    templateUrl: './security-invoices.html',
+    styleUrls: ['./security-invoices.css'],
+    standalone: false
 })
 export class SecurityInvoicesComponent implements OnInit {
   loading = false;

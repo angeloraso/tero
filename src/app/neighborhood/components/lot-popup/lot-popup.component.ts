@@ -10,9 +10,10 @@ import {
 import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
-  selector: 'tero-lot-popup',
-  templateUrl: './lot-popup.html',
-  styleUrls: ['./lot-popup.css']
+    selector: 'tero-lot-popup',
+    templateUrl: './lot-popup.html',
+    styleUrls: ['./lot-popup.css'],
+    standalone: false
 })
 export class LotPopupComponent {
   readonly #popup = inject(BizyPopupService);

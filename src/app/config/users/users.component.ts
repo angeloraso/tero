@@ -23,9 +23,10 @@ interface IUserCard extends IUser {
 }
 
 @Component({
-  selector: 'tero-users',
-  templateUrl: './users.html',
-  styleUrls: ['./users.css']
+    selector: 'tero-users',
+    templateUrl: './users.html',
+    styleUrls: ['./users.css'],
+    standalone: false
 })
 export class UsersComponent implements OnInit {
   loading = false;

@@ -6,9 +6,10 @@ import { ContactsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
-  selector: 'tero-add-contact',
-  templateUrl: './add-contact.html',
-  styleUrls: ['./add-contact.css']
+    selector: 'tero-add-contact',
+    templateUrl: './add-contact.html',
+    styleUrls: ['./add-contact.css'],
+    standalone: false
 })
 export class AddContactComponent implements OnInit {
   loading: boolean = false;

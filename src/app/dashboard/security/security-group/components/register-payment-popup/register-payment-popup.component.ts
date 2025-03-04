@@ -4,10 +4,11 @@ import { BizyPopupService } from '@bizy/services';
 import { NAME_MAX_LENGTH } from '@core/constants';
 import { INeighbor } from '@core/model';
 @Component({
-  selector: 'tero-register-payment-popup',
-  templateUrl: 'register-payment-popup.html',
-  styleUrls: ['register-payment-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-register-payment-popup',
+    templateUrl: 'register-payment-popup.html',
+    styleUrls: ['register-payment-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RegisterPaymentPopupComponent implements OnInit {
   neighbor: INeighbor | null = null;

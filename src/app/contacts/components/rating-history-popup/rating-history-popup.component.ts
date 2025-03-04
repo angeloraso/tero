@@ -3,10 +3,11 @@ import { BIZY_TAG_TYPE } from '@bizy/components';
 import { BizyPopupService } from '@bizy/services';
 import { IContactRating } from '@core/model';
 @Component({
-  selector: 'tero-rating-history-popup',
-  templateUrl: 'rating-history-popup.html',
-  styleUrls: ['rating-history-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-rating-history-popup',
+    templateUrl: 'rating-history-popup.html',
+    styleUrls: ['rating-history-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RatingHistoryPopupComponent implements OnInit {
   rating: Array<IContactRating> = [];

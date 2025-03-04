@@ -22,9 +22,10 @@ interface INeighborExtended extends INeighbor {
 }
 
 @Component({
-  selector: 'tero-neighbors',
-  templateUrl: './neighbors.html',
-  styleUrls: ['./neighbors.css']
+    selector: 'tero-neighbors',
+    templateUrl: './neighbors.html',
+    styleUrls: ['./neighbors.css'],
+    standalone: false
 })
 export class NeighborsComponent implements OnInit {
   loading = false;

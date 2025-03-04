@@ -5,9 +5,10 @@ import { GarbageTruckService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
-  selector: 'tero-garbage-history',
-  templateUrl: './garbage-history.html',
-  styleUrls: ['./garbage-history.css']
+    selector: 'tero-garbage-history',
+    templateUrl: './garbage-history.html',
+    styleUrls: ['./garbage-history.css'],
+    standalone: false
 })
 export class GarbageHistoryComponent implements OnInit {
   readonly #router = inject(BizyRouterService);

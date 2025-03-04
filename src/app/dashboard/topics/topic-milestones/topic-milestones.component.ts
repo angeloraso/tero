@@ -21,9 +21,10 @@ interface IExtendedTopic extends ITopic {
 }
 
 @Component({
-  selector: 'tero-topic-milestones',
-  templateUrl: './topic-milestones.html',
-  styleUrls: ['./topic-milestones.css']
+    selector: 'tero-topic-milestones',
+    templateUrl: './topic-milestones.html',
+    styleUrls: ['./topic-milestones.css'],
+    standalone: false
 })
 export class TopicMilestonesComponent implements OnInit {
   readonly #auth = inject(AuthService);

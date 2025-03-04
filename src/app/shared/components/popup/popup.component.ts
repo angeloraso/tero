@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BizyPopupService } from '@bizy/services';
 @Component({
-  selector: 'tero-popup',
-  templateUrl: 'popup.html',
-  styleUrls: ['popup.css']
+    selector: 'tero-popup',
+    templateUrl: 'popup.html',
+    styleUrls: ['popup.css'],
+    standalone: false
 })
 export class PopupComponent implements OnInit {
   title: string = '';

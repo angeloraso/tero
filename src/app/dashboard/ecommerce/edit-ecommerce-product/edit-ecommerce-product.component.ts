@@ -13,9 +13,10 @@ import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 @Component({
-  selector: 'tero-edit-ecommerce-product',
-  templateUrl: './edit-ecommerce-product.html',
-  styleUrls: ['./edit-ecommerce-product.css']
+    selector: 'tero-edit-ecommerce-product',
+    templateUrl: './edit-ecommerce-product.html',
+    styleUrls: ['./edit-ecommerce-product.css'],
+    standalone: false
 })
 export class EditEcommerceProductComponent implements OnInit {
   product: IEcommerceProduct | null = null;

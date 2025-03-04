@@ -7,9 +7,10 @@ import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
-  selector: 'tero-add-ecommerce-product',
-  templateUrl: './add-ecommerce-product.html',
-  styleUrls: ['./add-ecommerce-product.css']
+    selector: 'tero-add-ecommerce-product',
+    templateUrl: './add-ecommerce-product.html',
+    styleUrls: ['./add-ecommerce-product.css'],
+    standalone: false
 })
 export class AddEcommerceProductComponent implements OnInit {
   loading: boolean = false;

@@ -3,9 +3,10 @@ import { BIZY_TAG_TYPE } from '@bizy/components';
 import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
-  selector: 'tero-lot',
-  templateUrl: './lot.html',
-  styleUrls: ['./lot.css']
+    selector: 'tero-lot',
+    templateUrl: './lot.html',
+    styleUrls: ['./lot.css'],
+    standalone: false
 })
 export class LotComponent {
   @Input() lot: ILot | null = null;

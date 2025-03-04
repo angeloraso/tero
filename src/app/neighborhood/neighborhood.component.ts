@@ -22,9 +22,10 @@ import { LotPopupComponent } from './components';
 import { ILot } from './neighborhood.model';
 
 @Component({
-  selector: 'tero-neighborhood',
-  templateUrl: './neighborhood.html',
-  styleUrls: ['./neighborhood.css']
+    selector: 'tero-neighborhood',
+    templateUrl: './neighborhood.html',
+    styleUrls: ['./neighborhood.css'],
+    standalone: false
 })
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
   @ViewChild('firstBlock') firstBlock: ElementRef | null = null;

@@ -19,9 +19,10 @@ interface IOption {
   selected: boolean;
 }
 @Component({
-  selector: 'tero-home',
-  templateUrl: './home.html',
-  styleUrls: ['./home.css']
+    selector: 'tero-home',
+    templateUrl: './home.html',
+    styleUrls: ['./home.css'],
+    standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
   readonly #log = inject(BizyLogService);

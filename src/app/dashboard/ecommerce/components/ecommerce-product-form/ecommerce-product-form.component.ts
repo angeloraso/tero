@@ -14,10 +14,11 @@ import { IPhone } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
-  selector: 'tero-ecommerce-product-form',
-  templateUrl: './ecommerce-product-form.html',
-  styleUrls: ['./ecommerce-product-form.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-ecommerce-product-form',
+    templateUrl: './ecommerce-product-form.html',
+    styleUrls: ['./ecommerce-product-form.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EcommerceProductFormComponent {
   @Input() disabled: boolean = false;

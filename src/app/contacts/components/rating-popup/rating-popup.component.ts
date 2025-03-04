@@ -4,10 +4,11 @@ import { BizyPopupService } from '@bizy/services';
 import { LONG_TEXT_MAX_LENGTH } from '@core/constants';
 import { Rating } from '@core/model';
 @Component({
-  selector: 'tero-rating-popup',
-  templateUrl: 'rating-popup.html',
-  styleUrls: ['rating-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-rating-popup',
+    templateUrl: 'rating-popup.html',
+    styleUrls: ['rating-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RatingPopupComponent implements OnInit {
   form: FormGroup<{

@@ -3,10 +3,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { BizyPopupService } from '@bizy/services';
 
 @Component({
-  selector: 'tero-user-phone-popup',
-  templateUrl: 'user-phone-popup.html',
-  styleUrls: ['user-phone-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-user-phone-popup',
+    templateUrl: 'user-phone-popup.html',
+    styleUrls: ['user-phone-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserPhonePopupComponent implements OnInit {
   form: FormGroup<{

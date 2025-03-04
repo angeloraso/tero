@@ -22,10 +22,11 @@ import { IContact, IContactRating, Rating } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
-  selector: 'tero-contact-form',
-  templateUrl: './contact-form.html',
-  styleUrls: ['./contact-form.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-contact-form',
+    templateUrl: './contact-form.html',
+    styleUrls: ['./contact-form.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ContactFormComponent {
   @Input() id: string = '';

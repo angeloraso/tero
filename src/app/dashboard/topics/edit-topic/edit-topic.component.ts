@@ -13,9 +13,10 @@ import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 @Component({
-  selector: 'tero-edit-topic',
-  templateUrl: './edit-topic.html',
-  styleUrls: ['./edit-topic.css']
+    selector: 'tero-edit-topic',
+    templateUrl: './edit-topic.html',
+    styleUrls: ['./edit-topic.css'],
+    standalone: false
 })
 export class EditTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);

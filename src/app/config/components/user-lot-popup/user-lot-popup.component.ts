@@ -4,10 +4,11 @@ import { BizyPopupService } from '@bizy/services';
 import { LOTS } from '@core/constants';
 
 @Component({
-  selector: 'tero-user-lot-popup',
-  templateUrl: 'user-lot-popup.html',
-  styleUrls: ['user-lot-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-user-lot-popup',
+    templateUrl: 'user-lot-popup.html',
+    styleUrls: ['user-lot-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserLotPopupComponent implements OnInit {
   form: FormGroup<{

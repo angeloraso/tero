@@ -12,9 +12,10 @@ import { DatabaseService, MobileService, UsersService } from '@core/services';
 import { PATH } from './app.routing';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrls: ['./app.css']
+    selector: 'app-root',
+    templateUrl: './app.html',
+    styleUrls: ['./app.css'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   readonly #mobile = inject(MobileService);

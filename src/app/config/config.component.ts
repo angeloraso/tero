@@ -20,9 +20,10 @@ import { PopupComponent } from '@shared/components';
 import { PATH } from './config.routing';
 
 @Component({
-  selector: 'tero-config',
-  templateUrl: './config.html',
-  styleUrls: ['./config.css']
+    selector: 'tero-config',
+    templateUrl: './config.html',
+    styleUrls: ['./config.css'],
+    standalone: false
 })
 export class ConfigComponent implements OnInit {
   loading = false;

@@ -5,9 +5,10 @@ import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
 @Component({
-  selector: 'tero-add-topic',
-  templateUrl: './add-topic.html',
-  styleUrls: ['./add-topic.css']
+    selector: 'tero-add-topic',
+    templateUrl: './add-topic.html',
+    styleUrls: ['./add-topic.css'],
+    standalone: false
 })
 export class AddTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);

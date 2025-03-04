@@ -9,9 +9,10 @@ import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 @Component({
-  selector: 'tero-edit-user',
-  templateUrl: './edit-user.html',
-  styleUrls: ['./edit-user.css']
+    selector: 'tero-edit-user',
+    templateUrl: './edit-user.html',
+    styleUrls: ['./edit-user.css'],
+    standalone: false
 })
 export class EditUserComponent implements OnInit {
   user: IUser | null = null;

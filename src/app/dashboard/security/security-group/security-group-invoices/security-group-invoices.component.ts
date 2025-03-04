@@ -21,9 +21,10 @@ interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
 }
 
 @Component({
-  selector: 'tero-security-group-invoices',
-  templateUrl: './security-group-invoices.html',
-  styleUrls: ['./security-group-invoices.css']
+    selector: 'tero-security-group-invoices',
+    templateUrl: './security-group-invoices.html',
+    styleUrls: ['./security-group-invoices.css'],
+    standalone: false
 })
 export class SecurityGroupInvoicesComponent implements OnInit {
   group: number | null = null;

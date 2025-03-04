@@ -24,9 +24,10 @@ interface IContactCard extends IContact {
 }
 
 @Component({
-  selector: 'tero-contacts',
-  templateUrl: './contacts.html',
-  styleUrls: ['./contacts.css']
+    selector: 'tero-contacts',
+    templateUrl: './contacts.html',
+    styleUrls: ['./contacts.css'],
+    standalone: false
 })
 export class ContactsComponent implements OnInit {
   loading = false;

@@ -3,9 +3,10 @@ import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyToastService } from '@bizy/services';
 
 @Component({
-  selector: 'tero-sign-in',
-  templateUrl: './sign-in.html',
-  styleUrls: ['./sign-in.css']
+    selector: 'tero-sign-in',
+    templateUrl: './sign-in.html',
+    styleUrls: ['./sign-in.css'],
+    standalone: false
 })
 export class SignInComponent {
   loading = false;

@@ -4,10 +4,11 @@ import { BizyPopupService, BizyValidatorService } from '@bizy/services';
 import { EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, TEL_MAX_LENGTH } from '@core/constants';
 import { TOPIC_DATA_TYPE } from '@core/model';
 @Component({
-  selector: 'tero-topic-data-popup',
-  templateUrl: 'topic-data-popup.html',
-  styleUrls: ['topic-data-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-topic-data-popup',
+    templateUrl: 'topic-data-popup.html',
+    styleUrls: ['topic-data-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TopicDataPopupComponent {
   readonly #popup = inject(BizyPopupService);

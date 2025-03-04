@@ -3,9 +3,10 @@ import { BizyLogService, BizyPopupService, BizyUserAgentService } from '@bizy/se
 import pkg from 'package.json';
 
 @Component({
-  selector: 'caquen-about-popup',
-  templateUrl: 'about-popup.html',
-  styleUrls: ['about-popup.css']
+    selector: 'caquen-about-popup',
+    templateUrl: 'about-popup.html',
+    styleUrls: ['about-popup.css'],
+    standalone: false
 })
 export class AboutPopupComponent implements AfterViewInit {
   readonly DESCRIPTION: string = pkg.description;

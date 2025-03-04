@@ -13,9 +13,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 
 @Component({
-  selector: 'tero-edit-neighbor',
-  templateUrl: './edit-neighbor.html',
-  styleUrls: ['./edit-neighbor.css']
+    selector: 'tero-edit-neighbor',
+    templateUrl: './edit-neighbor.html',
+    styleUrls: ['./edit-neighbor.css'],
+    standalone: false
 })
 export class EditNeighborComponent implements OnInit {
   neighbor: INeighbor | null = null;

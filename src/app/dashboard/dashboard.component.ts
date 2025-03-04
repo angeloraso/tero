@@ -30,9 +30,10 @@ interface IGroup {
   debt: boolean;
 }
 @Component({
-  selector: 'tero-dashboard',
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+    selector: 'tero-dashboard',
+    templateUrl: './dashboard.html',
+    styleUrls: ['./dashboard.css'],
+    standalone: false
 })
 export class DashboardComponent implements OnInit {
   readonly #neighborsService = inject(NeighborsService);

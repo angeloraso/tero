@@ -3,10 +3,11 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BizyPopupService } from '@bizy/services';
 import { LONG_TEXT_MAX_LENGTH } from '@core/constants';
 @Component({
-  selector: 'tero-topic-milestone-popup',
-  templateUrl: 'topic-milestone-popup.html',
-  styleUrls: ['topic-milestone-popup.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-topic-milestone-popup',
+    templateUrl: 'topic-milestone-popup.html',
+    styleUrls: ['topic-milestone-popup.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TopicMilestonePopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);

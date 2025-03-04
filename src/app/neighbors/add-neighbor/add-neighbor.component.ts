@@ -4,9 +4,10 @@ import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
-  selector: 'tero-add-neighbor',
-  templateUrl: './add-neighbor.html',
-  styleUrls: ['./add-neighbor.css']
+    selector: 'tero-add-neighbor',
+    templateUrl: './add-neighbor.html',
+    styleUrls: ['./add-neighbor.css'],
+    standalone: false
 })
 export class AddNeighborComponent {
   loading: boolean = false;

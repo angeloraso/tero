@@ -14,9 +14,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { PopupComponent } from '@shared/components';
 
 @Component({
-  selector: 'tero-edit-contact',
-  templateUrl: './edit-contact.html',
-  styleUrls: ['./edit-contact.css']
+    selector: 'tero-edit-contact',
+    templateUrl: './edit-contact.html',
+    styleUrls: ['./edit-contact.css'],
+    standalone: false
 })
 export class EditContactComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);

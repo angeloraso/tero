@@ -21,10 +21,11 @@ interface IExtendedUser extends IUser {
 }
 
 @Component({
-  selector: 'tero-topic-form',
-  templateUrl: './topic-form.html',
-  styleUrls: ['./topic-form.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-topic-form',
+    templateUrl: './topic-form.html',
+    styleUrls: ['./topic-form.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TopicFormComponent {
   readonly #mobile = inject(MobileService);

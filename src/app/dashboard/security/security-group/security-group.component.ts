@@ -22,9 +22,10 @@ interface INeighborCard extends INeighbor {
 }
 
 @Component({
-  selector: 'tero-security-group',
-  templateUrl: './security-group.html',
-  styleUrls: ['./security-group.css']
+    selector: 'tero-security-group',
+    templateUrl: './security-group.html',
+    styleUrls: ['./security-group.css'],
+    standalone: false
 })
 export class SecurityGroupComponent implements OnInit {
   loading = false;

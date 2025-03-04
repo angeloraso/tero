@@ -28,9 +28,10 @@ interface IGroup {
 }
 
 @Component({
-  selector: 'tero-security',
-  templateUrl: './security.html',
-  styleUrls: ['./security.css']
+    selector: 'tero-security',
+    templateUrl: './security.html',
+    styleUrls: ['./security.css'],
+    standalone: false
 })
 export class SecurityComponent implements OnInit {
   loading = false;

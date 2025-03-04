@@ -18,10 +18,11 @@ import {
 import { MobileService } from '@core/services';
 
 @Component({
-  selector: 'tero-neighbor-form',
-  templateUrl: './neighbor-form.html',
-  styleUrls: ['./neighbor-form.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'tero-neighbor-form',
+    templateUrl: './neighbor-form.html',
+    styleUrls: ['./neighbor-form.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NeighborFormComponent {
   @Input() alarmNumber: number | null = null;

@@ -23,9 +23,10 @@ interface IEcommerceProductCard extends IEcommerceProduct {
 }
 
 @Component({
-  selector: 'tero-ecommerce',
-  templateUrl: './ecommerce.html',
-  styleUrls: ['./ecommerce.css']
+    selector: 'tero-ecommerce',
+    templateUrl: './ecommerce.html',
+    styleUrls: ['./ecommerce.css'],
+    standalone: false
 })
 export class EcommerceComponent implements OnInit {
   loading = false;
