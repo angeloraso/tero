@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Inject, NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,16 +9,10 @@ import { BizyTranslateModule, BizyTranslateService, LANGUAGE } from '@bizy/servi
 import { ENV } from '@env/environment';
 import { es } from './i18n';
 
-@NgModule({
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    BizyTranslateModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: ENV.production && !ENV.mobile })
-  ],
-  providers: [DatePipe, CallNumber]
-})
+@NgModule({ imports: [BrowserModule,
+        BrowserAnimationsModule,
+        BizyTranslateModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: ENV.production && !ENV.mobile })], providers: [DatePipe, CallNumber, provideHttpClient(withInterceptorsFromDi())] })
 export class CoreModule {
   /* Make sure CoreModule is imported only by one NgModule the AppModule */
   constructor(
