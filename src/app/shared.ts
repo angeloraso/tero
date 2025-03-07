@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BizyAnimationService, BizyAveragePipe, BizyButtonComponent, BizyCacheService, BizyCalendarComponent, BizyCardComponent, BizyCopyToClipboardService, BizyEnumToArrayPipe, BizyExportToCSVService, BizyFilterComponent, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionSearchOptionComponent, BizyFormComponent, BizyGridComponent, BizyGridForDirective, BizyInputComponent, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyLoadingDirective, BizyLogService, BizyMenuComponent, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOrderByPipe, BizyPopupService, BizyPopupWrapperComponent, BizyRepeatPipe, BizyRouterService, BizySearchPipe, BizySelectComponent, BizySelectOptionComponent, BizySkeletonComponent, BizyStorageService, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableHeaderComponent, BizyTableRowComponent, BizyTableScrollingDirective, BizyTagComponent, BizyToastService, BizyToggleComponent, BizyToolbarComponent, BizyTooltipDirective, BizyUserAgentService, BizyValidatorService, BizyViewportService } from '@bizy/core';
+import { BizyAnimationService, BizyAveragePipe, BizyButtonComponent, BizyCacheService, BizyCalendarComponent, BizyCardComponent, BizyCopyToClipboardService, BizyEnumToArrayPipe, BizyExportToCSVService, BizyFilterComponent, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionSearchOptionComponent, BizyFormComponent, BizyGridComponent, BizyGridForDirective, BizyInputComponent, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyLoadingDirective, BizyLogService, BizyMenuComponent, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOrderByPipe, BizyPopupService, BizyPopupWrapperComponent, BizyRepeatPipe, BizyRouterService, BizySearchPipe, BizySelectComponent, BizySelectOptionComponent, BizySkeletonComponent, BizyStorageService, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableHeaderComponent, BizyTableRowComponent, BizyTableScrollingDirective, BizyTagComponent, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToolbarComponent, BizyTooltipDirective, BizyUserAgentService, BizyValidatorService, BizyViewportService } from '@bizy/core';
 import { TranslateDirective, TranslatePipe } from "@ngx-translate/core";
 
 const ANGULAR = [
@@ -36,7 +36,8 @@ const BIZY_COMPONENTS = [
     BizyTableColumnComponent,
     BizyTableRowComponent,
     BizyCalendarComponent,
-    BizyPopupWrapperComponent
+    BizyPopupWrapperComponent,
+    BizyToastWrapperComponent
 ];
 
 const BIZY_DIRECTIVES = [

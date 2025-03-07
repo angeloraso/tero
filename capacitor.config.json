@@ -2,7 +2,7 @@
   "appId": "ar.com.tero",
   "appName": "Tero",
   "npmClient": "npm",
-  "webDir": "dist",
+  "webDir": "dist/browser",
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": false,
