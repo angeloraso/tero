@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
+import { ContactFormComponent } from '@contacts/components';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -9,7 +11,7 @@ import { PATH as HOME_PATH } from '@home/home.routing';
     selector: 'tero-add-contact',
     templateUrl: './add-contact.html',
     styleUrls: ['./add-contact.css'],
-    standalone: false
+    imports: [...SharedModules, ContactFormComponent]
 })
 export class AddContactComponent implements OnInit {
   loading: boolean = false;

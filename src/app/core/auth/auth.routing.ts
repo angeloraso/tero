@@ -1,24 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { SignInComponent } from './sign-in/sign-in.component';
+import { Routes } from '@angular/router';
 
 export enum PATH {
   EMPTY = '',
-  SIGN_IN = 'sign-in'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: SignInComponent,
+    loadComponent: () => import('@auth/auth.component').then(m => m.AuthComponent),
     pathMatch: 'full'
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class AuthRoutingModule {
-  static COMPONENTS = [SignInComponent];
-}

@@ -1,15 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { WHATSAPP_URL } from '@core/constants';
 import { ITopic, ITopicData, TOPIC_DATA_TYPE, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
@@ -17,6 +19,7 @@ import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as TOPICS_PATH } from '@dashboard/topics/topics.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { TopicDataPopupComponent } from './components';
+import { es } from './i18n';
 
 interface IExtendedTopic extends ITopic {
   _status: string;
@@ -28,7 +31,7 @@ interface IExtendedTopic extends ITopic {
     selector: 'tero-topics',
     templateUrl: './topics.html',
     styleUrls: ['./topics.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class TopicsComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
@@ -56,6 +59,7 @@ export class TopicsComponent implements OnInit {
   activatedFilters: number = 0;
   accountEmail = this.#auth.getEmail();
 
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly TOPIC_STATE = TOPIC_STATE;
   readonly TOPIC_DATA_TYPE = TOPIC_DATA_TYPE;
@@ -63,6 +67,7 @@ export class TopicsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#translate.loadTranslations(es);
       const [topics, users, isConfig, isNeighbor] = await Promise.all([
         this.#topicsService.getTopics(),
         this.#usersService.getUsers(),

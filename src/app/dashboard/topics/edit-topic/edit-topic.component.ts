@@ -1,22 +1,24 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SharedModules } from '@app/shared';
 import {
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { ITopic, IUser, TOPIC_STATE } from '@core/model';
 import { TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { TopicFormComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
 @Component({
     selector: 'tero-edit-topic',
     templateUrl: './edit-topic.html',
     styleUrls: ['./edit-topic.css'],
-    standalone: false
+    imports: [...SharedModules, TopicFormComponent]
 })
 export class EditTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);

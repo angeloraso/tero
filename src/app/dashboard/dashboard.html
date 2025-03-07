@@ -11,7 +11,38 @@
 <div class="tero-wrapper dashboard">
 
     <ng-container *ngIf="loading">
-        <bizy-skeleton-card *ngFor="let i of 3 | bizyRepeat"></bizy-skeleton-card>
+
+        <bizy-card>
+
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+
+            <bizy-list slot="header-start">
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+            </bizy-list>
+
+            <bizy-skeleton slot="footer-start" class="tero-skeleton-grid-card"></bizy-skeleton>
+
+            <bizy-skeleton slot="footer-end" class="tero-skeleton-grid-card"></bizy-skeleton>
+
+        </bizy-card>
+
+        <bizy-card *ngFor="let i of 2 | bizyRepeat">
+
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+
+            <bizy-list slot="header-start">
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+            </bizy-list>
+
+        </bizy-card>
     </ng-container>
 
     <ng-container *ngIf="!loading">

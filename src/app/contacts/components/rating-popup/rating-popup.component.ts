@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BizyPopupService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyPopupService } from '@bizy/core';
 import { LONG_TEXT_MAX_LENGTH } from '@core/constants';
 import { Rating } from '@core/model';
 @Component({
@@ -8,7 +9,7 @@ import { Rating } from '@core/model';
     templateUrl: 'rating-popup.html',
     styleUrls: ['rating-popup.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class RatingPopupComponent implements OnInit {
   form: FormGroup<{

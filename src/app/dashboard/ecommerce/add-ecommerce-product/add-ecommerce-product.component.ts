@@ -1,16 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { IPhone, IUser } from '@core/model';
 import { EcommerceService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { EcommerceProductFormComponent } from '@dashboard/ecommerce/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
 
 @Component({
     selector: 'tero-add-ecommerce-product',
     templateUrl: './add-ecommerce-product.html',
     styleUrls: ['./add-ecommerce-product.css'],
-    standalone: false
+    imports: [...SharedModules, EcommerceProductFormComponent]
 })
 export class AddEcommerceProductComponent implements OnInit {
   loading: boolean = false;

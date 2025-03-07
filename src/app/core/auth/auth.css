@@ -1,4 +1,4 @@
-.sign-in__logo {
+.auth__logo {
   height: 5rem;
   width: 5rem;
   margin-bottom: 1.2rem;
@@ -15,12 +15,12 @@
   animation-fill-mode: both;
 }
 
-.sign-in__button {
+.auth__button {
   --bizy-button-background-color: #fff;
   --bizy-button-color: var(--text-color);
 }
 
-::ng-deep .sign-in__button__logo {
+::ng-deep .auth__button__logo {
   height: 1.2rem;
 }
 

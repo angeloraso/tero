@@ -6,6 +6,10 @@
     margin-bottom: 2rem;
 }
 
+.popup__header .tero-title {
+    text-align: center;
+}
+
 .popup__header__msg {
     text-align: center;
 }

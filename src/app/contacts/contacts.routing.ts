@@ -1,37 +1,25 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { neighborGuard } from '@core/guards';
-import { AddContactComponent } from './add-contact/add-contact.component';
-import { ContactsComponent } from './contacts.component';
-import { EditContactComponent } from './edit-contact/edit-contact.component';
 
 export enum PATH {
   EMPTY = '',
   ADD = 'add'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: ContactsComponent,
+    loadComponent: () => import('@contacts/contacts.component').then(m => m.ContactsComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.ADD,
-    component: AddContactComponent,
+    loadComponent: () => import('@contacts/add-contact/add-contact.component').then(m => m.AddContactComponent),
     canActivate: [neighborGuard]
   },
   {
     path: ':contactId',
-    component: EditContactComponent,
+    loadComponent: () => import('@contacts/edit-contact/edit-contact.component').then(m => m.EditContactComponent),
     canActivate: [neighborGuard]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class ContactsRoutingModule {
-  static COMPONENTS = [ContactsComponent, AddContactComponent, EditContactComponent];
-}

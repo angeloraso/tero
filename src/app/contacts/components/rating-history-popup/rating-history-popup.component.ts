@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { BIZY_TAG_TYPE } from '@bizy/components';
-import { BizyPopupService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BIZY_TAG_TYPE, BizyPopupService } from '@bizy/core';
 import { IContactRating } from '@core/model';
 @Component({
     selector: 'tero-rating-history-popup',
     templateUrl: 'rating-history-popup.html',
     styleUrls: ['rating-history-popup.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class RatingHistoryPopupComponent implements OnInit {
   rating: Array<IContactRating> = [];

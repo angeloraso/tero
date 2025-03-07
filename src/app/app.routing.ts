@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { authGuard, autoSignInGuard } from '@core/guards';
+import { Routes } from '@angular/router';
+import { autoSignInGuard } from '@core/guards';
 
 export enum PATH {
   EMPTY = '',
@@ -9,7 +8,7 @@ export enum PATH {
   ANY = '**'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
     redirectTo: PATH.AUTH,
@@ -17,22 +16,15 @@ const routes: Routes = [
   },
   {
     path: PATH.AUTH,
-    loadChildren: () => import('@auth/auth.module').then(m => m.AuthModule),
+    loadChildren: () => import('@auth/auth.routing').then(m => m.ROUTES),
     canActivate: [autoSignInGuard]
   },
   {
     path: PATH.HOME,
-    loadChildren: () => import('@home/home.module').then(m => m.HomeModule),
-    canActivate: [authGuard]
+    loadChildren: () => import('@home/home.routing').then(m => m.ROUTES),
   },
   {
     path: PATH.ANY,
     redirectTo: PATH.AUTH
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}

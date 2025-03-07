@@ -1,7 +1,6 @@
-import { inject, NgModule } from '@angular/core';
-import { Router, RouterModule, Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 import { UsersService } from '@core/services';
-import { DashboardComponent } from './dashboard.component';
 
 export enum PATH {
   EMPTY = '',
@@ -10,15 +9,15 @@ export enum PATH {
   TOPICS = 'topics'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: DashboardComponent,
+    loadComponent: () => import('@dashboard/dashboard.component').then(m => m.DashboardComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.SECURITY,
-    loadChildren: () => import('@dashboard/security/security.module').then(m => m.SecurityModule),
+    loadChildren: () => import('@dashboard/security/security.routing').then(m => m.ROUTES),
     canMatch: [
       () => {
         const router = inject(Router);
@@ -39,11 +38,11 @@ const routes: Routes = [
   },
   {
     path: PATH.ECOMMERCE,
-    loadChildren: () => import('@dashboard/ecommerce/ecommerce.module').then(m => m.EcommerceModule)
+    loadChildren: () => import('@dashboard/ecommerce/ecommerce.routing').then(m => m.ROUTES)
   },
   {
     path: PATH.TOPICS,
-    loadChildren: () => import('@dashboard/topics/topics.module').then(m => m.TopicsModule),
+    loadChildren: () => import('@dashboard/topics/topics.routing').then(m => m.ROUTES),
     canMatch: [
       () => {
         const router = inject(Router);
@@ -63,11 +62,3 @@ const routes: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DashboardRoutingModule {
-  static COMPONENTS = [DashboardComponent];
-}

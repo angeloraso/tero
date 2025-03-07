@@ -1,12 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { BizyLogService, BizyPopupService, BizyUserAgentService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyLogService, BizyPopupService, BizyUserAgentService } from '@bizy/core';
 import pkg from 'package.json';
 
 @Component({
-    selector: 'caquen-about-popup',
+    selector: 'tero-about-popup',
     templateUrl: 'about-popup.html',
     styleUrls: ['about-popup.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class AboutPopupComponent implements AfterViewInit {
   readonly DESCRIPTION: string = pkg.description;

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { BizyPopupService, BizyValidatorService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyPopupService, BizyValidatorService } from '@bizy/core';
 import { EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, TEL_MAX_LENGTH } from '@core/constants';
 import { TOPIC_DATA_TYPE } from '@core/model';
 @Component({
@@ -8,7 +9,7 @@ import { TOPIC_DATA_TYPE } from '@core/model';
     templateUrl: 'topic-data-popup.html',
     styleUrls: ['topic-data-popup.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class TopicDataPopupComponent {
   readonly #popup = inject(BizyPopupService);

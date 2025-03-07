@@ -1,22 +1,22 @@
 import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Inject,
-    Input,
-    Output
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/components';
-import { BizyPopupService } from '@bizy/services';
+import { BIZY_TAG_TYPE, BizyPopupService } from '@bizy/core';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
 import {
-    DEFAULT_USER_PICTURE,
-    LONG_TEXT_MAX_LENGTH,
-    NAME_MAX_LENGTH,
-    NAME_MIN_LENGTH
+  DEFAULT_USER_PICTURE,
+  LONG_TEXT_MAX_LENGTH,
+  NAME_MAX_LENGTH,
+  NAME_MIN_LENGTH
 } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { MobileService } from '@core/services';
@@ -26,7 +26,7 @@ import { MobileService } from '@core/services';
     templateUrl: './contact-form.html',
     styleUrls: ['./contact-form.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class ContactFormComponent {
   @Input() id: string = '';

@@ -1,23 +1,21 @@
-import { inject, NgModule } from '@angular/core';
-import { Router, RouterModule, Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 import { UsersService } from '@core/services';
-import { SecurityInvoicesComponent } from './security-invoices/security-invoices.component';
-import { SecurityComponent } from './security.component';
 
 export enum PATH {
   EMPTY = '',
   INVOICES = 'invoices'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: SecurityComponent,
+    loadComponent: () => import('@dashboard/security/security.component').then(m => m.SecurityComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.INVOICES,
-    component: SecurityInvoicesComponent,
+    loadComponent: () => import('@dashboard/security/security-invoices/security-invoices.component').then(m => m.SecurityInvoicesComponent),
     canMatch: [
       () => {
         const router = inject(Router);
@@ -39,16 +37,8 @@ const routes: Routes = [
   {
     path: ':group',
     loadChildren: () =>
-      import('@dashboard/security/security-group/security-group.module').then(
-        m => m.SecurityGroupModule
+      import('@dashboard/security/security-group/security-group.routing').then(
+        m => m.ROUTES
       )
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class SecurityRoutingModule {
-  static COMPONENTS = [SecurityComponent, SecurityInvoicesComponent];
-}

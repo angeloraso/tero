@@ -1,22 +1,24 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SharedModules } from '@app/shared';
 import {
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
+import { NeighborFormComponent } from '@neighbors/components';
 
 @Component({
     selector: 'tero-edit-neighbor',
     templateUrl: './edit-neighbor.html',
     styleUrls: ['./edit-neighbor.css'],
-    standalone: false
+    imports: [...SharedModules, NeighborFormComponent]
 })
 export class EditNeighborComponent implements OnInit {
   neighbor: INeighbor | null = null;

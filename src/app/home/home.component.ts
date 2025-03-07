@@ -1,12 +1,18 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import {
   BizyLogService,
   BizyRouterService,
+  BizySidebarComponent,
+  BizySidebarOptionComponent,
   BizyStorageService,
+  BizyTabComponent,
+  BizyTabsComponent,
   BizyToastService
-} from '@bizy/services';
+} from '@bizy/core';
 import { LOGO_PATH } from '@core/constants';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import pkg from 'package.json';
@@ -22,7 +28,14 @@ interface IOption {
     selector: 'tero-home',
     templateUrl: './home.html',
     styleUrls: ['./home.css'],
-    standalone: false
+    imports: [
+      ...SharedModules,
+      BizySidebarComponent,
+      BizySidebarOptionComponent,
+      BizyTabsComponent,
+      BizyTabComponent,
+      RouterOutlet
+    ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   readonly #log = inject(BizyLogService);

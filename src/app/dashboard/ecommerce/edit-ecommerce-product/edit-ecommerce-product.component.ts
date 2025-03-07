@@ -1,22 +1,24 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SharedModules } from '@app/shared';
 import {
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { IEcommerceProduct, IPhone } from '@core/model';
 import { EcommerceService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { EcommerceProductFormComponent } from '@dashboard/ecommerce/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
 @Component({
-    selector: 'tero-edit-ecommerce-product',
-    templateUrl: './edit-ecommerce-product.html',
-    styleUrls: ['./edit-ecommerce-product.css'],
-    standalone: false
+  selector: 'tero-edit-ecommerce-product',
+  templateUrl: './edit-ecommerce-product.html',
+  styleUrls: ['./edit-ecommerce-product.css'],
+  imports: [...SharedModules, EcommerceProductFormComponent]
 })
 export class EditEcommerceProductComponent implements OnInit {
   product: IEcommerceProduct | null = null;

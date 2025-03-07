@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { BIZY_TAG_TYPE } from '@bizy/components';
+import { SharedModules } from '@app/shared';
+import { BIZY_TAG_TYPE } from '@bizy/core';
 import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
     selector: 'tero-lot',
     templateUrl: './lot.html',
     styleUrls: ['./lot.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class LotComponent {
   @Input() lot: ILot | null = null;

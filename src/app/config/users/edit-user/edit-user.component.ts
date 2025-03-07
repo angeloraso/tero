@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BIZY_TAG_TYPE } from '@bizy/components';
-import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BIZY_TAG_TYPE, BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
@@ -12,7 +12,7 @@ import { PATH as HOME_PATH } from '@home/home.routing';
     selector: 'tero-edit-user',
     templateUrl: './edit-user.html',
     styleUrls: ['./edit-user.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class EditUserComponent implements OnInit {
   user: IUser | null = null;

@@ -1,22 +1,26 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/components';
-import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
   BizyExportToCSVService,
   BizyLogService,
+  BizyOrderByPipe,
   BizyRouterService,
+  BizySearchPipe,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { WHATSAPP_URL } from '@core/constants';
 import { IEcommerceProduct } from '@core/model';
 import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as ECOMMERCE_PATH } from '@dashboard/ecommerce/ecommerce.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { es } from './i18n';
 
 interface IEcommerceProductCard extends IEcommerceProduct {
   _phones: Array<string>;
@@ -26,9 +30,22 @@ interface IEcommerceProductCard extends IEcommerceProduct {
     selector: 'tero-ecommerce',
     templateUrl: './ecommerce.html',
     styleUrls: ['./ecommerce.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class EcommerceComponent implements OnInit {
+  readonly #router = inject(BizyRouterService);
+  readonly #ecommerce = inject(EcommerceService);
+  readonly #auth = inject(AuthService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #mobile = inject(MobileService);
+  readonly #exportToCSV = inject(BizyExportToCSVService);
+  readonly #copyToClipboard = inject(BizyCopyToClipboardService);
+  readonly #searchPipe = inject(BizySearchPipe);
+  readonly #orderByPipe = inject(BizyOrderByPipe);
+  readonly #usersService = inject(UsersService);
+
   loading = false;
   csvLoading = false;
   isNeighbor = false;
@@ -38,36 +55,21 @@ export class EcommerceComponent implements OnInit {
   searchKeys = ['name', 'tags', 'description', '_phones'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
-  isMobile = true;
+  isMobile = this.#mobile.isMobile();
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-
-  constructor(
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(EcommerceService) private ecommerce: EcommerceService,
-    @Inject(AuthService) private auth: AuthService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
-    @Inject(BizyCopyToClipboardService) private bizyToClipboard: BizyCopyToClipboardService,
-    @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
-    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UsersService) private usersService: UsersService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-  }
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#translate.loadTranslations(es);
       const [products, isConfig, isNeighbor] = await Promise.all([
-        this.ecommerce.getProducts(),
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor()
+        this.#ecommerce.getProducts(),
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor()
       ]);
 
       this.isConfig = isConfig;
@@ -89,12 +91,12 @@ export class EcommerceComponent implements OnInit {
         return { id: _tag, value: _tag, selected: true };
       });
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'ecommerce.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
@@ -105,7 +107,7 @@ export class EcommerceComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({
+    this.#router.goTo({
       path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.ECOMMERCE}/${ECOMMERCE_PATH.ADD}`
     });
   }
@@ -114,12 +116,12 @@ export class EcommerceComponent implements OnInit {
     if (
       !product ||
       (!this.isNeighbor && !this.isConfig) ||
-      product.accountId !== this.auth.getId()
+      product.accountId !== this.#auth.getId()
     ) {
       return;
     }
 
-    this.router.goTo({
+    this.#router.goTo({
       path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.ECOMMERCE}/${product.id}`
     });
   }
@@ -147,15 +149,15 @@ export class EcommerceComponent implements OnInit {
 
   async copyPhone(phone: string) {
     try {
-      await this.bizyToClipboard.copy(phone);
-      this.toast.success();
+      await this.#copyToClipboard.copy(phone);
+      this.#toast.success();
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'ecommerce.component',
         functionName: 'copyPhone',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -165,14 +167,14 @@ export class EcommerceComponent implements OnInit {
         return;
       }
 
-      await this.mobile.call(product.phones[0].number);
+      await this.#mobile.call(product.phones[0].number);
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'products.component',
         functionName: 'onCall',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -182,22 +184,22 @@ export class EcommerceComponent implements OnInit {
         return;
       }
 
-      await this.mobile.share({
-        dialogTitle: this.translate.get('ECOMMERCE.SHARE_PRODUCT'),
+      await this.#mobile.share({
+        dialogTitle: this.#translate.get('ECOMMERCE.SHARE_PRODUCT'),
         title: product.productName,
-        text: `${this.translate.get('CORE.FORM.FIELD.NAME')}: ${product.productName}
-${this.translate.get('CORE.FORM.FIELD.PHONE')}: ${product.phones[0].number}
-${this.translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
+        text: `${this.#translate.get('CORE.FORM.FIELD.NAME')}: ${product.productName}
+${this.#translate.get('CORE.FORM.FIELD.PHONE')}: ${product.phones[0].number}
+${this.#translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
       });
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'ecommerce.component',
         functionName: 'onShare',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: this.translate.get('CORE.FORM.ERROR.SHARE')
+        msg: this.#translate.get('CORE.FORM.ERROR.SHARE')
       });
     }
   }
@@ -220,28 +222,28 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
 
       const items = this.#filter(this.products);
 
-      const fileName = this.translate.get('ECOMMERCE.CSV_FILE_NAME');
+      const fileName = this.#translate.get('ECOMMERCE.CSV_FILE_NAME');
       const model = {
-        name: this.translate.get('CORE.FORM.FIELD.NAME'),
-        _phones: this.translate.get('CORE.FORM.FIELD.PHONE'),
-        tags: this.translate.get('CORE.FORM.FIELD.TAG')
+        name: this.#translate.get('CORE.FORM.FIELD.NAME'),
+        _phones: this.#translate.get('CORE.FORM.FIELD.PHONE'),
+        tags: this.#translate.get('CORE.FORM.FIELD.TAG')
       };
 
       if (this.isMobile) {
-        const csv = this.exportToCSV.getCSV({ items, model });
-        await this.mobile.downloadFile({ data: csv, name: fileName });
+        const csv = this.#exportToCSV.getCSV({ items, model });
+        await this.#mobile.downloadFile({ data: csv, name: fileName });
       } else {
-        this.exportToCSV.download({ items, model, fileName });
+        this.#exportToCSV.download({ items, model, fileName });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'ecommerce.component',
         functionName: 'export',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+        msg: `${this.#translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
       });
     } finally {
       this.csvLoading = false;
@@ -249,12 +251,12 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
   }
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}` });
+    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}` });
   }
 
   #filter(items: Array<IEcommerceProductCard>): Array<IEcommerceProductCard> {
-    let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
-    _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
+    let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }
 }

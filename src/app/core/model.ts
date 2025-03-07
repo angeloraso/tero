@@ -291,11 +291,16 @@ export class GarbageTruckRecord implements IGarbageTruckRecord {
   accountEmail: string;
   created: number;
 
-  constructor(record: Omit<IGarbageTruckRecord, 'id' | 'created'>) {
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);
-    this.id = date.getTime();
-    this.accountEmail = record.accountEmail;
+  constructor(accountEmail: string, id?: number) {
+    if (id) {
+      this.id = id;
+    } else {
+      const date = new Date();
+      date.setHours(0, 0, 0, 0);
+      this.id = date.getTime();
+    }
+
+    this.accountEmail = accountEmail;
     this.created = Date.now();
   }
 }

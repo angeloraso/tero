@@ -1,23 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { NeighborhoodComponent } from './neighborhood.component';
+import { Routes } from '@angular/router';
 
 export enum PATH {
   EMPTY = ''
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: NeighborhoodComponent,
+    loadComponent: () => import('@neighborhood/neighborhood.component').then(m => m.NeighborhoodComponent),
     pathMatch: 'full'
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class NeighborhoodRoutingModule {
-  static COMPONENTS = [NeighborhoodComponent];
-}

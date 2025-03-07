@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BizyPopupService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyPopupService } from '@bizy/core';
 
 @Component({
     selector: 'tero-user-phone-popup',
     templateUrl: 'user-phone-popup.html',
     styleUrls: ['user-phone-popup.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPhonePopupComponent implements OnInit {
   form: FormGroup<{

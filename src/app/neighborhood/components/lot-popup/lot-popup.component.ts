@@ -1,19 +1,20 @@
 import { Component, inject } from '@angular/core';
-import { BIZY_TAG_TYPE } from '@bizy/components';
+import { SharedModules } from '@app/shared';
 import {
+  BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
   BizyLogService,
   BizyPopupService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
     selector: 'tero-lot-popup',
     templateUrl: './lot-popup.html',
     styleUrls: ['./lot-popup.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class LotPopupComponent {
   readonly #popup = inject(BizyPopupService);

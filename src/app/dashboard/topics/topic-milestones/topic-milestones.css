@@ -7,13 +7,8 @@
 .topic-milestones {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: minmax(5rem, auto) auto;
-    gap: 1rem;
-    --bizy-card-height: auto;
-}
-
-.topic-milestones__skeleton {
-    --bizy-card-height: 8rem;
+    grid-template-rows: auto 100%;
+    gap: 0.5rem;
 }
 
 .topics__card__content {
@@ -23,8 +18,10 @@
 }
 
 .topic-milestones__milestones {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 100%;
+    height: fit-content;
+    padding-bottom: 3rem;
 }
 
 .topic-milestones__milestones__header {

@@ -109,10 +109,11 @@
         </span>
 
     </span>
-    
+
     <bizy-grid *ngIf="!loading" class="animated fade-in">
 
         <bizy-card 
+            class="animated fade-in"
             (onSelect)="selectNeighbor(neighbor)"
             *gridFor="let neighbor of neighbors 
                                         | bizySearch: search : searchKeys
@@ -161,7 +162,21 @@
     </bizy-grid>
 
     <bizy-grid *ngIf="loading" class="animated fade-in">
-        <bizy-skeleton-card *gridFor="let i of neighbors.length > 0 ? neighbors : 30 | bizyRepeat"></bizy-skeleton-card>
+
+        <bizy-card *gridFor="let i of neighbors.length > 0 ? neighbors : 30 | bizyRepeat">
+    
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+    
+            <bizy-list slot="header-start">
+    
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+    
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+    
+            </bizy-list>
+    
+        </bizy-card>
+
     </bizy-grid>
 
     <bizy-tag 

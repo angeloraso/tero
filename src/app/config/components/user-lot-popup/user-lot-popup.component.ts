@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BizyPopupService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyPopupService } from '@bizy/core';
 import { LOTS } from '@core/constants';
 
 @Component({
@@ -8,7 +9,7 @@ import { LOTS } from '@core/constants';
     templateUrl: 'user-lot-popup.html',
     styleUrls: ['user-lot-popup.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class UserLotPopupComponent implements OnInit {
   form: FormGroup<{

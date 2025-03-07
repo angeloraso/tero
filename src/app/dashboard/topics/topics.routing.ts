@@ -1,9 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AddTopicComponent } from './add-topic/add-topic.component';
-import { EditTopicComponent } from './edit-topic/edit-topic.component';
-import { TopicMilestonesComponent } from './topic-milestones/topic-milestones.component';
-import { TopicsComponent } from './topics.component';
+import { Routes } from '@angular/router';
 
 export enum PATH {
   EMPTY = '',
@@ -11,35 +6,22 @@ export enum PATH {
   MILESTONES = 'milestones'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: TopicsComponent,
+    loadComponent: () => import('@dashboard/topics/topics.component').then(m => m.TopicsComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.ADD,
-    component: AddTopicComponent
+    loadComponent: () => import('@dashboard/topics/add-topic/add-topic.component').then(m => m.AddTopicComponent)
   },
   {
     path: ':topicId',
-    component: EditTopicComponent
+    loadComponent: () => import('@dashboard/topics/edit-topic/edit-topic.component').then(m => m.EditTopicComponent)
   },
   {
     path: `:topicId/${PATH.MILESTONES}`,
-    component: TopicMilestonesComponent
+    loadComponent: () => import('@dashboard/topics/topic-milestones/topic-milestones.component').then(m => m.TopicMilestonesComponent)
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class TopicsRoutingModule {
-  static COMPONENTS = [
-    TopicsComponent,
-    AddTopicComponent,
-    EditTopicComponent,
-    TopicMilestonesComponent
-  ];
-}

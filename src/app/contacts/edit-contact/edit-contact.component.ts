@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import {
   BizyLogService,
@@ -7,17 +8,18 @@ import {
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
+import { ContactFormComponent } from '@contacts/components';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
 
 @Component({
     selector: 'tero-edit-contact',
     templateUrl: './edit-contact.html',
     styleUrls: ['./edit-contact.css'],
-    standalone: false
+    imports: [...SharedModules, ContactFormComponent]
 })
 export class EditContactComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);

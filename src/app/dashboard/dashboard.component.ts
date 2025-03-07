@@ -1,14 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/components';
-import { LOADING_TYPE } from '@bizy/directives';
 import {
+  BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
-  BizyTranslateService
-} from '@bizy/services';
+  BizyTranslateService,
+  LOADING_TYPE
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { LOGO_PATH } from '@core/constants';
 import { ERROR, IEcommerceProduct, ITopic, TOPIC_STATE } from '@core/model';
 import {
@@ -21,8 +23,9 @@ import {
   UsersService,
   UtilsService
 } from '@core/services';
-import { PopupComponent } from '@shared/components';
 import { PATH } from './dashboard.routing';
+import { es } from './i18n';
+
 interface IGroup {
   value: number;
   lots: Set<number>;
@@ -33,7 +36,7 @@ interface IGroup {
     selector: 'tero-dashboard',
     templateUrl: './dashboard.html',
     styleUrls: ['./dashboard.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class DashboardComponent implements OnInit {
   readonly #neighborsService = inject(NeighborsService);
@@ -68,13 +71,14 @@ export class DashboardComponent implements OnInit {
   isNeighbor: boolean = false;
   securityNoDebt: boolean = false;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly LOADING_TYPE = LOADING_TYPE;
 
   async ngOnInit() {
     try {
       this.loading = true;
-
+      this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity, products, topics] = await Promise.all([
         this.#usersService.isConfig(),
         this.#usersService.isNeighbor(),

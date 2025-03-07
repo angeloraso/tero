@@ -1,7 +1,7 @@
-import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { ENV } from '@env/environment';
-import { Subscription, filter, interval, throttleTime } from 'rxjs';
+import { filter, interval, Subscription, throttleTime } from 'rxjs';
 
 enum VERSION_TYPE {
   VERSION_DETECTED = 'VERSION_DETECTED',
@@ -13,9 +13,8 @@ enum VERSION_TYPE {
   providedIn: 'root'
 })
 export class ServiceWorkerService implements OnDestroy {
-  private _subscription = new Subscription();
-
-  constructor(@Inject(SwUpdate) private swUpdate: SwUpdate) {}
+  readonly #swUpdate = inject(SwUpdate);
+  readonly #subscription = new Subscription();
 
   start() {
     if (!ENV.production || ENV.mobile) {
@@ -24,10 +23,10 @@ export class ServiceWorkerService implements OnDestroy {
 
     this.checkForUpdate();
     const everyHour$ = interval(1 * 60 * 60 * 1000);
-    this._subscription.add(everyHour$.subscribe(() => this.checkForUpdate()));
+    this.#subscription.add(everyHour$.subscribe(() => this.checkForUpdate()));
 
-    this._subscription.add(
-      this.swUpdate.versionUpdates
+    this.#subscription.add(
+      this.#swUpdate.versionUpdates
         .pipe(
           filter(event => event.type === VERSION_TYPE.VERSION_READY),
           throttleTime(60 * 1000)
@@ -42,7 +41,7 @@ export class ServiceWorkerService implements OnDestroy {
   async checkForUpdate() {
     try {
       console.debug('Checking for update...');
-      const updateFound = await this.swUpdate.checkForUpdate();
+      const updateFound = await this.#swUpdate.checkForUpdate();
       if (updateFound) {
         console.debug('A new version is available!');
       } else {
@@ -54,6 +53,6 @@ export class ServiceWorkerService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this.#subscription.unsubscribe();
   }
 }

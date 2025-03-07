@@ -8,7 +8,8 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BIZY_TAG_TYPE } from '@bizy/components';
+import { SharedModules } from '@app/shared';
+import { BIZY_TAG_TYPE } from '@bizy/core';
 import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IPhone } from '@core/model';
 import { MobileService } from '@core/services';
@@ -18,7 +19,7 @@ import { MobileService } from '@core/services';
     templateUrl: './ecommerce-product-form.html',
     styleUrls: ['./ecommerce-product-form.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class EcommerceProductFormComponent {
   @Input() disabled: boolean = false;

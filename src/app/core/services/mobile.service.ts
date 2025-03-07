@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { FirebaseFunctions } from '@capacitor-firebase/functions';
@@ -20,6 +20,7 @@ export enum FILE_TYPE {
   providedIn: 'root'
 })
 export class MobileService {
+  readonly #callNumber = inject(CallNumber);
   readonly #backButton = new Subject<void>();
 
   #MESSAGING_TOKEN: string | null = null;
@@ -45,8 +46,6 @@ export class MobileService {
   get backButton$(): Observable<void> {
     return this.#backButton.asObservable();
   }
-
-  constructor(@Inject(CallNumber) private callNumber: CallNumber) {}
 
   isMobile() {
     return ENV.mobile;
@@ -79,7 +78,7 @@ export class MobileService {
   }
 
   call(number: string) {
-    return this.callNumber.callNumber(number, false);
+    return this.#callNumber.callNumber(number, false);
   }
 
   share(data: { dialogTitle?: string; title?: string; text?: string; url?: string }) {

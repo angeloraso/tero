@@ -1,7 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { PATH as AUTH_PATH } from '@auth/auth.routing';
 import { AuthService } from '@auth/auth.service';
 import { map, take } from 'rxjs/operators';
 
@@ -12,7 +11,7 @@ export const authGuard = () => {
     take(1),
     map(signedIn => {
       if (!signedIn) {
-        router.navigateByUrl(`/${APP_PATH.AUTH}/${AUTH_PATH.SIGN_IN}`, { replaceUrl: true });
+        router.navigateByUrl(`/${APP_PATH.AUTH}`, { replaceUrl: true });
         console.error('Not permissions');
         return false;
       }

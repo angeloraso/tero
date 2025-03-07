@@ -1,20 +1,21 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/components';
 import {
+  BIZY_TAG_TYPE,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { ITopic, ITopicMilestone, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicMilestonePopupComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
 interface IExtendedTopic extends ITopic {
   _names: Array<string>;
   _editEnabled: boolean;
@@ -24,7 +25,7 @@ interface IExtendedTopic extends ITopic {
     selector: 'tero-topic-milestones',
     templateUrl: './topic-milestones.html',
     styleUrls: ['./topic-milestones.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class TopicMilestonesComponent implements OnInit {
   readonly #auth = inject(AuthService);

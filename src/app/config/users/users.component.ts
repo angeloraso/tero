@@ -1,20 +1,25 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
-import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
+import { SharedModules } from '@app/shared';
 import {
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
   BizyExportToCSVService,
+  BizyFilterPipe,
   BizyLogService,
+  BizyOrderByPipe,
   BizyRouterService,
+  BizySearchPipe,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { WHATSAPP_URL } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { es } from './i18n';
 
 interface IUserCard extends IUser {
   _status: string;
@@ -26,7 +31,7 @@ interface IUserCard extends IUser {
     selector: 'tero-users',
     templateUrl: './users.html',
     styleUrls: ['./users.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class UsersComponent implements OnInit {
   loading = false;
@@ -44,6 +49,7 @@ export class UsersComponent implements OnInit {
   activatedFilters: number = 0;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly USER_STATE = USER_STATE;
 
   constructor(
@@ -65,6 +71,7 @@ export class UsersComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.translate.loadTranslations(es);
       const [users, isConfig, isNeighbor] = await Promise.all([
         this.usersService.getUsers(),
         this.usersService.isConfig(),

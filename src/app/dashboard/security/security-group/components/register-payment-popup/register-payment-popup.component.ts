@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BizyPopupService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyPopupService } from '@bizy/core';
 import { NAME_MAX_LENGTH } from '@core/constants';
 import { INeighbor } from '@core/model';
 @Component({
@@ -8,7 +9,7 @@ import { INeighbor } from '@core/model';
     templateUrl: 'register-payment-popup.html',
     styleUrls: ['register-payment-popup.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class RegisterPaymentPopupComponent implements OnInit {
   neighbor: INeighbor | null = null;
@@ -34,9 +35,9 @@ export class RegisterPaymentPopupComponent implements OnInit {
   ngOnInit() {
     const data = this.popup.getData<{ neighbor: INeighbor; transactionId: string }>();
 
-    this.neighbor = data.neighbor || null;
+    this.neighbor = data?.neighbor || null;
 
-    if (data.transactionId) {
+    if (data?.transactionId) {
       this.transactionId.setValue(data.transactionId);
     }
   }

@@ -1,7 +1,31 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { importProvidersFrom, LOCALE_ID, provideAppInitializer } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppInitService } from '@app/app-init.service';
+import { AppComponent } from '@app/app.component';
+import { ROUTES } from '@app/app.routing';
+import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
+import { BizyTranslateModule } from '@bizy/core';
+import { ENV } from '@env/environment';
 
-import { AppModule } from './app/app.module';
+const initApp = () => {
+  const appInit = new AppInitService();
+  return appInit.init();
+}
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    CallNumber,
+    importProvidersFrom(ServiceWorkerModule.register('ngsw-worker.js', { enabled: ENV.production && !ENV.mobile })),
+    importProvidersFrom(BizyTranslateModule),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAppInitializer(() => initApp()),
+    provideRouter(ROUTES),
+    provideAnimations(),
+    { provide: Window, useValue: window },
+    { provide: LOCALE_ID, useValue: 'es-AR'},
+  ]
+});

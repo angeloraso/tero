@@ -295,3 +295,7 @@ h6 {
     text-wrap: auto;
     text-align: center;
 }
+
+.tero-skeleton-grid-card {
+    --bizy-skeleton-width: var(--bizy-grid-column-width);
+}

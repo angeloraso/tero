@@ -1,37 +1,25 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { configGuard } from '@core/guards';
-import { AddNeighborComponent } from './add-neighbor/add-neighbor.component';
-import { EditNeighborComponent } from './edit-neighbor/edit-neighbor.component';
-import { NeighborsComponent } from './neighbors.component';
 
 export enum PATH {
   EMPTY = '',
   ADD = 'add'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: NeighborsComponent,
+    loadComponent: () => import('@neighbors/neighbors.component').then(m => m.NeighborsComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.ADD,
-    component: AddNeighborComponent,
+    loadComponent: () => import('@neighbors/add-neighbor/add-neighbor.component').then(m => m.AddNeighborComponent),
     canActivate: [configGuard]
   },
   {
     path: ':neighborId',
-    component: EditNeighborComponent,
+    loadComponent: () => import('@neighbors/edit-neighbor/edit-neighbor.component').then(m => m.EditNeighborComponent),
     canActivate: [configGuard]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class NeighborsRoutingModule {
-  static COMPONENTS = [NeighborsComponent, AddNeighborComponent, EditNeighborComponent];
-}

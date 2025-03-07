@@ -8,11 +8,27 @@
 
 <div class="tero-wrapper">
 
-    <bizy-skeleton-card *ngIf="loading"></bizy-skeleton-card>
+    <ng-container *ngIf="loading">
+
+        <bizy-skeleton width="100%" height="2rem"></bizy-skeleton>
+
+        <bizy-skeleton width="100%" height="5rem"></bizy-skeleton>
+
+        <bizy-skeleton width="100%" height="5rem"></bizy-skeleton>
+
+        <bizy-skeleton width="100%" height="5rem"></bizy-skeleton>
+
+        <bizy-skeleton width="100%" height="5rem"></bizy-skeleton>
+
+        <bizy-skeleton width="100%" height="5rem"></bizy-skeleton>
+
+    </ng-container>
 
     <bizy-calendar 
         *ngIf="!loading"
         [events]="calendarEvents"
+        [preventExpand]="true"
+        (onDateSelect)="openGarbageRecordPopup($event)"
         [weekStartsOn]="BIZY_CALENDAR_DAY.MONDAY"
         [mode]="BIZY_CALENDAR_MODE.MONTH">
     </bizy-calendar>

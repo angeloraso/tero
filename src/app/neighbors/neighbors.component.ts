@@ -1,21 +1,26 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
-import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
+import { SharedModules } from '@app/shared';
 import {
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyExportToCSVService,
+  BizyFilterPipe,
   BizyLogService,
+  BizyOrderByPipe,
   BizyPopupService,
   BizyRouterService,
+  BizySearchPipe,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
-import { PopupComponent } from '@shared/components';
+import { es } from './i18n';
 
 interface INeighborExtended extends INeighbor {
   _alarmControls: Array<string>;
@@ -25,9 +30,22 @@ interface INeighborExtended extends INeighbor {
     selector: 'tero-neighbors',
     templateUrl: './neighbors.html',
     styleUrls: ['./neighbors.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class NeighborsComponent implements OnInit {
+  readonly #router = inject(BizyRouterService);
+  readonly #neighborsService = inject(NeighborsService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #mobile = inject(MobileService);
+  readonly #exportToCSV = inject(BizyExportToCSVService);
+  readonly #searchPipe = inject(BizySearchPipe);
+  readonly #orderByPipe = inject(BizyOrderByPipe);
+  readonly #filterPipe = inject(BizyFilterPipe);
+  readonly #usersService = inject(UsersService);
+  readonly #popup = inject(BizyPopupService);
+
   loading = false;
   csvLoading = false;
   securityLoading = false;
@@ -45,35 +63,20 @@ export class NeighborsComponent implements OnInit {
   activatedFilters: number = 0;
   orderBy: string = 'name';
   order: 'asc' | 'desc' = 'asc';
-  isMobile = true;
+  isMobile = this.#mobile.isMobile();
 
   readonly LOGO_PATH = LOGO_PATH;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-
-  constructor(
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(UsersService) private usersService: UsersService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
-    @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
-    @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
-    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(BizyPopupService) private popup: BizyPopupService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-  }
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor(),
-        this.usersService.isSecurity()
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor(),
+        this.#usersService.isSecurity()
       ]);
 
       this.isNeighbor = isNeighbor;
@@ -83,7 +86,7 @@ export class NeighborsComponent implements OnInit {
         return;
       }
 
-      const neighbors = await this.neighborsService.getNeighbors();
+      const neighbors = await this.#neighborsService.getNeighbors();
 
       this.neighbors = neighbors
         ? neighbors.map(_neighbor => {
@@ -115,20 +118,21 @@ export class NeighborsComponent implements OnInit {
 
       this.filterGroups.unshift({
         id: false,
-        value: this.translate.get('NEIGHBORS.NO_GROUP'),
+        value: this.#translate.get('NEIGHBORS.NO_GROUP'),
         selected: true
       });
 
       this.filterAlarmControls = [
-        { id: true, value: this.translate.get('NEIGHBORS.CONTROL'), selected: true },
-        { id: false, value: this.translate.get('NEIGHBORS.NO_CONTROL'), selected: true }
+        { id: true, value: this.#translate.get('NEIGHBORS.CONTROL'), selected: true },
+        { id: false, value: this.#translate.get('NEIGHBORS.NO_CONTROL'), selected: true }
       ];
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'neighbors.component',
         functionName: 'ngOnInit',
         param: error
       });
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
@@ -139,7 +143,7 @@ export class NeighborsComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}/${NEIGHBORS_PATH.ADD}` });
+    this.#router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}/${NEIGHBORS_PATH.ADD}` });
   }
 
   selectNeighbor(neighbor: INeighbor) {
@@ -147,7 +151,7 @@ export class NeighborsComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}/${neighbor.id}` });
+    this.#router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}/${neighbor.id}` });
   }
 
   removeNeighborFromSecurity(neighbor: INeighbor) {
@@ -155,28 +159,29 @@ export class NeighborsComponent implements OnInit {
       return;
     }
 
-    this.popup.open<boolean>(
+    this.#popup.open<boolean>(
       {
         component: PopupComponent,
         data: {
-          title: this.translate.get('NEIGHBORS.SECURITY.TITLE'),
-          msg: `${this.translate.get('NEIGHBORS.SECURITY.MSG')}: ${neighbor.surname} ${neighbor.name}`
+          title: this.#translate.get('NEIGHBORS.SECURITY.TITLE'),
+          msg: `${this.#translate.get('NEIGHBORS.SECURITY.MSG')}: ${neighbor.surname} ${neighbor.name}`
         }
       },
       async res => {
         try {
           if (res) {
             this.securityLoading = true;
-            await this.neighborsService.putNeighbor({ ...neighbor, security: false });
+            await this.#neighborsService.putNeighbor({ ...neighbor, security: false });
             neighbor.security = false;
             this.refresh();
           }
         } catch (error) {
-          this.log.error({
+          this.#log.error({
             fileName: 'neighbors.component',
             functionName: 'removeNeighborFromSecurity',
             param: error
           });
+          this.#toast.danger()
         } finally {
           this.securityLoading = false;
         }
@@ -202,35 +207,35 @@ export class NeighborsComponent implements OnInit {
         return {
           ..._neighbor,
           _security: _neighbor.security
-            ? this.translate.get('CORE.YES')
-            : this.translate.get('CORE.NO')
+            ? this.#translate.get('CORE.YES')
+            : this.#translate.get('CORE.NO')
         };
       });
 
-      const fileName = this.translate.get('NEIGHBORS.CSV_FILE_NAME');
+      const fileName = this.#translate.get('NEIGHBORS.CSV_FILE_NAME');
       const model = {
-        group: this.translate.get('CORE.FORM.FIELD.GROUP'),
-        lot: this.translate.get('CORE.FORM.FIELD.LOT'),
-        surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
-        name: this.translate.get('CORE.FORM.FIELD.NAME'),
-        _security: this.translate.get('CORE.FORM.FIELD.SECURITY')
+        group: this.#translate.get('CORE.FORM.FIELD.GROUP'),
+        lot: this.#translate.get('CORE.FORM.FIELD.LOT'),
+        surname: this.#translate.get('CORE.FORM.FIELD.SURNAME'),
+        name: this.#translate.get('CORE.FORM.FIELD.NAME'),
+        _security: this.#translate.get('CORE.FORM.FIELD.SECURITY')
       };
 
       if (this.isMobile) {
-        const csv = this.exportToCSV.getCSV({ items, model });
-        await this.mobile.downloadFile({ data: csv, name: fileName });
+        const csv = this.#exportToCSV.getCSV({ items, model });
+        await this.#mobile.downloadFile({ data: csv, name: fileName });
       } else {
-        this.exportToCSV.download({ items, model, fileName });
+        this.#exportToCSV.download({ items, model, fileName });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'neighbors.component',
         functionName: 'export',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+        msg: `${this.#translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
       });
     } finally {
       this.csvLoading = false;
@@ -238,18 +243,18 @@ export class NeighborsComponent implements OnInit {
   }
 
   #filter(items: Array<INeighbor>): Array<INeighbor> {
-    let _items = this.bizyFilterPipe.transform(items, 'group', this.filterGroups);
-    _items = this.bizyFilterPipe.transform(items, 'alarmNumber', this.filterAlarmControls);
-    _items = this.bizySearchPipe.transform(_items, this.search, [
+    let _items = this.#filterPipe.transform(items, 'group', this.filterGroups);
+    _items = this.#filterPipe.transform(items, 'alarmNumber', this.filterAlarmControls);
+    _items = this.#searchPipe.transform(_items, this.search, [
       'group',
       'lot',
       'surname',
       'name'
     ]);
-    _items = this.bizySearchPipe.transform(_items, this.lotSearch, 'lot');
-    _items = this.bizySearchPipe.transform(_items, this.surnameSearch, 'surname');
-    _items = this.bizySearchPipe.transform(_items, this.nameSearch, 'name');
-    _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
+    _items = this.#searchPipe.transform(_items, this.lotSearch, 'lot');
+    _items = this.#searchPipe.transform(_items, this.surnameSearch, 'surname');
+    _items = this.#searchPipe.transform(_items, this.nameSearch, 'name');
+    _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }
 

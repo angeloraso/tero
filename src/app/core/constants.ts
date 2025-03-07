@@ -1,6 +1,3 @@
-import { PATH as APP_PATH } from '@app/app.routing';
-import { PATH as HOME_PATH } from '@home/home.routing';
-
 export enum MENU_OPTION_ID {
   DASHBOARD = 'DASHBOARD',
   NEIGHBORS = 'NEIGHBORS',
@@ -8,15 +5,6 @@ export enum MENU_OPTION_ID {
   CONTACTS = 'CONTACTS',
   CONFIG = 'CONFIG'
 }
-
-export const ROOT_PATHS = [
-  `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}`,
-  `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
-  `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
-  `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}`,
-  `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}`,
-  `/${APP_PATH.AUTH}`
-];
 
 export const LOGO_PATH = '/assets/favicons/favicon.ico';
 export const NAME_MIN_LENGTH = 2;

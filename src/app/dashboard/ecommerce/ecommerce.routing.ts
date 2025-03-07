@@ -1,38 +1,22 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AddEcommerceProductComponent } from './add-ecommerce-product/add-ecommerce-product.component';
-import { EcommerceComponent } from './ecommerce.component';
-import { EditEcommerceProductComponent } from './edit-ecommerce-product/edit-ecommerce-product.component';
+import { Routes } from '@angular/router';
 
 export enum PATH {
   EMPTY = '',
   ADD = 'add'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: EcommerceComponent,
+    loadComponent: () => import('@dashboard/ecommerce/ecommerce.component').then(m => m.EcommerceComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.ADD,
-    component: AddEcommerceProductComponent
+    loadComponent: () => import('@dashboard/ecommerce/add-ecommerce-product/add-ecommerce-product.component').then(m => m.AddEcommerceProductComponent),
   },
   {
     path: ':productId',
-    component: EditEcommerceProductComponent
+    loadComponent: () => import('@dashboard/ecommerce/edit-ecommerce-product/edit-ecommerce-product.component').then(m => m.EditEcommerceProductComponent),
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class EcommerceRoutingModule {
-  static COMPONENTS = [
-    EcommerceComponent,
-    AddEcommerceProductComponent,
-    EditEcommerceProductComponent
-  ];
-}

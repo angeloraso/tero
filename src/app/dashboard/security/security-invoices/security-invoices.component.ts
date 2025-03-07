@@ -1,20 +1,22 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { BizyFilterPipe } from '@bizy/components';
-import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
+import { SharedModules } from '@app/shared';
 import {
   BizyExportToCSVService,
+  BizyFilterPipe,
   BizyLogService,
+  BizyOrderByPipe,
   BizyPopupService,
   BizyRouterService,
+  BizySearchPipe,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { ISecurityInvoice } from '@core/model';
 import { MobileService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
 
 interface ISecurityInvoiceRow extends ISecurityInvoice {
   _date: string;
@@ -24,7 +26,7 @@ interface ISecurityInvoiceRow extends ISecurityInvoice {
     selector: 'tero-security-invoices',
     templateUrl: './security-invoices.html',
     styleUrls: ['./security-invoices.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class SecurityInvoicesComponent implements OnInit {
   loading = false;

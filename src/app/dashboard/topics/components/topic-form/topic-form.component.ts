@@ -8,8 +8,9 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/components';
+import { BIZY_TAG_TYPE } from '@bizy/core';
 import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IUser, TOPIC_STATE, USER_STATE } from '@core/model';
 import { MobileService } from '@core/services';
@@ -25,7 +26,7 @@ interface IExtendedUser extends IUser {
     templateUrl: './topic-form.html',
     styleUrls: ['./topic-form.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class TopicFormComponent {
   readonly #mobile = inject(MobileService);

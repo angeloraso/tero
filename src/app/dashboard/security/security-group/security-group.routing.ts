@@ -1,29 +1,18 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { SecurityGroupInvoicesComponent } from './security-group-invoices/security-group-invoices.component';
-import { SecurityGroupComponent } from './security-group.component';
+import { Routes } from '@angular/router';
 
 export enum PATH {
   EMPTY = '',
   INVOICES = 'invoices'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: SecurityGroupComponent,
+    loadComponent: () => import('@dashboard/security/security-group/security-group.component').then(m => m.SecurityGroupComponent),
     pathMatch: 'full'
   },
   {
     path: PATH.INVOICES,
-    component: SecurityGroupInvoicesComponent
+    loadComponent: () => import('@dashboard/security/security-group/security-group-invoices/security-group-invoices.component').then(m => m.SecurityGroupInvoicesComponent),
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class SecurityGroupRoutingModule {
-  static COMPONENTS = [SecurityGroupComponent, SecurityGroupInvoicesComponent];
-}

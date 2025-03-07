@@ -1,30 +1,20 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { configGuard } from '@core/guards';
-import { EditUserComponent } from './edit-user/edit-user.component';
-import { UsersComponent } from './users.component';
 
 export enum PATH {
   EMPTY = ''
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: UsersComponent,
+    loadComponent: () => import('@config/users/users.component').then(m => m.UsersComponent),
     pathMatch: 'full'
   },
   {
     path: ':userEmail',
-    component: EditUserComponent,
+    loadComponent: () => import('@config/users/edit-user/edit-user.component').then(m => m.EditUserComponent),
     canActivate: [configGuard]
   }
 ];
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class UsersRoutingModule {
-  static COMPONENTS: Array<any> = [UsersComponent, EditUserComponent];
-}

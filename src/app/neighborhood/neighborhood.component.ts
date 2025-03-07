@@ -8,24 +8,26 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
+import { SharedModules } from '@app/shared';
 import {
   BizyLogService,
   BizyPopupService,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { LOGO_PATH, LOTS } from '@core/constants';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { FILE_TYPE } from '@core/services/mobile.service';
 import html2canvas from 'html2canvas';
-import { LotPopupComponent } from './components';
+import { LotComponent, LotPopupComponent } from './components';
+import { es } from './i18n';
 import { ILot } from './neighborhood.model';
 
 @Component({
     selector: 'tero-neighborhood',
     templateUrl: './neighborhood.html',
     styleUrls: ['./neighborhood.css'],
-    standalone: false
+    imports: [...SharedModules, LotComponent]
 })
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
   @ViewChild('firstBlock') firstBlock: ElementRef | null = null;
@@ -54,6 +56,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
         this.#usersService.isConfig(),
         this.#usersService.isNeighbor(),

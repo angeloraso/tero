@@ -7,7 +7,8 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BIZY_TAG_TYPE } from '@bizy/components';
+import { SharedModules } from '@app/shared';
+import { BIZY_TAG_TYPE } from '@bizy/core';
 import {
   AVAILABLE_SECURITY_GROUPS,
   DEFAULT_USER_PICTURE,
@@ -22,7 +23,7 @@ import { MobileService } from '@core/services';
     templateUrl: './neighbor-form.html',
     styleUrls: ['./neighbor-form.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: SharedModules
 })
 export class NeighborFormComponent {
   @Input() alarmNumber: number | null = null;

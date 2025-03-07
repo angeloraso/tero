@@ -1,13 +1,15 @@
 import { Component, Inject } from '@angular/core';
-import { BizyRouterService } from '@bizy/services';
+import { SharedModules } from '@app/shared';
+import { BizyRouterService } from '@bizy/core';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { NeighborFormComponent } from '@neighbors/components';
 
 @Component({
     selector: 'tero-add-neighbor',
     templateUrl: './add-neighbor.html',
     styleUrls: ['./add-neighbor.css'],
-    standalone: false
+    imports: [...SharedModules, NeighborFormComponent]
 })
 export class AddNeighborComponent {
   loading: boolean = false;

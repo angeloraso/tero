@@ -1,7 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { authGuard } from '@core/guards';
-import { HomeComponent } from './home.component';
 
 export enum PATH {
   EMPTY = '',
@@ -13,10 +11,10 @@ export enum PATH {
   ANY = '**'
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: HomeComponent,
+    loadComponent: () => import('@home/home.component').then(m => m.HomeComponent),
     children: [
       {
         path: PATH.EMPTY,
@@ -25,28 +23,27 @@ const routes: Routes = [
       },
       {
         path: PATH.NEIGHBORS,
-        loadChildren: () => import('@neighbors/neighbors.module').then(m => m.NeighborsModule),
+        loadChildren: () => import('@neighbors/neighbors.routing').then(m => m.ROUTES),
         canActivate: [authGuard]
       },
       {
         path: PATH.NEIGHBORHOOD,
-        loadChildren: () =>
-          import('@neighborhood/neighborhood.module').then(m => m.NeighborhoodModule),
+        loadChildren: () => import('@neighborhood/neighborhood.routing').then(m => m.ROUTES),
         canActivate: [authGuard]
       },
       {
         path: PATH.DASHBOARD,
-        loadChildren: () => import('@dashboard/dashboard.module').then(m => m.DashboardModule),
+        loadChildren: () => import('@dashboard/dashboard.routing').then(m => m.ROUTES),
         canActivate: [authGuard]
       },
       {
         path: PATH.CONTACTS,
-        loadChildren: () => import('@contacts/contacts.module').then(m => m.ContactsModule),
+        loadChildren: () => import('@contacts/contacts.routing').then(m => m.ROUTES),
         canActivate: [authGuard]
       },
       {
         path: PATH.CONFIG,
-        loadChildren: () => import('@config/config.module').then(m => m.ConfigModule),
+        loadChildren: () => import('@config/config.routing').then(m => m.ROUTES),
         canActivate: [authGuard]
       },
       {
@@ -56,11 +53,3 @@ const routes: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class HomeRoutingModule {
-  static COMPONENTS = [HomeComponent];
-}

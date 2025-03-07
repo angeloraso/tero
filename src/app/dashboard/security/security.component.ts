@@ -1,13 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { BIZY_TAG_TYPE } from '@bizy/components';
-import { LOADING_TYPE } from '@bizy/directives';
+import { SharedModules } from '@app/shared';
 import {
+  BIZY_TAG_TYPE,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
-  BizyTranslateService
-} from '@bizy/services';
+  BizyTranslateService,
+  LOADING_TYPE
+} from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { ISecurityGuard } from '@core/model';
 import {
@@ -18,8 +20,9 @@ import {
   UtilsService
 } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PopupComponent } from '@shared/components';
+import { es } from './i18n';
 import { PATH } from './security.routing';
+
 interface IGroup {
   value: number;
   lots: Set<number>;
@@ -31,7 +34,7 @@ interface IGroup {
     selector: 'tero-security',
     templateUrl: './security.html',
     styleUrls: ['./security.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class SecurityComponent implements OnInit {
   loading = false;
@@ -71,7 +74,7 @@ export class SecurityComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-
+      this.translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
         this.usersService.isConfig(),
         this.usersService.isNeighbor(),

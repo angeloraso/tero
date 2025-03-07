@@ -9,7 +9,7 @@
 <div class="tero-wrapper security">
 
     <ng-container *ngIf="loading">
-        <bizy-skeleton-card *ngFor="let i of 3 | bizyRepeat"></bizy-skeleton-card>
+        <bizy-skeleton *ngFor="let i of 3 | bizyRepeat"></bizy-skeleton>
     </ng-container>
 
     <ng-container *ngIf="!loading">

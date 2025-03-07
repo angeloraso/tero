@@ -19,7 +19,7 @@ export class GarbageTruckService {
     });
   }
 
-  postRecord(garbageTruckRecord: Omit<IGarbageTruckRecord, 'id' | 'created'>): Promise<void> {
-    return this.#database.postGarbageTruckRecord(new GarbageTruckRecord(garbageTruckRecord));
+  postRecord(data: {accountEmail: string, startDate?: number}): Promise<void> {
+    return this.#database.postGarbageTruckRecord(new GarbageTruckRecord(data.accountEmail, data.startDate));
   }
 }

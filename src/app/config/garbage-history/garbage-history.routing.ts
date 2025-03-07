@@ -1,23 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { GarbageHistoryComponent } from './garbage-history.component';
+import { Routes } from '@angular/router';
 
 export enum PATH {
   EMPTY = ''
 }
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    component: GarbageHistoryComponent,
+    loadComponent: () => import('@config/garbage-history/garbage-history.component').then(m => m.GarbageHistoryComponent),
     pathMatch: 'full'
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class GarbageHistoryRoutingModule {
-  static COMPONENTS: Array<any> = [GarbageHistoryComponent];
-}

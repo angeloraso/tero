@@ -1,20 +1,24 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
-import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
+import { SharedModules } from '@app/shared';
 import {
+  BIZY_TAG_TYPE,
   BizyExportToCSVService,
+  BizyFilterPipe,
   BizyLogService,
+  BizyOrderByPipe,
   BizyPopupService,
   BizyRouterService,
+  BizySearchPipe,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { RegisterPaymentPopupComponent } from './components';
+import { es } from './i18n';
 import { PATH } from './security-group.routing';
 
 interface INeighborCard extends INeighbor {
@@ -25,7 +29,7 @@ interface INeighborCard extends INeighbor {
     selector: 'tero-security-group',
     templateUrl: './security-group.html',
     styleUrls: ['./security-group.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class SecurityGroupComponent implements OnInit {
   loading = false;
@@ -70,7 +74,7 @@ export class SecurityGroupComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-
+      this.translate.loadTranslations(es);
       this.group = Number(this.router.getId(this.activatedRoute, 'group'));
       if (!this.group) {
         this.goBack();

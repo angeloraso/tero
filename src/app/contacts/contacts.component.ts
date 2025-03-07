@@ -1,23 +1,28 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE, BizyFilterPipe } from '@bizy/components';
-import { BizyOrderByPipe, BizySearchPipe } from '@bizy/pipes';
 import {
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
   BizyExportToCSVService,
+  BizyFilterPipe,
   BizyLogService,
+  BizyOrderByPipe,
   BizyPopupService,
   BizyRouterService,
+  BizySearchPipe,
   BizyToastService,
   BizyTranslateService
-} from '@bizy/services';
+} from '@bizy/core';
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { ContactsService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from './components';
+import { es } from './i18n';
 
 interface IContactCard extends IContact {
   _phones: Array<string>;
@@ -27,9 +32,24 @@ interface IContactCard extends IContact {
     selector: 'tero-contacts',
     templateUrl: './contacts.html',
     styleUrls: ['./contacts.css'],
-    standalone: false
+    imports: SharedModules
 })
 export class ContactsComponent implements OnInit {
+  readonly #router = inject(BizyRouterService);
+  readonly #auth = inject(AuthService);
+  readonly #contactsService = inject(ContactsService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #mobile = inject(MobileService);
+  readonly #exportToCSV = inject(BizyExportToCSVService);
+  readonly #copyToClipboard = inject(BizyCopyToClipboardService);
+  readonly #searchPipe = inject(BizySearchPipe);
+  readonly #orderByPipe = inject(BizyOrderByPipe);
+  readonly #filterPipe = inject(BizyFilterPipe);
+  readonly #usersService = inject(UsersService);
+  readonly #popup = inject(BizyPopupService);
+
   loading = false;
   csvLoading = false;
   isNeighbor = false;
@@ -39,39 +59,22 @@ export class ContactsComponent implements OnInit {
   searchKeys = ['name', 'tags', 'surname', '_phones', 'score'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
-  isMobile = true;
+  isMobile = this.#mobile.isMobile();
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
 
   readonly LOGO_PATH = LOGO_PATH;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-
-  constructor(
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(AuthService) private auth: AuthService,
-    @Inject(ContactsService) private contactsService: ContactsService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
-    @Inject(BizyCopyToClipboardService) private bizyCopyToClipboard: BizyCopyToClipboardService,
-    @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
-    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
-    @Inject(UsersService) private usersService: UsersService,
-    @Inject(BizyPopupService) private popup: BizyPopupService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-  }
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#translate.loadTranslations(es);
       const [contacts, isConfig, isNeighbor] = await Promise.all([
-        this.contactsService.getContacts(),
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor()
+        this.#contactsService.getContacts(),
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor()
       ]);
 
       this.isConfig = isConfig;
@@ -93,12 +96,12 @@ export class ContactsComponent implements OnInit {
         return { id: _tag, value: _tag, selected: true };
       });
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'contacts.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
@@ -109,19 +112,19 @@ export class ContactsComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${CONTACTS_PATH.ADD}` });
+    this.#router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${CONTACTS_PATH.ADD}` });
   }
 
   selectContact(contact: IContactCard) {
     if (
       !contact ||
       !this.isNeighbor ||
-      (contact.accountId && contact.accountId !== this.auth.getId())
+      (contact.accountId && contact.accountId !== this.#auth.getId())
     ) {
       return;
     }
 
-    this.router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${contact.id}` });
+    this.#router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}/${contact.id}` });
   }
 
   async openRatingPopup(contact: IContactCard) {
@@ -129,7 +132,7 @@ export class ContactsComponent implements OnInit {
       return;
     }
 
-    const accountId = await this.auth.getId();
+    const accountId = await this.#auth.getId();
     if (!accountId) {
       return;
     }
@@ -145,7 +148,7 @@ export class ContactsComponent implements OnInit {
       }
     }
 
-    this.popup.open<{ value: Rating; description: string } | 'delete'>(
+    this.#popup.open<{ value: Rating; description: string } | 'delete'>(
       {
         component: RatingPopupComponent,
         data: {
@@ -178,7 +181,7 @@ export class ContactsComponent implements OnInit {
               }
             }
 
-            await this.contactsService.putContact(contact);
+            await this.#contactsService.putContact(contact);
             const index = this.contacts.findIndex(_contact => _contact.id === contact.id);
             if (index !== -1) {
               this.contacts[index] = contact;
@@ -186,12 +189,12 @@ export class ContactsComponent implements OnInit {
             }
           }
         } catch (error) {
-          this.log.error({
+          this.#log.error({
             fileName: 'contacts.component',
             functionName: 'openRating',
             param: error
           });
-          this.toast.danger();
+          this.#toast.danger();
         } finally {
           this.loading = false;
         }
@@ -204,7 +207,7 @@ export class ContactsComponent implements OnInit {
       return;
     }
 
-    this.popup.open<void>({
+    this.#popup.open<void>({
       component: RatingHistoryPopupComponent,
       data: {
         rating: contact.rating
@@ -235,15 +238,15 @@ export class ContactsComponent implements OnInit {
 
   async copyPhone(phone: string) {
     try {
-      await this.bizyCopyToClipboard.copy(phone);
-      this.toast.success();
+      await this.#copyToClipboard.copy(phone);
+      this.#toast.success();
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'contacts.component',
         functionName: 'copyPhone',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -253,14 +256,14 @@ export class ContactsComponent implements OnInit {
         return;
       }
 
-      await this.mobile.call(contact.phones[0].number);
+      await this.#mobile.call(contact.phones[0].number);
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'contacts.component',
         functionName: 'onCall',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -278,22 +281,22 @@ export class ContactsComponent implements OnInit {
         return;
       }
 
-      await this.mobile.share({
-        dialogTitle: this.translate.get('CONTACTS.SHARE_CONTACTS'),
+      await this.#mobile.share({
+        dialogTitle: this.#translate.get('CONTACTS.SHARE_CONTACTS'),
         title: `${contact.name} ${contact.surname}`,
-        text: `${this.translate.get('CORE.FORM.FIELD.NAME')}: ${contact.name}${contact.surname ? ' ' + contact.surname : ''}
-${this.translate.get('CORE.FORM.FIELD.PHONE')}: ${contact.phones[0].number}
-${this.translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
+        text: `${this.#translate.get('CORE.FORM.FIELD.NAME')}: ${contact.name}${contact.surname ? ' ' + contact.surname : ''}
+${this.#translate.get('CORE.FORM.FIELD.PHONE')}: ${contact.phones[0].number}
+${this.#translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
       });
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'contacts.component',
         functionName: 'onShare',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: this.translate.get('CORE.FORM.ERROR.SHARE')
+        msg: this.#translate.get('CORE.FORM.ERROR.SHARE')
       });
     }
   }
@@ -308,29 +311,29 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
 
       const items = this.#filter(this.contacts);
 
-      const fileName = this.translate.get('CONTACTS.CSV_FILE_NAME');
+      const fileName = this.#translate.get('CONTACTS.CSV_FILE_NAME');
       const model = {
-        name: this.translate.get('CORE.FORM.FIELD.NAME'),
-        surname: this.translate.get('CORE.FORM.FIELD.SURNAME'),
-        _phones: this.translate.get('CORE.FORM.FIELD.PHONE'),
-        tags: this.translate.get('CORE.FORM.FIELD.TAG')
+        name: this.#translate.get('CORE.FORM.FIELD.NAME'),
+        surname: this.#translate.get('CORE.FORM.FIELD.SURNAME'),
+        _phones: this.#translate.get('CORE.FORM.FIELD.PHONE'),
+        tags: this.#translate.get('CORE.FORM.FIELD.TAG')
       };
 
       if (this.isMobile) {
-        const csv = this.exportToCSV.getCSV({ items, model });
-        await this.mobile.downloadFile({ data: csv, name: fileName });
+        const csv = this.#exportToCSV.getCSV({ items, model });
+        await this.#mobile.downloadFile({ data: csv, name: fileName });
       } else {
-        this.exportToCSV.download({ items, model, fileName });
+        this.#exportToCSV.download({ items, model, fileName });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'contacts.component',
         functionName: 'export',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+        msg: `${this.#translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
       });
     } finally {
       this.csvLoading = false;
@@ -338,9 +341,9 @@ ${this.translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
   }
 
   #filter(items: Array<IContact>): Array<IContact> {
-    let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
-    _items = this.bizyFilterPipe.transform(_items, 'tags', this.filterTags);
-    _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
+    let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.#filterPipe.transform(_items, 'tags', this.filterTags);
+    _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }
 }
