@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { BIZY_CALENDAR_DAY, BIZY_CALENDAR_MODE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService, IBizyCalendarEvent } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
@@ -120,6 +121,6 @@ export class GarbageHistoryComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack({ path: `/${HOME_PATH.CONFIG}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
   }
 }

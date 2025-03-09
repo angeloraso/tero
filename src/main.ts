@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { importProvidersFrom, LOCALE_ID, provideAppInitializer } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -19,8 +20,9 @@ const initApp = () => {
 bootstrapApplication(AppComponent, {
   providers: [
     CallNumber,
+    DatePipe,
     importProvidersFrom(ServiceWorkerModule.register('ngsw-worker.js', { enabled: ENV.production && !ENV.mobile })),
-    importProvidersFrom(BizyTranslateModule),
+    importProvidersFrom(BizyTranslateModule.forRoot()),
     provideHttpClient(withInterceptorsFromDi()),
     provideAppInitializer(() => initApp()),
     provideRouter(ROUTES),

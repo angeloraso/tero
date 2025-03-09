@@ -1,9 +1,9 @@
-import { DatePipe, registerLocaleData } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
-import { BIZY_PIPES, BIZY_SERVICES, SharedModules } from '@app/shared';
+import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import {
   BizyLogService,
@@ -23,11 +23,6 @@ import { PATH } from './app.routing';
     selector: 'app-root',
     templateUrl: './app.html',
     styleUrls: ['./app.css'],
-    providers: [
-      DatePipe,
-      ...BIZY_SERVICES,
-      ...BIZY_PIPES
-    ],
     imports: [
       ...SharedModules,
       RouterOutlet
