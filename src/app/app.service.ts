@@ -4,7 +4,7 @@ import { ServiceWorkerService } from '@core/services';
 import { initializeApp } from 'firebase/app';
 import { config } from '../firebase.config';
 @Injectable({ providedIn: 'root' })
-export class AppInitService {
+export class AppService {
   init(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {

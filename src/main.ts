@@ -5,15 +5,15 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AppInitService } from '@app/app-init.service';
 import { AppComponent } from '@app/app.component';
 import { ROUTES } from '@app/app.routing';
+import { AppService } from '@app/app.service';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { BizyTranslateModule } from '@bizy/core';
 import { ENV } from '@env/environment';
 
 const initApp = () => {
-  const appInit = new AppInitService();
+  const appInit = new AppService();
   return appInit.init();
 }
 
