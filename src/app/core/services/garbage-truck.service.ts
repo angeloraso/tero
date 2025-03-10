@@ -19,7 +19,7 @@ export class GarbageTruckService {
     });
   }
 
-  postRecord(data: {accountEmail: string, startDate?: number}): Promise<void> {
-    return this.#database.postGarbageTruckRecord(new GarbageTruckRecord(data.accountEmail, data.startDate));
+  postRecord(data: {accountEmail: string, date: number}): Promise<void> {
+    return this.#database.postGarbageTruckRecord(new GarbageTruckRecord({accountEmail: data.accountEmail, date: data.date}));
   }
 }

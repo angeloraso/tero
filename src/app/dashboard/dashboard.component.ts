@@ -180,7 +180,10 @@ export class DashboardComponent implements OnInit {
               return;
             }
 
-            await this.#garbageTruckService.postRecord({ accountEmail: email });
+            const date = new Date();
+            date.setHours(0, 0, 0, 0);
+
+            await this.#garbageTruckService.postRecord({ accountEmail: email, date: date.getTime() });
 
             await this.#mobile.sendGarbageNotification();
 

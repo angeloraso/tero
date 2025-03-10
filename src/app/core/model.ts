@@ -281,26 +281,22 @@ export class Topic implements ITopic {
 }
 
 export interface IGarbageTruckRecord {
-  id: number;
+  id: string;
+  date: number;
   accountEmail: string;
   created: number;
 }
 
 export class GarbageTruckRecord implements IGarbageTruckRecord {
-  id: number;
+  id: string;
+  date: number;
   accountEmail: string;
   created: number;
 
-  constructor(accountEmail: string, id?: number) {
-    if (id) {
-      this.id = id;
-    } else {
-      const date = new Date();
-      date.setHours(0, 0, 0, 0);
-      this.id = date.getTime();
-    }
-
-    this.accountEmail = accountEmail;
+  constructor(record: Omit<IGarbageTruckRecord, 'id' | 'created'>) {
+    this.id = uuid4();
+    this.date = record.date;
+    this.accountEmail = record.accountEmail;
     this.created = Date.now();
   }
 }

@@ -71,7 +71,7 @@ export class GarbageHistoryComponent implements OnInit {
               return;
             }
 
-            await this.#garbageTruckService.postRecord({ accountEmail: email, startDate: data.start});
+            await this.#garbageTruckService.postRecord({ accountEmail: email, date: data.start});
             await this.#buildCalendar();
           }
         } catch (error) {
@@ -92,29 +92,13 @@ export class GarbageHistoryComponent implements OnInit {
     const records = await this.#garbageTruckService.getRecords();
 
     this.calendarEvents = records.map(_record => {
-      const date = new Date(_record.id);
-      const startOfDay = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        0,
-        0,
-        0,
-        0
-      );
-      const endOfDay = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        23,
-        59,
-        59,
-        999
-      );
+      const endOfDay = new Date(_record.date ? _record.date : _record.id);
+      endOfDay.setHours(23, 59, 59, 999);
 
       return {
-        start: startOfDay.getTime(),
+        start: _record.date ? _record.date : Number(_record.id),
         end: endOfDay.getTime(),
+        incrementsBadgeTotal: false,
         id: _record.id
       };
     });

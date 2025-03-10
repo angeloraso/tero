@@ -5,3 +5,19 @@
 
     --bizy-card-height: 20rem;
 }
+
+::ng-deep .cal-month-view .cal-day-cell.cal-today .cal-day-number {
+    font-size: inherit;
+}
+
+::ng-deep .cal-month-view .cal-day-number {
+    font-size: inherit;
+}
+
+::ng-deep .cal-month-view .cal-day-cell {
+    min-height: auto;
+}
+
+::ng-deep .cal-month-view .cal-cell-top {
+    min-height: auto;
+}
