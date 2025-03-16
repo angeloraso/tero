@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
@@ -42,7 +43,7 @@ export class AddContactComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.CONTACTS}` });
+    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}` });
   }
 
   async save(contact: IContact) {

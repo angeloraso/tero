@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { BizyRouterService } from '@bizy/core';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { NeighborFormComponent } from '@neighbors/components';
-
 @Component({
     selector: 'tero-add-neighbor',
     templateUrl: './add-neighbor.html',
@@ -20,7 +20,7 @@ export class AddNeighborComponent {
   ) {}
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.NEIGHBORS}` });
+    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}` });
   }
 
   async save(data: {

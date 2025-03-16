@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
   BIZY_TAG_TYPE,
@@ -155,7 +156,7 @@ export class SecurityComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}` });
+    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}` });
   }
 
   async onCall(phone: string) {

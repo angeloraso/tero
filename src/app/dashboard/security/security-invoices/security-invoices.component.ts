@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
   BizyExportToCSVService,
@@ -104,7 +105,7 @@ export class SecurityInvoicesComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}` });
+    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}` });
   }
 
   deleteInvoice(invoice: ISecurityInvoiceRow) {

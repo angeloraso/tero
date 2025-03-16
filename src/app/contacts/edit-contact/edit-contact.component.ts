@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import {
@@ -98,7 +99,7 @@ export class EditContactComponent implements OnInit {
   };
 
   goBack() {
-    this.#router.goBack({ path: `/${HOME_PATH.CONTACTS}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}` });
   }
 
   async save(contact: IContact) {

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
   BizyLogService,
@@ -92,7 +93,7 @@ export class EditNeighborComponent implements OnInit {
   };
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.NEIGHBORS}` });
+    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}` });
   }
 
   async save(data: {

@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { IUser, TOPIC_STATE } from '@core/model';
@@ -40,7 +41,7 @@ export class AddTopicComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 
   async save(topic: {

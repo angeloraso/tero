@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import {
@@ -174,6 +175,6 @@ export class TopicMilestonesComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 }

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
   BIZY_TAG_TYPE,
@@ -152,7 +153,7 @@ export class SecurityGroupComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack({ path: `/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}` });
+    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}` });
   }
 
   goToSecurityInvoices() {
