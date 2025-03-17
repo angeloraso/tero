@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import { AuthService } from '@auth/auth.service';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import {
@@ -45,6 +45,7 @@ enum CORE_DOCUMENT {
   providedIn: 'root'
 })
 export class DatabaseService implements OnDestroy {
+  readonly #auth = inject(AuthService);
   #neighbors = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
   #garbageTruckRecords = new BehaviorSubject<Array<IGarbageTruckRecord> | undefined>(undefined);
   #contactData = new BehaviorSubject<{ data: Array<IContact>; tags: Array<string> } | undefined>(
@@ -58,7 +59,9 @@ export class DatabaseService implements OnDestroy {
   >(undefined);
   #topics = new BehaviorSubject<Array<ITopic> | undefined>(undefined);
 
-  constructor(@Inject(AuthService) private auth: AuthService) {}
+  start() {
+    return FirebaseFirestore.clearPersistence()
+  }
 
   getNeighbors() {
     return new Promise<Array<INeighbor>>(async (resolve, reject) => {
@@ -522,7 +525,7 @@ export class DatabaseService implements OnDestroy {
           return;
         }
 
-        const userEmail = this.auth.getEmail();
+        const userEmail = this.#auth.getEmail();
         if (!userEmail) {
           reject(new Error(ERROR.AUTH_ERROR));
           return;
@@ -583,7 +586,7 @@ export class DatabaseService implements OnDestroy {
   postUser() {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const userEmail = this.auth.getEmail();
+        const userEmail = this.#auth.getEmail();
         if (!userEmail) {
           reject(new Error(ERROR.AUTH_ERROR));
           return;
@@ -594,8 +597,8 @@ export class DatabaseService implements OnDestroy {
           status: USER_STATE.PENDING,
           id: Date.now(),
           email: userEmail,
-          name: this.auth.getName(),
-          picture: this.auth.getProfilePictureURL(),
+          name: this.#auth.getName(),
+          picture: this.#auth.getProfilePictureURL(),
           phone: null,
           lot: null
         };
@@ -1070,7 +1073,10 @@ export class DatabaseService implements OnDestroy {
     this.#garbageTruckRecords.next(undefined);
     this.#topics.next(undefined);
     this.#currentUser.next(undefined);
-    return FirebaseFirestore.removeAllListeners();
+    return Promise.all([
+      FirebaseFirestore.clearPersistence(),
+      FirebaseFirestore.removeAllListeners()
+    ]);
   };
 
   ngOnDestroy() {
