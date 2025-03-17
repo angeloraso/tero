@@ -62,6 +62,14 @@
             <h6 slot="error" *ngIf="phone.hasError('maxlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX_LENGTH}}</h6>
         </bizy-input>
 
+        <bizy-input
+            #aliasCBUInput
+            [disabled]="loading"
+            [value]="aliasCBU.value"
+            (onChange)="aliasCBU.setValue($event)">
+            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
+        </bizy-input>
+
         <bizy-select [disabled]="loading">
             <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
             <bizy-select-option 

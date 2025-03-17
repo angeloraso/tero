@@ -42,6 +42,7 @@ export interface IUser {
   name?: string | null;
   phone?: string | null;
   lot?: number | null;
+  aliasCBU?: string | null;
 }
 
 export interface INeighbor {

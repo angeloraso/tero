@@ -9,23 +9,13 @@
 .config {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 14rem 4rem 4rem;
+    grid-template-rows: 16rem 4rem 4rem;
     gap: 1rem;
 }
 
 .config__credential__profile-pic {
     height: 3rem;
     border-radius: 50%;
-}
-
-.config__credential__content {
-    height: 7rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    row-gap: 0.3rem;
-    padding-bottom: 0.5rem;
 }
 
 .config__credential__membership-number {

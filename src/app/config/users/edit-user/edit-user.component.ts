@@ -37,6 +37,7 @@ export class EditUserComponent implements OnInit {
     name: FormControl<any>;
     lot: FormControl<any>;
     phone: FormControl<any>;
+    aliasCBU: FormControl<any>;
     status: FormControl<any>;
   }>;
 
@@ -64,6 +65,7 @@ export class EditUserComponent implements OnInit {
       name: [''],
       lot: [null, [Validators.min(this.MIN), Validators.max(this.MAX)]],
       phone: [null, [Validators.min(this.MIN), Validators.maxLength(this.MAX_LENGTH)]],
+      aliasCBU: [null, []],
       status: [null, [Validators.required]]
     });
   }
@@ -78,6 +80,10 @@ export class EditUserComponent implements OnInit {
 
   get phone() {
     return this.form.get('phone') as FormControl<string | number>;
+  }
+
+  get aliasCBU() {
+    return this.form.get('aliasCBU') as FormControl<string | number>;
   }
 
   get status() {
@@ -107,6 +113,10 @@ export class EditUserComponent implements OnInit {
 
       if (user.phone) {
         this.phone.setValue(user.phone);
+      }
+
+      if (user.aliasCBU) {
+        this.aliasCBU.setValue(user.aliasCBU);
       }
 
       if (user.roles) {
@@ -191,6 +201,7 @@ export class EditUserComponent implements OnInit {
         name: this.name.value ? String(this.name.value) : null,
         lot: this.lot.value ? Number(this.lot.value) : null,
         phone: this.phone.value ? String(this.phone.value) : null,
+        aliasCBU: this.aliasCBU.value ? String(this.aliasCBU.value) : null,
         roles: this.selectedRoles,
         status: this.status.value
       });

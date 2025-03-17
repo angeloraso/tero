@@ -9,6 +9,7 @@ export const locale = {
       USERS: 'Usuarios',
       ADD_PHONE: 'Agregar teléfono',
       ADD_LOT: 'Agregar lote',
+      ADD_ALIAS_CBU: 'Agregar alias o CBU',
       SIGN_OUT_POPUP: {
         TITLE: 'Cerrar sesión',
         MSG: 'Se cerrará la sesión de'
@@ -18,6 +19,9 @@ export const locale = {
       },
       USER_LOT_POPUP: {
         TITLE: 'Número de lote'
+      },
+      USER_ALIAS_CBU_POPUP: {
+        TITLE: 'Alias o CBU'
       }
     }
   }

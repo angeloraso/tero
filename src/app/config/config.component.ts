@@ -13,6 +13,7 @@ import {
 import { PopupComponent } from '@components/popup';
 import {
   AboutPopupComponent,
+  UserAliasCBUPopupComponent,
   UserLotPopupComponent,
   UserPhonePopupComponent
 } from '@config/components';
@@ -135,6 +136,33 @@ export class ConfigComponent implements OnInit {
           this.#log.error({
             fileName: 'config.component',
             functionName: 'openUserLotPopup',
+            param: error
+          });
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
+  }
+
+  openUserAliasCBUPopup(): void {
+    this.#popup.open<string>(
+      {
+        component: UserAliasCBUPopupComponent,
+        data: { aliasCBU: this.currentUser?.aliasCBU || null }
+      },
+      async aliasCBU => {
+        try {
+          if (aliasCBU && this.currentUser) {
+            this.loading = true;
+            await this.#usersService.putUser({ ...this.currentUser, aliasCBU });
+            this.currentUser.aliasCBU = aliasCBU;
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'config.component',
+            functionName: 'openUserAliasCBUPopup',
             param: error
           });
           this.#toast.danger();

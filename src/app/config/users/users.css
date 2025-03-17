@@ -4,7 +4,7 @@
     flex-direction: column;
 
     --bizy-card-cursor: pointer;
-    --bizy-grid-row-height: 10.4rem;
+    --bizy-grid-row-height: 12rem;
 }
 
 .users__card__profile-pic {
@@ -13,12 +13,6 @@
 
 .users__card__action {
     align-self: flex-start;
-}
-
-.users__card__content {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.3rem;
 }
 
 .users__card__content__description {

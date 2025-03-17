@@ -56,7 +56,7 @@
 
             <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{currentUser ? currentUser.id : DEFAULT_USER_ID}}</strong></h4>
 
-            <span class="config__credential__content">
+            <bizy-list>
 
                 <h3><strong>{{currentUser?.name || name}}</strong></h3>
 
@@ -74,7 +74,13 @@
                     <h5 *ngIf="!currentUser?.lot"><i class="fa-solid fa-circle-plus"></i></h5>
                 </bizy-button>
 
-            </span>
+                <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserAliasCBUPopup()">
+                    <h5 *ngIf="currentUser?.aliasCBU" class="tero-title"><i class="fa-solid fa-building-columns"></i></h5>
+                    <h5>{{currentUser?.aliasCBU ? ('CORE.FORM.FIELD.ALIAS_CBU' | translate) + ' ' + currentUser?.aliasCBU : ('CONFIG.ADD_ALIAS_CBU' | translate)}}</h5>
+                    <h5 *ngIf="!currentUser?.aliasCBU"><i class="fa-solid fa-circle-plus"></i></h5>
+                </bizy-button>
+
+            </bizy-list>
 
             <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
             <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>

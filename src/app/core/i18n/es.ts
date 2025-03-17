@@ -31,6 +31,7 @@ export const locale = {
         FIELD: {
           DATE: 'Fecha',
           LOT: 'Lote',
+          ALIAS_CBU: 'Alias/CBU',
           ALARM_NUMBER: 'Alarma',
           ALARM_CONTROLS: 'Controles',
           SURNAME: 'Apellido',

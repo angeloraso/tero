@@ -1,0 +1,28 @@
+<bizy-form class="tero-wrapper">
+
+    <h4 class="tero-title"><strong>{{'CONFIG.USER_ALIAS_CBU_POPUP.TITLE' | translate}}</strong></h4>
+
+    <bizy-input
+        #aliasCBUInput
+        [autofocus]="true"
+        [value]="aliasCBU.value"
+        (onChange)="aliasCBU.setValue($event)">
+        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="aliasCBU.hasError('required') && aliasCBUInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+    </bizy-input>
+
+    <span class="tero-confirm-buttons">
+
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+            <h5><i class="fa-solid fa-xmark"></i></h5>
+            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+        </bizy-button>
+
+        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+            <h5>{{'CORE.BUTTON.SAVE' | translate}}</h5>
+            <h5><i class="fa-solid fa-check"></i></h5>
+        </bizy-button>
+
+    </span>
+
+</bizy-form>
