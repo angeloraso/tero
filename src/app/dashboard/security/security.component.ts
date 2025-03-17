@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
+  BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyLogService,
   BizyPopupService,
@@ -58,6 +59,7 @@ export class SecurityComponent implements OnInit {
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly LOADING_TYPE = LOADING_TYPE;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
 
   constructor(
     @Inject(NeighborsService) private neighborsService: NeighborsService,

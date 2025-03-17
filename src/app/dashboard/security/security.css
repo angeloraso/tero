@@ -2,33 +2,22 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+
+    --bizy-grid-row-height: 3.6rem;
+    --bizy-grid-column-width: 8rem;
 }
 
 .security {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 8rem 10rem 15rem;
+    grid-template-rows: 8rem 10rem 16rem;
     gap: 0.5rem;
-}
-
-.security__info__content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.4rem;
 }
 
 .security__info__content__section {
     width: 100%;
     display: flex;
     justify-content: space-between;
-}
-
-.security__staff__content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.4rem;
 }
 
 .security__staff__content__guard {
@@ -44,21 +33,20 @@
     column-gap: 1rem;
 }
 
-.security__groups__content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.7rem;
+.security-groups__group {
+    --bizy-card-cursor: pointer;
 }
 
-.security__groups__content__section {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+.security-groups__group--debt {
+    --bizy-card-background-color: var(--bizy-light-danger-color);
 }
 
-.security__groups__content__section__data {
-    display: flex;
-    align-items: center;
-    column-gap: 0.3rem;
+.security-groups__group--no-debt {
+    --bizy-card-background-color: var(--bizy-light-success-color);
+}
+
+.security-groups__group__fee {
+    --bizy-button-background-color: transparent;
+    --bizy-button-padding: none;
+    --bizy-button-color: var(--bizy-dark-success-color);
 }
