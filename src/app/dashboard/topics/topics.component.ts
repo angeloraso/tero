@@ -134,7 +134,7 @@ export class TopicsComponent implements OnInit {
     }
 
     this.#router.goTo({
-      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}/${TOPICS_PATH.MILESTONES}/${topic.id}`
+      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}/${topic.id}/${TOPICS_PATH.MILESTONES}`
     });
   }
 

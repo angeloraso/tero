@@ -17,11 +17,11 @@ export const ROUTES: Routes = [
     loadComponent: () => import('@dashboard/topics/add-topic/add-topic.component').then(m => m.AddTopicComponent)
   },
   {
-    path: ':topicId',
-    loadComponent: () => import('@dashboard/topics/edit-topic/edit-topic.component').then(m => m.EditTopicComponent)
+    path: `:topicId/${PATH.MILESTONES}`,
+    loadComponent: () => import('@dashboard/topics/topic-milestones/topic-milestones.component').then(m => m.TopicMilestonesComponent)
   },
   {
-    path: `${PATH.MILESTONES}/:topicId`,
-    loadComponent: () => import('@dashboard/topics/topic-milestones/topic-milestones.component').then(m => m.TopicMilestonesComponent)
+    path: ':topicId',
+    loadComponent: () => import('@dashboard/topics/edit-topic/edit-topic.component').then(m => m.EditTopicComponent)
   }
 ];
