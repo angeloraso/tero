@@ -19,6 +19,7 @@ import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
 import { es } from './i18n';
 
@@ -45,6 +46,7 @@ export class NeighborsComponent implements OnInit {
   readonly #filterPipe = inject(BizyFilterPipe);
   readonly #usersService = inject(UsersService);
   readonly #popup = inject(BizyPopupService);
+  readonly #home = inject(HomeService);
 
   loading = false;
   csvLoading = false;
@@ -72,6 +74,7 @@ export class NeighborsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.showTabs();
       this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
         this.#usersService.isConfig(),

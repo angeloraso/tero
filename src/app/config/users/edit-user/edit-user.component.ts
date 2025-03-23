@@ -9,6 +9,7 @@ import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 @Component({
     selector: 'tero-edit-user',
     templateUrl: './edit-user.html',
@@ -59,7 +60,8 @@ export class EditUserComponent implements OnInit {
     @Inject(FormBuilder) private fb: FormBuilder,
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService
+    @Inject(BizyToastService) private toast: BizyToastService,
+    @Inject(HomeService) private home: HomeService
   ) {
     this.form = this.fb.group({
       name: [''],
@@ -93,6 +95,7 @@ export class EditUserComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       this.userEmail = this.router.getId(this.activatedRoute, 'userEmail');
       if (!this.userEmail) {
         this.goBack();

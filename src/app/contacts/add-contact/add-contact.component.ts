@@ -7,6 +7,7 @@ import { ContactFormComponent } from '@contacts/components';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 
 @Component({
     selector: 'tero-add-contact',
@@ -23,12 +24,14 @@ export class AddContactComponent implements OnInit {
     @Inject(AuthService) private auth: AuthService,
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyLogService) private log: BizyLogService
+    @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(HomeService) private home: HomeService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       this.tags = await this.contacts.getTags();
     } catch (error) {
       this.log.error({

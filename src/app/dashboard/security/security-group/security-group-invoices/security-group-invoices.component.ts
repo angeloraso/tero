@@ -18,6 +18,7 @@ import { ISecurityNeighborInvoice, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
   _date: string;
   _neighborName: string;
@@ -58,7 +59,8 @@ export class SecurityGroupInvoicesComponent implements OnInit {
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(UsersService) private usersService: UsersService,
     @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(BizyPopupService) private popup: BizyPopupService
+    @Inject(BizyPopupService) private popup: BizyPopupService,
+    @Inject(HomeService) private home: HomeService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -66,7 +68,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-
+      this.home.hideTabs();
       this.group = Number(this.router.getId(this.activatedRoute, 'group'));
       if (!this.group) {
         this.goBack();

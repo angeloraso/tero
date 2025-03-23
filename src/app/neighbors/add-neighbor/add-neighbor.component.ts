@@ -4,6 +4,7 @@ import { SharedModules } from '@app/shared';
 import { BizyRouterService } from '@bizy/core';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { NeighborFormComponent } from '@neighbors/components';
 @Component({
     selector: 'tero-add-neighbor',
@@ -16,8 +17,11 @@ export class AddNeighborComponent {
 
   constructor(
     @Inject(NeighborsService) private neighbors: NeighborsService,
-    @Inject(BizyRouterService) private router: BizyRouterService
-  ) {}
+    @Inject(BizyRouterService) private router: BizyRouterService,
+    @Inject(HomeService) private home: HomeService
+  ) {
+    this.home.hideTabs();
+  }
 
   goBack() {
     this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}` });

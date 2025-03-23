@@ -18,6 +18,7 @@ import {
 import { LOGO_PATH, LOTS } from '@core/constants';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { FILE_TYPE } from '@core/services/mobile.service';
+import { HomeService } from '@home/home.service';
 import html2canvas from 'html2canvas';
 import { LotComponent, LotPopupComponent } from './components';
 import { es } from './i18n';
@@ -44,6 +45,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
   readonly #datePipe = inject(DatePipe);
+  readonly #home = inject(HomeService);
 
   loading = false;
   showInfo: boolean = false;
@@ -56,6 +58,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.showTabs();
       this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
         this.#usersService.isConfig(),

@@ -15,6 +15,7 @@ import { ContactFormComponent } from '@contacts/components';
 import { IContact } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 
 @Component({
     selector: 'tero-edit-contact',
@@ -31,6 +32,7 @@ export class EditContactComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
   readonly #auth = inject(AuthService);
+  readonly #home = inject(HomeService);
 
   contact: IContact | null = null;
   contactId: string | null = null;
@@ -40,6 +42,7 @@ export class EditContactComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.contactId = this.#router.getId(this.#activatedRoute, 'contactId');
       if (!this.contactId) {
         this.goBack();

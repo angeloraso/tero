@@ -18,6 +18,7 @@ import { ISecurityInvoice } from '@core/model';
 import { MobileService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 
 interface ISecurityInvoiceRow extends ISecurityInvoice {
   _date: string;
@@ -56,7 +57,8 @@ export class SecurityInvoicesComponent implements OnInit {
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
     @Inject(UsersService) private usersService: UsersService,
-    @Inject(BizyPopupService) private popup: BizyPopupService
+    @Inject(BizyPopupService) private popup: BizyPopupService,
+    @Inject(HomeService) private home: HomeService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -64,7 +66,7 @@ export class SecurityInvoicesComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
-
+      this.home.hideTabs();
       const [security, isConfig, isSecurity] = await Promise.all([
         this.securityService.getSecurity(),
         this.usersService.isConfig(),

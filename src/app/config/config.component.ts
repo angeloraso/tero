@@ -20,6 +20,7 @@ import {
 import { DEFAULT_USER_PICTURE, LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
+import { HomeService } from '@home/home.service';
 import { PATH } from './config.routing';
 import { es } from './i18n';
 
@@ -37,6 +38,7 @@ export class ConfigComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
   readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
   loading = false;
 
   defaultProfilePic: string = `/assets/img/${DEFAULT_USER_PICTURE}`;
@@ -56,6 +58,7 @@ export class ConfigComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.showTabs();
       this.#translate.loadTranslations(es);
       this.name = this.#auth.getName() ?? '';
       this.email = this.#auth.getEmail() ?? '';

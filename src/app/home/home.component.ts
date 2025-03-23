@@ -17,6 +17,7 @@ import { LOGO_PATH } from '@core/constants';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import pkg from 'package.json';
 import { Subscription } from 'rxjs';
+import { HomeService } from './home.service';
 
 interface IOption {
   icon: string;
@@ -43,6 +44,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   readonly #router = inject(BizyRouterService);
   readonly #storage = inject(BizyStorageService);
   readonly #auth = inject(AuthService);
+  readonly #home = inject(HomeService);
+
+  showTabs = this.#home.tabs; 
   loading: boolean = false;
   closedSidebar: boolean = false;
   profilePic: string = '';

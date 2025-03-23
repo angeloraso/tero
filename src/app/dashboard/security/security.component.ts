@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
@@ -23,6 +23,7 @@ import {
   UtilsService
 } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { es } from './i18n';
 import { PATH } from './security.routing';
 
@@ -41,6 +42,19 @@ interface IGroup {
     imports: SharedModules
 })
 export class SecurityComponent implements OnInit {
+  readonly #neighborsService = inject(NeighborsService);
+  readonly #securityService = inject(SecurityService);
+  readonly #utils = inject(UtilsService);
+  readonly #popup = inject(BizyPopupService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #router = inject(BizyRouterService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #usersService = inject(UsersService);
+  readonly #mobile = inject(MobileService);
+  readonly #copyToClipboard = inject(BizyCopyToClipboardService);
+  readonly #home = inject(HomeService);
+
   loading = false;
   showInfo = false;
   securityStaff: Array<ISecurityGuard> = Array.from({ length: 4 }, () => ({
@@ -64,28 +78,15 @@ export class SecurityComponent implements OnInit {
   readonly LOADING_TYPE = LOADING_TYPE;
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
 
-  constructor(
-    @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(SecurityService) private security: SecurityService,
-    @Inject(UtilsService) private utils: UtilsService,
-    @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(UsersService) private usersService: UsersService,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyCopyToClipboardService) private bizyCopyToClipboard: BizyCopyToClipboardService
-  ) {}
-
   async ngOnInit() {
     try {
       this.loading = true;
-      this.translate.loadTranslations(es);
+      this.#home.hideTabs();
+      this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity] = await Promise.all([
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor(),
-        this.usersService.isSecurity()
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor(),
+        this.#usersService.isSecurity()
       ]);
 
       this.isSecurity = isSecurity;
@@ -111,9 +112,9 @@ export class SecurityComponent implements OnInit {
       this.members = 0;
       this.membershipFee = 0;
       const [neighbors, security, users] = await Promise.all([
-        this.neighborsService.getNeighbors(),
-        this.security.getSecurity(),
-        this.usersService.getUsers()
+        this.#neighborsService.getNeighbors(),
+        this.#securityService.getSecurity(),
+        this.#usersService.getUsers()
       ]);
 
       neighbors.forEach(_neighbor => {
@@ -146,30 +147,30 @@ export class SecurityComponent implements OnInit {
           }
         });
 
-        this.membershipFee = this.utils.roundNumber(security.fee / this.members) ?? 0;
+        this.membershipFee = this.#utils.roundNumber(security.fee / this.members) ?? 0;
         this.groups = this.groups.map(_group => {
           const user = users.find(_user => this.#userIsAdmin(_user, _group));
           return {
             ..._group,
-            fee: this.utils.roundNumber(this.membershipFee * _group.lots.size),
+            fee: this.#utils.roundNumber(this.membershipFee * _group.lots.size),
             user: user || null
           };
         });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'security.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
   }
 
   goBack() {
-    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}` });
   }
 
   async onCall(phone: string) {
@@ -178,14 +179,14 @@ export class SecurityComponent implements OnInit {
         return;
       }
 
-      await this.mobile.call(phone);
+      await this.#mobile.call(phone);
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'security.component',
         functionName: 'onCall',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -202,7 +203,7 @@ export class SecurityComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({ path: PATH.INVOICES });
+    this.#router.goTo({ path: PATH.INVOICES });
   }
 
   goToSecurityGroup(group: IGroup) {
@@ -210,20 +211,20 @@ export class SecurityComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({ path: String(group.value) });
+    this.#router.goTo({ path: String(group.value) });
   }
 
   async copyText(text: string) {
     try {
-      await this.bizyCopyToClipboard.copy(text);
-      this.toast.success();
+      await this.#copyToClipboard.copy(text);
+      this.#toast.success();
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'security.component',
         functionName: 'copyText',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -232,29 +233,29 @@ export class SecurityComponent implements OnInit {
       return;
     }
 
-    this.popup.open<boolean>(
+    this.#popup.open<boolean>(
       {
         component: PopupComponent,
         data: {
-          title: `${this.translate.get('SECURITY.GROUPS.DEBT_POPUP.TITLE')} ${group.value}`,
-          msg: this.translate.get('SECURITY.GROUPS.DEBT_POPUP.MSG')
+          title: `${this.#translate.get('SECURITY.GROUPS.DEBT_POPUP.TITLE')} ${group.value}`,
+          msg: this.#translate.get('SECURITY.GROUPS.DEBT_POPUP.MSG')
         }
       },
       async res => {
         try {
           if (res) {
             this.loading = true;
-            await this.security.postGroupInvoice(group.value);
+            await this.#securityService.postGroupInvoice(group.value);
             group.debt = false;
             this.groups = [...this.groups];
           }
         } catch (error) {
-          this.log.error({
+          this.#log.error({
             fileName: 'security.component',
             functionName: 'setGroupDebt',
             param: error
           });
-          this.toast.danger();
+          this.#toast.danger();
         } finally {
           this.loading = false;
         }

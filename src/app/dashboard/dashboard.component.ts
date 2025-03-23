@@ -23,6 +23,7 @@ import {
   UsersService,
   UtilsService
 } from '@core/services';
+import { HomeService } from '@home/home.service';
 import { PATH } from './dashboard.routing';
 import { es } from './i18n';
 
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #mobile = inject(MobileService);
   readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
 
   loading = false;
   showInfo = false;
@@ -78,6 +80,7 @@ export class DashboardComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.showTabs();
       this.#translate.loadTranslations(es);
       const [isConfig, isNeighbor, isSecurity, products, topics] = await Promise.all([
         this.#usersService.isConfig(),

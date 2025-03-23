@@ -18,6 +18,7 @@ import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as TOPICS_PATH } from '@dashboard/topics/topics.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { TopicDataPopupComponent } from './components';
 import { es } from './i18n';
 
@@ -44,6 +45,7 @@ export class TopicsComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #usersService = inject(UsersService);
   readonly #copyToClipboard = inject(BizyCopyToClipboardService);
+  readonly #home = inject(HomeService);
 
   loading = false;
   csvLoading = false;
@@ -67,6 +69,7 @@ export class TopicsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.#translate.loadTranslations(es);
       const [topics, users, isConfig, isNeighbor] = await Promise.all([
         this.#topicsService.getTopics(),

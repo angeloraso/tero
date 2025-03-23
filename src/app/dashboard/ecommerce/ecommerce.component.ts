@@ -20,6 +20,7 @@ import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as ECOMMERCE_PATH } from '@dashboard/ecommerce/ecommerce.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { es } from './i18n';
 
 interface IEcommerceProductCard extends IEcommerceProduct {
@@ -45,6 +46,7 @@ export class EcommerceComponent implements OnInit {
   readonly #searchPipe = inject(BizySearchPipe);
   readonly #orderByPipe = inject(BizyOrderByPipe);
   readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
 
   loading = false;
   csvLoading = false;
@@ -65,6 +67,7 @@ export class EcommerceComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.#translate.loadTranslations(es);
       const [products, isConfig, isNeighbor] = await Promise.all([
         this.#ecommerce.getProducts(),

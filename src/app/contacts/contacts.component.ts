@@ -21,6 +21,7 @@ import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { ContactsService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from './components';
 import { es } from './i18n';
 
@@ -49,6 +50,7 @@ export class ContactsComponent implements OnInit {
   readonly #filterPipe = inject(BizyFilterPipe);
   readonly #usersService = inject(UsersService);
   readonly #popup = inject(BizyPopupService);
+  readonly #home = inject(HomeService);
 
   loading = false;
   csvLoading = false;
@@ -70,6 +72,7 @@ export class ContactsComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.showTabs();
       this.#translate.loadTranslations(es);
       const [contacts, isConfig, isNeighbor] = await Promise.all([
         this.#contactsService.getContacts(),

@@ -15,6 +15,7 @@ import { EcommerceService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { EcommerceProductFormComponent } from '@dashboard/ecommerce/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 @Component({
   selector: 'tero-edit-ecommerce-product',
   templateUrl: './edit-ecommerce-product.html',
@@ -34,12 +35,14 @@ export class EditEcommerceProductComponent implements OnInit {
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService
+    @Inject(BizyTranslateService) private translate: BizyTranslateService,
+    @Inject(HomeService) private home: HomeService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       this.productId = this.router.getId(this.activatedRoute, 'productId');
       if (!this.productId) {
         this.goBack();

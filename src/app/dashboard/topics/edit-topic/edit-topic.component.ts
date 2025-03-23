@@ -15,6 +15,7 @@ import { TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicFormComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 @Component({
     selector: 'tero-edit-topic',
     templateUrl: './edit-topic.html',
@@ -30,6 +31,7 @@ export class EditTopicComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #translate = inject(BizyTranslateService);
   readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
 
   topic: ITopic | null = null;
   topicId: string | null = null;
@@ -39,6 +41,7 @@ export class EditTopicComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.topicId = this.#router.getId(this.#activatedRoute, 'topicId');
       if (!this.topicId) {
         this.goBack();

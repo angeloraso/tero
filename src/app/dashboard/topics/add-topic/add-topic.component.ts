@@ -7,6 +7,7 @@ import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicFormComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 @Component({
     selector: 'tero-add-topic',
     templateUrl: './add-topic.html',
@@ -20,6 +21,7 @@ export class AddTopicComponent implements OnInit {
   readonly #mobile = inject(MobileService);
   readonly #log = inject(BizyLogService);
   readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
 
   loading: boolean = false;
   users: Array<IUser> = [];
@@ -27,6 +29,7 @@ export class AddTopicComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.users = await this.#usersService.getUsers();
     } catch (error) {
       this.#log.error({

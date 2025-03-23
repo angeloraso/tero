@@ -19,6 +19,7 @@ import { WHATSAPP_URL } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { es } from './i18n';
 
 interface IUserCard extends IUser {
@@ -63,7 +64,8 @@ export class UsersComponent implements OnInit {
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
     @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UsersService) private usersService: UsersService
+    @Inject(UsersService) private usersService: UsersService,
+    @Inject(HomeService) private home: HomeService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -71,6 +73,7 @@ export class UsersComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       this.translate.loadTranslations(es);
       const [users, isConfig, isNeighbor] = await Promise.all([
         this.usersService.getUsers(),

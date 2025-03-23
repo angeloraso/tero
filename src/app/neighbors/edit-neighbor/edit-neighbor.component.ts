@@ -13,6 +13,7 @@ import { PopupComponent } from '@components/popup';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { NeighborFormComponent } from '@neighbors/components';
 
 @Component({
@@ -33,12 +34,14 @@ export class EditNeighborComponent implements OnInit {
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService
+    @Inject(BizyTranslateService) private translate: BizyTranslateService,
+    @Inject(HomeService) private home: HomeService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       this.neighborId = this.router.getId(this.activatedRoute, 'neighborId');
       if (!this.neighborId) {
         this.goBack();

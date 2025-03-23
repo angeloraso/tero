@@ -6,6 +6,7 @@ import { PopupComponent } from '@components/popup';
 import { AuthService } from '@core/auth/auth.service';
 import { GarbageTruckService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { es } from './i18n';
 
 @Component({
@@ -22,6 +23,7 @@ export class GarbageHistoryComponent implements OnInit {
   readonly #garbageTruckService = inject(GarbageTruckService);
   readonly #translate = inject(BizyTranslateService);
   readonly #popup = inject(BizyPopupService);
+  readonly #home = inject(HomeService);
 
   loading = false;
   calendarEvents: Array<IBizyCalendarEvent> = [];
@@ -32,6 +34,7 @@ export class GarbageHistoryComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.#translate.loadTranslations(es);
       await this.#buildCalendar();
     } catch (error) {

@@ -8,6 +8,7 @@ import { EcommerceService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { EcommerceProductFormComponent } from '@dashboard/ecommerce/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 
 @Component({
     selector: 'tero-add-ecommerce-product',
@@ -26,12 +27,14 @@ export class AddEcommerceProductComponent implements OnInit {
     @Inject(AuthService) private auth: AuthService,
     @Inject(BizyRouterService) private router: BizyRouterService,
     @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyLogService) private log: BizyLogService
+    @Inject(BizyLogService) private log: BizyLogService,
+    @Inject(HomeService) private home: HomeService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       const [tags, currentUser] = await Promise.all([
         this.ecommerceService.getTags(),
         this.usersService.getCurrentUser()

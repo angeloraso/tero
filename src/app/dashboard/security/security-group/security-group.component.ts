@@ -18,6 +18,7 @@ import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 import { RegisterPaymentPopupComponent } from './components';
 import { es } from './i18n';
 import { PATH } from './security-group.routing';
@@ -67,7 +68,8 @@ export class SecurityGroupComponent implements OnInit {
     @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
     @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
     @Inject(UsersService) private usersService: UsersService,
-    @Inject(BizyPopupService) private popup: BizyPopupService
+    @Inject(BizyPopupService) private popup: BizyPopupService,
+    @Inject(HomeService) private home: HomeService
   ) {
     this.isMobile = this.mobile.isMobile();
   }
@@ -75,6 +77,7 @@ export class SecurityGroupComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.home.hideTabs();
       this.translate.loadTranslations(es);
       this.group = Number(this.router.getId(this.activatedRoute, 'group'));
       if (!this.group) {

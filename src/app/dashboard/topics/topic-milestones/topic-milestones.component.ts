@@ -17,6 +17,7 @@ import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicMilestonePopupComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
+import { HomeService } from '@home/home.service';
 interface IExtendedTopic extends ITopic {
   _names: Array<string>;
   _editEnabled: boolean;
@@ -39,6 +40,8 @@ export class TopicMilestonesComponent implements OnInit {
   readonly #mobile = inject(MobileService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
+
   topic: IExtendedTopic | null = null;
   topicId: string | null = null;
   loading = false;
@@ -50,6 +53,7 @@ export class TopicMilestonesComponent implements OnInit {
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#home.hideTabs();
       this.topicId = this.#router.getId(this.#activatedRoute, 'topicId');
       if (!this.topicId) {
         this.goBack();
