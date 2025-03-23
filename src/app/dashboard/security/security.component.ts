@@ -4,6 +4,7 @@ import { SharedModules } from '@app/shared';
 import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
+  BizyCopyToClipboardService,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
@@ -13,7 +14,7 @@ import {
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
-import { ISecurityGuard } from '@core/model';
+import { ISecurityGuard, IUser, USER_ROLE } from '@core/model';
 import {
   MobileService,
   NeighborsService,
@@ -30,6 +31,7 @@ interface IGroup {
   lots: Set<number>;
   fee: number;
   debt: boolean;
+  user: IUser | null;
 }
 
 @Component({
@@ -51,7 +53,8 @@ export class SecurityComponent implements OnInit {
     value: i + 1,
     lots: new Set(),
     fee: 0,
-    debt: true
+    debt: true,
+    user: null
   }));
   members = 0;
   membershipFee = 0;
@@ -71,7 +74,8 @@ export class SecurityComponent implements OnInit {
     @Inject(BizyLogService) private log: BizyLogService,
     @Inject(BizyToastService) private toast: BizyToastService,
     @Inject(UsersService) private usersService: UsersService,
-    @Inject(MobileService) private mobile: MobileService
+    @Inject(MobileService) private mobile: MobileService,
+    @Inject(BizyCopyToClipboardService) private bizyCopyToClipboard: BizyCopyToClipboardService
   ) {}
 
   async ngOnInit() {
@@ -101,13 +105,15 @@ export class SecurityComponent implements OnInit {
         value: i + 1,
         lots: new Set(),
         fee: 0,
-        debt: true
+        debt: true,
+        user: null
       }));
       this.members = 0;
       this.membershipFee = 0;
-      const [neighbors, security] = await Promise.all([
+      const [neighbors, security, users] = await Promise.all([
         this.neighborsService.getNeighbors(),
-        this.security.getSecurity()
+        this.security.getSecurity(),
+        this.usersService.getUsers()
       ]);
 
       neighbors.forEach(_neighbor => {
@@ -142,7 +148,12 @@ export class SecurityComponent implements OnInit {
 
         this.membershipFee = this.utils.roundNumber(security.fee / this.members) ?? 0;
         this.groups = this.groups.map(_group => {
-          return { ..._group, fee: this.utils.roundNumber(this.membershipFee * _group.lots.size) };
+          const user = users.find(_user => this.#userIsAdmin(_user, _group));
+          return {
+            ..._group,
+            fee: this.utils.roundNumber(this.membershipFee * _group.lots.size),
+            user: user || null
+          };
         });
       }
     } catch (error) {
@@ -202,6 +213,20 @@ export class SecurityComponent implements OnInit {
     this.router.goTo({ path: String(group.value) });
   }
 
+  async copyText(text: string) {
+    try {
+      await this.bizyCopyToClipboard.copy(text);
+      this.toast.success();
+    } catch (error) {
+      this.log.error({
+        fileName: 'security.component',
+        functionName: 'copyText',
+        param: error
+      });
+      this.toast.danger();
+    }
+  }
+
   setGroupDebt(group: IGroup) {
     if (this.loading || !group || !group.debt || !this.isSecurity) {
       return;
@@ -235,5 +260,34 @@ export class SecurityComponent implements OnInit {
         }
       }
     );
+  }
+
+  #userIsAdmin(user: IUser, group: IGroup): boolean {
+    let isAdmin: boolean = false;
+
+    switch (group.value) {
+      case 1:
+        isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_1);
+        break;
+      case 2:
+        isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_2);
+        break;
+      case 3:
+        isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_3);
+        break;
+      case 4:
+        isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_4);
+        break;
+      case 6:
+        isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_5);
+        break;
+      case 8:
+        isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_6);
+        break;
+      default:
+        break;
+    }
+
+    return isAdmin;
   }
 }

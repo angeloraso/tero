@@ -3,14 +3,13 @@
     display: flex;
     flex-direction: column;
 
-    --bizy-grid-row-height: 3.6rem;
-    --bizy-grid-column-width: 8rem;
+    --bizy-grid-row-height: 6.5rem;
 }
 
 .security {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 8rem 10rem 16rem;
+    grid-template-rows: 8rem 10rem 46rem;
     gap: 0.5rem;
 }
 
@@ -35,6 +34,7 @@
 
 .security-groups__group {
     --bizy-card-cursor: pointer;
+    --bizy-button-padding: 0.2rem;
 }
 
 .security-groups__group--debt {
@@ -45,8 +45,14 @@
     --bizy-card-background-color: var(--bizy-light-success-color);
 }
 
-.security-groups__group__fee {
-    --bizy-button-background-color: transparent;
-    --bizy-button-padding: none;
-    --bizy-button-color: var(--bizy-dark-success-color);
+.security-groups__group__text {
+    color: var(--bizy-info-color);
+}
+
+.security-groups__group__text--debt {
+    color: var(--bizy-dark-danger-color);
+}
+
+.security-groups__group__text--no-debt {
+    color: var(--bizy-dark-success-color);
 }

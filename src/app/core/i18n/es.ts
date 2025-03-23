@@ -51,7 +51,8 @@ export const locale = {
           TRANSACTION_ID: 'Identificador de pago (recomendado)',
           TITLE: 'Título',
           DATA_TYPE: 'Tipo de información',
-          VALUE: 'Valor'
+          VALUE: 'Valor',
+          ADMIN: 'Administrador'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

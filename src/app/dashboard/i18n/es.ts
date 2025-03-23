@@ -15,7 +15,7 @@ export const locale = {
         SECURITY_FEE: 'Costo del servicio',
         MEMBERS: 'Vecinos integrantes',
         GROUP_DEBT_POPUP: {
-          TITLE: 'Registrar pago del grupo',
+          TITLE: 'Registrar pago',
           MSG: 'El grupo dejará de mostrarse como deudor durante el resto del mes'
         }
       },
