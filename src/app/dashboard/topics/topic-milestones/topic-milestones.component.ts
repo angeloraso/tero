@@ -119,6 +119,7 @@ export class TopicMilestonesComponent implements OnInit {
                 topicId: this.topic.id,
                 milestone: { description: data.description }
               });
+              await this.#topicsService.putTopic(this.topic);
               await this.#mobile.sendTopicUpdateNotification(this.topic.title);
             }
 
