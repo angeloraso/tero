@@ -21,7 +21,7 @@ export const ROUTES: Routes = [
     loadComponent: () => import('@dashboard/topics/edit-topic/edit-topic.component').then(m => m.EditTopicComponent)
   },
   {
-    path: `:topicId/${PATH.MILESTONES}`,
+    path: `${PATH.MILESTONES}/:topicId`,
     loadComponent: () => import('@dashboard/topics/topic-milestones/topic-milestones.component').then(m => m.TopicMilestonesComponent)
   }
 ];
