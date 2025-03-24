@@ -6,12 +6,9 @@
   "javascript.updateImportsOnFileMove.enabled": "never",
   "typescript.updateImportsOnFileMove.enabled": "never",
   "typescript.validate.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "typescript"
-  ],
+  "eslint.validate": ["javascript", "typescript", "html"],
   "eslint.run": "onSave",
-  "cSpell.userWords": ["tero", "ecommerce"],
+  "cSpell.userWords": ["bizy", "tero", "ecommerce"],
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {
@@ -24,7 +21,7 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     },
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features",
@@ -41,7 +38,7 @@
     "editor.formatOnSave": false
   },
   "[html]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   },
   "[css][javascript][json][typescript]": {
     "editor.codeActionsOnSave": {
