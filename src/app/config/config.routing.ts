@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { configGuard } from '@core/guards';
+import { analyticsResolver } from '@core/resolvers';
 
 export enum PATH {
   EMPTY = '',
@@ -11,16 +11,16 @@ export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
     loadComponent: () => import('@config/config.component').then(m => m.ConfigComponent),
-    pathMatch: 'full'
+    pathMatch: 'full',
+    resolve: { data: analyticsResolver },
+    data: { pageViewEventName: 'config' }
   },
   {
     path: PATH.USERS,
-    loadChildren: () => import('@config/users/users.routing').then(m => m.ROUTES),
-    canActivate: [configGuard]
+    loadChildren: () => import('@config/users/users.routing').then(m => m.ROUTES)
   },
   {
     path: PATH.GARBAGE_HISTORY,
-    loadChildren: () =>
-      import('@config/garbage-history/garbage-history.routing').then(m => m.ROUTES)
+    loadChildren: () => import('@config/garbage-history/garbage-history.routing').then(m => m.ROUTES)
   }
 ];

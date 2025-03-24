@@ -1,3 +1,4 @@
+export { AnalyticsService } from './analytics.service';
 export { ContactsService } from './contacts.service';
 export { DatabaseService } from './database.service';
 export { EcommerceService } from './ecommerce.service';

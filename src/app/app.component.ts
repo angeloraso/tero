@@ -5,28 +5,18 @@ import { RouterOutlet } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import {
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService,
-  LANGUAGE
-} from '@bizy/core';
+import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService, LANGUAGE } from '@bizy/core';
 import { es } from '@core/i18n';
 import { ERROR } from '@core/model';
-import { DatabaseService, MobileService, UsersService } from '@core/services';
+import { AnalyticsService, DatabaseService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH } from './app.routing';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.html',
-    styleUrls: ['./app.css'],
-    imports: [
-      ...SharedModules,
-      RouterOutlet
-    ],
+  selector: 'app-root',
+  templateUrl: './app.html',
+  styleUrls: ['./app.css'],
+  imports: [...SharedModules, RouterOutlet]
 })
 export class AppComponent implements OnInit {
   readonly #mobile = inject(MobileService);
@@ -38,6 +28,7 @@ export class AppComponent implements OnInit {
   readonly #usersService = inject(UsersService);
   readonly #router = inject(BizyRouterService);
   readonly #translate = inject(BizyTranslateService);
+  readonly #analytics = inject(AnalyticsService);
 
   readonly ROOT_PATHS = [
     `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}`,
@@ -49,14 +40,13 @@ export class AppComponent implements OnInit {
   ];
 
   async ngOnInit() {
-    try {      
+    try {
+      registerLocaleData(localeEs, 'es');
 
-    registerLocaleData(localeEs, 'es');
-
-    this.#translate.addLangs([LANGUAGE.SPANISH]);
-    this.#translate.setDefault(LANGUAGE.SPANISH);
-    this.#translate.use(LANGUAGE.SPANISH);
-    this.#translate.loadTranslations(es);
+      this.#translate.addLangs([LANGUAGE.SPANISH]);
+      this.#translate.setDefault(LANGUAGE.SPANISH);
+      this.#translate.use(LANGUAGE.SPANISH);
+      this.#translate.loadTranslations(es);
 
       if (this.#mobile.isMobile()) {
         await this.#mobile.init();
@@ -79,7 +69,8 @@ export class AppComponent implements OnInit {
           this.#router.goTo({ path: `/${PATH.AUTH}` });
         } else {
           try {
-            await this.#usersService.getCurrentUser();
+            const user = await this.#usersService.getCurrentUser();
+            await this.#analytics.setUserId(String(user.id));
           } catch (error: any) {
             this.#log.error({
               fileName: 'app.component',
