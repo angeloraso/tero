@@ -32,9 +32,6 @@ export default [
     },
     rules: {
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@angular-eslint/no-output-native': 'false',
-      'no-async-promise-executor': 'off',
       'prettier/prettier': [
         'error',
         {
