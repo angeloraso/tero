@@ -14,7 +14,7 @@ export default [
   ...compat.extends('plugin:@typescript-eslint/recommended'),
   ...compat.extends('plugin:@angular-eslint/recommended'),
   {
-    ignores: ['node_modules/', 'dist/', 'coverage/']
+    ignores: ['node_modules/', 'dist/', '.angular/', 'android/', 'public/', 'resources/', 'functions/']
   },
   {
     files: ['*.ts'],
@@ -33,6 +33,8 @@ export default [
     rules: {
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-function-return-type': 'off',
+      '@angular-eslint/no-output-native': 'false',
+      'no-async-promise-executor': 'off',
       'prettier/prettier': [
         'error',
         {
