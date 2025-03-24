@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ng serve -o --configuration=development",
     "start:pwa": "npm run build && http-server -o -p 4200 -c-1 dist",
-    "build": "npm run lint && npm run format && ng build --configuration=production",
+    "build": "ng build --configuration=production",
     "build:mobile": "ng build --configuration=mobile",
     "android:resources": "capacitor-assets generate --android",
     "android:config": "VERSION_NAME=$npm_package_version npx trapeze run config.yaml --android -y",
