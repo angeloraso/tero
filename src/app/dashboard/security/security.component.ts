@@ -270,10 +270,10 @@ export class SecurityComponent implements OnInit {
       case 4:
         isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_4);
         break;
-      case 6:
+      case 5:
         isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_5);
         break;
-      case 8:
+      case 6:
         isAdmin = user.roles.includes(USER_ROLE.SECURITY_GROUP_6);
         break;
       default:
