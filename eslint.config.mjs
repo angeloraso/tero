@@ -41,7 +41,7 @@ export default [
           semi: true,
           bracketSpacing: true,
           arrowParens: 'avoid',
-          trailingComma: 'es5',
+          trailingComma: 'none',
           bracketSameLine: true,
           printWidth: 150,
           endOfLine: 'auto'

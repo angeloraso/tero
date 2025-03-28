@@ -15,13 +15,7 @@ import {
 import { PopupComponent } from '@components/popup';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { ISecurityGuard, IUser, USER_ROLE } from '@core/model';
-import {
-  MobileService,
-  NeighborsService,
-  SecurityService,
-  UsersService,
-  UtilsService
-} from '@core/services';
+import { MobileService, NeighborsService, SecurityService, UsersService, UtilsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -36,10 +30,10 @@ interface IGroup {
 }
 
 @Component({
-    selector: 'tero-security',
-    templateUrl: './security.html',
-    styleUrls: ['./security.css'],
-    imports: SharedModules
+  selector: 'tero-security',
+  templateUrl: './security.html',
+  styleUrls: ['./security.css'],
+  imports: SharedModules
 })
 export class SecurityComponent implements OnInit {
   readonly #neighborsService = inject(NeighborsService);
@@ -139,10 +133,7 @@ export class SecurityComponent implements OnInit {
             date.setHours(23, 59, 59, 999);
             const endDate = date.getTime();
             _group.debt = !security.invoices.find(
-              _invoice =>
-                _invoice.group === _group.value &&
-                _invoice.timestamp >= startDate &&
-                _invoice.timestamp <= endDate
+              _invoice => _invoice.group === _group.value && _invoice.timestamp >= startDate && _invoice.timestamp <= endDate
             );
           }
         });
