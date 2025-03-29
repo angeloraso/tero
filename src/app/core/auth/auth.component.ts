@@ -5,17 +5,17 @@ import { BizyLogService, BizyToastService, BizyTranslateService } from '@bizy/co
 import { es } from './i18n';
 
 @Component({
-    selector: 'tero-auth',
-    templateUrl: './auth.html',
-    styleUrls: ['./auth.css'],
-    imports: [...SharedModules]
+  selector: 'tero-auth',
+  templateUrl: './auth.html',
+  styleUrls: ['./auth.css'],
+  imports: [...SharedModules]
 })
 export class AuthComponent {
-  readonly #auth = inject(AuthService)
-  readonly #log = inject(BizyLogService)
-  readonly #toast = inject(BizyToastService)
-  readonly #ref = inject(ChangeDetectorRef)
-  readonly #translate = inject(BizyTranslateService)
+  readonly #auth = inject(AuthService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #ref = inject(ChangeDetectorRef);
+  readonly #translate = inject(BizyTranslateService);
   loading = false;
 
   constructor() {

@@ -1,4 +1,3 @@
-export { AnalyticsService } from './analytics.service';
 export { ContactsService } from './contacts.service';
 export { DatabaseService } from './database.service';
 export { EcommerceService } from './ecommerce.service';
@@ -10,3 +9,4 @@ export { ServiceWorkerService } from './service-worker.service';
 export { TopicsService } from './topics.service';
 export { UsersService } from './users.service';
 export { UtilsService } from './utils.service';
+

@@ -48,19 +48,15 @@ export class DatabaseService implements OnDestroy {
   readonly #auth = inject(AuthService);
   #neighbors = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
   #garbageTruckRecords = new BehaviorSubject<Array<IGarbageTruckRecord> | undefined>(undefined);
-  #contactData = new BehaviorSubject<{ data: Array<IContact>; tags: Array<string> } | undefined>(
-    undefined
-  );
+  #contactData = new BehaviorSubject<{ data: Array<IContact>; tags: Array<string> } | undefined>(undefined);
   #security = new BehaviorSubject<ISecurity | undefined>(undefined);
   #users = new BehaviorSubject<Array<IUser> | undefined>(undefined);
   #currentUser = new BehaviorSubject<IUser | undefined>(undefined);
-  #ecommerceData = new BehaviorSubject<
-    { data: Array<IEcommerceProduct>; tags: Array<string> } | undefined
-  >(undefined);
+  #ecommerceData = new BehaviorSubject<{ data: Array<IEcommerceProduct>; tags: Array<string> } | undefined>(undefined);
   #topics = new BehaviorSubject<Array<ITopic> | undefined>(undefined);
 
   start() {
-    return FirebaseFirestore.clearPersistence()
+    return FirebaseFirestore.clearPersistence();
   }
 
   getNeighbors() {
@@ -373,9 +369,7 @@ export class DatabaseService implements OnDestroy {
         if (!data.invoices) {
           data.invoices = [invoice];
         } else {
-          const index = data.invoices.findIndex(
-            _invoice => _invoice.timestamp === invoice.timestamp
-          );
+          const index = data.invoices.findIndex(_invoice => _invoice.timestamp === invoice.timestamp);
           if (index === -1) {
             data.invoices.push(invoice);
           }
@@ -403,9 +397,7 @@ export class DatabaseService implements OnDestroy {
           return;
         }
 
-        const index = data.invoices.findIndex(
-          _invoice => _invoice.timestamp === invoice.timestamp && _invoice.group === invoice.group
-        );
+        const index = data.invoices.findIndex(_invoice => _invoice.timestamp === invoice.timestamp && _invoice.group === invoice.group);
 
         if (index === -1) {
           reject(new Error(ERROR.ITEM_NOT_FOUND));
@@ -437,9 +429,7 @@ export class DatabaseService implements OnDestroy {
         }
 
         const index = data.neighborInvoices.findIndex(
-          _invoice =>
-            _invoice.timestamp === invoice.timestamp &&
-            _invoice.transactionId === invoice.transactionId
+          _invoice => _invoice.timestamp === invoice.timestamp && _invoice.transactionId === invoice.transactionId
         );
 
         if (index === -1) {
@@ -475,8 +465,7 @@ export class DatabaseService implements OnDestroy {
           data.neighborInvoices = [invoice];
         } else {
           const index = data.neighborInvoices.findIndex(
-            _invoice =>
-              _invoice.timestamp === invoice.timestamp && _invoice.neighborId === invoice.neighborId
+            _invoice => _invoice.timestamp === invoice.timestamp && _invoice.neighborId === invoice.neighborId
           );
           if (index === -1) {
             data.neighborInvoices.push(invoice);
@@ -518,7 +507,7 @@ export class DatabaseService implements OnDestroy {
   }
 
   getCurrentUser() {
-    return new Promise<IUser>(async (resolve, reject) => {
+    return new Promise<IUser>((resolve, reject) => {
       try {
         if (typeof this.#currentUser.value !== 'undefined') {
           resolve(this.#currentUser.value);
@@ -531,114 +520,85 @@ export class DatabaseService implements OnDestroy {
           return;
         }
 
-        await FirebaseFirestore.addDocumentSnapshotListener<IUser>(
-          { reference: `${COLLECTION.USERS}/${userEmail}` },
-          (event, error) => {
-            if (error) {
-              console.log(error);
-            } else {
-              const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
-              this.#currentUser.next(currentUser);
+        FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${userEmail}` }, (event, error) => {
+          if (error) {
+            console.log(error);
+          } else {
+            const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
+            this.#currentUser.next(currentUser);
 
-              if (!currentUser) {
-                reject(new Error(ERROR.ITEM_NOT_FOUND));
-                return;
-              }
-
-              resolve(currentUser);
+            if (!currentUser) {
+              reject(new Error(ERROR.ITEM_NOT_FOUND));
+              return;
             }
+
+            resolve(currentUser);
           }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getUser(email: string) {
-    return new Promise<IUser>(async (resolve, reject) => {
-      try {
-        if (typeof this.#users.value !== 'undefined') {
-          const user = this.#users.value.find(_user => _user.email === email);
-          if (!user) {
-            reject(new Error(ERROR.ITEM_NOT_FOUND));
-            return;
-          }
-
-          resolve(user);
-          return;
-        }
-
-        const users = await this.getUsers();
-        const user = users.find(_user => _user.email === email);
-        if (!user) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        resolve(user);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  postUser() {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const userEmail = this.#auth.getEmail();
-        if (!userEmail) {
-          reject(new Error(ERROR.AUTH_ERROR));
-          return;
-        }
-
-        const userSettings: IUser = {
-          roles: [],
-          status: USER_STATE.PENDING,
-          id: Date.now(),
-          email: userEmail,
-          name: this.#auth.getName(),
-          picture: this.#auth.getProfilePictureURL(),
-          phone: null,
-          lot: null,
-          aliasCBU: null
-        };
-
-        const userDocument = JSON.parse(JSON.stringify(userSettings));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.USERS}/${userEmail}`,
-          data: userDocument
         });
-        resolve();
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  putUser(user: IUser): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const userDocument = JSON.parse(JSON.stringify(user));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.USERS}/${user.email}`,
-          data: userDocument
-        });
-
-        const users = this.#users.value ?? [];
-        const index = users.findIndex(_user => _user.email === user.email);
-        if (index !== -1) {
-          users[index] = user;
-          this.#users.next(users);
-        }
-
-        resolve();
-      } catch (error) {
-        reject(error);
+  async getUser(email: string) {
+    if (typeof this.#users.value !== 'undefined') {
+      const user = this.#users.value.find(_user => _user.email === email);
+      if (!user) {
+        throw new Error(ERROR.ITEM_NOT_FOUND);
       }
+      return user;
+    }
+
+    const users = await this.getUsers();
+    const user = users.find(_user => _user.email === email);
+    if (!user) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    return user;
+  }
+
+  async postUser(): Promise<void> {
+    const userEmail = this.#auth.getEmail();
+    if (!userEmail) {
+      throw new Error(ERROR.AUTH_ERROR);
+    }
+
+    const userSettings: IUser = {
+      roles: [],
+      status: USER_STATE.PENDING,
+      id: Date.now(),
+      email: userEmail,
+      name: this.#auth.getName(),
+      picture: this.#auth.getProfilePictureURL(),
+      phone: null,
+      lot: null,
+      aliasCBU: null
+    };
+
+    const userDocument = JSON.parse(JSON.stringify(userSettings));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.USERS}/${userEmail}`,
+      data: userDocument
     });
+  }
+
+  async putUser(user: IUser): Promise<void> {
+    const userDocument = JSON.parse(JSON.stringify(user));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.USERS}/${user.email}`,
+      data: userDocument
+    });
+
+    const users = this.#users.value ?? [];
+    const index = users.findIndex(_user => _user.email === user.email);
+    if (index !== -1) {
+      users[index] = user;
+      this.#users.next(users);
+    }
   }
 
   getEcommerceTags() {
@@ -699,9 +659,7 @@ export class DatabaseService implements OnDestroy {
     return new Promise<IEcommerceProduct>(async (resolve, reject) => {
       try {
         if (typeof this.#ecommerceData.value !== 'undefined') {
-          const product = this.#ecommerceData.value.data.find(
-            _ecommerceProduct => _ecommerceProduct.id === id
-          );
+          const product = this.#ecommerceData.value.data.find(_ecommerceProduct => _ecommerceProduct.id === id);
           if (!product) {
             reject(new Error(ERROR.ITEM_NOT_FOUND));
             return;
@@ -729,9 +687,7 @@ export class DatabaseService implements OnDestroy {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const data = await this.getEcommerceProducts();
-        const index = data.findIndex(
-          _ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id
-        );
+        const index = data.findIndex(_ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id);
         if (index !== -1) {
           data[index] = ecommerceProduct;
         } else {
@@ -757,9 +713,7 @@ export class DatabaseService implements OnDestroy {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const data = await this.getEcommerceProducts();
-        const index = data.findIndex(
-          _ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id
-        );
+        const index = data.findIndex(_ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id);
         if (index !== -1) {
           data[index] = ecommerceProduct;
 
@@ -814,8 +768,7 @@ export class DatabaseService implements OnDestroy {
             if (error) {
               console.log(error);
             } else {
-              const garbageTruckRecords =
-                event && event.snapshot.data ? event.snapshot.data.data : [];
+              const garbageTruckRecords = event && event.snapshot.data ? event.snapshot.data.data : [];
               this.#garbageTruckRecords.next(garbageTruckRecords);
               resolve(garbageTruckRecords);
             }
@@ -831,18 +784,14 @@ export class DatabaseService implements OnDestroy {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const garbageTruckRecords = await this.getGarbageTruckRecords();
-        const index = garbageTruckRecords.findIndex(
-          _garbageTruckRecord => _garbageTruckRecord.id === garbageTruckRecord.id
-        );
+        const index = garbageTruckRecords.findIndex(_garbageTruckRecord => _garbageTruckRecord.id === garbageTruckRecord.id);
         if (index !== -1) {
           throw new Error(ERROR.ITEM_ALREADY_EXISTS);
         } else {
           garbageTruckRecords.push(garbageTruckRecord);
         }
 
-        const garbageTruckRecordsDocument = JSON.parse(
-          JSON.stringify({ data: garbageTruckRecords })
-        );
+        const garbageTruckRecordsDocument = JSON.parse(JSON.stringify({ data: garbageTruckRecords }));
 
         await FirebaseFirestore.setDocument({
           reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}`,
@@ -1009,9 +958,7 @@ export class DatabaseService implements OnDestroy {
           return;
         }
 
-        const milestoneIndex = topics[topicIndex].milestones.findIndex(
-          _milestone => _milestone.id === data.milestone.id
-        );
+        const milestoneIndex = topics[topicIndex].milestones.findIndex(_milestone => _milestone.id === data.milestone.id);
         if (milestoneIndex === -1) {
           reject(new Error(ERROR.ITEM_NOT_FOUND));
           return;
@@ -1042,9 +989,7 @@ export class DatabaseService implements OnDestroy {
           return;
         }
 
-        const milestoneIndex = topics[topicIndex].milestones.findIndex(
-          _milestone => _milestone.id === data.milestoneId
-        );
+        const milestoneIndex = topics[topicIndex].milestones.findIndex(_milestone => _milestone.id === data.milestoneId);
         if (milestoneIndex === -1) {
           reject(new Error(ERROR.ITEM_NOT_FOUND));
           return;
@@ -1074,10 +1019,7 @@ export class DatabaseService implements OnDestroy {
     this.#garbageTruckRecords.next(undefined);
     this.#topics.next(undefined);
     this.#currentUser.next(undefined);
-    return Promise.all([
-      FirebaseFirestore.clearPersistence(),
-      FirebaseFirestore.removeAllListeners()
-    ]);
+    return Promise.all([FirebaseFirestore.clearPersistence(), FirebaseFirestore.removeAllListeners()]);
   };
 
   ngOnDestroy() {

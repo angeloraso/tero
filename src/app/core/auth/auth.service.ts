@@ -18,71 +18,78 @@ export class AuthService {
     return this.#signedIn.asObservable().pipe(distinctUntilChanged());
   }
 
-  start() {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!this.#mobile.isMobile()) {
-          await FirebaseAuthentication.setPersistence({
-            persistence: Persistence.IndexedDbLocal
-          });
-          const result = await FirebaseAuthentication.getRedirectResult();
-          if (result && result.user) {
-            this.#USER = result.user;
-            if (
-              result.user.providerData &&
-              result.user.providerData[0] &&
-              result.user.providerData[0].photoUrl
-            ) {
-              this.#storeProfileImage(result.user.providerData[0].photoUrl);
-            }
-            this.#signedIn.next(Boolean(this.#USER));
-            await FirebaseAuthentication.setPersistence({
-              persistence: Persistence.IndexedDbLocal
-            });
-          } else {
-            const result = await FirebaseAuthentication.getCurrentUser();
-            this.#USER = result.user;
-            if (
-              result.user &&
-              result.user.providerData &&
-              result.user.providerData[0] &&
-              result.user.providerData[0].photoUrl
-            ) {
-              this.#storeProfileImage(result.user.providerData[0].photoUrl);
-            }
+  async start() {
+    try {
+      await FirebaseAuthentication.removeAllListeners();
+      FirebaseAuthentication.addListener('authStateChange', async change => {
+        this.#USER = change ? change.user : null;
 
-            if (result.user) {
-              this.#signedIn.next(true);
-            }
-          }
+        const signedIn = Boolean(change.user);
+        this.#signedIn.next(signedIn);
+        if (!signedIn) {
+          Preferences.clear();
         } else {
-          const res = await FirebaseAuthentication.getCurrentUser();
-          this.#USER = res.user;
-          if (res.user) {
+          if (change.user && change.user.providerData && change.user.providerData[0] && change.user.providerData[0].photoUrl) {
+            this.#storeProfileImage(change.user.providerData[0].photoUrl);
+          }
+        }
+      });
+
+      if (!this.#mobile.isMobile()) {
+        await FirebaseAuthentication.setPersistence({
+          persistence: Persistence.IndexedDbLocal
+        });
+        const result = await FirebaseAuthentication.getRedirectResult();
+        if (result && result.user) {
+          this.#USER = result.user;
+          if (result.user.providerData && result.user.providerData[0] && result.user.providerData[0].photoUrl) {
+            this.#storeProfileImage(result.user.providerData[0].photoUrl);
+          }
+          this.#signedIn.next(Boolean(this.#USER));
+        } else {
+          const result = await FirebaseAuthentication.getCurrentUser();
+          this.#USER = result.user;
+          if (result.user && result.user.providerData && result.user.providerData[0] && result.user.providerData[0].photoUrl) {
+            this.#storeProfileImage(result.user.providerData[0].photoUrl);
+          }
+
+          if (result.user) {
             this.#signedIn.next(true);
           }
         }
-
-        await FirebaseAuthentication.removeAllListeners();
-        FirebaseAuthentication.addListener('authStateChange', async change => {
-          this.#USER = change ? change.user : null;
-          const signedIn = Boolean(change.user);
-          this.#signedIn.next(signedIn);
-          if (!signedIn) {
-            Preferences.clear();
-          }
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
+      } else {
+        const res = await FirebaseAuthentication.getCurrentUser();
+        this.#USER = res.user;
+        if (res.user) {
+          this.#signedIn.next(true);
+        }
       }
-    });
+
+      Promise.resolve();
+    } catch (error) {
+      Promise.reject(error);
+    }
   }
 
   async signIn() {
-    return FirebaseAuthentication.signInWithGoogle({
-      mode: this.#mobile.isMobile() ? 'redirect' : 'popup'
-    });
+    try {
+      const result = await FirebaseAuthentication.signInWithGoogle({
+        mode: this.#mobile.isMobile() ? 'redirect' : 'popup'
+      });
+
+      this.#USER = result.user;
+
+      if (result.user && result.user.providerData && result.user.providerData[0] && result.user.providerData[0].photoUrl) {
+        this.#storeProfileImage(result.user.providerData[0].photoUrl);
+      }
+
+      if (result.user) {
+        this.#signedIn.next(true);
+      }
+      Promise.resolve();
+    } catch (error) {
+      Promise.reject(error);
+    }
   }
 
   getEmail(): string | null {
@@ -121,8 +128,16 @@ export class AuthService {
     return this.#getProfileImage();
   }
 
-  signOut() {
-    return FirebaseAuthentication.signOut();
+  async signOut() {
+    try {
+      await FirebaseAuthentication.signOut();
+      this.#USER = null;
+      this.#signedIn.next(false);
+      Preferences.clear();
+      Promise.resolve();
+    } catch (error) {
+      Promise.reject(error);
+    }
   }
 
   #downloadAndConvertImage(url: string): Promise<string> {

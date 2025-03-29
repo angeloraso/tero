@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { AnalyticsService } from '@core/services';
+import { AnalyticsService } from '@core/analytics';
 
 export const analyticsResolver: ResolveFn<void> = async (route: ActivatedRouteSnapshot) => {
   const analytics = inject(AnalyticsService);

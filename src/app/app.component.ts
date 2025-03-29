@@ -6,9 +6,10 @@ import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService, LANGUAGE } from '@bizy/core';
+import { AnalyticsService } from '@core/analytics';
 import { es } from '@core/i18n';
 import { ERROR } from '@core/model';
-import { AnalyticsService, DatabaseService, MobileService, UsersService } from '@core/services';
+import { DatabaseService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH } from './app.routing';
 
@@ -71,14 +72,14 @@ export class AppComponent implements OnInit {
           try {
             const user = await this.#usersService.getCurrentUser();
             await this.#analytics.setUserId(String(user.id));
-          } catch (error: any) {
+          } catch (error) {
             this.#log.error({
               fileName: 'app.component',
               functionName: 'getCurrentUser',
               param: error
             });
 
-            if (error && error.message === ERROR.ITEM_NOT_FOUND) {
+            if (error instanceof Error && error.message === ERROR.ITEM_NOT_FOUND) {
               await this.#usersService.postUser();
             } else {
               this.#toast.danger();
@@ -90,7 +91,7 @@ export class AppComponent implements OnInit {
           }
         }
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.#log.error({
         fileName: 'app.component',
         functionName: 'ngOnInit',

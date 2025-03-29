@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
@@ -11,12 +11,27 @@ import { UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 @Component({
-    selector: 'tero-edit-user',
-    templateUrl: './edit-user.html',
-    styleUrls: ['./edit-user.css'],
-    imports: SharedModules
+  selector: 'tero-edit-user',
+  templateUrl: './edit-user.html',
+  styleUrls: ['./edit-user.css'],
+  imports: SharedModules
 })
 export class EditUserComponent implements OnInit {
+  readonly #usersService = inject(UsersService);
+  readonly #router = inject(BizyRouterService);
+  readonly #fb = inject(FormBuilder);
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #home = inject(HomeService);
+
+  readonly MIN = 0;
+  readonly MAX = LOTS.length;
+  readonly MAX_LENGTH = 10;
+  readonly USER_STATE = USER_STATE;
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly USER_STATES: Array<USER_STATE> = [USER_STATE.ACTIVE, USER_STATE.PENDING, USER_STATE.REJECTED, USER_STATE.SUSPENDED];
+
   user: IUser | null = null;
   userEmail: string | null = null;
   loading = false;
@@ -34,75 +49,45 @@ export class EditUserComponent implements OnInit {
   ];
   selectedRoles: Array<USER_ROLE> = [];
 
-  form: FormGroup<{
-    name: FormControl<any>;
-    lot: FormControl<any>;
-    phone: FormControl<any>;
-    aliasCBU: FormControl<any>;
-    status: FormControl<any>;
-  }>;
-
-  readonly MIN = 0;
-  readonly MAX = LOTS.length;
-  readonly MAX_LENGTH = 10;
-  readonly USER_STATE = USER_STATE;
-  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-  readonly USER_STATES: Array<USER_STATE> = [
-    USER_STATE.ACTIVE,
-    USER_STATE.PENDING,
-    USER_STATE.REJECTED,
-    USER_STATE.SUSPENDED
-  ];
-
-  constructor(
-    @Inject(UsersService) private usersService: UsersService,
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(HomeService) private home: HomeService
-  ) {
-    this.form = this.fb.group({
-      name: [''],
-      lot: [null, [Validators.min(this.MIN), Validators.max(this.MAX)]],
-      phone: [null, [Validators.min(this.MIN), Validators.maxLength(this.MAX_LENGTH)]],
-      aliasCBU: [null, []],
-      status: [null, [Validators.required]]
-    });
-  }
+  form = this.#fb.group({
+    name: [null],
+    lot: [null, [Validators.min(this.MIN), Validators.max(this.MAX)]],
+    phone: [null, [Validators.min(this.MIN), Validators.maxLength(this.MAX_LENGTH)]],
+    aliasCBU: [null, []],
+    status: [null, [Validators.required]]
+  });
 
   get name() {
-    return this.form.get('name') as FormControl<string | number>;
+    return this.form.get('name') as FormControl;
   }
 
   get lot() {
-    return this.form.get('lot') as FormControl<string | number>;
+    return this.form.get('lot') as FormControl;
   }
 
   get phone() {
-    return this.form.get('phone') as FormControl<string | number>;
+    return this.form.get('phone') as FormControl;
   }
 
   get aliasCBU() {
-    return this.form.get('aliasCBU') as FormControl<string | number>;
+    return this.form.get('aliasCBU') as FormControl;
   }
 
   get status() {
-    return this.form.get('status') as FormControl<USER_STATE>;
+    return this.form.get('status') as FormControl;
   }
 
   async ngOnInit() {
     try {
       this.loading = true;
-      this.home.hideTabs();
-      this.userEmail = this.router.getId(this.activatedRoute, 'userEmail');
+      this.#home.hideTabs();
+      this.userEmail = this.#router.getId(this.#activatedRoute, 'userEmail');
       if (!this.userEmail) {
         this.goBack();
         return;
       }
 
-      const user = await this.usersService.getUser(this.userEmail);
+      const user = await this.#usersService.getUser(this.userEmail);
       this.user = user;
       this.status.setValue(user.status);
 
@@ -128,12 +113,12 @@ export class EditUserComponent implements OnInit {
         });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'edit-user.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
@@ -184,38 +169,33 @@ export class EditUserComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}` });
   }
 
   async save() {
     try {
-      if (
-        this.loading ||
-        !this.user ||
-        this.form.invalid ||
-        (this.selectedRoles.length === 0 && this.status.value === USER_STATE.ACTIVE)
-      ) {
+      if (this.loading || !this.user || this.form.invalid || (this.selectedRoles.length === 0 && this.status.value === USER_STATE.ACTIVE)) {
         return;
       }
 
       this.loading = true;
-      await this.usersService.putUser({
+      await this.#usersService.putUser({
         ...this.user,
-        name: this.name.value ? String(this.name.value) : null,
+        name: this.name.value ? String(this.name.value).trim() : null,
         lot: this.lot.value ? Number(this.lot.value) : null,
-        phone: this.phone.value ? String(this.phone.value) : null,
-        aliasCBU: this.aliasCBU.value ? String(this.aliasCBU.value) : null,
+        phone: this.phone.value ? String(this.phone.value).trim() : null,
+        aliasCBU: this.aliasCBU.value ? String(this.aliasCBU.value).trim() : null,
         roles: this.selectedRoles,
         status: this.status.value
       });
       this.goBack();
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'edit-user.component',
         functionName: 'save',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }

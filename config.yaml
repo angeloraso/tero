@@ -22,6 +22,16 @@ platforms:
         attrs:
           android:screenOrientation: portrait
 
+      - file: AndroidManifest.xml
+        target: manifest/application/activity
+        inject: |
+          <intent-filter android:autoVerify="true">
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data android:scheme="https" android:host="tero.com.ar" />
+          </intent-filter>
+
     gradle:
       - file: variables.gradle
         target:

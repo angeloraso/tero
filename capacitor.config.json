@@ -3,6 +3,10 @@
   "appName": "Tero",
   "npmClient": "npm",
   "webDir": "dist/browser",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "tero.com.ar"
+  },
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": false,
