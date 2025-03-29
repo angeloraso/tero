@@ -5,11 +5,13 @@ vars:
     default: ar.com.tero
   VERSION_NAME:
   VERSION_CODE:
-    default: 40
+    default: 42
   MIN_SDK:
     default: '= 29'
   SDK:
     default: '= 35'
+  FIX_ANDROIDX_COMPAT_VERSION:
+    default: "= '1.6.1'"
 
 platforms:
   android:
@@ -32,6 +34,16 @@ platforms:
               <data android:scheme="https" android:host="tero.com.ar" />
           </intent-filter>
 
+      - file: AndroidManifest.xml
+        target: manifest
+        attrs:
+          xmlns:tools: http://schemas.android.com/tools
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: |
+          <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+
     gradle:
       - file: variables.gradle
         target:
@@ -46,6 +58,13 @@ platforms:
         insertType: 'variable'
         insert:
           - rgcfaIncludeGoogle: 'true'
+
+      - file: variables.gradle
+        target:
+          ext:
+            androidxAppCompatVersion:
+        replace:
+          - androidxAppCompatVersion: $FIX_ANDROIDX_COMPAT_VERSION
 
     res:
       - path: mipmap-anydpi-v26
