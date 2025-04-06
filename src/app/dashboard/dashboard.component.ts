@@ -2,7 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import {
-  BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE,
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
@@ -34,10 +35,10 @@ interface IGroup {
   debt: boolean;
 }
 @Component({
-    selector: 'tero-dashboard',
-    templateUrl: './dashboard.html',
-    styleUrls: ['./dashboard.css'],
-    imports: SharedModules
+  selector: 'tero-dashboard',
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.css'],
+  imports: SharedModules
 })
 export class DashboardComponent implements OnInit {
   readonly #neighborsService = inject(NeighborsService);
@@ -108,10 +109,7 @@ export class DashboardComponent implements OnInit {
       }));
       this.members = 0;
       this.membershipFee = 0;
-      const [neighbors, security] = await Promise.all([
-        this.#neighborsService.getNeighbors(),
-        this.#securityService.getSecurity()
-      ]);
+      const [neighbors, security] = await Promise.all([this.#neighborsService.getNeighbors(), this.#securityService.getSecurity()]);
 
       neighbors.forEach(_neighbor => {
         if (_neighbor.security && this.groups[_neighbor.group - 1]) {
@@ -134,10 +132,7 @@ export class DashboardComponent implements OnInit {
             date.setHours(23, 59, 59, 999);
             const endDate = date.getTime();
             _group.debt = !security.invoices.find(
-              _invoice =>
-                _invoice.group === _group.value &&
-                _invoice.timestamp >= startDate &&
-                _invoice.timestamp <= endDate
+              _invoice => _invoice.group === _group.value && _invoice.timestamp >= startDate && _invoice.timestamp <= endDate
             );
           }
         });
@@ -192,14 +187,14 @@ export class DashboardComponent implements OnInit {
 
             this.#toast.success(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
           }
-        } catch (error: any) {
+        } catch (error) {
           this.#log.error({
             fileName: 'dashboard.component',
             functionName: 'showGarbageTruckPopup',
             param: error
           });
 
-          if (error.message === ERROR.ITEM_ALREADY_EXISTS) {
+          if (error instanceof Error && error.message === ERROR.ITEM_ALREADY_EXISTS) {
             this.#toast.info(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
             return;
           }

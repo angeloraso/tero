@@ -1,4 +1,4 @@
 :host {
-    --bizy-input-max-width: 100%;
-    --bizy-input-background-color: var(--dark-input-background-color);
+  --bizy-input-max-width: 100%;
+  --bizy-input-background-color: var(--dark-input-background-color);
 }

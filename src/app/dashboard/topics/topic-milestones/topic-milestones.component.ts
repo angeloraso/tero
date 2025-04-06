@@ -3,14 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import {
-  BIZY_TAG_TYPE,
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { ITopic, ITopicMilestone, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
@@ -24,10 +17,10 @@ interface IExtendedTopic extends ITopic {
 }
 
 @Component({
-    selector: 'tero-topic-milestones',
-    templateUrl: './topic-milestones.html',
-    styleUrls: ['./topic-milestones.css'],
-    imports: SharedModules
+  selector: 'tero-topic-milestones',
+  templateUrl: './topic-milestones.html',
+  styleUrls: ['./topic-milestones.css'],
+  imports: SharedModules
 })
 export class TopicMilestonesComponent implements OnInit {
   readonly #auth = inject(AuthService);
@@ -60,10 +53,7 @@ export class TopicMilestonesComponent implements OnInit {
         return;
       }
 
-      const [topic, users] = await Promise.all([
-        this.#topicsService.getTopic(this.topicId),
-        this.#usersService.getUsers()
-      ]);
+      const [topic, users] = await Promise.all([this.#topicsService.getTopic(this.topicId), this.#usersService.getUsers()]);
 
       if (!topic) {
         this.goBack();

@@ -20,8 +20,8 @@
         [description]="topic.description"
         [status]="topic.status"
         [accountEmails]="topic.accountEmails"
-        (cancel)="goBack()"
-        (save)="save($event)">
+        (canceled)="goBack()"
+        (confirmed)="save($event)">
     </tero-topic-form>
 
 </div>

@@ -11,10 +11,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 
 @Component({
-    selector: 'tero-add-ecommerce-product',
-    templateUrl: './add-ecommerce-product.html',
-    styleUrls: ['./add-ecommerce-product.css'],
-    imports: [...SharedModules, EcommerceProductFormComponent]
+  selector: 'tero-add-ecommerce-product',
+  templateUrl: './add-ecommerce-product.html',
+  styleUrls: ['./add-ecommerce-product.css'],
+  imports: [...SharedModules, EcommerceProductFormComponent]
 })
 export class AddEcommerceProductComponent implements OnInit {
   loading: boolean = false;
@@ -35,10 +35,7 @@ export class AddEcommerceProductComponent implements OnInit {
     try {
       this.loading = true;
       this.home.hideTabs();
-      const [tags, currentUser] = await Promise.all([
-        this.ecommerceService.getTags(),
-        this.usersService.getCurrentUser()
-      ]);
+      const [tags, currentUser] = await Promise.all([this.ecommerceService.getTags(), this.usersService.getCurrentUser()]);
 
       this.tags = tags || [];
       this.currentUser = currentUser || null;
@@ -80,12 +77,7 @@ export class AddEcommerceProductComponent implements OnInit {
 
       await this.ecommerceService.postProduct({ ...product, accountId });
 
-      if (
-        this.currentUser &&
-        !this.currentUser.phone &&
-        product.phones[0] &&
-        product.phones[0].number
-      ) {
+      if (this.currentUser && !this.currentUser.phone && product.phones[0] && product.phones[0].number) {
         await this.usersService.putUser({ ...this.currentUser, phone: product.phones[0].number });
       }
 

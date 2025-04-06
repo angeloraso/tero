@@ -51,174 +51,111 @@ export class MobileService {
     return ENV.mobile;
   }
 
-  init() {
-    return new Promise<void>(async resolve => {
-      try {
-        if (!this.isMobile()) {
-          resolve();
-        }
+  async init() {
+    if (!this.isMobile()) {
+      return;
+    }
 
-        App.addListener('backButton', () => {
-          this.#backButton.next();
-        });
+    App.addListener('backButton', () => {
+      this.#backButton.next();
+    });
 
-        await StatusBar.setBackgroundColor({ color: '#666666' });
-        await StatusBar.setOverlaysWebView({ overlay: false });
-        await this.#initializeFirebaseMessaging();
-      } catch (error) {
-        console.error('mobile.service: Error al iniciar:', error);
-      } finally {
-        resolve();
+    await StatusBar.setBackgroundColor({ color: '#666666' });
+    await StatusBar.setOverlaysWebView({ overlay: false });
+    await this.#initializeFirebaseMessaging();
+  }
+
+  hideSplash = () => SplashScreen.hide();
+
+  call = (number: string) => this.#callNumber.callNumber(number, false);
+
+  async share(data: { dialogTitle?: string; title?: string; text?: string; url?: string }) {
+    const res = await Share.canShare();
+    if (!res.value) {
+      throw new Error(ERROR.NOT_SUPPORTED);
+    }
+    await Share.share(data);
+  }
+
+  async downloadFile(file: { data: string; name: string; type?: FILE_TYPE }) {
+    const { uri } = await Filesystem.writeFile({
+      path: file.name,
+      data: file.data,
+      directory: Directory.Documents,
+      encoding: file.type === FILE_TYPE.CSV ? Encoding.UTF8 : file.type === FILE_TYPE.IMAGE ? undefined : Encoding.UTF8
+    });
+
+    await FileOpener.open({ filePath: uri, openWithDefault: true });
+  }
+
+  async sendGarbageNotification() {
+    if (!this.#MESSAGING_TOKEN) {
+      await this.#initializeFirebaseMessaging();
+    }
+
+    await FirebaseFunctions.callByName({
+      name: 'sendPushNotification',
+      data: {
+        topic: this.#GARBAGE_NOTIFICATION.TOPIC,
+        title: this.#GARBAGE_NOTIFICATION.TITLE,
+        body: this.#GARBAGE_NOTIFICATION.BODY
       }
     });
   }
 
-  hideSplash() {
-    SplashScreen.hide();
-  }
+  async sendNewTopicNotification(topicTitle: string) {
+    if (!ENV.production || !ENV.mobile) {
+      return;
+    }
 
-  call(number: string) {
-    return this.#callNumber.callNumber(number, false);
-  }
+    if (!this.#MESSAGING_TOKEN) {
+      await this.#initializeFirebaseMessaging();
+    }
 
-  share(data: { dialogTitle?: string; title?: string; text?: string; url?: string }) {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const res = await Share.canShare();
-        if (!res.value) {
-          throw new Error(ERROR.NOT_SUPPORTED);
-        }
-        await Share.share(data);
-        resolve();
-      } catch (error) {
-        reject(error);
+    await FirebaseFunctions.callByName({
+      name: 'sendPushNotification',
+      data: {
+        topic: this.#NEW_TOPIC_NOTIFICATION.TOPIC,
+        title: this.#NEW_TOPIC_NOTIFICATION.TITLE,
+        body: `${this.#NEW_TOPIC_NOTIFICATION.BODY}: ${topicTitle}`
       }
     });
   }
 
-  downloadFile(file: { data: string; name: string; type?: FILE_TYPE }) {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const { uri } = await Filesystem.writeFile({
-          path: file.name,
-          data: file.data,
-          directory: Directory.Documents,
-          encoding:
-            file.type === FILE_TYPE.CSV
-              ? Encoding.UTF8
-              : file.type === FILE_TYPE.IMAGE
-                ? undefined
-                : Encoding.UTF8
-        });
+  async sendTopicUpdateNotification(topicTitle: string) {
+    if (!this.#MESSAGING_TOKEN) {
+      await this.#initializeFirebaseMessaging();
+    }
 
-        await FileOpener.open({ filePath: uri, openWithDefault: true });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  sendGarbageNotification() {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!this.#MESSAGING_TOKEN) {
-          await this.#initializeFirebaseMessaging();
-        }
-
-        await FirebaseFunctions.callByName({
-          name: 'sendPushNotification',
-          data: {
-            topic: this.#GARBAGE_NOTIFICATION.TOPIC,
-            title: this.#GARBAGE_NOTIFICATION.TITLE,
-            body: this.#GARBAGE_NOTIFICATION.BODY
-          }
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  sendNewTopicNotification(topicTitle: string) {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!ENV.production || !ENV.mobile) {
-          resolve();
-          return;
-        }
-
-        if (!this.#MESSAGING_TOKEN) {
-          await this.#initializeFirebaseMessaging();
-        }
-
-        await FirebaseFunctions.callByName({
-          name: 'sendPushNotification',
-          data: {
-            topic: this.#NEW_TOPIC_NOTIFICATION.TOPIC,
-            title: this.#NEW_TOPIC_NOTIFICATION.TITLE,
-            body: `${this.#NEW_TOPIC_NOTIFICATION.BODY}: ${topicTitle}`
-          }
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  sendTopicUpdateNotification(topicTitle: string) {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!this.#MESSAGING_TOKEN) {
-          await this.#initializeFirebaseMessaging();
-        }
-
-        await FirebaseFunctions.callByName({
-          name: 'sendPushNotification',
-          data: {
-            topic: this.#TOPIC_UPDATE_NOTIFICATION.TOPIC,
-            title: this.#TOPIC_UPDATE_NOTIFICATION.TITLE,
-            body: `${this.#TOPIC_UPDATE_NOTIFICATION.BODY}: ${topicTitle}`
-          }
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
+    await FirebaseFunctions.callByName({
+      name: 'sendPushNotification',
+      data: {
+        topic: this.#TOPIC_UPDATE_NOTIFICATION.TOPIC,
+        title: this.#TOPIC_UPDATE_NOTIFICATION.TITLE,
+        body: `${this.#TOPIC_UPDATE_NOTIFICATION.BODY}: ${topicTitle}`
       }
     });
   }
 
   #initializeFirebaseMessaging = async () => {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        let permStatus = await FirebaseMessaging.checkPermissions();
+    let permStatus = await FirebaseMessaging.checkPermissions();
 
-        if (permStatus.receive === 'prompt') {
-          permStatus = await FirebaseMessaging.requestPermissions();
-        }
+    if (permStatus.receive === 'prompt') {
+      permStatus = await FirebaseMessaging.requestPermissions();
+    }
 
-        if (permStatus.receive !== 'granted') {
-          throw new Error('Push notifications permissions rejected');
-        }
+    if (permStatus.receive !== 'granted') {
+      throw new Error('Push notifications permissions rejected');
+    }
 
-        const event = await FirebaseMessaging.getToken();
-        this.#MESSAGING_TOKEN = event.token;
+    const event = await FirebaseMessaging.getToken();
+    this.#MESSAGING_TOKEN = event.token;
 
-        await Promise.all([
-          FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC }),
-          FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC })
-        ]);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+    await Promise.all([
+      FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC }),
+      FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC })
+    ]);
   };
 
-  exit() {
-    return Promise.all([App.exitApp()]);
-  }
+  exit = () => App.exitApp();
 }

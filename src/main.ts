@@ -15,7 +15,7 @@ import { ENV } from '@env/environment';
 const initApp = () => {
   const appInit = new AppService();
   return appInit.init();
-}
+};
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -28,6 +28,6 @@ bootstrapApplication(AppComponent, {
     provideRouter(ROUTES),
     provideAnimations(),
     { provide: Window, useValue: window },
-    { provide: LOCALE_ID, useValue: 'es-AR'},
+    { provide: LOCALE_ID, useValue: 'es-AR' }
   ]
 });

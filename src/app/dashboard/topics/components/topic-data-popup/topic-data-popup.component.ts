@@ -5,11 +5,11 @@ import { BizyPopupService, BizyValidatorService } from '@bizy/core';
 import { EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, TEL_MAX_LENGTH } from '@core/constants';
 import { TOPIC_DATA_TYPE } from '@core/model';
 @Component({
-    selector: 'tero-topic-data-popup',
-    templateUrl: 'topic-data-popup.html',
-    styleUrls: ['topic-data-popup.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-topic-data-popup',
+  templateUrl: 'topic-data-popup.html',
+  styleUrls: ['topic-data-popup.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class TopicDataPopupComponent {
   readonly #popup = inject(BizyPopupService);
@@ -49,12 +49,7 @@ export class TopicDataPopupComponent {
     const defaultValidators = [Validators.required];
     if (type === TOPIC_DATA_TYPE.EMAIL) {
       this.dataType = 'email';
-      this.value.setValidators(
-        defaultValidators.concat([
-          Validators.maxLength(EMAIL_MAX_LENGTH),
-          this.#validator.emailValidator()
-        ])
-      );
+      this.value.setValidators(defaultValidators.concat([Validators.maxLength(EMAIL_MAX_LENGTH), this.#validator.emailValidator()]));
       this.MAX_LENGTH = EMAIL_MAX_LENGTH;
     } else if (type === TOPIC_DATA_TYPE.TEL) {
       this.dataType = 'tel';

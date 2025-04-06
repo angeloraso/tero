@@ -30,10 +30,10 @@ interface IContactCard extends IContact {
 }
 
 @Component({
-    selector: 'tero-contacts',
-    templateUrl: './contacts.html',
-    styleUrls: ['./contacts.css'],
-    imports: SharedModules
+  selector: 'tero-contacts',
+  templateUrl: './contacts.html',
+  styleUrls: ['./contacts.css'],
+  imports: SharedModules
 })
 export class ContactsComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
@@ -119,11 +119,7 @@ export class ContactsComponent implements OnInit {
   }
 
   selectContact(contact: IContactCard) {
-    if (
-      !contact ||
-      !this.isNeighbor ||
-      (contact.accountId && contact.accountId !== this.#auth.getId())
-    ) {
+    if (!contact || !this.isNeighbor || (contact.accountId && contact.accountId !== this.#auth.getId())) {
       return;
     }
 
@@ -171,9 +167,7 @@ export class ContactsComponent implements OnInit {
               const contactRating: IContactRating = { ...data, accountId };
               this.loading = true;
               if (contact.rating && contact.rating.length > 0) {
-                const index = contact.rating.findIndex(
-                  _rating => _rating.accountId === contactRating.accountId
-                );
+                const index = contact.rating.findIndex(_rating => _rating.accountId === contactRating.accountId);
                 if (index !== -1) {
                   contact.rating[index] = contactRating;
                 } else {

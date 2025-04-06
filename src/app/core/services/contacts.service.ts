@@ -1,45 +1,21 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Contact, IContact } from '@core/model';
 import { DatabaseService } from '@core/services';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ContactsService {
-  constructor(@Inject(DatabaseService) private database: DatabaseService) {}
+  readonly #database = inject(DatabaseService);
 
-  getTags() {
-    return new Promise<Array<string>>(async (resolve, reject) => {
-      try {
-        const tags = await this.database.getContactTags();
-        resolve(tags ?? []);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  getTags = () => this.#database.getContactTags();
 
-  getContacts() {
-    return new Promise<Array<IContact>>(async (resolve, reject) => {
-      try {
-        const contacts = await this.database.getContacts();
-        resolve(contacts ?? []);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  getContacts = () => this.#database.getContacts();
 
-  getContact(contactId: string) {
-    return this.database.getContact(contactId);
-  }
+  getContact = (contactId: string) => this.#database.getContact(contactId);
 
-  postContact(contact: Omit<IContact, 'id'>): Promise<void> {
-    return this.database.postContact(new Contact(contact));
-  }
+  postContact = (contact: Omit<IContact, 'id'>) => this.#database.postContact(new Contact(contact));
 
-  putContact(contact: IContact): Promise<void> {
-    return this.database.putContact({
+  putContact = (contact: IContact) =>
+    this.#database.putContact({
       id: contact.id,
       accountId: contact.accountId,
       name: contact.name,
@@ -52,9 +28,6 @@ export class ContactsService {
       created: Number(contact.created) || Date.now(),
       updated: Date.now()
     });
-  }
 
-  deleteContact(contact: IContact): Promise<void> {
-    return this.database.deleteContact(contact.id);
-  }
+  deleteContact = (contact: IContact) => this.#database.deleteContact(contact.id);
 }

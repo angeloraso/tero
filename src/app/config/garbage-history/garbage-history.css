@@ -1,23 +1,23 @@
 :host {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    --bizy-card-height: 20rem;
+  --bizy-card-height: 20rem;
 }
 
 ::ng-deep .cal-month-view .cal-day-cell.cal-today .cal-day-number {
-    font-size: inherit;
+  font-size: inherit;
 }
 
 ::ng-deep .cal-month-view .cal-day-number {
-    font-size: inherit;
+  font-size: inherit;
 }
 
 ::ng-deep .cal-month-view .cal-day-cell {
-    min-height: auto;
+  min-height: auto;
 }
 
 ::ng-deep .cal-month-view .cal-cell-top {
-    min-height: auto;
+  min-height: auto;
 }

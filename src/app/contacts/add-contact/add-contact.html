@@ -11,8 +11,8 @@
     <tero-contact-form
         [bizyLoading]="loading"
         [tags]="{available: tags, selected: []}"
-        (cancel)="goBack()"
-        (save)="save($event)">
+        (canceled)="goBack()"
+        (confirmed)="save($event)">
     </tero-contact-form>
 
 </div>

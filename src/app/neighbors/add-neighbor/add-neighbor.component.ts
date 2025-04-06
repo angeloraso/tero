@@ -7,10 +7,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { NeighborFormComponent } from '@neighbors/components';
 @Component({
-    selector: 'tero-add-neighbor',
-    templateUrl: './add-neighbor.html',
-    styleUrls: ['./add-neighbor.css'],
-    imports: [...SharedModules, NeighborFormComponent]
+  selector: 'tero-add-neighbor',
+  templateUrl: './add-neighbor.html',
+  styleUrls: ['./add-neighbor.css'],
+  imports: [...SharedModules, NeighborFormComponent]
 })
 export class AddNeighborComponent {
   loading: boolean = false;

@@ -1,20 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { SharedModules } from '@app/shared';
-import {
-  BIZY_TAG_TYPE,
-  BizyCopyToClipboardService,
-  BizyLogService,
-  BizyPopupService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyCopyToClipboardService, BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { ILot } from '@neighborhood/neighborhood.model';
 
 @Component({
-    selector: 'tero-lot-popup',
-    templateUrl: './lot-popup.html',
-    styleUrls: ['./lot-popup.css'],
-    imports: SharedModules
+  selector: 'tero-lot-popup',
+  templateUrl: './lot-popup.html',
+  styleUrls: ['./lot-popup.css'],
+  imports: SharedModules
 })
 export class LotPopupComponent {
   readonly #popup = inject(BizyPopupService);
@@ -28,8 +21,7 @@ export class LotPopupComponent {
 
   async copyLotData() {
     try {
-      await this.#clipboard
-        .copy(`${this.#translate.get('NEIGHBORHOOD.DATA.DISTRICT')}: ${this.data.district}
+      await this.#clipboard.copy(`${this.#translate.get('NEIGHBORHOOD.DATA.DISTRICT')}: ${this.data.district}
 ${this.#translate.get('NEIGHBORHOOD.DATA.CADASTRAL_JURISDICTION')}: ${this.data.cadastralJurisdiction}
 ${this.#translate.get('NEIGHBORHOOD.DATA.SECTION')}: ${this.data.section}
 ${this.#translate.get('NEIGHBORHOOD.DATA.SUBDIVISION')}: ${this.data.subdivision}

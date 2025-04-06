@@ -25,10 +25,10 @@ interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
 }
 
 @Component({
-    selector: 'tero-security-group-invoices',
-    templateUrl: './security-group-invoices.html',
-    styleUrls: ['./security-group-invoices.css'],
-    imports: SharedModules
+  selector: 'tero-security-group-invoices',
+  templateUrl: './security-group-invoices.html',
+  styleUrls: ['./security-group-invoices.css'],
+  imports: SharedModules
 })
 export class SecurityGroupInvoicesComponent implements OnInit {
   group: number | null = null;
@@ -91,9 +91,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
               .filter(_invoice => _invoice.group === this.group)
               .map(_invoice => {
                 const _neighbor = neighbors.find(_neighbor => _neighbor.id === _invoice.neighborId);
-                const _neighborName = _neighbor
-                  ? `${_neighbor.name}${_neighbor.surname ? ' ' + _neighbor.surname : ''}`
-                  : '';
+                const _neighborName = _neighbor ? `${_neighbor.name}${_neighbor.surname ? ' ' + _neighbor.surname : ''}` : '';
                 return {
                   ..._invoice,
                   _neighborName,
@@ -137,10 +135,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
           if (res) {
             this.loading = true;
             await this.securityService.deleteNeighborInvoice(invoice);
-            const index = this.invoices.findIndex(
-              _invoice =>
-                _invoice.group === invoice.group && _invoice.timestamp === invoice.timestamp
-            );
+            const index = this.invoices.findIndex(_invoice => _invoice.group === invoice.group && _invoice.timestamp === invoice.timestamp);
             if (index !== -1) {
               this.invoices.splice(index, 1);
               this.refresh();
@@ -185,13 +180,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
 
   async export() {
     try {
-      if (
-        this.csvLoading ||
-        this.loading ||
-        !this.invoices ||
-        this.invoices.length === 0 ||
-        !this.isConfig
-      ) {
+      if (this.csvLoading || this.loading || !this.invoices || this.invoices.length === 0 || !this.isConfig) {
         return;
       }
 

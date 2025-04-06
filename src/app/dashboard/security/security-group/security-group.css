@@ -1,13 +1,13 @@
 :host {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .security-group__table-row--debt {
-    --bizy-table-row-background-color: var(--bizy-light-danger-color) !important;
+  --bizy-table-row-background-color: var(--bizy-light-danger-color) !important;
 }
 
 .security-group__table-row--no-debt {
-    --bizy-table-row-background-color: var(--bizy-light-success-color) !important;
+  --bizy-table-row-background-color: var(--bizy-light-success-color) !important;
 }

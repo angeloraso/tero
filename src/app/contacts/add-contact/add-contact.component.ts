@@ -10,10 +10,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 
 @Component({
-    selector: 'tero-add-contact',
-    templateUrl: './add-contact.html',
-    styleUrls: ['./add-contact.css'],
-    imports: [...SharedModules, ContactFormComponent]
+  selector: 'tero-add-contact',
+  templateUrl: './add-contact.html',
+  styleUrls: ['./add-contact.css'],
+  imports: [...SharedModules, ContactFormComponent]
 })
 export class AddContactComponent implements OnInit {
   loading: boolean = false;

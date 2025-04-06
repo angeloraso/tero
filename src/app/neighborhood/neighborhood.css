@@ -1,105 +1,105 @@
 :host {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .neighborhood {
-    overflow: scroll;
-    width: 100%;
-    height: 100%;
+  overflow: scroll;
+  width: 100%;
+  height: 100%;
 }
 
 .neighborhood--downloading {
-    display: block !important;
-    width: 100vw;
-    height: 100vh;
-    opacity: 0.6;
-    background-color: #fff;
-    pointer-events: none;
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+  display: block !important;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.6;
+  background-color: #fff;
+  pointer-events: none;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .neighborhood__toolbar {
-    position: sticky;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .neighborhood__block-row {
-    display: flex;
+  display: flex;
 }
 
 .neighborhood__block {
-    padding: 0.3rem;
-    background-color: var(--hover-color);
-    border-radius: 0.3rem;
-    display: flex;
-    height: fit-content;
+  padding: 0.3rem;
+  background-color: var(--hover-color);
+  border-radius: 0.3rem;
+  display: flex;
+  height: fit-content;
 }
 
 .neighborhood__block__column--free {
-    background-color: var(--free-color);
-    width: 6rem;
+  background-color: var(--free-color);
+  width: 6rem;
 }
 
 .neighborhood__block__column {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .neighborhood__block__column__lot {
-    border: 0.1rem solid var(--bizy-default-color);
-    height: 2rem;
-    width: 6rem;
-    text-align: center;
-    display: grid;
-    place-items: center;
+  border: 0.1rem solid var(--bizy-default-color);
+  height: 2rem;
+  width: 6rem;
+  text-align: center;
+  display: grid;
+  place-items: center;
 }
 
 .neighborhood__vertical-street {
-    background-color: var(--street-color);
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-    min-width: 2rem;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0.3rem;
+  background-color: var(--street-color);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  min-width: 2rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.3rem;
 }
 
 .neighborhood__vertical-street--main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .street__icon {
-    color: var(--bizy-info-color);
-    background-color: #fff;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    height: 2.2rem;
-    width: 2.2rem;
-    border: 0.1rem solid var(--bizy-info-color);
-    transform: rotate(180deg);
+  color: var(--bizy-info-color);
+  background-color: #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  height: 2.2rem;
+  width: 2.2rem;
+  border: 0.1rem solid var(--bizy-info-color);
+  transform: rotate(180deg);
 }
 
 .neighborhood__horizontal-street {
-    background-color: var(--street-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 2rem;
-    border-radius: 0.3rem;
+  background-color: var(--street-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 2rem;
+  border-radius: 0.3rem;
 }

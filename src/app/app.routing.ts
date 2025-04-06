@@ -21,7 +21,7 @@ export const ROUTES: Routes = [
   },
   {
     path: PATH.HOME,
-    loadChildren: () => import('@home/home.routing').then(m => m.ROUTES),
+    loadChildren: () => import('@home/home.routing').then(m => m.ROUTES)
   },
   {
     path: PATH.ANY,

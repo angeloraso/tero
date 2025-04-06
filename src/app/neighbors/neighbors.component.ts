@@ -28,10 +28,10 @@ interface INeighborExtended extends INeighbor {
 }
 
 @Component({
-    selector: 'tero-neighbors',
-    templateUrl: './neighbors.html',
-    styleUrls: ['./neighbors.css'],
-    imports: SharedModules
+  selector: 'tero-neighbors',
+  templateUrl: './neighbors.html',
+  styleUrls: ['./neighbors.css'],
+  imports: SharedModules
 })
 export class NeighborsComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
@@ -95,9 +95,7 @@ export class NeighborsComponent implements OnInit {
         ? neighbors.map(_neighbor => {
             return {
               ..._neighbor,
-              _alarmControls: _neighbor.alarmControls
-                ? _neighbor.alarmControls.map(_value => String(_value))
-                : []
+              _alarmControls: _neighbor.alarmControls ? _neighbor.alarmControls.map(_value => String(_value)) : []
             };
           })
         : [];
@@ -184,7 +182,7 @@ export class NeighborsComponent implements OnInit {
             functionName: 'removeNeighborFromSecurity',
             param: error
           });
-          this.#toast.danger()
+          this.#toast.danger();
         } finally {
           this.securityLoading = false;
         }
@@ -194,13 +192,7 @@ export class NeighborsComponent implements OnInit {
 
   async export() {
     try {
-      if (
-        this.csvLoading ||
-        this.loading ||
-        !this.neighbors ||
-        this.neighbors.length === 0 ||
-        !this.isConfig
-      ) {
+      if (this.csvLoading || this.loading || !this.neighbors || this.neighbors.length === 0 || !this.isConfig) {
         return;
       }
 
@@ -209,9 +201,7 @@ export class NeighborsComponent implements OnInit {
       const items = this.#filter(this.neighbors).map(_neighbor => {
         return {
           ..._neighbor,
-          _security: _neighbor.security
-            ? this.#translate.get('CORE.YES')
-            : this.#translate.get('CORE.NO')
+          _security: _neighbor.security ? this.#translate.get('CORE.YES') : this.#translate.get('CORE.NO')
         };
       });
 
@@ -248,12 +238,7 @@ export class NeighborsComponent implements OnInit {
   #filter(items: Array<INeighbor>): Array<INeighbor> {
     let _items = this.#filterPipe.transform(items, 'group', this.filterGroups);
     _items = this.#filterPipe.transform(items, 'alarmNumber', this.filterAlarmControls);
-    _items = this.#searchPipe.transform(_items, this.search, [
-      'group',
-      'lot',
-      'surname',
-      'name'
-    ]);
+    _items = this.#searchPipe.transform(_items, this.search, ['group', 'lot', 'surname', 'name']);
     _items = this.#searchPipe.transform(_items, this.lotSearch, 'lot');
     _items = this.#searchPipe.transform(_items, this.surnameSearch, 'surname');
     _items = this.#searchPipe.transform(_items, this.nameSearch, 'name');

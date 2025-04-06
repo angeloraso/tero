@@ -2,13 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import {
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { IEcommerceProduct, IPhone } from '@core/model';
 import { EcommerceService } from '@core/services';
@@ -49,10 +43,7 @@ export class EditEcommerceProductComponent implements OnInit {
         return;
       }
 
-      const [product, tags] = await Promise.all([
-        this.ecommerceService.getProduct(this.productId),
-        this.ecommerceService.getTags()
-      ]);
+      const [product, tags] = await Promise.all([this.ecommerceService.getProduct(this.productId), this.ecommerceService.getTags()]);
 
       this.product = product;
       this.tags = tags;

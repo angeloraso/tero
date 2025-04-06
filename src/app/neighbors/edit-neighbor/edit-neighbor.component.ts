@@ -2,13 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import {
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
@@ -17,10 +11,10 @@ import { HomeService } from '@home/home.service';
 import { NeighborFormComponent } from '@neighbors/components';
 
 @Component({
-    selector: 'tero-edit-neighbor',
-    templateUrl: './edit-neighbor.html',
-    styleUrls: ['./edit-neighbor.css'],
-    imports: [...SharedModules, NeighborFormComponent]
+  selector: 'tero-edit-neighbor',
+  templateUrl: './edit-neighbor.html',
+  styleUrls: ['./edit-neighbor.css'],
+  imports: [...SharedModules, NeighborFormComponent]
 })
 export class EditNeighborComponent implements OnInit {
   neighbor: INeighbor | null = null;
@@ -116,13 +110,13 @@ export class EditNeighborComponent implements OnInit {
       this.loading = true;
       await this.neighborsService.putNeighbor({
         ...this.neighbor,
-        group: data.group,
+        group: Number(data.group),
         surname: data.surname,
         name: data.name,
-        alarmNumber: data.alarmNumber,
+        alarmNumber: Number(data.alarmNumber),
         alarmControls: data.alarmControls,
         security: data.security,
-        lot: data.lot
+        lot: Number(data.lot)
       });
       this.goBack();
     } catch (error) {

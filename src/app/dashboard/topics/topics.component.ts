@@ -29,10 +29,10 @@ interface IExtendedTopic extends ITopic {
 }
 
 @Component({
-    selector: 'tero-topics',
-    templateUrl: './topics.html',
-    styleUrls: ['./topics.css'],
-    imports: SharedModules
+  selector: 'tero-topics',
+  templateUrl: './topics.html',
+  styleUrls: ['./topics.css'],
+  imports: SharedModules
 })
 export class TopicsComponent implements OnInit {
   readonly #router = inject(BizyRouterService);

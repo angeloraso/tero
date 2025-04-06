@@ -1,37 +1,37 @@
 :host {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    --bizy-card-cursor: pointer;
+  --bizy-card-cursor: pointer;
 }
 
 .dashboard {
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 8rem 5rem 5rem;
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 8rem 5rem 5rem;
+  gap: 1rem;
 }
 
 .dashboard__header__icon {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .dashboard__security--no-debt {
-    --bizy-card-background-color: var(--bizy-light-success-color);
+  --bizy-card-background-color: var(--bizy-light-success-color);
 }
 
 .dashboard__security__content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.3rem;
-    margin: 0.5rem 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.3rem;
+  margin: 0.5rem 0;
 }
 
 .dashboard__security__content__section {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

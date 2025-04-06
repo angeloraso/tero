@@ -1,7 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BIZY_CALENDAR_DAY, BIZY_CALENDAR_MODE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService, IBizyCalendarEvent } from '@bizy/core';
+import {
+  BIZY_CALENDAR_DAY,
+  BIZY_CALENDAR_MODE,
+  BizyLogService,
+  BizyPopupService,
+  BizyRouterService,
+  BizyToastService,
+  BizyTranslateService,
+  IBizyCalendarEvent
+} from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { AuthService } from '@core/auth/auth.service';
 import { GarbageTruckService } from '@core/services';
@@ -10,10 +19,10 @@ import { HomeService } from '@home/home.service';
 import { es } from './i18n';
 
 @Component({
-    selector: 'tero-garbage-history',
-    templateUrl: './garbage-history.html',
-    styleUrls: ['./garbage-history.css'],
-    imports: SharedModules
+  selector: 'tero-garbage-history',
+  templateUrl: './garbage-history.html',
+  styleUrls: ['./garbage-history.css'],
+  imports: SharedModules
 })
 export class GarbageHistoryComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
@@ -49,7 +58,7 @@ export class GarbageHistoryComponent implements OnInit {
     }
   }
 
-  openGarbageRecordPopup(data: { start: number, end: number, events: Array<IBizyCalendarEvent>}) {
+  openGarbageRecordPopup(data: { start: number; end: number; events: Array<IBizyCalendarEvent> }) {
     if (this.loading || !data || data.events.length > 0) {
       return;
     }
@@ -74,7 +83,7 @@ export class GarbageHistoryComponent implements OnInit {
               return;
             }
 
-            await this.#garbageTruckService.postRecord({ accountEmail: email, date: data.start});
+            await this.#garbageTruckService.postRecord({ accountEmail: email, date: data.start });
             await this.#buildCalendar();
           }
         } catch (error) {
@@ -105,7 +114,7 @@ export class GarbageHistoryComponent implements OnInit {
         id: _record.id
       };
     });
-  }
+  };
 
   goBack() {
     this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });

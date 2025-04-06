@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export enum PATH {
-  EMPTY = '',
+  EMPTY = ''
 }
 
 export const ROUTES: Routes = [

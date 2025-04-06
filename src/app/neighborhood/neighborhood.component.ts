@@ -1,20 +1,7 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  OnInit,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { SharedModules } from '@app/shared';
-import {
-  BizyLogService,
-  BizyPopupService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { LOGO_PATH, LOTS } from '@core/constants';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { FILE_TYPE } from '@core/services/mobile.service';
@@ -25,10 +12,10 @@ import { es } from './i18n';
 import { ILot } from './neighborhood.model';
 
 @Component({
-    selector: 'tero-neighborhood',
-    templateUrl: './neighborhood.html',
-    styleUrls: ['./neighborhood.css'],
-    imports: [...SharedModules, LotComponent]
+  selector: 'tero-neighborhood',
+  templateUrl: './neighborhood.html',
+  styleUrls: ['./neighborhood.css'],
+  imports: [...SharedModules, LotComponent]
 })
 export class NeighborhoodComponent implements OnInit, AfterViewInit {
   @ViewChild('firstBlock') firstBlock: ElementRef | null = null;
@@ -76,7 +63,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
         _lot.neighbors.length = 0;
       });
       neighbors.forEach(_neighbor => {
-        this.lots[_neighbor.lot].neighbors.push(_neighbor);
+        this.lots[Number(_neighbor.lot)].neighbors.push(_neighbor);
       });
     } catch (error) {
       console.error(error);

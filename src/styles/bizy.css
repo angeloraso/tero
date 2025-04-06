@@ -11,27 +11,27 @@
 @import '../../node_modules/@bizy/core/styles/variables.css';
 
 :root {
-    --bizy-loading-spinner-color-1st-line: var(--light-primary-color);
-    --bizy-loading-spinner-color-2nd-line: var(--primary-color);
-    --bizy-loading-spinner-color-3rd-line: var(--dark-primary-color);
+  --bizy-loading-spinner-color-1st-line: var(--light-primary-color);
+  --bizy-loading-spinner-color-2nd-line: var(--primary-color);
+  --bizy-loading-spinner-color-3rd-line: var(--dark-primary-color);
 
-    --bizy-table-column-min-width: 4.3rem;
-    --bizy-table-background-color: var(--background-color);
-    --bizy-table-header-background-color: var(--light-primary-color);
-    --bizy-table-column-arrows-color: var(--text-color);
+  --bizy-table-column-min-width: 4.3rem;
+  --bizy-table-background-color: var(--background-color);
+  --bizy-table-header-background-color: var(--light-primary-color);
+  --bizy-table-column-arrows-color: var(--text-color);
 
-    --bizy-input-min-width: 8rem;
-    --bizy-input-max-width: 20rem;
+  --bizy-input-min-width: 8rem;
+  --bizy-input-max-width: 20rem;
 
-    --bizy-sidebar-shrinked-width: 3rem;
-    --bizy-sidebar-width: 14rem;
-    --bizy-sidebar-option-hover-color: var(--bizy-light-info-color);
-    --bizy-sidebar-option-selected-color: var(--bizy-accent-color);
+  --bizy-sidebar-shrinked-width: 3rem;
+  --bizy-sidebar-width: 14rem;
+  --bizy-sidebar-option-hover-color: var(--bizy-light-info-color);
+  --bizy-sidebar-option-selected-color: var(--bizy-accent-color);
 
-    --bizy-tab-border-top: none;
-    --bizy-tab-border-right: none;
-    --bizy-tab-border-left: none;
-    --bizy-tab-border-bottom: none;
+  --bizy-tab-border-top: none;
+  --bizy-tab-border-right: none;
+  --bizy-tab-border-left: none;
+  --bizy-tab-border-bottom: none;
 
-    --bizy-grid-row-height: 5rem;
+  --bizy-grid-row-height: 5rem;
 }

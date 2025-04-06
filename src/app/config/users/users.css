@@ -1,28 +1,28 @@
 :host {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    --bizy-card-cursor: pointer;
-    --bizy-grid-row-height: 12rem;
+  --bizy-card-cursor: pointer;
+  --bizy-grid-row-height: 12rem;
 }
 
 .users__card__profile-pic {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .users__card__action {
-    align-self: flex-start;
+  align-self: flex-start;
 }
 
 .users__card__content__description {
-    display: grid;
-    grid-template-columns: 1rem auto 1rem;
-    align-items: center;
-    column-gap: 0.3rem;
-    width: 100%;
+  display: grid;
+  grid-template-columns: 1rem auto 1rem;
+  align-items: center;
+  column-gap: 0.3rem;
+  width: 100%;
 }
 
 .users__card__content__description * {
-    color: var(--bizy-default-color);
+  color: var(--bizy-default-color);
 }

@@ -1,20 +1,20 @@
 :host {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-    --bizy-grid-row-height: 5rem;
+  --bizy-grid-row-height: 5rem;
 }
 
 .neighbors__card__lot {
-    border-radius: 50%;
-    border: 0.1rem solid var(--bizy-info-color);
-    padding: 0.5rem;
+  border-radius: 50%;
+  border: 0.1rem solid var(--bizy-info-color);
+  padding: 0.5rem;
 }
 
 .neighbors__card__content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.3rem;
 }

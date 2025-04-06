@@ -26,17 +26,10 @@ interface IOption {
   selected: boolean;
 }
 @Component({
-    selector: 'tero-home',
-    templateUrl: './home.html',
-    styleUrls: ['./home.css'],
-    imports: [
-      ...SharedModules,
-      BizySidebarComponent,
-      BizySidebarOptionComponent,
-      BizyTabsComponent,
-      BizyTabComponent,
-      RouterOutlet
-    ]
+  selector: 'tero-home',
+  templateUrl: './home.html',
+  styleUrls: ['./home.css'],
+  imports: [...SharedModules, BizySidebarComponent, BizySidebarOptionComponent, BizyTabsComponent, BizyTabComponent, RouterOutlet]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   readonly #log = inject(BizyLogService);
@@ -46,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   readonly #auth = inject(AuthService);
   readonly #home = inject(HomeService);
 
-  showTabs = this.#home.tabs; 
+  showTabs = this.#home.tabs;
   loading: boolean = false;
   closedSidebar: boolean = false;
   profilePic: string = '';

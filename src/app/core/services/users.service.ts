@@ -1,68 +1,54 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IUser, USER_ROLE } from '@core/model';
 import { DatabaseService } from '@core/services';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UsersService {
-  constructor(@Inject(DatabaseService) private database: DatabaseService) {}
+  readonly #database = inject(DatabaseService);
 
-  getUsers() {
-    return this.database.getUsers();
-  }
+  getUsers = () => this.#database.getUsers();
 
-  getCurrentUser() {
-    return this.database.getCurrentUser();
-  }
+  getCurrentUser = () => this.#database.getCurrentUser();
 
-  getUser(email: string) {
-    return this.database.getUser(email);
-  }
+  getUser = (email: string) => this.#database.getUser(email);
 
-  postUser() {
-    return this.database.postUser();
-  }
+  postUser = () => this.#database.postUser();
 
-  putUser(user: IUser) {
-    return this.database.putUser(user);
-  }
+  putUser = (user: IUser) => this.#database.putUser(user);
 
   async isAdmin() {
-    const user = await this.getCurrentUser();
-    return user.roles && user.roles.includes(USER_ROLE.ADMIN);
+    try {
+      const user = await this.getCurrentUser();
+      return user.roles && user.roles.includes(USER_ROLE.ADMIN);
+    } catch {
+      return false;
+    }
   }
 
-  isNeighbor() {
-    return new Promise<boolean>(async resolve => {
-      try {
-        const user = await this.getCurrentUser();
-        resolve(user.roles && (user.roles.includes(USER_ROLE.NEIGHBOR) || user.roles.includes(USER_ROLE.ADMIN)));
-      } catch {
-        resolve(false);
-      }
-    });
+  async isNeighbor() {
+    try {
+      const user = await this.getCurrentUser();
+      return user.roles && (user.roles.includes(USER_ROLE.NEIGHBOR) || user.roles.includes(USER_ROLE.ADMIN));
+    } catch {
+      return false;
+    }
   }
 
-  isSecurity() {
-    return new Promise<boolean>(async resolve => {
-      try {
-        const user = await this.getCurrentUser();
-        resolve(user.roles && (user.roles.includes(USER_ROLE.SECURITY) || user.roles.includes(USER_ROLE.ADMIN)));
-      } catch {
-        resolve(false);
-      }
-    });
+  async isSecurity() {
+    try {
+      const user = await this.getCurrentUser();
+      return user.roles && (user.roles.includes(USER_ROLE.SECURITY) || user.roles.includes(USER_ROLE.ADMIN));
+    } catch {
+      return false;
+    }
   }
 
-  isConfig() {
-    return new Promise<boolean>(async resolve => {
-      try {
-        const user = await this.getCurrentUser();
-        resolve(user.roles && (user.roles.includes(USER_ROLE.CONFIG) || user.roles.includes(USER_ROLE.ADMIN)));
-      } catch {
-        resolve(false);
-      }
-    });
+  async isConfig() {
+    try {
+      const user = await this.getCurrentUser();
+      return user.roles && (user.roles.includes(USER_ROLE.CONFIG) || user.roles.includes(USER_ROLE.ADMIN));
+    } catch {
+      return false;
+    }
   }
 }

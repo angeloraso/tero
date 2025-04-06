@@ -11,12 +11,7 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import {
-  AboutPopupComponent,
-  UserAliasCBUPopupComponent,
-  UserLotPopupComponent,
-  UserPhonePopupComponent
-} from '@config/components';
+import { AboutPopupComponent, UserAliasCBUPopupComponent, UserLotPopupComponent, UserPhonePopupComponent } from '@config/components';
 import { DEFAULT_USER_PICTURE, LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
@@ -25,10 +20,10 @@ import { PATH } from './config.routing';
 import { es } from './i18n';
 
 @Component({
-    selector: 'tero-config',
-    templateUrl: './config.html',
-    styleUrls: ['./config.css'],
-    imports: SharedModules
+  selector: 'tero-config',
+  templateUrl: './config.html',
+  styleUrls: ['./config.css'],
+  imports: SharedModules
 })
 export class ConfigComponent implements OnInit {
   readonly #router = inject(BizyRouterService);

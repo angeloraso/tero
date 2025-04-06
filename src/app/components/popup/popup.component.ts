@@ -2,10 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { BizyButtonComponent, BizyPopupService } from '@bizy/core';
 import { TranslatePipe } from '@ngx-translate/core';
 @Component({
-    selector: 'tero-popup',
-    templateUrl: 'popup.html',
-    styleUrls: ['popup.css'],
-    imports: [BizyButtonComponent, TranslatePipe]
+  selector: 'tero-popup',
+  templateUrl: 'popup.html',
+  styleUrls: ['popup.css'],
+  imports: [BizyButtonComponent, TranslatePipe]
 })
 export class PopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);

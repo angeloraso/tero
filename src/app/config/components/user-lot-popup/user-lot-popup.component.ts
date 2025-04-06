@@ -5,11 +5,11 @@ import { BizyPopupService } from '@bizy/core';
 import { LOTS } from '@core/constants';
 
 @Component({
-    selector: 'tero-user-lot-popup',
-    templateUrl: 'user-lot-popup.html',
-    styleUrls: ['user-lot-popup.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-user-lot-popup',
+  templateUrl: 'user-lot-popup.html',
+  styleUrls: ['user-lot-popup.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class UserLotPopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
@@ -42,6 +42,6 @@ export class UserLotPopupComponent implements OnInit {
       return;
     }
 
-    this.#popup.close({ response: this.lot.value });
+    this.#popup.close({ response: Number(this.lot.value) });
   }
 }

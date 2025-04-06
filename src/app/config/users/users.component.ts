@@ -29,10 +29,10 @@ interface IUserCard extends IUser {
 }
 
 @Component({
-    selector: 'tero-users',
-    templateUrl: './users.html',
-    styleUrls: ['./users.css'],
-    imports: SharedModules
+  selector: 'tero-users',
+  templateUrl: './users.html',
+  styleUrls: ['./users.css'],
+  imports: SharedModules
 })
 export class UsersComponent implements OnInit {
   loading = false;
@@ -202,13 +202,7 @@ export class UsersComponent implements OnInit {
 
   async export() {
     try {
-      if (
-        this.csvLoading ||
-        this.loading ||
-        !this.users ||
-        this.users.length === 0 ||
-        !this.isConfig
-      ) {
+      if (this.csvLoading || this.loading || !this.users || this.users.length === 0 || !this.isConfig) {
         return;
       }
 

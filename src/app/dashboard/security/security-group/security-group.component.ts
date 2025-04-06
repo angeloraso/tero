@@ -28,10 +28,10 @@ interface INeighborCard extends INeighbor {
 }
 
 @Component({
-    selector: 'tero-security-group',
-    templateUrl: './security-group.html',
-    styleUrls: ['./security-group.css'],
-    imports: SharedModules
+  selector: 'tero-security-group',
+  templateUrl: './security-group.html',
+  styleUrls: ['./security-group.css'],
+  imports: SharedModules
 })
 export class SecurityGroupComponent implements OnInit {
   loading = false;
@@ -252,13 +252,7 @@ export class SecurityGroupComponent implements OnInit {
 
   async export() {
     try {
-      if (
-        this.csvLoading ||
-        this.loading ||
-        !this.neighbors ||
-        this.neighbors.length === 0 ||
-        !this.isConfig
-      ) {
+      if (this.csvLoading || this.loading || !this.neighbors || this.neighbors.length === 0 || !this.isConfig) {
         return;
       }
 

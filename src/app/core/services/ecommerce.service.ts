@@ -1,45 +1,22 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { EcommerceProduct, IEcommerceProduct } from '@core/model';
 import { DatabaseService } from '@core/services';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class EcommerceService {
-  constructor(@Inject(DatabaseService) private database: DatabaseService) {}
+  readonly #database = inject(DatabaseService);
 
-  getTags() {
-    return new Promise<Array<string>>(async (resolve, reject) => {
-      try {
-        const tags = await this.database.getEcommerceTags();
-        resolve(tags ?? []);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  getTags = () => this.#database.getEcommerceTags();
 
-  getProducts() {
-    return new Promise<Array<IEcommerceProduct>>(async (resolve, reject) => {
-      try {
-        const products = await this.database.getEcommerceProducts();
-        resolve(products ?? []);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  getProducts = () => this.#database.getEcommerceProducts();
 
-  getProduct(productId: string) {
-    return this.database.getEcommerceProduct(productId);
-  }
+  getProduct = (productId: string) => this.#database.getEcommerceProduct(productId);
 
-  postProduct(product: Omit<IEcommerceProduct, 'id' | 'created' | 'updated'>): Promise<void> {
-    return this.database.postEcommerceProduct(new EcommerceProduct(product));
-  }
+  postProduct = (product: Omit<IEcommerceProduct, 'id' | 'created' | 'updated'>) =>
+    this.#database.postEcommerceProduct(new EcommerceProduct(product));
 
-  putProduct(product: IEcommerceProduct): Promise<void> {
-    return this.database.putEcommerceProduct({
+  putProduct = (product: IEcommerceProduct) =>
+    this.#database.putEcommerceProduct({
       id: product.id,
       accountId: product.accountId,
       productName: product.productName,
@@ -52,9 +29,6 @@ export class EcommerceService {
       created: Number(product.created) || Date.now(),
       updated: Date.now()
     });
-  }
 
-  deleteProduct(product: IEcommerceProduct): Promise<void> {
-    return this.database.deleteEcommerceProduct(product.id);
-  }
+  deleteProduct = (product: IEcommerceProduct) => this.#database.deleteEcommerceProduct(product.id);
 }

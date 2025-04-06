@@ -3,13 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import {
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { ContactFormComponent } from '@contacts/components';
 import { IContact } from '@core/model';
@@ -18,10 +12,10 @@ import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 
 @Component({
-    selector: 'tero-edit-contact',
-    templateUrl: './edit-contact.html',
-    styleUrls: ['./edit-contact.css'],
-    imports: [...SharedModules, ContactFormComponent]
+  selector: 'tero-edit-contact',
+  templateUrl: './edit-contact.html',
+  styleUrls: ['./edit-contact.css'],
+  imports: [...SharedModules, ContactFormComponent]
 })
 export class EditContactComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
@@ -49,10 +43,7 @@ export class EditContactComponent implements OnInit {
         return;
       }
 
-      const [contact, tags] = await Promise.all([
-        this.#contactsService.getContact(this.contactId),
-        this.#contactsService.getTags()
-      ]);
+      const [contact, tags] = await Promise.all([this.#contactsService.getContact(this.contactId), this.#contactsService.getTags()]);
       this.contact = contact;
       this.tags = tags;
     } catch (error) {

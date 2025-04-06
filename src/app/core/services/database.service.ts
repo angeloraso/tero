@@ -59,490 +59,363 @@ export class DatabaseService implements OnDestroy {
     return FirebaseFirestore.clearPersistence();
   }
 
-  getNeighbors() {
-    return new Promise<Array<INeighbor>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#neighbors.value !== 'undefined') {
-          resolve(this.#neighbors.value);
-          return;
-        }
+  getNeighbors(): Promise<Array<INeighbor>> {
+    if (typeof this.#neighbors.value !== 'undefined' && this.#neighbors.value !== null) {
+      return Promise.resolve(this.#neighbors.value);
+    }
 
-        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<INeighbor> }>(
-          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}` },
-          (event, error) => {
-            if (error) {
-              console.log(error);
-            } else {
-              const neighbors = event && event.snapshot.data ? event.snapshot.data.data : [];
-              this.#neighbors.next(neighbors);
-              resolve(neighbors);
-            }
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getNeighbor(id: string) {
-    return new Promise<INeighbor>(async (resolve, reject) => {
-      try {
-        if (typeof this.#neighbors.value !== 'undefined') {
-          const neighbor = this.#neighbors.value.find(_neighbor => _neighbor.id === id);
-          if (!neighbor) {
-            reject(new Error(ERROR.ITEM_NOT_FOUND));
-            return;
-          }
-
-          resolve(neighbor);
-          return;
-        }
-
-        const neighbors = await this.getNeighbors();
-        const neighbor = neighbors.find(_neighbor => _neighbor.id === id);
-        if (!neighbor) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        resolve(neighbor);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  postNeighbor(neighbor: INeighbor): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const neighbors = await this.getNeighbors();
-        const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
-        if (index !== -1) {
-          neighbors[index] = neighbor;
-        } else {
-          neighbors.push(neighbor);
-        }
-
-        const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
-          data: neighborsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  putNeighbor(neighbor: INeighbor): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const neighbors = await this.getNeighbors();
-        const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
-        if (index !== -1) {
-          neighbors[index] = neighbor;
-
-          const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
-          await FirebaseFirestore.setDocument({
-            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
-            data: neighborsDocument
-          });
-        }
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  deleteNeighbor(id: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        let neighbors = await this.getNeighbors();
-        neighbors = neighbors.filter(_neighbor => _neighbor.id !== id);
-
-        const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
-          data: neighborsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getContactTags() {
-    return new Promise<Array<string>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#contactData.value !== 'undefined') {
-          resolve(this.#contactData.value.tags);
-          return;
-        }
-
-        await FirebaseFirestore.addDocumentSnapshotListener<{
-          data: Array<IContact>;
-          tags: Array<string>;
-        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
+    return new Promise<Array<INeighbor>>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<INeighbor> }>(
+        { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}` },
+        (event, error) => {
           if (error) {
-            console.log(error);
-          } else if (event && event.snapshot && event.snapshot.data) {
-            this.#contactData.next(event.snapshot.data);
-            resolve(event.snapshot.data.tags ?? []);
+            reject(error);
           } else {
-            resolve([]);
+            const neighbors = event && event.snapshot.data && event.snapshot.data.data ? event.snapshot.data.data : [];
+            this.#neighbors.next(neighbors);
+            resolve(neighbors);
           }
-        });
-      } catch (error) {
-        reject(error);
-      }
+        }
+      );
     });
   }
 
-  getContacts() {
-    return new Promise<Array<IContact>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#contactData.value !== 'undefined') {
-          resolve(this.#contactData.value.data);
-          return;
-        }
-
-        await FirebaseFirestore.addDocumentSnapshotListener<{
-          data: Array<IContact>;
-          tags: Array<string>;
-        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
-          if (error) {
-            console.log(error);
-          } else if (event && event.snapshot && event.snapshot.data) {
-            this.#contactData.next(event.snapshot.data);
-            resolve(event.snapshot.data.data ?? []);
-          } else {
-            resolve([]);
-          }
-        });
-      } catch (error) {
-        reject(error);
+  async getNeighbor(id: string): Promise<INeighbor> {
+    if (typeof this.#neighbors.value !== 'undefined' && this.#neighbors.value !== null) {
+      const neighbor = this.#neighbors.value.find(_neighbor => _neighbor.id === id);
+      if (!neighbor) {
+        throw new Error(ERROR.ITEM_NOT_FOUND);
       }
+
+      return Promise.resolve(neighbor);
+    }
+
+    const neighbors = await this.getNeighbors();
+    const neighbor = neighbors.find(_neighbor => _neighbor.id === id);
+    if (!neighbor) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    return Promise.resolve(neighbor);
+  }
+
+  async postNeighbor(neighbor: INeighbor): Promise<void> {
+    const neighbors = await this.getNeighbors();
+    const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
+    if (index !== -1) {
+      neighbors[index] = neighbor;
+    } else {
+      neighbors.push(neighbor);
+    }
+
+    const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
+      data: neighborsDocument
     });
   }
 
-  getContact(id: string) {
-    return new Promise<IContact>(async (resolve, reject) => {
-      try {
-        if (typeof this.#contactData.value !== 'undefined') {
-          const contact = this.#contactData.value.data.find(_contact => _contact.id === id);
-          if (!contact) {
-            reject(new Error(ERROR.ITEM_NOT_FOUND));
-            return;
-          }
+  async putNeighbor(neighbor: INeighbor): Promise<void> {
+    const neighbors = await this.getNeighbors();
+    const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
 
-          resolve(contact);
-          return;
-        }
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
 
-        const data = await this.getContacts();
-        const contact = data.find(_contact => _contact.id === id);
-        if (!contact) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
+    neighbors[index] = neighbor;
 
-        resolve(contact);
-      } catch (error) {
-        reject(error);
-      }
+    const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
+      data: neighborsDocument
     });
   }
 
-  postContact(contact: IContact): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getContacts();
-        const index = data.findIndex(_contact => _contact.id === contact.id);
-        if (index !== -1) {
-          data[index] = contact;
+  async deleteNeighbor(id: string): Promise<void> {
+    let neighbors = await this.getNeighbors();
+    neighbors = neighbors.filter(_neighbor => _neighbor.id !== id);
+
+    const neighborsDocument = JSON.parse(JSON.stringify({ data: neighbors }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}`,
+      data: neighborsDocument
+    });
+  }
+
+  getContactTags(): Promise<Array<string>> {
+    if (typeof this.#contactData.value !== 'undefined' && this.#contactData.value !== null) {
+      Promise.resolve(this.#contactData.value.tags);
+    }
+
+    return new Promise<Array<string>>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{
+        data: Array<IContact>;
+        tags: Array<string>;
+      }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
+        if (error) {
+          reject(error);
+        } else if (event && event.snapshot && event.snapshot.data) {
+          this.#contactData.next(event.snapshot.data);
+          resolve(event.snapshot.data.tags ?? []);
         } else {
-          data.push(contact);
-        }
-
-        const tags = await this.getContactTags();
-
-        const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
-          data: contactsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  putContact(contact: IContact): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getContacts();
-        const index = data.findIndex(_contact => _contact.id === contact.id);
-        if (index !== -1) {
-          data[index] = contact;
-
-          const tags = await this.getContactTags();
-
-          const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
-          await FirebaseFirestore.setDocument({
-            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
-            data: contactsDocument
-          });
-        }
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  deleteContact(id: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        let data = await this.getContacts();
-        data = data.filter(_contact => _contact.id !== id);
-
-        const tags = await this.getContactTags();
-
-        const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
-          data: contactsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getSecurity() {
-    return new Promise<ISecurity | null>(async (resolve, reject) => {
-      try {
-        if (typeof this.#security.value !== 'undefined') {
-          resolve(this.#security.value);
-          return;
-        }
-
-        await FirebaseFirestore.addDocumentSnapshotListener<ISecurity>(
-          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}` },
-          (event, error) => {
-            if (error) {
-              console.log(error);
-            } else {
-              const security = event && event.snapshot.data ? event.snapshot.data : undefined;
-              this.#security.next(security);
-              resolve(security ?? null);
-            }
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  postSecurityGroupInvoice(invoice: ISecurityInvoice): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getSecurity();
-        if (!data) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        if (!data.invoices) {
-          data.invoices = [invoice];
-        } else {
-          const index = data.invoices.findIndex(_invoice => _invoice.timestamp === invoice.timestamp);
-          if (index === -1) {
-            data.invoices.push(invoice);
-          }
-        }
-
-        const securityDocument = JSON.parse(JSON.stringify(data));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
-          data: securityDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  deleteSecurityGroupInvoice(invoice: ISecurityInvoice): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getSecurity();
-        if (!data || !data.invoices || data.invoices.length === 0) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        const index = data.invoices.findIndex(_invoice => _invoice.timestamp === invoice.timestamp && _invoice.group === invoice.group);
-
-        if (index === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        data.invoices.splice(index, 1);
-
-        const securityDocument = JSON.parse(JSON.stringify(data));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
-          data: securityDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  deleteSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getSecurity();
-        if (!data || !data.neighborInvoices || data.neighborInvoices.length === 0) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        const index = data.neighborInvoices.findIndex(
-          _invoice => _invoice.timestamp === invoice.timestamp && _invoice.transactionId === invoice.transactionId
-        );
-
-        if (index === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        data.neighborInvoices.splice(index, 1);
-
-        const securityDocument = JSON.parse(JSON.stringify(data));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
-          data: securityDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  postSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getSecurity();
-        if (!data) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        if (!data.neighborInvoices) {
-          data.neighborInvoices = [invoice];
-        } else {
-          const index = data.neighborInvoices.findIndex(
-            _invoice => _invoice.timestamp === invoice.timestamp && _invoice.neighborId === invoice.neighborId
-          );
-          if (index === -1) {
-            data.neighborInvoices.push(invoice);
-          }
-        }
-
-        const securityDocument = JSON.parse(JSON.stringify(data));
-        console.log(securityDocument);
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
-          data: securityDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getUsers() {
-    return new Promise<Array<IUser>>(async (resolve, reject) => {
-      try {
-        const res = await FirebaseFirestore.getCollection<IUser>({ reference: COLLECTION.USERS });
-        if (res.snapshots) {
-          const users = res.snapshots.map(_snap => {
-            return _snap.data as IUser;
-          }) as Array<IUser>;
-          this.#users.next(users);
-          resolve(users);
-        } else {
-          this.#users.next([]);
           resolve([]);
         }
-      } catch (error) {
-        reject(error);
-      }
+      });
     });
   }
 
-  getCurrentUser() {
-    return new Promise<IUser>((resolve, reject) => {
-      try {
-        if (typeof this.#currentUser.value !== 'undefined') {
-          resolve(this.#currentUser.value);
-          return;
+  getContacts(): Promise<Array<IContact>> {
+    if (typeof this.#contactData.value !== 'undefined') {
+      return Promise.resolve(this.#contactData.value.data);
+    }
+
+    return new Promise<Array<IContact>>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{
+        data: Array<IContact>;
+        tags: Array<string>;
+      }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
+        if (error) {
+          reject(error);
+        } else if (event && event.snapshot && event.snapshot.data) {
+          this.#contactData.next(event.snapshot.data);
+          resolve(event.snapshot.data.data ?? []);
+        } else {
+          resolve([]);
         }
+      });
+    });
+  }
 
-        const userEmail = this.#auth.getEmail();
-        if (!userEmail) {
-          reject(new Error(ERROR.AUTH_ERROR));
-          return;
-        }
-
-        FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${userEmail}` }, (event, error) => {
-          if (error) {
-            console.log(error);
-          } else {
-            const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
-            this.#currentUser.next(currentUser);
-
-            if (!currentUser) {
-              reject(new Error(ERROR.ITEM_NOT_FOUND));
-              return;
-            }
-
-            resolve(currentUser);
-          }
-        });
-      } catch (error) {
-        reject(error);
+  async getContact(id: string): Promise<IContact> {
+    if (typeof this.#contactData.value !== 'undefined') {
+      const contact = this.#contactData.value.data.find(_contact => _contact.id === id);
+      if (!contact) {
+        throw new Error(ERROR.ITEM_NOT_FOUND);
       }
+
+      return Promise.resolve(contact);
+    }
+
+    const data = await this.getContacts();
+    const contact = data.find(_contact => _contact.id === id);
+    if (!contact) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    return Promise.resolve(contact);
+  }
+
+  async postContact(contact: IContact): Promise<void> {
+    const data = await this.getContacts();
+    const index = data.findIndex(_contact => _contact.id === contact.id);
+    if (index !== -1) {
+      data[index] = contact;
+    } else {
+      data.push(contact);
+    }
+
+    const tags = await this.getContactTags();
+
+    const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
+      data: contactsDocument
+    });
+  }
+
+  async putContact(contact: IContact): Promise<void> {
+    const data = await this.getContacts();
+    const index = data.findIndex(_contact => _contact.id === contact.id);
+
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    data[index] = contact;
+
+    const tags = await this.getContactTags();
+
+    const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
+      data: contactsDocument
+    });
+  }
+
+  async deleteContact(id: string): Promise<void> {
+    let data = await this.getContacts();
+    data = data.filter(_contact => _contact.id !== id);
+
+    const tags = await this.getContactTags();
+
+    const contactsDocument = JSON.parse(JSON.stringify({ data, tags }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}`,
+      data: contactsDocument
+    });
+  }
+
+  getSecurity(): Promise<ISecurity | null> {
+    if (typeof this.#security.value !== 'undefined') {
+      return Promise.resolve(this.#security.value);
+    }
+
+    return new Promise<ISecurity | null>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<ISecurity>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}` }, (event, error) => {
+        if (error) {
+          reject(error);
+        } else {
+          const security = event && event.snapshot.data ? event.snapshot.data : undefined;
+          this.#security.next(security);
+          resolve(security ?? null);
+        }
+      });
+    });
+  }
+
+  async postSecurityGroupInvoice(invoice: ISecurityInvoice): Promise<void> {
+    const data = await this.getSecurity();
+    if (!data) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    if (!data.invoices) {
+      data.invoices = [invoice];
+    } else {
+      const index = data.invoices.findIndex(_invoice => _invoice.timestamp === invoice.timestamp);
+      if (index === -1) {
+        data.invoices.push(invoice);
+      }
+    }
+
+    const securityDocument = JSON.parse(JSON.stringify(data));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+      data: securityDocument
+    });
+  }
+
+  async deleteSecurityGroupInvoice(invoice: ISecurityInvoice): Promise<void> {
+    const data = await this.getSecurity();
+    if (!data || !data.invoices || data.invoices.length === 0) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    const index = data.invoices.findIndex(_invoice => _invoice.timestamp === invoice.timestamp && _invoice.group === invoice.group);
+
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    data.invoices.splice(index, 1);
+
+    const securityDocument = JSON.parse(JSON.stringify(data));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+      data: securityDocument
+    });
+  }
+
+  async deleteSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
+    const data = await this.getSecurity();
+    if (!data || !data.neighborInvoices || data.neighborInvoices.length === 0) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    const index = data.neighborInvoices.findIndex(
+      _invoice => _invoice.timestamp === invoice.timestamp && _invoice.transactionId === invoice.transactionId
+    );
+
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    data.neighborInvoices.splice(index, 1);
+
+    const securityDocument = JSON.parse(JSON.stringify(data));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+      data: securityDocument
+    });
+  }
+
+  async postSecurityNeighborInvoice(invoice: ISecurityNeighborInvoice): Promise<void> {
+    const data = await this.getSecurity();
+    if (!data) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    if (!data.neighborInvoices) {
+      data.neighborInvoices = [invoice];
+    } else {
+      const index = data.neighborInvoices.findIndex(
+        _invoice => _invoice.timestamp === invoice.timestamp && _invoice.neighborId === invoice.neighborId
+      );
+      if (index === -1) {
+        data.neighborInvoices.push(invoice);
+      }
+    }
+
+    const securityDocument = JSON.parse(JSON.stringify(data));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}`,
+      data: securityDocument
+    });
+  }
+
+  async getUsers(): Promise<Array<IUser>> {
+    const res = await FirebaseFirestore.getCollection<IUser>({ reference: COLLECTION.USERS });
+    if (res.snapshots) {
+      const users = res.snapshots.map(_snap => {
+        return _snap.data as IUser;
+      }) as Array<IUser>;
+      this.#users.next(users);
+      return users;
+    } else {
+      this.#users.next([]);
+      return [];
+    }
+  }
+
+  getCurrentUser(): Promise<IUser> {
+    if (typeof this.#currentUser.value !== 'undefined' && this.#currentUser.value !== null) {
+      Promise.resolve(this.#currentUser.value);
+    }
+
+    const userEmail = this.#auth.getEmail();
+    if (!userEmail) {
+      throw new Error(ERROR.AUTH_ERROR);
+    }
+
+    return new Promise<IUser>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${userEmail}` }, (event, error) => {
+        if (error) {
+          reject(error);
+        } else {
+          const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
+          this.#currentUser.next(currentUser);
+
+          if (!currentUser) {
+            throw new Error(ERROR.ITEM_NOT_FOUND);
+          }
+
+          resolve(currentUser);
+        }
+      });
     });
   }
 
   async getUser(email: string) {
-    if (typeof this.#users.value !== 'undefined') {
+    if (typeof this.#users.value !== 'undefined' && this.#users.value !== null) {
       const user = this.#users.value.find(_user => _user.email === email);
       if (!user) {
         throw new Error(ERROR.ITEM_NOT_FOUND);
@@ -601,412 +474,307 @@ export class DatabaseService implements OnDestroy {
     }
   }
 
-  getEcommerceTags() {
-    return new Promise<Array<string>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#ecommerceData.value !== 'undefined') {
-          resolve(this.#ecommerceData.value.tags);
-          return;
-        }
+  getEcommerceTags(): Promise<Array<string>> {
+    if (typeof this.#ecommerceData.value !== 'undefined' && this.#ecommerceData.value !== null) {
+      return Promise.resolve(this.#ecommerceData.value.tags);
+    }
 
-        await FirebaseFirestore.addDocumentSnapshotListener<{
-          data: Array<IEcommerceProduct>;
-          tags: Array<string>;
-        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
+    return new Promise<Array<string>>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{
+        data: Array<IEcommerceProduct>;
+        tags: Array<string>;
+      }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
+        if (error) {
+          reject(error);
+        } else if (event && event.snapshot && event.snapshot.data) {
+          this.#ecommerceData.next(event.snapshot.data);
+          resolve(event.snapshot.data.tags ?? []);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+
+  getEcommerceProducts(): Promise<Array<IEcommerceProduct>> {
+    if (typeof this.#ecommerceData.value !== 'undefined' && this.#ecommerceData.value !== null) {
+      return Promise.resolve(this.#ecommerceData.value.data);
+    }
+
+    return new Promise<Array<IEcommerceProduct>>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{
+        data: Array<IEcommerceProduct>;
+        tags: Array<string>;
+      }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
+        if (error) {
+          reject(error);
+        } else if (event && event.snapshot && event.snapshot.data) {
+          this.#ecommerceData.next(event.snapshot.data);
+          resolve(event.snapshot.data.data ?? []);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+
+  async getEcommerceProduct(id: string): Promise<IEcommerceProduct> {
+    if (typeof this.#ecommerceData.value !== 'undefined') {
+      const product = this.#ecommerceData.value.data.find(_ecommerceProduct => _ecommerceProduct.id === id);
+      if (!product) {
+        throw new Error(ERROR.ITEM_NOT_FOUND);
+      }
+
+      return Promise.resolve(product);
+    }
+
+    const data = await this.getEcommerceProducts();
+    const product = data.find(_ecommerceProduct => _ecommerceProduct.id === id);
+    if (!product) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    return product;
+  }
+
+  async postEcommerceProduct(ecommerceProduct: IEcommerceProduct): Promise<void> {
+    const data = await this.getEcommerceProducts();
+    const index = data.findIndex(_ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id);
+    if (index !== -1) {
+      data[index] = ecommerceProduct;
+    } else {
+      data.push(ecommerceProduct);
+    }
+
+    const tags = await this.getEcommerceTags();
+
+    const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
+      data: ecommerceProductsDocument
+    });
+  }
+
+  async putEcommerceProduct(ecommerceProduct: IEcommerceProduct): Promise<void> {
+    const data = await this.getEcommerceProducts();
+    const index = data.findIndex(_ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id);
+
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    data[index] = ecommerceProduct;
+
+    const tags = await this.getEcommerceTags();
+
+    const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
+      data: ecommerceProductsDocument
+    });
+  }
+
+  async deleteEcommerceProduct(id: string): Promise<void> {
+    let data = await this.getEcommerceProducts();
+    data = data.filter(_ecommerceProduct => _ecommerceProduct.id !== id);
+
+    const tags = await this.getEcommerceTags();
+
+    const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
+      data: ecommerceProductsDocument
+    });
+  }
+
+  getGarbageTruckRecords(): Promise<Array<IGarbageTruckRecord>> {
+    if (typeof this.#garbageTruckRecords.value !== 'undefined') {
+      return Promise.resolve(this.#garbageTruckRecords.value as Array<IGarbageTruckRecord>);
+    }
+
+    return new Promise((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<IGarbageTruckRecord> }>(
+        { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}` },
+        (event, error) => {
           if (error) {
-            console.log(error);
-          } else if (event && event.snapshot && event.snapshot.data) {
-            this.#ecommerceData.next(event.snapshot.data);
-            resolve(event.snapshot.data.tags ?? []);
+            return reject(error);
           } else {
-            resolve([]);
+            const garbageTruckRecords = event && event.snapshot.data ? event.snapshot.data.data : [];
+            this.#garbageTruckRecords.next(garbageTruckRecords);
+            return resolve(garbageTruckRecords ?? []);
           }
-        });
-      } catch (error) {
-        reject(error);
-      }
+        }
+      );
     });
   }
 
-  getEcommerceProducts() {
-    return new Promise<Array<IEcommerceProduct>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#ecommerceData.value !== 'undefined') {
-          resolve(this.#ecommerceData.value.data);
-          return;
-        }
+  async postGarbageTruckRecord(garbageTruckRecord: IGarbageTruckRecord): Promise<void> {
+    const garbageTruckRecords = await this.getGarbageTruckRecords();
+    const index = garbageTruckRecords.findIndex(_garbageTruckRecord => _garbageTruckRecord.date === garbageTruckRecord.date);
 
-        await FirebaseFirestore.addDocumentSnapshotListener<{
-          data: Array<IEcommerceProduct>;
-          tags: Array<string>;
-        }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_ALREADY_EXISTS);
+    }
+
+    garbageTruckRecords.push(garbageTruckRecord);
+
+    const garbageTruckRecordsDocument = JSON.parse(JSON.stringify({ data: garbageTruckRecords }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}`,
+      data: garbageTruckRecordsDocument
+    });
+  }
+
+  getTopics(): Promise<Array<ITopic>> {
+    if (typeof this.#topics.value !== 'undefined' && this.#topics.value !== null) {
+      return Promise.resolve(this.#topics.value);
+    }
+
+    return new Promise<Array<ITopic>>((resolve, reject) => {
+      FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<ITopic> }>(
+        { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}` },
+        (event, error) => {
           if (error) {
-            console.log(error);
-          } else if (event && event.snapshot && event.snapshot.data) {
-            this.#ecommerceData.next(event.snapshot.data);
-            resolve(event.snapshot.data.data ?? []);
+            reject(error);
           } else {
-            resolve([]);
+            const topics = event && event.snapshot.data && event.snapshot.data.data ? event.snapshot.data.data : [];
+            this.#topics.next(topics);
+            resolve(topics);
           }
-        });
-      } catch (error) {
-        reject(error);
-      }
+        }
+      );
     });
   }
 
-  getEcommerceProduct(id: string) {
-    return new Promise<IEcommerceProduct>(async (resolve, reject) => {
-      try {
-        if (typeof this.#ecommerceData.value !== 'undefined') {
-          const product = this.#ecommerceData.value.data.find(_ecommerceProduct => _ecommerceProduct.id === id);
-          if (!product) {
-            reject(new Error(ERROR.ITEM_NOT_FOUND));
-            return;
-          }
-
-          resolve(product);
-          return;
-        }
-
-        const data = await this.getEcommerceProducts();
-        const product = data.find(_ecommerceProduct => _ecommerceProduct.id === id);
-        if (!product) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        resolve(product);
-      } catch (error) {
-        reject(error);
+  async getTopic(id: string): Promise<ITopic> {
+    if (typeof this.#topics.value !== 'undefined' && this.#topics.value !== null) {
+      const topic = this.#topics.value.find(_topic => _topic.id === id);
+      if (!topic) {
+        throw new Error(ERROR.ITEM_NOT_FOUND);
       }
+
+      return Promise.resolve(topic);
+    }
+
+    const topics = await this.getTopics();
+    const topic = topics.find(_topic => _topic.id === id);
+    if (!topic) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    return Promise.resolve(topic);
+  }
+
+  async postTopic(topic: ITopic): Promise<void> {
+    const topics = await this.getTopics();
+    const index = topics.findIndex(_topic => _topic.id === topic.id);
+    if (index !== -1) {
+      topics[index] = topic;
+    } else {
+      topics.push(topic);
+    }
+
+    const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+      data: topicsDocument
     });
   }
 
-  postEcommerceProduct(ecommerceProduct: IEcommerceProduct): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getEcommerceProducts();
-        const index = data.findIndex(_ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id);
-        if (index !== -1) {
-          data[index] = ecommerceProduct;
-        } else {
-          data.push(ecommerceProduct);
-        }
+  async putTopic(topic: ITopic): Promise<void> {
+    const topics = await this.getTopics();
+    const index = topics.findIndex(_topic => _topic.id === topic.id);
 
-        const tags = await this.getEcommerceTags();
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
 
-        const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+    topics[index] = topic;
 
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
-          data: ecommerceProductsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+    const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+      data: topicsDocument
     });
   }
 
-  putEcommerceProduct(ecommerceProduct: IEcommerceProduct): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const data = await this.getEcommerceProducts();
-        const index = data.findIndex(_ecommerceProduct => _ecommerceProduct.id === ecommerceProduct.id);
-        if (index !== -1) {
-          data[index] = ecommerceProduct;
+  async deleteTopic(id: string): Promise<void> {
+    let topics = await this.getTopics();
+    topics = topics.filter(_topic => _topic.id !== id);
 
-          const tags = await this.getEcommerceTags();
+    const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
 
-          const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
-          await FirebaseFirestore.setDocument({
-            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
-            data: ecommerceProductsDocument
-          });
-        }
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+      data: topicsDocument
     });
   }
 
-  deleteEcommerceProduct(id: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        let data = await this.getEcommerceProducts();
-        data = data.filter(_ecommerceProduct => _ecommerceProduct.id !== id);
+  async postTopicMilestone(data: { topicId: string; milestone: TopicMilestone }): Promise<void> {
+    const topics = await this.getTopics();
+    const index = topics.findIndex(_topic => _topic.id === data.topicId);
 
-        const tags = await this.getEcommerceTags();
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
 
-        const ecommerceProductsDocument = JSON.parse(JSON.stringify({ data, tags }));
+    topics[index].milestones.push(data.milestone);
 
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}`,
-          data: ecommerceProductsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+    const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+      data: topicsDocument
     });
   }
 
-  getGarbageTruckRecords() {
-    return new Promise<Array<IGarbageTruckRecord>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#garbageTruckRecords.value !== 'undefined') {
-          resolve(this.#garbageTruckRecords.value);
-          return;
-        }
+  async putTopicMilestone(data: { topicId: string; milestone: TopicMilestone }): Promise<void> {
+    const topics = await this.getTopics();
+    const topicIndex = topics.findIndex(_topic => _topic.id === data.topicId);
 
-        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<IGarbageTruckRecord> }>(
-          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}` },
-          (event, error) => {
-            if (error) {
-              console.log(error);
-            } else {
-              const garbageTruckRecords = event && event.snapshot.data ? event.snapshot.data.data : [];
-              this.#garbageTruckRecords.next(garbageTruckRecords);
-              resolve(garbageTruckRecords);
-            }
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
+    if (topicIndex === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    const milestoneIndex = topics[topicIndex].milestones.findIndex(_milestone => _milestone.id === data.milestone.id);
+
+    if (milestoneIndex === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    topics[topicIndex].milestones[milestoneIndex] = data.milestone;
+
+    const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+      data: topicsDocument
     });
   }
 
-  postGarbageTruckRecord(garbageTruckRecord: IGarbageTruckRecord): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const garbageTruckRecords = await this.getGarbageTruckRecords();
-        const index = garbageTruckRecords.findIndex(_garbageTruckRecord => _garbageTruckRecord.id === garbageTruckRecord.id);
-        if (index !== -1) {
-          throw new Error(ERROR.ITEM_ALREADY_EXISTS);
-        } else {
-          garbageTruckRecords.push(garbageTruckRecord);
-        }
+  async deleteTopicMilestone(data: { topicId: string; milestoneId: string }): Promise<void> {
+    const topics = await this.getTopics();
+    const topicIndex = topics.findIndex(_topic => _topic.id === data.topicId);
+    if (topicIndex === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
 
-        const garbageTruckRecordsDocument = JSON.parse(JSON.stringify({ data: garbageTruckRecords }));
+    const milestoneIndex = topics[topicIndex].milestones.findIndex(_milestone => _milestone.id === data.milestoneId);
+    if (milestoneIndex === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
 
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}`,
-          data: garbageTruckRecordsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+    topics[topicIndex].milestones.splice(milestoneIndex, 1);
 
-  getTopics() {
-    return new Promise<Array<ITopic>>(async (resolve, reject) => {
-      try {
-        if (typeof this.#topics.value !== 'undefined') {
-          resolve(this.#topics.value);
-          return;
-        }
+    const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
 
-        await FirebaseFirestore.addDocumentSnapshotListener<{ data: Array<ITopic> }>(
-          { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}` },
-          (event, error) => {
-            if (error) {
-              console.log(error);
-            } else {
-              const topics = event && event.snapshot.data ? event.snapshot.data.data : [];
-              this.#topics.next(topics);
-              resolve(topics);
-            }
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getTopic(id: string) {
-    return new Promise<ITopic>(async (resolve, reject) => {
-      try {
-        if (typeof this.#topics.value !== 'undefined') {
-          const topic = this.#topics.value.find(_topic => _topic.id === id);
-          if (!topic) {
-            reject(new Error(ERROR.ITEM_NOT_FOUND));
-            return;
-          }
-
-          resolve(topic);
-          return;
-        }
-
-        const topics = await this.getTopics();
-        const topic = topics.find(_topic => _topic.id === id);
-        if (!topic) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        resolve(topic);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  postTopic(topic: ITopic): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const topics = await this.getTopics();
-        const index = topics.findIndex(_topic => _topic.id === topic.id);
-        if (index !== -1) {
-          topics[index] = topic;
-        } else {
-          topics.push(topic);
-        }
-
-        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
-          data: topicsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  putTopic(topic: ITopic): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const topics = await this.getTopics();
-        const index = topics.findIndex(_topic => _topic.id === topic.id);
-        if (index !== -1) {
-          topics[index] = topic;
-
-          const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
-          await FirebaseFirestore.setDocument({
-            reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
-            data: topicsDocument
-          });
-        }
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  deleteTopic(id: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        let topics = await this.getTopics();
-        topics = topics.filter(_topic => _topic.id !== id);
-
-        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
-          data: topicsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  postTopicMilestone(data: { topicId: string; milestone: TopicMilestone }): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const topics = await this.getTopics();
-        const index = topics.findIndex(_topic => _topic.id === data.topicId);
-        if (index === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        topics[index].milestones.push(data.milestone);
-
-        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
-          data: topicsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  putTopicMilestone(data: { topicId: string; milestone: TopicMilestone }): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const topics = await this.getTopics();
-        const topicIndex = topics.findIndex(_topic => _topic.id === data.topicId);
-        if (topicIndex === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        const milestoneIndex = topics[topicIndex].milestones.findIndex(_milestone => _milestone.id === data.milestone.id);
-        if (milestoneIndex === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        topics[topicIndex].milestones[milestoneIndex] = data.milestone;
-
-        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
-          data: topicsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  deleteTopicMilestone(data: { topicId: string; milestoneId: string }): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const topics = await this.getTopics();
-        const topicIndex = topics.findIndex(_topic => _topic.id === data.topicId);
-        if (topicIndex === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        const milestoneIndex = topics[topicIndex].milestones.findIndex(_milestone => _milestone.id === data.milestoneId);
-        if (milestoneIndex === -1) {
-          reject(new Error(ERROR.ITEM_NOT_FOUND));
-          return;
-        }
-
-        topics[topicIndex].milestones.splice(milestoneIndex, 1);
-
-        const topicsDocument = JSON.parse(JSON.stringify({ data: topics }));
-
-        await FirebaseFirestore.setDocument({
-          reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
-          data: topicsDocument
-        });
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}`,
+      data: topicsDocument
     });
   }
 

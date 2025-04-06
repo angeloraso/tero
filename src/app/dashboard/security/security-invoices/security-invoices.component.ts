@@ -25,10 +25,10 @@ interface ISecurityInvoiceRow extends ISecurityInvoice {
 }
 
 @Component({
-    selector: 'tero-security-invoices',
-    templateUrl: './security-invoices.html',
-    styleUrls: ['./security-invoices.css'],
-    imports: SharedModules
+  selector: 'tero-security-invoices',
+  templateUrl: './security-invoices.html',
+  styleUrls: ['./security-invoices.css'],
+  imports: SharedModules
 })
 export class SecurityInvoicesComponent implements OnInit {
   loading = false;
@@ -128,10 +128,7 @@ export class SecurityInvoicesComponent implements OnInit {
           if (res) {
             this.loading = true;
             await this.securityService.deleteGroupInvoice(invoice);
-            const index = this.invoices.findIndex(
-              _invoice =>
-                _invoice.group === invoice.group && _invoice.timestamp === invoice.timestamp
-            );
+            const index = this.invoices.findIndex(_invoice => _invoice.group === invoice.group && _invoice.timestamp === invoice.timestamp);
             if (index !== -1) {
               this.invoices.splice(index, 1);
               this.refresh();

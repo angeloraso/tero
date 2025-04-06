@@ -9,10 +9,10 @@ import { TopicFormComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 @Component({
-    selector: 'tero-add-topic',
-    templateUrl: './add-topic.html',
-    styleUrls: ['./add-topic.css'],
-    imports: [...SharedModules, TopicFormComponent]
+  selector: 'tero-add-topic',
+  templateUrl: './add-topic.html',
+  styleUrls: ['./add-topic.css'],
+  imports: [...SharedModules, TopicFormComponent]
 })
 export class AddTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);
@@ -47,12 +47,7 @@ export class AddTopicComponent implements OnInit {
     this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 
-  async save(topic: {
-    title: string;
-    description: string;
-    accountEmails: Array<string>;
-    status: TOPIC_STATE;
-  }) {
+  async save(topic: { title: string; description: string; accountEmails: Array<string>; status: TOPIC_STATE }) {
     try {
       if (!topic || this.loading) {
         return;

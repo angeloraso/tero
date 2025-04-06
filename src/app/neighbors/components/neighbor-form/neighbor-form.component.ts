@@ -1,34 +1,21 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { BIZY_TAG_TYPE } from '@bizy/core';
-import {
-  AVAILABLE_SECURITY_GROUPS,
-  DEFAULT_USER_PICTURE,
-  LOTS,
-  NAME_MAX_LENGTH,
-  NAME_MIN_LENGTH
-} from '@core/constants';
+import { AVAILABLE_SECURITY_GROUPS, DEFAULT_USER_PICTURE, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { MobileService } from '@core/services';
 
 @Component({
-    selector: 'tero-neighbor-form',
-    templateUrl: './neighbor-form.html',
-    styleUrls: ['./neighbor-form.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-neighbor-form',
+  templateUrl: './neighbor-form.html',
+  styleUrls: ['./neighbor-form.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class NeighborFormComponent {
   @Input() alarmNumber: number | null = null;
-  @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<{
+  @Output() canceled = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<{
     group: number;
     surname: string;
     name: string;
@@ -43,8 +30,7 @@ export class NeighborFormComponent {
   alarmControlSearch: string | number = '';
   selectedAlarmControls: Array<number> = [];
   availableAlarmControls: Array<number> = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    27, 28, 29, 30
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
   ];
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -70,9 +56,7 @@ export class NeighborFormComponent {
     }
 
     this.selectedAlarmControls = [...alarmControls];
-    this.availableAlarmControls = this.availableAlarmControls.filter(
-      _control => !alarmControls.includes(_control)
-    );
+    this.availableAlarmControls = this.availableAlarmControls.filter(_control => !alarmControls.includes(_control));
   }
 
   @Input() set surname(surname: string) {
@@ -120,10 +104,7 @@ export class NeighborFormComponent {
       surname: [null],
       name: [null, [Validators.required]],
       security: [true],
-      lot: [
-        null,
-        [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]
-      ]
+      lot: [null, [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]]
     });
   }
 
@@ -208,18 +189,18 @@ export class NeighborFormComponent {
       return;
     }
 
-    this.save.emit({
+    this.confirmed.emit({
       group: this._group.value,
       alarmNumber: this.alarmNumber,
       alarmControls: this.selectedAlarmControls,
       surname: this._surname.value ? this._surname.value.trim() : '',
       name: this._name.value ? this._name.value.trim() : '',
       security: this._security.value,
-      lot: this._lot.value
+      lot: Number(this._lot.value)
     });
   }
 
   _cancel() {
-    this.cancel.emit();
+    this.canceled.emit();
   }
 }

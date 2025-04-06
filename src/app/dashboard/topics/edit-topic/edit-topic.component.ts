@@ -2,13 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import {
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService,
-  BizyTranslateService
-} from '@bizy/core';
+import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { ITopic, IUser, TOPIC_STATE } from '@core/model';
 import { TopicsService, UsersService } from '@core/services';
@@ -17,10 +11,10 @@ import { TopicFormComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 @Component({
-    selector: 'tero-edit-topic',
-    templateUrl: './edit-topic.html',
-    styleUrls: ['./edit-topic.css'],
-    imports: [...SharedModules, TopicFormComponent]
+  selector: 'tero-edit-topic',
+  templateUrl: './edit-topic.html',
+  styleUrls: ['./edit-topic.css'],
+  imports: [...SharedModules, TopicFormComponent]
 })
 export class EditTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);
@@ -48,10 +42,7 @@ export class EditTopicComponent implements OnInit {
         return;
       }
 
-      const [users, topic] = await Promise.all([
-        this.#usersService.getUsers(),
-        this.#topicsService.getTopic(this.topicId)
-      ]);
+      const [users, topic] = await Promise.all([this.#usersService.getUsers(), this.#topicsService.getTopic(this.topicId)]);
 
       if (!topic) {
         this.goBack();

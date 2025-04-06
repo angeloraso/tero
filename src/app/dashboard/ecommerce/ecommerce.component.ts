@@ -28,10 +28,10 @@ interface IEcommerceProductCard extends IEcommerceProduct {
 }
 
 @Component({
-    selector: 'tero-ecommerce',
-    templateUrl: './ecommerce.html',
-    styleUrls: ['./ecommerce.css'],
-    imports: SharedModules
+  selector: 'tero-ecommerce',
+  templateUrl: './ecommerce.html',
+  styleUrls: ['./ecommerce.css'],
+  imports: SharedModules
 })
 export class EcommerceComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
@@ -116,11 +116,7 @@ export class EcommerceComponent implements OnInit {
   }
 
   selectEcommerceProduct(product: IEcommerceProduct) {
-    if (
-      !product ||
-      (!this.isNeighbor && !this.isConfig) ||
-      product.accountId !== this.#auth.getId()
-    ) {
+    if (!product || (!this.isNeighbor && !this.isConfig) || product.accountId !== this.#auth.getId()) {
       return;
     }
 

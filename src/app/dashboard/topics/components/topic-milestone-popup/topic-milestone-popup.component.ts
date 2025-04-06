@@ -4,11 +4,11 @@ import { SharedModules } from '@app/shared';
 import { BizyPopupService } from '@bizy/core';
 import { LONG_TEXT_MAX_LENGTH } from '@core/constants';
 @Component({
-    selector: 'tero-topic-milestone-popup',
-    templateUrl: 'topic-milestone-popup.html',
-    styleUrls: ['topic-milestone-popup.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-topic-milestone-popup',
+  templateUrl: 'topic-milestone-popup.html',
+  styleUrls: ['topic-milestone-popup.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class TopicMilestonePopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);

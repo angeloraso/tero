@@ -1,9 +1,9 @@
 .edit-user__header {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .edit-user__header__profile-pic {
-    border-radius: 50%;
+  border-radius: 50%;
 }

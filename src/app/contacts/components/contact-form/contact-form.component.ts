@@ -1,32 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE, BizyPopupService } from '@bizy/core';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
-import {
-  DEFAULT_USER_PICTURE,
-  LONG_TEXT_MAX_LENGTH,
-  NAME_MAX_LENGTH,
-  NAME_MIN_LENGTH
-} from '@core/constants';
+import { DEFAULT_USER_PICTURE, LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { MobileService } from '@core/services';
 
 @Component({
-    selector: 'tero-contact-form',
-    templateUrl: './contact-form.html',
-    styleUrls: ['./contact-form.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-contact-form',
+  templateUrl: './contact-form.html',
+  styleUrls: ['./contact-form.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class ContactFormComponent {
   @Input() id: string = '';
@@ -34,8 +21,8 @@ export class ContactFormComponent {
   @Input() created: number = 0;
   @Input() updated: number = 0;
   @Input() rating: Array<IContactRating> = [];
-  @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<IContact>();
+  @Output() cancelled = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<IContact>();
   form: FormGroup;
   tagSearch: string | number = '';
   availableTags: Array<string> = [];
@@ -107,18 +94,8 @@ export class ContactFormComponent {
     this.isMobile = this.mobile.isMobile();
     this.form = this.fb.group({
       picture: [DEFAULT_USER_PICTURE, [Validators.required]],
-      name: [
-        null,
-        [
-          Validators.minLength(NAME_MIN_LENGTH),
-          Validators.maxLength(NAME_MAX_LENGTH),
-          Validators.required
-        ]
-      ],
-      surname: [
-        null,
-        [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]
-      ],
+      name: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
+      surname: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]],
       phone: [null, [Validators.required]],
       description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
     });
@@ -179,9 +156,7 @@ export class ContactFormComponent {
           } else {
             const contactRating: IContactRating = { ...data, accountId };
             if (this.rating && this.rating.length > 0) {
-              const index = this.rating.findIndex(
-                _rating => _rating.accountId === contactRating.accountId
-              );
+              const index = this.rating.findIndex(_rating => _rating.accountId === contactRating.accountId);
               if (index !== -1) {
                 this.rating[index] = contactRating;
               } else {
@@ -250,7 +225,7 @@ export class ContactFormComponent {
       return;
     }
 
-    this.save.emit({
+    this.confirmed.emit({
       id: this.id,
       accountId: this.accountId,
       created: this.created,
@@ -266,6 +241,6 @@ export class ContactFormComponent {
   }
 
   _cancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 }

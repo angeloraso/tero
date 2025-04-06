@@ -4,10 +4,10 @@ import { BizyLogService, BizyPopupService, BizyUserAgentService } from '@bizy/co
 import pkg from 'package.json';
 
 @Component({
-    selector: 'tero-about-popup',
-    templateUrl: 'about-popup.html',
-    styleUrls: ['about-popup.css'],
-    imports: SharedModules
+  selector: 'tero-about-popup',
+  templateUrl: 'about-popup.html',
+  styleUrls: ['about-popup.css'],
+  imports: SharedModules
 })
 export class AboutPopupComponent implements AfterViewInit {
   readonly DESCRIPTION: string = pkg.description;

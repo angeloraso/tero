@@ -1,40 +1,40 @@
 :host {
-    --bizy-card-background-color: var(--dark-input-background-color);
+  --bizy-card-background-color: var(--dark-input-background-color);
 }
 
 .rating-history-popup__rating-wrapper {
-    overflow-y: auto;
-    height: fit-content;
-    max-height: min(30rem, 80vh);
+  overflow-y: auto;
+  height: fit-content;
+  max-height: min(30rem, 80vh);
 }
 
 .rating-history-popup__rating {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .rating-history-popup__rating__header {
-    display: flex;
-    align-items: center;
-    column-gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
 }
 
 .rating-history-popup__stars {
-    display: flex;
-    align-items: center;
-    column-gap: 0.3rem;
+  display: flex;
+  align-items: center;
+  column-gap: 0.3rem;
 }
 
 .rating-history-popup__stars__star {
-    color: var(--hover-color);
+  color: var(--hover-color);
 }
 
 .rating-history-popup__stars__star--selected {
-    color: var(--bizy-warning-color);
+  color: var(--bizy-warning-color);
 }
 
-.rating-history-popup__stars .rating-history-popup__stars__star--selected~.rating-history-popup__stars__star {
-    color: var(--bizy-warning-color);
+.rating-history-popup__stars .rating-history-popup__stars__star--selected ~ .rating-history-popup__stars__star {
+  color: var(--bizy-warning-color);
 }

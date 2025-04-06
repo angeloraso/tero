@@ -7,7 +7,7 @@
   overflow: hidden;
 }
 
-bizy-sidebar-option[slot=start] {
+bizy-sidebar-option[slot='start'] {
   height: var(--bizy-toolbar-height);
 }
 

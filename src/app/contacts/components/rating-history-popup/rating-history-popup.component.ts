@@ -3,11 +3,11 @@ import { SharedModules } from '@app/shared';
 import { BIZY_TAG_TYPE, BizyPopupService } from '@bizy/core';
 import { IContactRating } from '@core/model';
 @Component({
-    selector: 'tero-rating-history-popup',
-    templateUrl: 'rating-history-popup.html',
-    styleUrls: ['rating-history-popup.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-rating-history-popup',
+  templateUrl: 'rating-history-popup.html',
+  styleUrls: ['rating-history-popup.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class RatingHistoryPopupComponent implements OnInit {
   rating: Array<IContactRating> = [];

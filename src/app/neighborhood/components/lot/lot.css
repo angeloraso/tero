@@ -1,40 +1,40 @@
 .lot {
-    border: 0.1rem solid var(--bizy-default-color);
-    background-color: #fff;
-    height: 2rem;
-    width: 6rem;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.3rem;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
+  border: 0.1rem solid var(--bizy-default-color);
+  background-color: #fff;
+  height: 2rem;
+  width: 6rem;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0.3rem;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
 
-    &:hover {
-        background-color: var(--hover-color);
-    }
+  &:hover {
+    background-color: var(--hover-color);
+  }
 }
 
 .lot__number {
-    justify-self: end;
+  justify-self: end;
 }
 
 .lot__security {
-    justify-self: start;
-    color: var(--primary-color);
+  justify-self: start;
+  color: var(--primary-color);
 }
 
 .lot__alarm-controls {
-    position: absolute;
-    right: -0.5rem;
-    bottom: -0.5rem;
-    display: flex;
-    align-items: center;
-    z-index: 1;
-    column-gap: 0.5rem;
+  position: absolute;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  column-gap: 0.5rem;
 }
 
 .lot__alarm-controls * {
-    font-size: 0.5rem !important;
+  font-size: 0.5rem !important;
 }

@@ -4,11 +4,11 @@ import { SharedModules } from '@app/shared';
 import { BizyPopupService } from '@bizy/core';
 
 @Component({
-    selector: 'tero-user-alias-cbu-popup',
-    templateUrl: 'user-alias-cbu-popup.html',
-    styleUrls: ['user-alias-cbu-popup.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-user-alias-cbu-popup',
+  templateUrl: 'user-alias-cbu-popup.html',
+  styleUrls: ['user-alias-cbu-popup.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class UserAliasCBUPopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);

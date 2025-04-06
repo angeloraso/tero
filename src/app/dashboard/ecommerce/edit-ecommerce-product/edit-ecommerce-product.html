@@ -21,8 +21,8 @@
         [description]="product.description"
         [phone]="product.phones[0].number"
         [tags]="{available: tags, selected: product.tags}"
-        (cancel)="goBack()"
-        (save)="save($event)">
+        (canceled)="goBack()"
+        (confirmed)="save($event)">
     </tero-ecommerce-product-form>
 
 </div>

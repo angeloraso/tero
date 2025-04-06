@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
@@ -22,11 +14,11 @@ interface IExtendedUser extends IUser {
 }
 
 @Component({
-    selector: 'tero-topic-form',
-    templateUrl: './topic-form.html',
-    styleUrls: ['./topic-form.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: SharedModules
+  selector: 'tero-topic-form',
+  templateUrl: './topic-form.html',
+  styleUrls: ['./topic-form.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: SharedModules
 })
 export class TopicFormComponent {
   readonly #mobile = inject(MobileService);
@@ -35,22 +27,15 @@ export class TopicFormComponent {
   readonly #ref = inject(ChangeDetectorRef);
 
   @Input() disabled: boolean = false;
-  @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<{
+  @Output() cancelled = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<{
     title: string;
     description: string;
     accountEmails: Array<string>;
     status: TOPIC_STATE;
   }>();
   form: FormGroup = this.#fb.group({
-    title: [
-      null,
-      [
-        Validators.minLength(NAME_MIN_LENGTH),
-        Validators.maxLength(NAME_MAX_LENGTH),
-        Validators.required
-      ]
-    ],
+    title: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
     description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH), Validators.required]],
     status: [TOPIC_STATE.ACTIVE, [Validators.required]]
   });
@@ -123,9 +108,7 @@ export class TopicFormComponent {
       .subscribe(() => {
         this.selectedUsers.length = 0;
         accountEmails.forEach(_email => {
-          const index = this.availableUsers.findIndex(
-            _user => _user.email === _email && _user.status === USER_STATE.ACTIVE
-          );
+          const index = this.availableUsers.findIndex(_user => _user.email === _email && _user.status === USER_STATE.ACTIVE);
           if (index !== -1) {
             this.selectedUsers.push({
               ...this.availableUsers[index],
@@ -192,7 +175,7 @@ export class TopicFormComponent {
       return;
     }
 
-    this.save.emit({
+    this.confirmed.emit({
       title: this._title.value ? this._title.value.trim() : '',
       description: this._description.value ? this._description.value.trim() : '',
       status: this._status.value,
@@ -201,6 +184,6 @@ export class TopicFormComponent {
   }
 
   _cancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 }

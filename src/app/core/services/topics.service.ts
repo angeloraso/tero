@@ -8,29 +8,14 @@ import { DatabaseService } from '@core/services';
 export class TopicsService {
   readonly #database = inject(DatabaseService);
 
-  getTopics() {
-    return new Promise<Array<ITopic>>(async (resolve, reject) => {
-      try {
-        const topics = await this.#database.getTopics();
-        resolve(topics ?? []);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  getTopics = () => this.#database.getTopics();
 
-  getTopic(topicId: string) {
-    return this.#database.getTopic(topicId);
-  }
+  getTopic = (topicId: string) => this.#database.getTopic(topicId);
 
-  postTopic(
-    topic: Omit<ITopic, 'id' | 'data' | 'milestones' | 'created' | 'updated'>
-  ): Promise<void> {
-    return this.#database.postTopic(new Topic(topic));
-  }
+  postTopic = (topic: Omit<ITopic, 'id' | 'data' | 'milestones' | 'created' | 'updated'>) => this.#database.postTopic(new Topic(topic));
 
-  putTopic(topic: ITopic): Promise<void> {
-    return this.#database.putTopic({
+  putTopic = (topic: ITopic) =>
+    this.#database.putTopic({
       id: topic.id,
       accountEmails: topic.accountEmails,
       title: topic.title,
@@ -41,24 +26,17 @@ export class TopicsService {
       created: Number(topic.created) || Date.now(),
       updated: Date.now()
     });
-  }
 
-  deleteTopic(topic: ITopic): Promise<void> {
-    return this.#database.deleteTopic(topic.id);
-  }
+  deleteTopic = (topic: ITopic) => this.#database.deleteTopic(topic.id);
 
-  postTopicMilestone(data: {
-    topicId: string;
-    milestone: Omit<ITopicMilestone, 'id' | 'created' | 'updated'>;
-  }): Promise<void> {
-    return this.#database.postTopicMilestone({
+  postTopicMilestone = (data: { topicId: string; milestone: Omit<ITopicMilestone, 'id' | 'created' | 'updated'> }) =>
+    this.#database.postTopicMilestone({
       topicId: data.topicId,
       milestone: new TopicMilestone(data.milestone)
     });
-  }
 
-  putTopicMilestone(data: { topicId: string; milestone: ITopicMilestone }): Promise<void> {
-    return this.#database.putTopicMilestone({
+  putTopicMilestone = (data: { topicId: string; milestone: ITopicMilestone }) =>
+    this.#database.putTopicMilestone({
       topicId: data.topicId,
       milestone: {
         id: data.milestone.id,
@@ -67,12 +45,10 @@ export class TopicsService {
         updated: Date.now()
       }
     });
-  }
 
-  deleteTopicMilestone(data: { topic: ITopic; milestone: ITopicMilestone }): Promise<void> {
-    return this.#database.deleteTopicMilestone({
+  deleteTopicMilestone = (data: { topic: ITopic; milestone: ITopicMilestone }) =>
+    this.#database.deleteTopicMilestone({
       topicId: data.topic.id,
       milestoneId: data.milestone.id
     });
-  }
 }
