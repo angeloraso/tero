@@ -30,7 +30,9 @@
               "flatpickr/dist/l10n/es.js",
               "flatpickr/dist/plugins/monthSelect/index.js",
               "html2canvas",
-              "autonumeric"
+              "autonumeric",
+              "@transloadit/prettier-bytes",
+              "mime-match"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
