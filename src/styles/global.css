@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+body {
+  background-color: var(--background-color);
+}
+
 p,
 h1,
 h2,
@@ -168,8 +172,8 @@ h6 {
 }
 
 .tero-wrapper {
-  padding: 0.5rem;
   flex: 1;
+  padding: 0.5rem;
   height: 100%;
   overflow: auto;
   display: flex;

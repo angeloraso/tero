@@ -56,18 +56,18 @@
 
       <bizy-tabs class="home__tabs" *ngIf="showTabs()">
 
-          <bizy-tab 
-            class="home__tabs__tab"
+        <bizy-tab 
             *ngFor="let option of options"
             linePosition="top"
+            [ngClass]="{'home__tabs__tab--selected': option.selected}"
             [(selected)]="option.selected"
             (onSelect)="onSelect(option)">
 
-            <h5 [ngClass]="{'home__tabs__tab--selected': option.selected}"><i class="fa-solid {{option.icon}}"></i></h5>
+            <h5 [ngClass]="{'home__tabs__tab__icon--selected': option.selected}"><i class="{{option.icon}}"></i></h5>
         
-            <h5 [ngClass]="{'home__tabs__tab--selected': option.selected}">{{option.label | translate}}</h5>
+            <h6 [ngClass]="{'home__tabs__tab__label--selected': option.selected}">{{option.label | translate}}</h6>
         
-          </bizy-tab>
+        </bizy-tab>
         
       </bizy-tabs>
   

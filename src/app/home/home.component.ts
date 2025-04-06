@@ -48,31 +48,31 @@ export class HomeComponent implements OnInit, OnDestroy {
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}`,
       label: 'CORE.MENU.NEIGHBORS',
-      icon: 'fa-users',
+      icon: 'fa-solid fa-users',
       selected: false
     },
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
       label: 'CORE.MENU.NEIGHBORHOOD',
-      icon: 'fa-map',
+      icon: 'fa-solid fa-map',
       selected: false
     },
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
       label: 'CORE.MENU.DASHBOARD',
-      icon: 'fa-table-columns',
+      icon: 'fa-solid fa-table-columns',
       selected: false
     },
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}`,
       label: 'CORE.MENU.CONTACTS',
-      icon: 'fa-address-book',
+      icon: 'fa-solid fa-address-book',
       selected: false
     },
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}`,
       label: 'CORE.MENU.CONFIG',
-      icon: 'fa-gears',
+      icon: 'fa-solid fa-gears',
       selected: false
     }
   ];
@@ -90,6 +90,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       const email = this.#auth.getEmail();
       if (email) {
         this.email = email;
+      }
+
+      const option = this.#getURLOption(this.options, this.#router.getURL());
+      if (option) {
+        option.selected = true;
       }
 
       this.#subscription.add(
