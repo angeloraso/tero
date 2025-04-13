@@ -614,7 +614,7 @@ export class DatabaseService implements OnDestroy {
     const garbageTruckRecords = await this.getGarbageTruckRecords();
     const index = garbageTruckRecords.findIndex(_garbageTruckRecord => _garbageTruckRecord.date === garbageTruckRecord.date);
 
-    if (index === -1) {
+    if (index !== -1) {
       throw new Error(ERROR.ITEM_ALREADY_EXISTS);
     }
 
