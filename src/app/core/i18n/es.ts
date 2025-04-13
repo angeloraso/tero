@@ -10,6 +10,21 @@ export const locale = {
       YES: 'Si',
       NO: 'No',
       MORE_INFO: 'Más info',
+      MONTH: {
+        MAIN: 'Mes',
+        JANUARY: 'Enero',
+        FEBRUARY: 'Febrero',
+        MARCH: 'Marzo',
+        APRIL: 'Abril',
+        MAY: 'Mayo',
+        JUNE: 'Junio',
+        JULY: 'Julio',
+        AUGUST: 'Agosto',
+        SEPTEMBER: 'Septiembre',
+        OCTOBER: 'Octubre',
+        NOVEMBER: 'Noviembre',
+        DECEMBER: 'Diciembre'
+      },
       MENU: {
         DASHBOARD: 'Panel',
         NEIGHBORHOOD: 'Barrio',

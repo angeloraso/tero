@@ -8,6 +8,32 @@
 
 <div class="tero-wrapper">
 
+    <span class="tero-section">
+
+        <span class="tero-section__start"></span>
+
+        <span class="tero-section__center">
+
+            <bizy-button class="tero-button--info" (onSelect)="previousDate()" [disabled]="loading">
+                <h5><i class="fa-solid fa-chevron-left"></i></h5>
+            </bizy-button>
+
+            <span class="garbage-history__current-date">
+
+                <h5><strong>{{currentDate}}</strong></h5>
+
+            </span>
+
+            <bizy-button class="tero-button--info" (onSelect)="nextDate()" [disabled]="loading">
+                <h5><i class="fa-solid fa-chevron-right"></i></h5>
+            </bizy-button>
+
+        </span>
+
+        <span class="tero-section__end"></span>
+
+    </span>
+
     <ng-container *ngIf="loading">
 
         <bizy-skeleton width="100%" height="2rem"></bizy-skeleton>
@@ -27,6 +53,7 @@
     <bizy-calendar 
         style="height: 20rem;"
         *ngIf="!loading"
+        [viewDate]="viewDate"
         [events]="calendarEvents"
         [preventExpand]="true"
         (onDateSelect)="openGarbageRecordPopup($event)"

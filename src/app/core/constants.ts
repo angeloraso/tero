@@ -17,6 +17,8 @@ export const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=549';
 
 export const DEFAULT_USER_PICTURE = 'picture_user.svg';
 
+export const MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+
 export const LOTS = [
   {
     number: 0,

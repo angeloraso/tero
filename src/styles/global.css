@@ -223,6 +223,14 @@ h6 {
   gap: 1rem;
 }
 
+.tero-section__center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
 .tero-section__end {
   flex: 1;
   display: flex;
