@@ -11,7 +11,13 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { AboutPopupComponent, UserAliasCBUPopupComponent, UserLotPopupComponent, UserPhonePopupComponent } from '@config/components';
+import {
+  AboutPopupComponent,
+  UserAliasCBUPopupComponent,
+  UserLotPopupComponent,
+  UserNamePopupComponent,
+  UserPhonePopupComponent
+} from '@config/components';
 import { DEFAULT_USER_PICTURE, LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
@@ -88,6 +94,37 @@ export class ConfigComponent implements OnInit {
 
   openAboutPopup(): void {
     this.#popup.open({ component: AboutPopupComponent });
+  }
+
+  openUserNamePopup(): void {
+    if (!this.currentUser) {
+      return;
+    }
+
+    this.#popup.open<string>(
+      {
+        component: UserNamePopupComponent,
+        data: { name: this.currentUser.name }
+      },
+      async name => {
+        try {
+          if (name && this.currentUser) {
+            this.loading = true;
+            await this.#usersService.putUser({ ...this.currentUser, name });
+            this.currentUser.name = name;
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'config.component',
+            functionName: 'openUserNamePopup',
+            param: error
+          });
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
   }
 
   openUserPhonePopup(): void {

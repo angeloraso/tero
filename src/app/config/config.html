@@ -58,7 +58,22 @@
 
             <bizy-list>
 
-                <h3><strong>{{currentUser?.name || name}}</strong></h3>
+                <span class="tero-section__start" *ngIf="currentUser">
+
+                    <h3 *ngIf="currentUser.name"><strong>{{currentUser.name}}</strong></h3>
+
+                    <bizy-button *ngIf="currentUser.name" class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserNamePopup()">
+                        <h5><i class="fa-solid fa-pencil-alt"></i></h5>
+                    </bizy-button>
+
+                    <bizy-button *ngIf="!currentUser.name" class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserNamePopup()">
+                        <h5>{{'CONFIG.ADD_NAME' | translate}}</h5>
+                        <h5><i class="fa-solid fa-circle-plus"></i></h5>
+                    </bizy-button>
+
+                </span>
+
+                <h3 *ngIf="!currentUser"><strong>{{name}}</strong></h3>
 
                 <h5>{{currentUser?.email || email}}</h5>
 
