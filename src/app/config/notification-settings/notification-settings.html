@@ -37,11 +37,11 @@
         <bizy-list>
 
             <bizy-toggle [selected]="garbageSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToGarbageNotification()">
-                <h5 slot="end"><strong>{{'NOTIFICATION_SETTINGS.GENERAL.GARBAGE' | translate}}</strong></h5>
+                <h5 slot="end"><span bizyTooltip [tooltipLineClamp]="1">{{'NOTIFICATION_SETTINGS.GENERAL.GARBAGE' | translate}}</span></h5>
             </bizy-toggle>
     
             <bizy-toggle [selected]="newTopicSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewTopicNotification()">
-                <h5 slot="end"><strong>{{'NOTIFICATION_SETTINGS.GENERAL.NEW_TOPIC' | translate}}</strong></h5>
+                <h5 slot="end"><span bizyTooltip [tooltipLineClamp]="1">{{'NOTIFICATION_SETTINGS.GENERAL.NEW_TOPIC' | translate}}</span></h5>
             </bizy-toggle>
     
         </bizy-list>
@@ -55,7 +55,7 @@
         <bizy-list>
 
             <bizy-toggle *ngFor="let topic of topics" [selected]="topic._selected" [disabled]="loading.content" (onSelect)="subscribeToTopicUpdateNotification(topic)">
-                <h5 slot="end"><strong bizyTooltip [tooltipLineClamp]="1">{{topic.title}}</strong></h5>
+                <h5 slot="end"><span bizyTooltip [tooltipLineClamp]="1">{{topic.title}}</span></h5>
             </bizy-toggle>
     
         </bizy-list>
