@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
-import { IUser, TOPIC_STATE } from '@core/model';
+import { BizyLogService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
+import { TOPIC_SUBSCRIPTION } from '@core/constants';
+import { ERROR, IUser, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicFormComponent } from '@dashboard/topics/components';
@@ -22,6 +23,7 @@ export class AddTopicComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
+  readonly #translate = inject(BizyTranslateService);
 
   loading: boolean = false;
   users: Array<IUser> = [];
@@ -56,7 +58,11 @@ export class AddTopicComponent implements OnInit {
       this.loading = true;
 
       await this.#topicsService.postTopic(topic);
-      await this.#mobile.sendNewTopicNotification(topic.title);
+      await this.#mobile.sendPushNotification({
+        topicId: TOPIC_SUBSCRIPTION.NEW_TOPIC,
+        title: this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.TITLE'),
+        body: `${this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.BODY')}: ${topic.title}`
+      });
       this.goBack();
     } catch (error) {
       this.#log.error({
@@ -64,6 +70,12 @@ export class AddTopicComponent implements OnInit {
         functionName: 'save',
         param: error
       });
+
+      if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+        this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
+        return;
+      }
+
       this.#toast.danger();
     } finally {
       this.loading = false;

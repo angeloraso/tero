@@ -88,6 +88,11 @@ export class EditUserComponent implements OnInit {
       }
 
       const user = await this.#usersService.getUser(this.userEmail);
+      if (!user) {
+        this.goBack();
+        return;
+      }
+
       this.user = user;
       this.status.setValue(user.status);
 
@@ -186,7 +191,8 @@ export class EditUserComponent implements OnInit {
         phone: this.phone.value ? String(this.phone.value).trim() : null,
         aliasCBU: this.aliasCBU.value ? String(this.aliasCBU.value).trim() : null,
         roles: this.selectedRoles,
-        status: this.status.value
+        status: this.status.value,
+        topicSubscriptions: this.user.topicSubscriptions
       });
       this.goBack();
     } catch (error) {

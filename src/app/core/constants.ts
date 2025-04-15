@@ -6,6 +6,11 @@ export enum MENU_OPTION_ID {
   CONFIG = 'CONFIG'
 }
 
+export enum TOPIC_SUBSCRIPTION {
+  GARBAGE = 'garbage',
+  NEW_TOPIC = 'newTopic'
+}
+
 export const LOGO_PATH = '/assets/favicons/favicon.ico';
 export const NAME_MIN_LENGTH = 2;
 export const NAME_MAX_LENGTH = 128;

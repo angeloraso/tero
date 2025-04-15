@@ -4,7 +4,8 @@ import { analyticsResolver } from '@core/resolvers';
 export enum PATH {
   EMPTY = '',
   USERS = 'users',
-  GARBAGE_HISTORY = 'garbage-history'
+  GARBAGE_HISTORY = 'garbage-history',
+  NOTIFICATION_SETTINGS = 'notification-settings'
 }
 
 export const ROUTES: Routes = [
@@ -22,5 +23,9 @@ export const ROUTES: Routes = [
   {
     path: PATH.GARBAGE_HISTORY,
     loadChildren: () => import('@config/garbage-history/garbage-history.routing').then(m => m.ROUTES)
+  },
+  {
+    path: PATH.NOTIFICATION_SETTINGS,
+    loadChildren: () => import('@config/notification-settings/notification-settings.routing').then(m => m.ROUTES)
   }
 ];

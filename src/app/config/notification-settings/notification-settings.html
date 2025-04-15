@@ -1,0 +1,65 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'NOTIFICATION_SETTINGS.TITLE' | translate}}</h1>
+
+    <span slot=start [bizyLoading]="loading.content"></span>
+
+</bizy-toolbar>
+
+<div class="tero-wrapper notification-settings">
+
+    <ng-container *ngIf="loading.main">
+
+        <bizy-card *ngFor="let i of 2 | bizyRepeat" class="notification-settings__skeleton-card" class="notification-settings__card">
+
+            <bizy-skeleton slot="header-start" class="tero-skeleton-grid-card" height="2rem" width="12rem"></bizy-skeleton>
+
+            <bizy-list>
+
+                <bizy-skeleton height="1.6rem" width="20rem"></bizy-skeleton>
+
+                <bizy-skeleton height="1.6rem" width="20rem"></bizy-skeleton>
+
+                <bizy-skeleton height="1.6rem" width="20rem"></bizy-skeleton>
+
+            </bizy-list>
+
+        </bizy-card>
+
+    </ng-container>
+
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && currentUser" class="notification-settings__card">
+
+        <h4 slot="header-start" class="tero-title notification-settings__card__title">{{'NOTIFICATION_SETTINGS.GENERAL.MAIN' | translate}}</h4>
+
+        <bizy-list>
+
+            <bizy-toggle [selected]="garbageSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToGarbageNotification()">
+                <h5 slot="end"><strong>{{'NOTIFICATION_SETTINGS.GENERAL.GARBAGE' | translate}}</strong></h5>
+            </bizy-toggle>
+    
+            <bizy-toggle [selected]="newTopicSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewTopicNotification()">
+                <h5 slot="end"><strong>{{'NOTIFICATION_SETTINGS.GENERAL.NEW_TOPIC' | translate}}</strong></h5>
+            </bizy-toggle>
+    
+        </bizy-list>
+
+    </bizy-card>
+
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && currentUser" class="notification-settings__card">
+
+        <h4 slot="header-start" class="tero-title notification-settings__card__title">{{'NOTIFICATION_SETTINGS.TOPIC_UPDATES.MAIN' | translate}}</h4>
+
+        <bizy-list>
+
+            <bizy-toggle *ngFor="let topic of topics" [selected]="topic._selected" [disabled]="loading.content" (onSelect)="subscribeToTopicUpdateNotification(topic)">
+                <h5 slot="end"><strong bizyTooltip [tooltipLineClamp]="1">{{topic.title}}</strong></h5>
+            </bizy-toggle>
+    
+        </bizy-list>
+
+    </bizy-card>
+
+</div>

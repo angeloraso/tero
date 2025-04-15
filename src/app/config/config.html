@@ -14,7 +14,7 @@
 
     <ng-container *ngIf="loading">
 
-        <bizy-card *ngFor="let i of 2 | bizyRepeat">
+        <bizy-card *ngFor="let i of 3 | bizyRepeat">
 
             <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
 
@@ -108,7 +108,17 @@
 
         </bizy-card>
 
-        <bizy-card *ngIf="isConfig" (onSelect)="goToGarbageHistory()" class="config__card">
+        <bizy-card *ngIf="isNeighbor" (onSelect)="goToNotificationSettings()" class="config__card">
+            
+            <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-bell"></i></h1>
+
+            <h3 slot="header-start"><strong>{{'CONFIG.NOTIFICATIONS' | translate}}</strong></h3>
+
+            <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
+
+        </bizy-card>
+
+        <bizy-card *ngIf="isNeighbor" (onSelect)="goToGarbageHistory()" class="config__card">
             
             <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-truck"></i></h1>
 
@@ -128,7 +138,7 @@
 
             <span slot="header-start" *ngIf="pendingUsers.length > 0" class="config__icon--badge"></span>
 
-            <h1 slot="header-start" *ngIf="isConfig && pendingUsers.length === 0" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
+            <h1 slot="header-start" *ngIf="pendingUsers.length === 0" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
 
             <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
 

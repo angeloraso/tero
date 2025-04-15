@@ -49,6 +49,7 @@ export class ConfigComponent implements OnInit {
   readonly DEFAULT_USER_ID = '00000000000000';
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   isConfig: boolean = false;
+  isNeighbor: boolean = false;
   profilePic: string | null = null;
   name: string = '';
   email: string = '';
@@ -64,10 +65,11 @@ export class ConfigComponent implements OnInit {
       this.name = this.#auth.getName() ?? '';
       this.email = this.#auth.getEmail() ?? '';
 
-      const [profilePic, currentUser, isConfig] = await Promise.all([
+      const [profilePic, currentUser, isConfig, isNeighbor] = await Promise.all([
         this.#auth.getProfilePicture(),
         this.#usersService.getCurrentUser(),
-        this.#usersService.isConfig()
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor()
       ]);
 
       this.profilePic = profilePic;
@@ -75,6 +77,8 @@ export class ConfigComponent implements OnInit {
       this.currentUser = currentUser;
 
       this.isConfig = isConfig;
+
+      this.isNeighbor = isNeighbor;
 
       if (this.isConfig) {
         this.users = await this.#usersService.getUsers();
@@ -217,11 +221,11 @@ export class ConfigComponent implements OnInit {
   }
 
   goToGarbageHistory() {
-    if (!this.isConfig) {
-      return;
-    }
-
     this.#router.goTo({ path: PATH.GARBAGE_HISTORY });
+  }
+
+  goToNotificationSettings() {
+    this.#router.goTo({ path: PATH.NOTIFICATION_SETTINGS });
   }
 
   onSignOut(): void {

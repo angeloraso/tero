@@ -18,6 +18,14 @@ export const locale = {
           MSG: 'Se borrará el registro'
         }
       },
+      NEW_TOPIC_NOTIFICATION: {
+        TITLE: 'Crearon un nuevo asunto!',
+        BODY: 'Crearon el asunto'
+      },
+      TOPIC_UPDATE_NOTIFICATION: {
+        TITLE: 'Actualizaron un asunto!',
+        BODY: 'Hay avances en el asunto'
+      },
       TOPIC_MILESTONE_POPUP: {
         TITLE: 'Agregar avance'
       },

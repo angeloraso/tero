@@ -12,7 +12,7 @@ import {
   LOADING_TYPE
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { LOGO_PATH } from '@core/constants';
+import { LOGO_PATH, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { ERROR, IEcommerceProduct, ITopic, TOPIC_STATE } from '@core/model';
 import {
   EcommerceService,
@@ -183,7 +183,11 @@ export class DashboardComponent implements OnInit {
 
             await this.#garbageTruckService.postRecord({ accountEmail: email, date: date.getTime() });
 
-            await this.#mobile.sendGarbageNotification();
+            await this.#mobile.sendPushNotification({
+              topicId: TOPIC_SUBSCRIPTION.GARBAGE,
+              title: this.#translate.get('DASHBOARD.GARBAGE_NOTIFICATION.TITLE'),
+              body: this.#translate.get('DASHBOARD.GARBAGE_NOTIFICATION.BODY')
+            });
 
             this.#toast.success(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
           }
@@ -196,6 +200,11 @@ export class DashboardComponent implements OnInit {
 
           if (error instanceof Error && error.message === ERROR.ITEM_ALREADY_EXISTS) {
             this.#toast.info(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
+            return;
+          }
+
+          if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+            this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
             return;
           }
 

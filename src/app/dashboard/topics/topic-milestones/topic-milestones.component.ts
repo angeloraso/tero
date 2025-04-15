@@ -5,7 +5,7 @@ import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { ITopic, ITopicMilestone, TOPIC_STATE } from '@core/model';
+import { ERROR, ITopic, ITopicMilestone, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { TopicMilestonePopupComponent } from '@dashboard/topics/components';
@@ -114,7 +114,11 @@ export class TopicMilestonesComponent implements OnInit {
                 milestone: { description: data.description }
               });
               await this.#topicsService.putTopic(this.topic);
-              await this.#mobile.sendTopicUpdateNotification(this.topic.title);
+              await this.#mobile.sendPushNotification({
+                topicId: this.topic.id,
+                title: this.#translate.get('TOPICS.TOPIC_UPDATE_NOTIFICATION.TITLE'),
+                body: `${this.#translate.get('TOPICS.TOPIC_UPDATE_NOTIFICATION.BODY')}: ${this.topic.title}`
+              });
             }
 
             const topic = await this.#topicsService.getTopic(this.topic.id);
@@ -126,6 +130,12 @@ export class TopicMilestonesComponent implements OnInit {
             functionName: 'openMilestonePopup',
             param: error
           });
+
+          if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+            this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
+            return;
+          }
+
           this.#toast.danger();
         } finally {
           this.loading = false;

@@ -7,6 +7,7 @@ import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService, LANGUAGE } from '@bizy/core';
 import { AnalyticsService } from '@core/analytics';
+import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import { es } from '@core/i18n';
 import { ERROR } from '@core/model';
 import { DatabaseService, MobileService, UsersService } from '@core/services';
@@ -72,6 +73,44 @@ export class AppComponent implements OnInit {
           try {
             const user = await this.#usersService.getCurrentUser();
             await this.#analytics.setUserId(String(user.id));
+
+            if (user.topicSubscriptions) {
+              user.topicSubscriptions.forEach(async _topicSubscription => {
+                try {
+                  await this.#mobile.subscribeToTopic(_topicSubscription);
+                } catch (error) {
+                  this.#log.error({
+                    fileName: 'app.component',
+                    functionName: 'subscribeToTopic',
+                    param: error
+                  });
+
+                  if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+                    return;
+                  }
+
+                  throw error;
+                }
+              });
+            } else {
+              user.topicSubscriptions = [TOPIC_SUBSCRIPTION.GARBAGE];
+              await this.#usersService.putUser(user);
+              try {
+                await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.GARBAGE);
+              } catch (error) {
+                this.#log.error({
+                  fileName: 'app.component',
+                  functionName: 'subscribeToTopic',
+                  param: error
+                });
+
+                if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+                  return;
+                }
+
+                throw error;
+              }
+            }
           } catch (error) {
             this.#log.error({
               fileName: 'app.component',

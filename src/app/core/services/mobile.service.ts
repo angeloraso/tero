@@ -16,6 +16,11 @@ export enum FILE_TYPE {
   IMAGE,
   CSV
 }
+
+enum FIREBASE_FUNCTION {
+  PUSH_NOTIFICATION = 'sendPushNotification'
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,24 +29,6 @@ export class MobileService {
   readonly #backButton = new Subject<void>();
 
   #MESSAGING_TOKEN: string | null = null;
-
-  readonly #GARBAGE_NOTIFICATION = {
-    TOPIC: 'garbage',
-    TITLE: 'Camión de basura!',
-    BODY: 'Esta pasando el camión de basura!'
-  };
-
-  readonly #NEW_TOPIC_NOTIFICATION = {
-    TOPIC: 'newTopic',
-    TITLE: 'Agregaron un nuevo asunto!',
-    BODY: 'Crearon el asunto'
-  };
-
-  readonly #TOPIC_UPDATE_NOTIFICATION = {
-    TOPIC: 'topicUpdate',
-    TITLE: 'Actualizaron un asunto',
-    BODY: 'Hay avances en el asunto'
-  };
 
   get backButton$(): Observable<void> {
     return this.#backButton.asObservable();
@@ -62,7 +49,6 @@ export class MobileService {
 
     await StatusBar.setBackgroundColor({ color: '#666666' });
     await StatusBar.setOverlaysWebView({ overlay: false });
-    await this.#initializeFirebaseMessaging();
   }
 
   hideSplash = () => SplashScreen.hide();
@@ -88,56 +74,11 @@ export class MobileService {
     await FileOpener.open({ filePath: uri, openWithDefault: true });
   }
 
-  async sendGarbageNotification() {
-    if (!this.#MESSAGING_TOKEN) {
-      await this.#initializeFirebaseMessaging();
-    }
-
-    await FirebaseFunctions.callByName({
-      name: 'sendPushNotification',
-      data: {
-        topic: this.#GARBAGE_NOTIFICATION.TOPIC,
-        title: this.#GARBAGE_NOTIFICATION.TITLE,
-        body: this.#GARBAGE_NOTIFICATION.BODY
-      }
-    });
-  }
-
-  async sendNewTopicNotification(topicTitle: string) {
-    if (!ENV.production || !ENV.mobile) {
-      return;
-    }
-
-    if (!this.#MESSAGING_TOKEN) {
-      await this.#initializeFirebaseMessaging();
-    }
-
-    await FirebaseFunctions.callByName({
-      name: 'sendPushNotification',
-      data: {
-        topic: this.#NEW_TOPIC_NOTIFICATION.TOPIC,
-        title: this.#NEW_TOPIC_NOTIFICATION.TITLE,
-        body: `${this.#NEW_TOPIC_NOTIFICATION.BODY}: ${topicTitle}`
-      }
-    });
-  }
-
-  async sendTopicUpdateNotification(topicTitle: string) {
-    if (!this.#MESSAGING_TOKEN) {
-      await this.#initializeFirebaseMessaging();
-    }
-
-    await FirebaseFunctions.callByName({
-      name: 'sendPushNotification',
-      data: {
-        topic: this.#TOPIC_UPDATE_NOTIFICATION.TOPIC,
-        title: this.#TOPIC_UPDATE_NOTIFICATION.TITLE,
-        body: `${this.#TOPIC_UPDATE_NOTIFICATION.BODY}: ${topicTitle}`
-      }
-    });
-  }
-
   #initializeFirebaseMessaging = async () => {
+    if (!ENV.production || !ENV.mobile) {
+      return Promise.resolve();
+    }
+
     let permStatus = await FirebaseMessaging.checkPermissions();
 
     if (permStatus.receive === 'prompt') {
@@ -145,17 +86,55 @@ export class MobileService {
     }
 
     if (permStatus.receive !== 'granted') {
-      throw new Error('Push notifications permissions rejected');
+      throw new Error(ERROR.NOTIFICATION_PERMISSIONS);
     }
 
     const event = await FirebaseMessaging.getToken();
     this.#MESSAGING_TOKEN = event.token;
-
-    await Promise.all([
-      FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC }),
-      FirebaseMessaging.subscribeToTopic({ topic: this.#GARBAGE_NOTIFICATION.TOPIC })
-    ]);
   };
+
+  subscribeToTopic = async (topicId: string) => {
+    if (!ENV.production || !ENV.mobile) {
+      return Promise.resolve();
+    }
+
+    if (!this.#MESSAGING_TOKEN) {
+      await this.#initializeFirebaseMessaging();
+    }
+
+    return FirebaseMessaging.subscribeToTopic({ topic: topicId });
+  };
+
+  unsubscribeFromTopic = async (topicId: string) => {
+    if (!ENV.production || !ENV.mobile) {
+      return Promise.resolve();
+    }
+
+    if (!this.#MESSAGING_TOKEN) {
+      await this.#initializeFirebaseMessaging();
+    }
+
+    return FirebaseMessaging.unsubscribeFromTopic({ topic: topicId });
+  };
+
+  async sendPushNotification(data: { topicId: string; title: string; body: string }) {
+    if (!ENV.production || !ENV.mobile) {
+      return Promise.resolve();
+    }
+
+    if (!this.#MESSAGING_TOKEN) {
+      await this.#initializeFirebaseMessaging();
+    }
+
+    await FirebaseFunctions.callByName({
+      name: FIREBASE_FUNCTION.PUSH_NOTIFICATION,
+      data: {
+        topic: data.topicId,
+        title: data.title,
+        body: data.body
+      }
+    });
+  }
 
   exit = () => App.exitApp();
 }

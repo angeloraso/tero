@@ -10,7 +10,8 @@ export enum ERROR {
   ITEM_NOT_FOUND = 'ITEM_NOT_FOUND',
   ITEM_ALREADY_EXISTS = 'ITEM_ALREADY_EXISTS',
   AUTH_ERROR = 'AUTH_ERROR',
-  NOT_SUPPORTED = 'NOT_SUPPORTED'
+  NOT_SUPPORTED = 'NOT_SUPPORTED',
+  NOTIFICATION_PERMISSIONS = 'NOTIFICATION_PERMISSIONS'
 }
 
 export enum USER_ROLE {
@@ -43,6 +44,7 @@ export interface IUser {
   phone?: string | null;
   lot?: number | null;
   aliasCBU?: string | null;
+  topicSubscriptions?: Array<string>;
 }
 
 export interface INeighbor {

@@ -9,10 +9,10 @@ export enum PATH {
 export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    loadComponent: () => import('@config/garbage-history/garbage-history.component').then(m => m.GarbageHistoryComponent),
+    loadComponent: () => import('@config/notification-settings/notification-settings.component').then(m => m.NotificationSettingsComponent),
     pathMatch: 'full',
     canActivate: [neighborGuard],
     resolve: { data: analyticsResolver },
-    data: { pageViewEventName: 'garbage-history' }
+    data: { pageViewEventName: 'notification-settings' }
   }
 ];

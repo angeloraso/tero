@@ -14,7 +14,7 @@ import {
 import { PopupComponent } from '@components/popup';
 import { AuthService } from '@core/auth/auth.service';
 import { MONTHS } from '@core/constants';
-import { GarbageTruckService } from '@core/services';
+import { GarbageTruckService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -34,11 +34,13 @@ export class GarbageHistoryComponent implements OnInit {
   readonly #translate = inject(BizyTranslateService);
   readonly #popup = inject(BizyPopupService);
   readonly #home = inject(HomeService);
+  readonly #usersService = inject(UsersService);
 
   loading = false;
   calendarEvents: Array<IBizyCalendarEvent> = [];
   viewDate: number = Date.now();
   currentDate: string = this.#getCurrentDate(this.viewDate);
+  isNeighbor: boolean = false;
 
   readonly BIZY_CALENDAR_MODE = BIZY_CALENDAR_MODE;
   readonly BIZY_CALENDAR_DAY = BIZY_CALENDAR_DAY;
@@ -48,6 +50,7 @@ export class GarbageHistoryComponent implements OnInit {
       this.loading = true;
       this.#home.hideTabs();
       this.#translate.loadTranslations(es);
+      this.isNeighbor = await this.#usersService.isNeighbor();
       await this.#buildCalendar();
     } catch (error) {
       this.#log.error({
@@ -62,7 +65,7 @@ export class GarbageHistoryComponent implements OnInit {
   }
 
   openGarbageRecordPopup(data: { start: number; end: number; events: Array<IBizyCalendarEvent> }) {
-    if (this.loading || !data || data.events.length > 0) {
+    if (this.loading || !data || data.events.length > 0 || !this.isNeighbor) {
       return;
     }
 

@@ -1,6 +1,7 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { AuthService } from '@auth/auth.service';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
+import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import {
   ERROR,
   IContact,
@@ -447,7 +448,8 @@ export class DatabaseService implements OnDestroy {
       picture: this.#auth.getProfilePictureURL(),
       phone: null,
       lot: null,
-      aliasCBU: null
+      aliasCBU: null,
+      topicSubscriptions: [TOPIC_SUBSCRIPTION.GARBAGE]
     };
 
     const userDocument = JSON.parse(JSON.stringify(userSettings));

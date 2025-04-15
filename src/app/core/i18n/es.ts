@@ -110,6 +110,9 @@ export const locale = {
         LINK: 'Link',
         EMAIL: 'Email',
         NUMBER: 'Número'
+      },
+      ERROR: {
+        NOTIFICATION_PERMISSIONS: 'Debe dar permisos de notificación'
       }
     }
   }
