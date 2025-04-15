@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
           }
         });
 
-        this.#mobile.hideSplash();
+        await this.#mobile.hideSplash();
       }
 
       this.#auth.signedIn$.subscribe(async signedIn => {
@@ -86,7 +86,10 @@ export class AppComponent implements OnInit {
                   });
 
                   if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
-                    return;
+                    if (this.#router.getURL() === `/${PATH.AUTH}`) {
+                      this.#router.goTo({ path: `/${PATH.HOME}` });
+                    }
+                    return Promise.resolve();
                   }
 
                   throw error;
@@ -105,7 +108,10 @@ export class AppComponent implements OnInit {
                 });
 
                 if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
-                  return;
+                  if (this.#router.getURL() === `/${PATH.AUTH}`) {
+                    this.#router.goTo({ path: `/${PATH.HOME}` });
+                  }
+                  return Promise.resolve();
                 }
 
                 throw error;
