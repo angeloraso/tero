@@ -4,17 +4,6 @@
   flex-direction: column;
 
   --bizy-list-row-gap: 1rem;
-}
-
-.notification-settings {
-  row-gap: 1rem;
-}
-
-.notification-settings__skeleton-card {
-  --bizy-card-height: 12rem;
-}
-
-.notification-settings__card {
   --bizy-card-height: fit-content;
 }
 

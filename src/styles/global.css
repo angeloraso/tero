@@ -207,42 +207,6 @@ h6 {
   flex: 1;
 }
 
-.tero-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-
-.tero-section__start {
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  gap: 1rem;
-}
-
-.tero-section__center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.tero-section__end {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: 1rem;
-}
-
-.tero-section__end bizy-search-input {
-  flex: 1;
-}
-
 .hidden-xs {
   @media only screen and (max-width: 576px) {
     visibility: hidden;
@@ -262,36 +226,26 @@ h6 {
   --bizy-input-max-width: 4.6rem;
 }
 
-.tero-title {
+.tero--success {
+  color: var(--bizy-success-color);
+}
+
+.tero--info {
   color: var(--bizy-info-color);
 }
 
-.tero-form__toggle-field {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  column-gap: 0.5em;
+.tero--default {
+  color: var(--bizy-default-color);
 }
 
-.tero-form__toggle-field__label {
-  color: var(--bizy-info-color);
+.tero--warning {
+  color: var(--bizy-warning-color);
 }
 
-.tero-confirm-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  column-gap: 1rem;
-  width: 100%;
+.tero--danger {
+  color: var(--bizy-danger-color);
 }
 
-.tero-confirm-buttons__cancel {
-  --bizy-button-background-color: var(--bizy-danger-color);
-}
-
-.tero-confirm-buttons__confirm {
-  --bizy-button-background-color: var(--bizy-accent-color);
-}
 
 .tero-no-matches {
   flex: 1;

@@ -1,17 +1,18 @@
-<span class="tero-wrapper">
+<tero-wrapper>
 
-    <span class="tero-section">
+    <bizy-section>
 
-        <span class="tero-section__start">
+        <bizy-section-start>
 
-            <h1 class="tero-title">{{'CONTACTS.RATING_HISTORY_POPUP.TITLE' | translate}}</h1>
+            <h1 class="tero--info">{{'CONTACTS.RATING_HISTORY_POPUP.TITLE' | translate}}</h1>
 
             <bizy-tag [type]="BIZY_TAG_TYPE.WARNING" *ngIf="rating && rating.length > 0">
-                <h6>{{rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h6>
+                <h5>{{rating | bizyAverage : 'value'}}/5 <i class="fa-solid fa-star"></i></h5>
             </bizy-tag>
             
-        </span>
-    </span>
+        </bizy-section-start>
+
+    </bizy-section>
 
     <span class="rating-history-popup__rating-wrapper" *ngIf="rating && rating.length > 0">
 
@@ -41,7 +42,7 @@
             </span>
         
             <bizy-card *ngIf="contactRating.description">
-                <h6 slot="header-start" class="tero-title"><strong>{{'CORE.FORM.FIELD.COMMENTS' | translate}}</strong></h6>
+                <h6 slot="header-start" class="tero--info"><strong>{{'CORE.FORM.FIELD.COMMENTS' | translate}}</strong></h6>
                 <h6>{{contactRating.description}}</h6>
             </bizy-card>
         
@@ -49,4 +50,4 @@
 
     </span>
     
-</span>
+</tero-wrapper>

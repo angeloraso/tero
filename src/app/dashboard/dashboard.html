@@ -8,7 +8,7 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper dashboard">
+<tero-wrapper>
 
     <ng-container *ngIf="loading">
 
@@ -17,6 +17,14 @@
             <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
 
             <bizy-list slot="header-start">
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+            </bizy-list>
+
+            <bizy-list>
 
                 <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
 
@@ -43,6 +51,7 @@
             </bizy-list>
 
         </bizy-card>
+
     </ng-container>
 
     <ng-container *ngIf="!loading">
@@ -125,4 +134,4 @@
 
     </ng-container>
 
-</div>
+</tero-wrapper>

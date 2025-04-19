@@ -4,13 +4,11 @@
   flex-direction: column;
 
   --bizy-card-cursor: pointer;
+  --bizy-card-height: fit-content;
 }
 
-.config {
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 16rem 4rem 4rem 4rem;
-  gap: 1rem;
+.config__credential__profile-pic-wrapper {
+  position: relative;
 }
 
 .config__credential__profile-pic {
@@ -18,8 +16,22 @@
   border-radius: 50%;
 }
 
+.config__credential__profile-pic__badge {
+  position: absolute;
+  bottom: -0.1rem;
+  right: -0.1rem;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 0.2em;
+  color: var(--primary-color);
+}
+
 .config__credential__membership-number {
   align-self: flex-start;
+}
+
+.config__credential__data {
+  margin: 0.5rem 0;
 }
 
 .config__credential__badge {

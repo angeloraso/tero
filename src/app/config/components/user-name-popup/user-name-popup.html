@@ -1,30 +1,38 @@
-<bizy-form class="tero-wrapper">
+<bizy-form>
 
-    <h4 class="tero-title"><strong>{{'CONFIG.USER_NAME_POPUP.TITLE' | translate}}</strong></h4>
+    <h4 class="tero--info"><strong>{{'CONFIG.USER_NAME_POPUP.TITLE' | translate}}</strong></h4>
 
     <bizy-input
         #nameInput
         [autofocus]="true"
         [value]="name.value"
         (onChange)="name.setValue($event)">
-        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{MIN_LENGTH}}</h6>
         <h6 slot="error" *ngIf="name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX_LENGTH}}</h6>
     </bizy-input>
 
-    <span class="tero-confirm-buttons">
+    <bizy-section>
 
-        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
-            <h5><i class="fa-solid fa-xmark"></i></h5>
-            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
-        </bizy-button>
+        <bizy-section-center>
 
-        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
-            <h5>{{'CORE.BUTTON.SAVE' | translate}}</h5>
-            <h5><i class="fa-solid fa-check"></i></h5>
-        </bizy-button>
+            <bizy-button class="tero-button--danger" (onSelect)="close()">
+                <h5><i class="fa-solid fa-xmark"></i></h5>
+                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+            </bizy-button>
 
-    </span>
+        </bizy-section-center>
+
+        <bizy-section-center>
+
+            <bizy-button type="submit" class="tero-button--accent" (onSelect)="apply()">
+                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+                <h5><i class="fa-solid fa-check"></i></h5>
+            </bizy-button>
+            
+        </bizy-section-center>
+
+    </bizy-section>
 
 </bizy-form>

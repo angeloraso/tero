@@ -1,31 +1,34 @@
-<span class="tero-wrapper">
+<bizy-form>
 
-    <bizy-form>
+    <h1 class="tero--info">{{'SECURITY.REGISTER_PAYMENT_POPUP.TITLE' | translate}} {{neighbor ? neighbor.lot + ' - ' + neighbor.name + ' ' + neighbor.surname : ''}}</h1>
+    
+    <bizy-input
+        [value]="transactionId.value"
+        (onChange)="transactionId.setValue($event)">
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="transactionId.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+    </bizy-input>
 
-        <h1 class="tero-title">{{'SECURITY.REGISTER_PAYMENT_POPUP.TITLE' | translate}} {{neighbor ? neighbor.lot + ' - ' + neighbor.name + ' ' + neighbor.surname : ''}}</h1>
-        
-        <bizy-input
-            [value]="transactionId.value"
-            (onChange)="transactionId.setValue($event)">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}</strong></h6>
-            <h6 slot="error" *ngIf="transactionId.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
-        </bizy-input>
-        
-    
-        <span class="tero-confirm-buttons">
-    
-            <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <bizy-button class="tero-button--danger" (onSelect)="close()">
                 <h5><i class="fa-solid fa-xmark"></i></h5>
                 <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
             </bizy-button>
-    
-            <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+
+        </bizy-section-center>
+
+        <bizy-section-center>
+
+            <bizy-button type="submit" class="tero-button--accent" (onSelect)="apply()">
                 <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
                 <h5><i class="fa-solid fa-check"></i></h5>
             </bizy-button>
-    
-        </span>
+            
+        </bizy-section-center>
 
-    </bizy-form>
-    
-</span>
+    </bizy-section>
+
+</bizy-form>

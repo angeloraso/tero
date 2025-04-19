@@ -10,17 +10,17 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<tero-wrapper>
 
-    <span class="tero-section">
+    <bizy-section>
 
-        <span class="tero-section__end">
+        <bizy-section-end>
 
             <bizy-input 
                 class="tero-counter"
                 [readonly]="true"
                 [value]="activatedFilters ? ((contacts | bizySearch: search : searchKeys | bizyFilter : 'tags' : filterTags).length + '/' + contacts.length) : contacts.length">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
             <bizy-input 
@@ -28,7 +28,7 @@
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
                 [autofocus]="!isMobile">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
@@ -38,7 +38,7 @@
                     <h6><i class="fa-solid fa-filter"></i></h6>
                     
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.TAG' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.TAG' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let tag of filterTags | bizyOrderBy : 'asc' : 'value'" 
@@ -55,9 +55,9 @@
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
 
-        </span>
+        </bizy-section-end>
 
-    </span>
+    </bizy-section>
 
     <bizy-grid *ngIf="!loading" class="animated fade-in">
 
@@ -99,21 +99,18 @@
                 <i class="fa-brands fa-whatsapp"></i>
             </bizy-button>
 
-            <span class="contacts__card__content">
+            <bizy-list>
 
-                <span class="contacts__card__content__description" *ngIf="contact.description">
-                    <h6><i class="fa-regular fa-message"></i></h6>
-                    <h6 class="tero-text-ellipsis">{{contact.description}}</h6>
-                </span>
+                <h6 *ngIf="contact.description" [bizyTooltip]="contact.description" [tooltipLineClamp]="2" class="contacts__card__content__description">{{contact.description}}</h6>
 
-                <span class="contacts__card__phones__phone" *ngFor="let phone of contact._phones">
+                <bizy-section-start *ngFor="let phone of contact._phones">
 
                     <h6><strong>{{phone}}</strong></h6>
 
-                    <bizy-button class="tero-action tero-action--info" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
+                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyPhone(phone); $event.stopPropagation()"><i class="fa-regular fa-copy"></i></bizy-button>
 
-                </span>
-            </span>
+                </bizy-section-start>
+            </bizy-list>
             
             <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let tag of contact.tags" class="conctacts__card__tag"><h6>{{tag}}</h6></bizy-tag>
 
@@ -163,14 +160,14 @@
         *ngIf="contacts.length !== 0 && (contacts 
                                             | bizySearch: search : searchKeys
                                             | bizyFilter : 'tags' : filterTags).length === 0">
-        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
+        <h4 class="tero-no-matches__text">{{'CORE.NO_MATCHES' | translate}}</h4>
     </bizy-tag>
 
     <bizy-tag 
         [type]="BIZY_TAG_TYPE.WARNING"
         class="animated fade-in tero-no-matches"
         *ngIf="!loading && contacts.length === 0">
-        <h4>{{'CONTACTS.EMPTY' | translate}}</h4>
+        <h4 class="tero-no-matches__text">{{'CONTACTS.EMPTY' | translate}}</h4>
     </bizy-tag>
 
-</div>
+</tero-wrapper>

@@ -8,7 +8,7 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper" [bizyLoading]="loading">
+<tero-wrapper [bizyLoading]="loading">
 
     <tero-contact-form
         *ngIf="contact"
@@ -26,4 +26,4 @@
         (confirmed)="save($event)">
     </tero-contact-form>
 
-</div>
+</tero-wrapper>

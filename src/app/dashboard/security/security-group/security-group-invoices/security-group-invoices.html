@@ -8,11 +8,11 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<tero-wrapper>
 
-    <span class="tero-section">
+    <bizy-section>
 
-        <span class="tero-section__end">
+        <bizy-section-end>
 
             <bizy-input 
                 class="tero-counter"
@@ -20,7 +20,7 @@
                 [value]="activatedFilters ? ((invoices
                                                 | bizySearch: search : searchKeys
                                                 | bizySearch: nameSearch : 'name').length + '/' + invoices.length) : invoices.length">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
             <bizy-input 
@@ -28,7 +28,7 @@
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
                 [autofocus]="!isMobile">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
@@ -36,9 +36,9 @@
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
 
-        </span>
+        </bizy-section-end>
 
-    </span>
+    </bizy-section>
 
     <bizy-table [bizyLoading]="loading">
 
@@ -56,7 +56,7 @@
                     <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
 
                         <bizy-filter-section-search-option 
                             [(value)]="nameSearch"
@@ -103,4 +103,4 @@
     
     </bizy-table>
 
-</div>
+</tero-wrapper>

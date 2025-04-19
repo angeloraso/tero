@@ -8,7 +8,7 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<tero-wrapper>
 
     <bizy-form>
 
@@ -29,7 +29,7 @@
             [disabled]="loading"
             [readonly]="true"
             [value]="user ? user.email : ''">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.EMAIL' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.EMAIL' | translate}}</strong></h6>
         </bizy-input>
 
         <bizy-input 
@@ -37,7 +37,7 @@
             [autofocus]="true"
             [value]="name.value"
             (onChange)="name.setValue($event)">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
         </bizy-input>
 
         <bizy-input
@@ -46,7 +46,7 @@
             [value]="lot.value"
             type="number"
             (onChange)="lot.setValue($event)">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>
             <h6 slot="error" *ngIf="lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX}}</h6>
         </bizy-input>
@@ -57,7 +57,7 @@
             [value]="phone.value"
             type="tel"
             (onChange)="phone.setValue($event)">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="phone.hasError('min') && phoneInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}}: {{MIN}}</h6>
             <h6 slot="error" *ngIf="phone.hasError('maxlength') && phoneInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{MAX_LENGTH}}</h6>
         </bizy-input>
@@ -67,11 +67,11 @@
             [disabled]="loading"
             [value]="aliasCBU.value"
             (onChange)="aliasCBU.setValue($event)">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
         </bizy-input>
 
         <bizy-select [disabled]="loading">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
             <bizy-select-option 
                 *ngFor="let s of USER_STATES"
                 [selected]="status.value === s"
@@ -81,7 +81,7 @@
         </bizy-select>
 
         <bizy-input #roleInput [(value)]="roleSearch" [disabled]="loading || status.value !== USER_STATE.ACTIVE">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>
     
             <bizy-input-option 
                 *ngFor="let role of availableRoles | bizySearch : roleSearch | bizyOrderBy : 'asc'"
@@ -98,20 +98,28 @@
     
         </bizy-input>
 
-        <span class="tero-confirm-buttons">
+        <bizy-section>
 
-            <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="goBack()" [disabled]="loading">
-                <h5><i class="fa-solid fa-xmark"></i></h5>
-                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
-            </bizy-button>
+            <bizy-section-center>
     
-            <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="save()" [disabled]="loading">
-                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
-                <h5><i class="fa-solid fa-check"></i></h5>
-            </bizy-button>
+                <bizy-button class="tero-button--danger" (onSelect)="goBack()" [disabled]="loading">
+                    <h5><i class="fa-solid fa-xmark"></i></h5>
+                    <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+                </bizy-button>
     
-        </span>
+            </bizy-section-center>
+    
+            <bizy-section-center>
+    
+                <bizy-button type="submit" class="tero-button--accent" (onSelect)="save()" [disabled]="loading">
+                    <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+                    <h5><i class="fa-solid fa-check"></i></h5>
+                </bizy-button>
+                
+            </bizy-section-center>
+    
+        </bizy-section>
 
     </bizy-form>
 
-</div>
+</tero-wrapper>

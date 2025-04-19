@@ -10,11 +10,11 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper config">
+<tero-wrapper>
 
     <ng-container *ngIf="loading">
 
-        <bizy-card *ngFor="let i of 3 | bizyRepeat">
+        <bizy-card>
 
             <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
 
@@ -32,11 +32,29 @@
 
                 <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
 
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
             </bizy-list>
 
             <bizy-skeleton slot="footer-start" class="tero-skeleton-grid-card"></bizy-skeleton>
 
             <bizy-skeleton slot="footer-end" class="tero-skeleton-grid-card"></bizy-skeleton>
+
+        </bizy-card>
+
+        <bizy-card *ngFor="let i of 2 | bizyRepeat">
+
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+
+            <bizy-list slot="header-start">
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
+
+            </bizy-list>
 
         </bizy-card>
 
@@ -46,19 +64,26 @@
 
         <bizy-card class="config__card">
             
-            <img 
-                class="config__credential__profile-pic"
-                slot="header-start"
-                [src]="profilePic"
-                loading="lazy"
-                onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
-                alt="Imagen de usuario"/>
+
+            <span slot="header-start" class="config__credential__profile-pic-wrapper">
+
+                <img 
+                    class="config__credential__profile-pic"
+                    [src]="profilePic"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                    alt="Imagen de usuario"/>
+
+                    <h6 *ngIf="isConfig" class="config__credential__profile-pic__badge "><i class="fa-solid fa-crown"></i></h6>
+
+            </span>
+
 
             <h4 slot="header-end" class="config__credential__membership-number"><strong>Nº {{currentUser ? currentUser.id : DEFAULT_USER_ID}}</strong></h4>
 
             <bizy-list>
 
-                <span class="tero-section__start" *ngIf="currentUser">
+                <bizy-section-start *ngIf="currentUser">
 
                     <h3 *ngIf="currentUser.name"><strong>{{currentUser.name}}</strong></h3>
 
@@ -71,46 +96,49 @@
                         <h5><i class="fa-solid fa-circle-plus"></i></h5>
                     </bizy-button>
 
-                </span>
+                </bizy-section-start>
 
                 <h3 *ngIf="!currentUser"><strong>{{name}}</strong></h3>
 
                 <h5>{{currentUser?.email || email}}</h5>
 
-                <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserPhonePopup()">
-                    <h5 *ngIf="currentUser?.phone" class="tero-title"><i class="fa-solid fa-phone"></i></h5>
-                    <h5>{{currentUser?.phone || ('CONFIG.ADD_PHONE' | translate)}}</h5>
-                    <h5 *ngIf="!currentUser?.phone"><i class="fa-solid fa-circle-plus"></i></h5>
-                </bizy-button>
+                <bizy-list class="config__credential__data">
 
-                <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserLotPopup()">
-                    <h5 *ngIf="currentUser?.lot" class="tero-title"><i class="fa-solid fa-location-dot"></i></h5>
-                    <h5>{{currentUser?.lot ? ('CORE.FORM.FIELD.LOT' | translate) + ' ' + currentUser?.lot : ('CONFIG.ADD_LOT' | translate)}}</h5>
-                    <h5 *ngIf="!currentUser?.lot"><i class="fa-solid fa-circle-plus"></i></h5>
-                </bizy-button>
+                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserPhonePopup()">
+                        <h5 *ngIf="currentUser?.phone" class="tero--info"><i class="fa-solid fa-phone"></i></h5>
+                        <h5>{{currentUser?.phone || ('CONFIG.ADD_PHONE' | translate)}}</h5>
+                        <h5 *ngIf="!currentUser?.phone"><i class="fa-solid fa-circle-plus"></i></h5>
+                    </bizy-button>
+    
+                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserLotPopup()">
+                        <h5 *ngIf="currentUser?.lot" class="tero--info"><i class="fa-solid fa-location-dot"></i></h5>
+                        <h5>{{currentUser?.lot ? ('CORE.FORM.FIELD.LOT' | translate) + ' ' + currentUser?.lot : ('CONFIG.ADD_LOT' | translate)}}</h5>
+                        <h5 *ngIf="!currentUser?.lot"><i class="fa-solid fa-circle-plus"></i></h5>
+                    </bizy-button>
+    
+                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserAliasCBUPopup()">
+                        <h5 *ngIf="currentUser?.aliasCBU" class="tero--info"><i class="fa-solid fa-building-columns"></i></h5>
+                        <h5>{{currentUser?.aliasCBU ? ('CORE.FORM.FIELD.ALIAS_CBU' | translate) + ' ' + currentUser?.aliasCBU : ('CONFIG.ADD_ALIAS_CBU' | translate)}}</h5>
+                        <h5 *ngIf="!currentUser?.aliasCBU"><i class="fa-solid fa-circle-plus"></i></h5>
+                    </bizy-button>
 
-                <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserAliasCBUPopup()">
-                    <h5 *ngIf="currentUser?.aliasCBU" class="tero-title"><i class="fa-solid fa-building-columns"></i></h5>
-                    <h5>{{currentUser?.aliasCBU ? ('CORE.FORM.FIELD.ALIAS_CBU' | translate) + ' ' + currentUser?.aliasCBU : ('CONFIG.ADD_ALIAS_CBU' | translate)}}</h5>
-                    <h5 *ngIf="!currentUser?.aliasCBU"><i class="fa-solid fa-circle-plus"></i></h5>
-                </bizy-button>
+                </bizy-list>
+
 
             </bizy-list>
 
-            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
-            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>
-            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
-            <bizy-tag slot="footer-start" *ngIf="currentUser && currentUser.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
-
             <bizy-tag slot="footer-start" *ngFor="let role of currentUser?.roles"><h5>{{'CORE.USER_ROLE.' + role | translate}}</h5></bizy-tag>
 
-            <h1 slot="footer-end" *ngIf="isConfig" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
+            <bizy-tag slot="footer-end" *ngIf="currentUser && currentUser.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="currentUser && currentUser.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="currentUser && currentUser.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h5>{{('CORE.USER_STATE.PENDING') | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="currentUser && currentUser.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h5>{{('CORE.USER_STATE.REJECTED') | translate}}</h5></bizy-tag>
 
         </bizy-card>
 
         <bizy-card *ngIf="isNeighbor" (onSelect)="goToNotificationSettings()" class="config__card">
             
-            <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-bell"></i></h1>
+            <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-bell"></i></h1>
 
             <h3 slot="header-start"><strong>{{'CONFIG.NOTIFICATIONS' | translate}}</strong></h3>
 
@@ -120,7 +148,7 @@
 
         <bizy-card *ngIf="isNeighbor" (onSelect)="goToGarbageHistory()" class="config__card">
             
-            <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-truck"></i></h1>
+            <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-truck"></i></h1>
 
             <h3 slot="header-start"><strong>{{'CONFIG.GARBAGE' | translate}}</strong></h3>
 
@@ -130,7 +158,7 @@
 
         <bizy-card *ngIf="isConfig" (onSelect)="goToUsers()" class="config__card">
             
-            <h1 slot="header-start" class="tero-title"><i class="fa-solid fa-users"></i></h1>
+            <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-users"></i></h1>
 
             <h3 slot="header-start"><strong>{{'CONFIG.USERS' | translate}}</strong></h3>
 
@@ -138,7 +166,7 @@
 
             <span slot="header-start" *ngIf="pendingUsers.length > 0" class="config__icon--badge"></span>
 
-            <h1 slot="header-start" *ngIf="pendingUsers.length === 0" class="config__credential__badge"><i class="fa-solid fa-certificate"></i></h1>
+            <h4 slot="header-start" *ngIf="pendingUsers.length === 0" class="config__credential__badge"><i class="fa-solid fa-crown"></i></h4>
 
             <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
 
@@ -146,4 +174,4 @@
 
     </ng-container>
 
-</div>
+</tero-wrapper>

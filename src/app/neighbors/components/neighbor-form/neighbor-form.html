@@ -15,7 +15,7 @@
         [value]="_name.value"
         [autofocus]="!isMobile"
         (onChange)="_name.setValue($event)">
-        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="_name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
         <h6 slot="error" *ngIf="_name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
@@ -25,7 +25,7 @@
         #surnameInput
         [value]="_surname.value"
         (onChange)="_surname.setValue($event)">
-        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_surname.hasError('minlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
         <h6 slot="error" *ngIf="_surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
     </bizy-input>
@@ -35,7 +35,7 @@
         [value]="_lot.value"
         type="number"
         (onChange)="_lot.setValue($event)">
-        <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_lot.hasError('required') && lotInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
         <h6 slot="error" *ngIf="_lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</h6>
         <h6 slot="error" *ngIf="_lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_LOT_VALUE}}</h6>
@@ -44,7 +44,7 @@
     <span class="tero-form__section">
 
         <bizy-select>
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}}</strong></h6>
             <bizy-select-option 
                 *ngFor="let a of ALARMS"
                 [selected]="alarmNumber === a"
@@ -54,7 +54,7 @@
         </bizy-select>
 
         <bizy-input [(value)]="alarmControlSearch">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}</strong></h6>
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}</strong></h6>
     
             <bizy-input-option 
                 *ngFor="let alarmControl of availableAlarmControls | bizySearch : alarmControlSearch"
@@ -73,13 +73,13 @@
 
     <span class="neighbor-form__security-card">
 
-        <h5 class="tero-title">{{'CORE.FORM.FIELD.SECURITY' | translate}}</h5>
+        <h5 class="tero--info">{{'CORE.FORM.FIELD.SECURITY' | translate}}</h5>
     
         <span class="tero-form__section">
             <bizy-toggle [selected]="_security.value" (onSelect)="setSecurity(!_security.value)"></bizy-toggle>
     
             <bizy-select [disabled]="!_security.value">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h6>
                 <bizy-select-option 
                     *ngFor="let g of GROUPS"
                     [selected]="_group.value === g"
@@ -92,19 +92,27 @@
 
     </span>
 
-    <span class="tero-confirm-buttons">
+    <bizy-section>
 
-        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="_cancel()">
-            <h5><i class="fa-solid fa-xmark"></i></h5>
-            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
-        </bizy-button>
+        <bizy-section-center>
 
-        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="_confirm()">
-            <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
-            <h5><i class="fa-solid fa-check"></i></h5>
-        </bizy-button>
+            <bizy-button class="tero-button--danger" (onSelect)="_cancel()">
+                <h5><i class="fa-solid fa-xmark"></i></h5>
+                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+            </bizy-button>
 
-    </span>
+        </bizy-section-center>
+
+        <bizy-section-center>
+
+            <bizy-button type="submit" class="tero-button--accent" (onSelect)="_confirm()">
+                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+                <h5><i class="fa-solid fa-check"></i></h5>
+            </bizy-button>
+            
+        </bizy-section-center>
+
+    </bizy-section>
 
 </bizy-form>
 

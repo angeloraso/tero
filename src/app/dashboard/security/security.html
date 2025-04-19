@@ -6,7 +6,7 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper security">
+<tero-wrapper>
 
     <ng-container *ngIf="loading">
 
@@ -17,6 +17,8 @@
             <bizy-skeleton slot="header-start" class="tero-skeleton-grid-card" height="2rem" width="20rem"></bizy-skeleton>
 
             <bizy-list>
+
+                <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
 
                 <bizy-skeleton class="tero-skeleton-grid-card"></bizy-skeleton>
 
@@ -64,34 +66,46 @@
 
         <bizy-card class="animated fade-in">
     
-            <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-circle-info"></i></h4>
-            <h4 slot="header-start" class="tero-title">{{'SECURITY.INFO.TITLE' | translate}}</h4>
+            <h4 slot="header-start" class="tero--info"><i class="fa-solid fa-circle-info"></i></h4>
+            <h4 slot="header-start" class="tero--info">{{'SECURITY.INFO.TITLE' | translate}}</h4>
     
             <bizy-list>
     
-                <span class="security__info__content__section">
-                    <h5>{{'SECURITY.INFO.SECURITY_FEE' | translate}}</h5>
-                    <bizy-tag><h5>$ {{securityFee | number : '1.2-2'}}</h5></bizy-tag>
-                </span>
+                <bizy-section>
+                    <bizy-section-start>
+                        <h5>{{'SECURITY.INFO.SECURITY_FEE' | translate}}</h5>
+                    </bizy-section-start>
+                    <bizy-section-end>
+                        <bizy-tag><h5>$ {{securityFee | number : '1.2-2'}}</h5></bizy-tag>
+                    </bizy-section-end>
+                </bizy-section>
+
+                <bizy-section>
+                    <bizy-section-start>
+                        <h5>{{'SECURITY.INFO.MEMBERS' | translate}}</h5>
+                    </bizy-section-start>
+                    <bizy-section-end>
+                        <bizy-tag><h5>{{members}}</h5></bizy-tag>
+                    </bizy-section-end>
+                </bizy-section>
+
+                <bizy-section>
+                    <bizy-section-start>
+                        <h5>{{'SECURITY.INFO.MEMBERSHIP_FEE' | translate}}</h5>
+                    </bizy-section-start>
+                    <bizy-section-end>
+                        <bizy-tag><h5>$ {{membershipFee | number : '1.2-2'}}</h5></bizy-tag>
+                    </bizy-section-end>
+                </bizy-section>
         
-                <span class="security__info__content__section">
-                    <h5>{{'SECURITY.INFO.MEMBERS' | translate}}</h5>
-                    <bizy-tag><h5>{{members}}</h5></bizy-tag>
-                </span>
-        
-                <span class="security__info__content__section">
-                    <h5>{{'SECURITY.INFO.MEMBERSHIP_FEE' | translate}}</h5>
-                    <bizy-tag><h5>$ {{membershipFee | number : '1.2-2'}}</h5></bizy-tag>
-                </span>
-                
             </bizy-list>
     
         </bizy-card>
 
         <bizy-card class="animated fade-in">
     
-            <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-user-shield"></i></h4>
-            <h4 slot="header-start" class="tero-title">{{'SECURITY.STAFF.TITLE' | translate}}</h4>
+            <h4 slot="header-start" class="tero--info"><i class="fa-solid fa-user-shield"></i></h4>
+            <h4 slot="header-start" class="tero--info">{{'SECURITY.STAFF.TITLE' | translate}}</h4>
     
             <bizy-list>
     
@@ -99,7 +113,8 @@
     
                     <h5><strong>{{guard.name}}:</strong></h5>
 
-                    <span class="security__staff__content__guard__data">
+                    <bizy-section-start>
+                        
                         <h5>{{guard.description}}</h5>
     
                         <bizy-button 
@@ -115,7 +130,7 @@
                             (onSelect)="onWhatsapp(guard.phone); $event.stopPropagation()">
                             <h5><i class="fa-brands fa-whatsapp"></i></h5>
                         </bizy-button>
-                    </span>
+                    </bizy-section-start>
         
                 </span>
     
@@ -125,17 +140,21 @@
 
         <bizy-card class="animated fade-in">
     
-            <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-users"></i></h4>
-            <h4 slot="header-start" class="tero-title">{{'SECURITY.GROUPS.TITLE' | translate}}</h4>
+            <h4 slot="header-start" class="tero--info"><i class="fa-solid fa-users"></i></h4>
+            <h4 slot="header-start" class="tero--info">{{'SECURITY.GROUPS.TITLE' | translate}}</h4>
 
             <bizy-button slot="header-end" class="tero-action tero-action--info" (onSelect)="goToSecurityInvoices()">
                 <h6><i class="fa-solid fa-clock-rotate-left"></i></h6>
                 <h6>{{'SECURITY.GROUPS.HISTORY' | translate}}</h6>
             </bizy-button>
 
-            <bizy-grid class="security-groups__group">
+            <bizy-grid class="security-group__groups">
                 
-                <bizy-card *gridFor="let group of groups" (onSelect)="goToSecurityGroup(group)" [ngClass]="{'security-groups__group--debt': group.debt, 'security-groups__group--no-debt': !group.debt}">
+                <bizy-card 
+                    *gridFor="let group of groups"
+                    (onSelect)="goToSecurityGroup(group)"
+                    class="security-groups__group"
+                    [ngClass]="{'security-groups__group--debt': group.debt, 'security-groups__group--no-debt': !group.debt}">
     
                     <h5 
                         slot="header-start"
@@ -154,13 +173,13 @@
 
                     <bizy-list>
 
-                        <span class="tero-section__start">
+                        <bizy-section-start>
                             <h6>{{'CORE.FORM.FIELD.ADMIN' | translate}}: </h6>
                             <h6 *ngIf="group.user"><strong>{{group.user.name}} <ng-container *ngIf="group.user.lot">({{group.user.lot}})</ng-container></strong></h6>
                             <h6 *ngIf="!group.user">{{'CORE.EMPTY' | translate}}</h6>
-                        </span>
+                        </bizy-section-start>
 
-                        <span class="tero-section__start">
+                        <bizy-section-start>
                             <h6>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}: </h6>
                             
                             <bizy-button
@@ -172,7 +191,7 @@
                             </bizy-button>
 
                             <h6 *ngIf="!group.user || !group.user.aliasCBU">{{'CORE.EMPTY' | translate}}</h6>
-                        </span>
+                        </bizy-section-start>
 
                     </bizy-list>
 
@@ -190,4 +209,4 @@
 
     </ng-container>
 
-</div>
+</tero-wrapper>

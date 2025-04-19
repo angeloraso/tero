@@ -6,29 +6,29 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<tero-wrapper>
 
-    <span class="tero-section">
+    <bizy-section>
 
-        <span class="tero-section__center">
-
+        <bizy-section-center>
+    
             <bizy-button class="tero-button--info" (onSelect)="previousDate()" [disabled]="loading">
                 <h5><i class="fa-solid fa-chevron-left"></i></h5>
             </bizy-button>
-
+    
             <span class="garbage-history__current-date">
-
+    
                 <h5><strong>{{currentDate}}</strong></h5>
-
+    
             </span>
-
+    
             <bizy-button class="tero-button--info" (onSelect)="nextDate()" [disabled]="loading">
                 <h5><i class="fa-solid fa-chevron-right"></i></h5>
             </bizy-button>
+    
+        </bizy-section-center>
 
-        </span>
-
-    </span>
+    </bizy-section>
 
     <ng-container *ngIf="loading">
 
@@ -57,4 +57,4 @@
         [mode]="BIZY_CALENDAR_MODE.MONTH">
     </bizy-calendar>
 
-</div>
+</tero-wrapper>

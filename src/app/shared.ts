@@ -13,6 +13,7 @@ import {
   BizyMenuModule,
   BizyPipesModule,
   BizyPopupModule,
+  BizySectionModule,
   BizySelectModule,
   BizyServicesModule,
   BizySkeletonModule,
@@ -23,6 +24,7 @@ import {
   BizyToolbarModule,
   BizyTranslateModule
 } from '@bizy/core';
+import { WrapperComponent } from '@components/wrapper';
 
 const ANGULAR = [CommonModule, FormsModule, ReactiveFormsModule];
 
@@ -47,7 +49,10 @@ const BIZY_MODULES = [
   BizyToggleModule,
   BizyListModule,
   BizyTableModule,
-  BizyCalendarModule
+  BizyCalendarModule,
+  BizySectionModule
 ];
 
-export const SharedModules = [...ANGULAR, ...BIZY_MODULES];
+const TERO_COMPONENTS = [WrapperComponent];
+
+export const SharedModules = [...ANGULAR, ...BIZY_MODULES, ...TERO_COMPONENTS];

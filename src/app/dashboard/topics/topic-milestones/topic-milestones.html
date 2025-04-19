@@ -10,7 +10,7 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper topic-milestones">
+<tero-wrapper>
 
     <bizy-card *ngIf="loading" class="animated fade-in">
 
@@ -30,9 +30,9 @@
 
     <bizy-card *ngIf="!loading && topic" class="animated fade-in">
 
-        <h4 slot="header-start" class="tero-title"><i class="fa-solid fa-bookmark"></i></h4>
+        <h4 slot="header-start" class="tero--info"><i class="fa-solid fa-bookmark"></i></h4>
 
-        <h4 slot="header-start" class="tero-title"><strong>{{topic.title}}</strong></h4>
+        <h4 slot="header-start" class="tero--info"><strong>{{topic.title}}</strong></h4>
 
         <span class="topics__card__content">
 
@@ -68,7 +68,7 @@
         
                     <bizy-card class="animated fade-in">
     
-                        <h6 slot="header-start" class="tero-title"><strong>{{milestone.created | date: 'yyyy/MM/dd HH:mm' }}</strong></h6>
+                        <h6 slot="header-start" class="tero--info"><strong>{{milestone.created | date: 'yyyy/MM/dd HH:mm' }}</strong></h6>
     
                         <bizy-button 
                             slot="header-end"
@@ -121,4 +121,4 @@
     </span>
 
 
-</div>
+</tero-wrapper>

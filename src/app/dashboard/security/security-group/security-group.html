@@ -10,11 +10,11 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<tero-wrapper>
 
-    <span class="tero-section">
+    <bizy-section>
 
-        <span class="tero-section__end">
+        <bizy-section-end>
 
             <bizy-input 
                 class="tero-counter"
@@ -25,7 +25,7 @@
                                                 | bizySearch: surnameSearch : 'surname'
                                                 | bizySearch: nameSearch : 'name'
                                                 | bizyFilter : '_debt' : filterDebts).length + '/' + neighbors.length) : neighbors.length">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
             <bizy-input 
@@ -33,7 +33,7 @@
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
                 [autofocus]="!isMobile">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
@@ -41,13 +41,15 @@
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
 
-        </span>
+        </bizy-section-end>
 
-    </span>
+    </bizy-section>
 
-    <span class="tero-section">
-        <h6>* {{'SECURITY_GROUP.TOTAL_CONTRIBUTORS' | translate}}: <strong class="tero-title">{{contributors}}</strong></h6>
-    </span>
+    <bizy-section>
+        <bizy-section-start>
+            <h6>* {{'SECURITY_GROUP.TOTAL_CONTRIBUTORS' | translate}}: <strong class="tero--info">{{contributors}}</strong></h6>
+        </bizy-section-start>
+    </bizy-section>
 
     <bizy-table [bizyLoading]="loading">
 
@@ -59,7 +61,7 @@
                     <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.LOT' | translate }}</strong></h6>
 
                         <bizy-filter-section-search-option 
                             [(value)]="lotSearch"
@@ -80,7 +82,7 @@
                     <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
 
                         <bizy-filter-section-search-option 
                             [(value)]="nameSearch"
@@ -104,7 +106,7 @@
                     <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.SURNAME' | translate }}</strong></h6>
 
                         <bizy-filter-section-search-option 
                             [(value)]="surnameSearch"
@@ -128,7 +130,7 @@
                     <h6><i class="fa-solid fa-filter"></i></h6>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'SECURITY_GROUP.FILTER.DEBT.TITLE' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'SECURITY_GROUP.FILTER.DEBT.TITLE' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let debt of filterDebts"
@@ -167,4 +169,4 @@
     
     </bizy-table>
 
-</div>
+</tero-wrapper>

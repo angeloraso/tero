@@ -3,10 +3,10 @@
   align-items: center;
   flex-direction: column;
   row-gap: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
-.popup__header .tero-title {
+.popup__header .tero--info {
   text-align: center;
 }
 

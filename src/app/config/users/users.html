@@ -8,11 +8,11 @@
 
 </bizy-toolbar>
 
-<div class="tero-wrapper">
+<tero-wrapper>
 
-    <span class="tero-section">
+    <bizy-section>
 
-        <span class="tero-section__end">
+        <bizy-section-end>
 
             <bizy-input 
                 class="tero-counter"
@@ -21,7 +21,7 @@
                                                 | bizySearch: search : searchKeys
                                                 | bizyFilter : 'status' : filterStates
                                                 | bizyFilter : 'roles' : filterRoles).length + '/' + users.length) : users.length">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
             <bizy-input 
@@ -29,7 +29,7 @@
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
                 [autofocus]="!isMobile">
-                <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
@@ -39,7 +39,7 @@
                     <h6><i class="fa-solid fa-filter"></i></h6>
                     
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.STATE' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.STATE' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let state of filterStates | bizyOrderBy : 'asc' : 'value'" 
@@ -50,7 +50,7 @@
                     </bizy-filter-section>
 
                     <bizy-filter-section>
-                        <h6 slot="header" class="tero-title"><strong>{{ 'CORE.FORM.FIELD.ROLE' | translate }}</strong></h6>
+                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.ROLE' | translate }}</strong></h6>
 
                         <bizy-filter-section-checkbox-option 
                             *ngFor="let role of filterRoles | bizyOrderBy : 'asc' : 'value'" 
@@ -68,9 +68,9 @@
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
 
-        </span>
+        </bizy-section-end>
 
-    </span>
+    </bizy-section>
 
     <bizy-grid *ngIf="!loading" class="animated fade-in">
 
@@ -78,10 +78,10 @@
             (onSelect)="editUser(user)"
             [disabled]="loading "
             *gridFor="let user of users 
-                                        | bizySearch: search : searchKeys
-                                        | bizyFilter : 'status' : filterStates
-                                        | bizyFilter : 'roles' : filterRoles
-                                        | bizyOrderBy: order : orderBy">
+                                    | bizySearch: search : searchKeys
+                                    | bizyFilter : 'status' : filterStates
+                                    | bizyFilter : 'roles' : filterRoles
+                                    | bizyOrderBy: order : orderBy">
 
             <img 
                 class="users__card__profile-pic"
@@ -112,29 +112,61 @@
 
             <bizy-list>
 
-                <span class="users__card__content__description" *ngIf="user.email">
-                    <h6><i class="fa-solid fa-envelope"></i></h6>
-                    <h6 class="tero-text-ellipsis">{{user.email}}</h6>
-                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.email); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
-                </span>
+                <bizy-section *ngIf="user.email">
 
-                <span class="users__card__content__description" *ngIf="user.phone">
-                    <h6><i class="fa-solid fa-phone"></i></h6>
-                    <h6 class="tero-text-ellipsis">{{user.phone}}</h6>
-                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.phone); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
-                </span>
+                    <bizy-section-start>
 
-                <span class="users__card__content__description" *ngIf="user.lot">
-                    <h6><i class="fa-solid fa-location-dot"></i></h6>
-                    <h6 class="tero-text-ellipsis">{{user.lot}}</h6>
-                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.lot); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
-                </span>
+                        <h6><i class="fa-solid fa-envelope"></i></h6>
 
-                <span class="users__card__content__description" *ngIf="user.aliasCBU">
-                    <h6><i class="fa-solid fa-building-columns"></i></h6>
-                    <h6 class="tero-text-ellipsis">{{user.aliasCBU}}</h6>
-                    <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.aliasCBU); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
-                </span>
+                        <h6 [bizyTooltip]="user.email" [tooltipLineClamp]="1">{{user.email}}</h6>
+
+                        <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.email); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
+    
+                    </bizy-section-start>
+
+                </bizy-section>
+
+                <bizy-section *ngIf="user.phone">
+
+                    <bizy-section-start>
+
+                        <h6><i class="fa-solid fa-phone"></i></h6>
+
+                        <h6 [bizyTooltip]="user.phone" [tooltipLineClamp]="1">{{user.phone}}</h6>
+
+                        <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.phone); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
+    
+                    </bizy-section-start>
+
+                </bizy-section>
+
+                <bizy-section *ngIf="user.lot">
+
+                    <bizy-section-start>
+
+                        <h6><i class="fa-solid fa-location-dot"></i></h6>
+
+                        <h6 [bizyTooltip]="user.lot" [tooltipLineClamp]="1">{{user.lot}}</h6>
+
+                        <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.lot); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
+    
+                    </bizy-section-start>
+
+                </bizy-section>
+
+                <bizy-section *ngIf="user.aliasCBU">
+
+                    <bizy-section-start>
+
+                        <h6><i class="fa-solid fa-building-columns"></i></h6>
+
+                        <h6 [bizyTooltip]="user.aliasCBU" [tooltipLineClamp]="1">{{user.aliasCBU}}</h6>
+
+                        <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="copyText(user.aliasCBU); $event.stopPropagation()"><h6><i class="fa-regular fa-copy"></i></h6></bizy-button>
+    
+                    </bizy-section-start>
+
+                </bizy-section>
 
             </bizy-list>
 
@@ -180,14 +212,14 @@
                                             | bizySearch: search : searchKeys
                                             | bizyFilter : 'roles' : filterRoles
                                             | bizyFilter : 'status' : filterStates).length === 0">
-        <h4>{{'CORE.NO_MATCHES' | translate}}</h4>
+        <h4 class="tero-no-matches__text">{{'CORE.NO_MATCHES' | translate}}</h4>
     </bizy-tag>
 
     <bizy-tag 
         [type]="BIZY_TAG_TYPE.WARNING"
         class="animated fade-in tero-no-matches"
         *ngIf="!loading && users.length === 0">
-        <h4>{{'CONTACTS.EMPTY' | translate}}</h4>
+        <h4 class="tero-no-matches__text">{{'CONTACTS.EMPTY' | translate}}</h4>
     </bizy-tag>
 
-</div>
+</tero-wrapper>

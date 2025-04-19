@@ -1,37 +1,41 @@
-<span class="tero-wrapper">
+<bizy-form>
 
-    <bizy-form>
+    <span class="milestone-popup__header">
 
-        <span class="milestone-popup__header">
+        <h1 class="tero--info">{{'TOPICS.TOPIC_MILESTONE_POPUP.TITLE' | translate}}</h1>
 
-            <h1 class="tero-title">{{'TOPICS.TOPIC_MILESTONE_POPUP.TITLE' | translate}}</h1>
-
-        </span>
-        
-        <bizy-input
-            type="textarea"
-            [autofocus]="true"
-            [value]="description.value"
-            (onChange)="description.setValue($event)">
-            <h6 slot="header" class="tero-title"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
-            <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h6>
-        </bizy-input>
-        
+    </span>
     
-        <span class="tero-confirm-buttons">
-    
-            <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+    <bizy-input
+        type="textarea"
+        [autofocus]="true"
+        [value]="description.value"
+        (onChange)="description.setValue($event)">
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h6>
+    </bizy-input>
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <bizy-button class="tero-button--danger" (onSelect)="close()">
                 <h5><i class="fa-solid fa-xmark"></i></h5>
                 <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
             </bizy-button>
-    
-            <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+
+        </bizy-section-center>
+
+        <bizy-section-center>
+
+            <bizy-button type="submit" class="tero-button--accent" (onSelect)="apply()">
                 <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
                 <h5><i class="fa-solid fa-check"></i></h5>
             </bizy-button>
-    
-        </span>
+            
+        </bizy-section-center>
 
-    </bizy-form>
+    </bizy-section>
+
+</bizy-form>
     
-</span>
