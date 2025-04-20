@@ -5,6 +5,14 @@
   --bizy-list-row-gap: 1rem;
 }
 
+.user-states-popup {
+  row-gap: 2rem;
+}
+
+.user-states-popup__states {
+  margin-bottom: 1rem;
+}
+
 .user-states-popup--selected {
   --bizy-card-background-color: var(--bizy-light-info-color);
 }

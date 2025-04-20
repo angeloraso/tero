@@ -1,10 +1,10 @@
-<tero-wrapper>
+<tero-wrapper class="user-states-popup">
 
     <bizy-section>
 
         <bizy-section-center>
 
-            <h2 class="tero--info">{{'USERS.USER_STATES_POPUP.TITLE' | translate}}</h2>
+            <h2 class="tero--info"><strong>{{'USERS.USER_STATES_POPUP.TITLE' | translate}}</strong></h2>
 
         </bizy-section-center>
 
@@ -53,5 +53,10 @@
         </bizy-card>
 
     </bizy-list>
+
+    <bizy-button class="tero-button--danger" (onSelect)="close()">
+        <h5><i class="fa-solid fa-xmark"></i></h5>
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
     
 </tero-wrapper>
