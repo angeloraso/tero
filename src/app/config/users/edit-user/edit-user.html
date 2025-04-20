@@ -34,7 +34,7 @@
 
         <bizy-input 
             [disabled]="loading"
-            [autofocus]="true"
+            [autofocus]="isDesktop"
             [value]="name.value"
             (onChange)="name.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
@@ -70,15 +70,24 @@
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
         </bizy-input>
 
-        <bizy-select [disabled]="loading" [readonly]="isMobile">
+        <bizy-select [disabled]="loading" *ngIf="isDesktop">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
             <bizy-select-option 
-                *ngFor="let s of USER_STATES"
-                [selected]="status.value === s"
-                (onSelect)="setStatus(s)">
-                <h6>{{'CORE.USER_STATE.' + s | translate}}</h6>
+                *ngFor="let s of USER_STATE | bizyEnumToArray"
+                [selected]="status.value === s.value"
+                (onSelect)="setStatus(s.value)">
+                <h6>{{'CORE.USER_STATE.' + s.key | translate}}</h6>
             </bizy-select-option>
         </bizy-select>
+
+        <bizy-input 
+            [disabled]="loading"
+            *ngIf="!isDesktop"
+            (onSelect)="openUserStatesPopup()"
+            [readonly]="true"
+            value="{{'CORE.USER_STATE.' + status.value | translate}}">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
+        </bizy-input>
 
         <bizy-input #roleInput [(value)]="roleSearch" [disabled]="loading || status.value !== USER_STATE.ACTIVE">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>

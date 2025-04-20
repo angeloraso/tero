@@ -8,6 +8,9 @@ export const locale = {
       CSV_FILE_NAME: 'tero_usuarios',
       EDIT_USER: {
         TITLE: 'Editar usuario'
+      },
+      USER_STATES_POPUP: {
+        TITLE: 'Seleccionar estado'
       }
     }
   }

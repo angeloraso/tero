@@ -13,6 +13,7 @@ import {
   BizyMenuModule,
   BizyPipesModule,
   BizyPopupModule,
+  BizyRadioModule,
   BizySectionModule,
   BizySelectModule,
   BizyServicesModule,
@@ -50,7 +51,8 @@ const BIZY_MODULES = [
   BizyListModule,
   BizyTableModule,
   BizyCalendarModule,
-  BizySectionModule
+  BizySectionModule,
+  BizyRadioModule
 ];
 
 const TERO_COMPONENTS = [WrapperComponent];

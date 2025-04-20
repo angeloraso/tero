@@ -1,0 +1,10 @@
+:host {
+  --bizy-card-background-color: var(--dark-input-background-color);
+  --bizy-card-cursor: pointer;
+  --bizy-card-height: 3rem;
+  --bizy-list-row-gap: 1rem;
+}
+
+.user-states-popup--selected {
+  --bizy-card-background-color: var(--bizy-light-info-color);
+}

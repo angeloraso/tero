@@ -1,0 +1,57 @@
+<tero-wrapper>
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <h2 class="tero--info">{{'USERS.USER_STATES_POPUP.TITLE' | translate}}</h2>
+
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-list>
+
+        <bizy-card (onSelect)="selectState(USER_STATE.ACTIVE)" [ngClass]="{'user-states-popup--selected': state === USER_STATE.ACTIVE}">
+
+            <h5 slot="header-start" class="tero--success"><i class="fa-solid fa-user"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.USER_STATE.ACTIVE' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === USER_STATE.ACTIVE"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectState(USER_STATE.PENDING)" [ngClass]="{'user-states-popup--selected': state === USER_STATE.PENDING}">
+
+            <h5 slot="header-start" class="tero--info"><i class="fa-solid fa-user"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.USER_STATE.PENDING' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === USER_STATE.PENDING"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectState(USER_STATE.SUSPENDED)" [ngClass]="{'user-states-popup--selected': state === USER_STATE.SUSPENDED}">
+
+            <h5 slot="header-start" class="tero--warning"><i class="fa-solid fa-user"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.USER_STATE.SUSPENDED' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === USER_STATE.SUSPENDED"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectState(USER_STATE.REJECTED)" [ngClass]="{'user-states-popup--selected': state === USER_STATE.REJECTED}">
+
+            <h5 slot="header-start" class="tero--danger"><i class="fa-solid fa-user"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.USER_STATE.REJECTED' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === USER_STATE.REJECTED"></bizy-radio>
+
+        </bizy-card>
+
+    </bizy-list>
+    
+</tero-wrapper>

@@ -3,13 +3,14 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BIZY_TAG_TYPE, BizyDeviceService, BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyDeviceService, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
+import { UserStatesPopupComponent } from '../components';
 @Component({
   selector: 'tero-edit-user',
   templateUrl: './edit-user.html',
@@ -25,15 +26,16 @@ export class EditUserComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #home = inject(HomeService);
   readonly #device = inject(BizyDeviceService);
+  readonly #popup = inject(BizyPopupService);
 
   readonly MIN = 0;
   readonly MAX = LOTS.length;
   readonly MAX_LENGTH = 10;
   readonly USER_STATE = USER_STATE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-  readonly USER_STATES: Array<USER_STATE> = [USER_STATE.ACTIVE, USER_STATE.PENDING, USER_STATE.REJECTED, USER_STATE.SUSPENDED];
 
   isMobile: boolean = this.#device.isMobile();
+  isDesktop: boolean = this.#device.isDesktop();
   user: IUser | null = null;
   userEmail: string | null = null;
   loading = false;
@@ -129,6 +131,30 @@ export class EditUserComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  openUserStatesPopup(): void {
+    this.#popup.open<USER_STATE>(
+      {
+        component: UserStatesPopupComponent,
+        fullScreen: true,
+        data: { state: this.status.value }
+      },
+      async state => {
+        try {
+          if (state) {
+            this.status.setValue(state);
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'edit-user.component',
+            functionName: 'openUserStatesPopup',
+            param: error
+          });
+          this.#toast.danger();
+        }
+      }
+    );
   }
 
   setStatus(state: USER_STATE) {
