@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FirebaseAuthentication, Persistence, User } from '@capacitor-firebase/authentication';
 import { Preferences } from '@capacitor/preferences';
-import { MobileService } from '@core/services';
+import { ENV } from '@env/environment';
 import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
 
 const PROFILE_PICTURE_KEY = 'PROFILE_PICTURE_KEY';
@@ -10,7 +10,6 @@ const PROFILE_PICTURE_KEY = 'PROFILE_PICTURE_KEY';
   providedIn: 'root'
 })
 export class AuthService {
-  readonly #mobile = inject(MobileService);
   #USER: User | null = null;
   #signedIn = new BehaviorSubject<boolean>(false);
 
@@ -35,7 +34,7 @@ export class AuthService {
         }
       });
 
-      if (!this.#mobile.isMobile()) {
+      if (!ENV.mobile) {
         await FirebaseAuthentication.setPersistence({
           persistence: Persistence.IndexedDbLocal
         });
@@ -74,7 +73,7 @@ export class AuthService {
   async signIn() {
     try {
       const result = await FirebaseAuthentication.signInWithGoogle({
-        mode: this.#mobile.isMobile() ? 'redirect' : 'popup'
+        mode: ENV.mobile ? 'redirect' : 'popup'
       });
 
       this.#USER = result.user;

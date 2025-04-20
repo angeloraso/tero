@@ -27,7 +27,7 @@
                 [disabled]="loading"
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
-                [autofocus]="!isMobile">
+                [autofocus]="isDesktop">
                 <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
@@ -87,6 +87,7 @@
 
             <bizy-button 
                 slot="header-end"
+                *ngIf="isMobile"
                 class="tero-action tero-action--info contacts__card__action"
                 (onSelect)="onCall(contact); $event.stopPropagation()">
                 <i class="fa-solid fa-phone"></i>

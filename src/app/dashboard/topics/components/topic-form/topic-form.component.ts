@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, in
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyDeviceService } from '@bizy/core';
 import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IUser, TOPIC_STATE, USER_STATE } from '@core/model';
-import { MobileService } from '@core/services';
 import { BehaviorSubject, filter } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -21,7 +20,7 @@ interface IExtendedUser extends IUser {
   imports: SharedModules
 })
 export class TopicFormComponent {
-  readonly #mobile = inject(MobileService);
+  readonly #device = inject(BizyDeviceService);
   readonly #fb = inject(FormBuilder);
   readonly #auth = inject(AuthService);
   readonly #ref = inject(ChangeDetectorRef);
@@ -40,7 +39,7 @@ export class TopicFormComponent {
     status: [TOPIC_STATE.ACTIVE, [Validators.required]]
   });
 
-  isMobile: boolean = this.#mobile.isMobile();
+  isDesktop: boolean = this.#device.isDesktop();
   accountEmail = this.#auth.getEmail()!;
   userSearch: string | number = '';
   availableUsers: Array<IExtendedUser> = [];

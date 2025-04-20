@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE, BizyPopupService } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyDeviceService, BizyPopupService } from '@bizy/core';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
 import { DEFAULT_USER_PICTURE, LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
-import { MobileService } from '@core/services';
 
 @Component({
   selector: 'tero-contact-form',
@@ -16,6 +15,12 @@ import { MobileService } from '@core/services';
   imports: SharedModules
 })
 export class ContactFormComponent {
+  readonly #fb = inject(FormBuilder);
+  readonly #ref = inject(ChangeDetectorRef);
+  readonly #device = inject(BizyDeviceService);
+  readonly #popup = inject(BizyPopupService);
+  readonly #auth = inject(AuthService);
+
   @Input() id: string = '';
   @Input() accountId: string = '';
   @Input() created: number = 0;
@@ -23,16 +28,23 @@ export class ContactFormComponent {
   @Input() rating: Array<IContactRating> = [];
   @Output() cancelled = new EventEmitter<void>();
   @Output() confirmed = new EventEmitter<IContact>();
-  form: FormGroup;
-  tagSearch: string | number = '';
-  availableTags: Array<string> = [];
-  selectedTags: Array<string> = [];
-  isMobile = true;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
+
+  form = this.#fb.group({
+    picture: [DEFAULT_USER_PICTURE, [Validators.required]],
+    name: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
+    surname: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]],
+    phone: [null, [Validators.required]],
+    description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
+  });
+  tagSearch: string | number = '';
+  availableTags: Array<string> = [];
+  selectedTags: Array<string> = [];
+  isDesktop = this.#device.isDesktop();
 
   @Input() set tags(tags: { available: Array<string>; selected: Array<string> }) {
     if (!tags) {
@@ -84,23 +96,6 @@ export class ContactFormComponent {
     this._description.setValue(description);
   }
 
-  constructor(
-    @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(AuthService) private auth: AuthService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-    this.form = this.fb.group({
-      picture: [DEFAULT_USER_PICTURE, [Validators.required]],
-      name: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
-      surname: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]],
-      phone: [null, [Validators.required]],
-      description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
-    });
-  }
-
   get _picture() {
     return this.form.get('picture') as FormControl;
   }
@@ -122,7 +117,7 @@ export class ContactFormComponent {
   }
 
   async openRatingPopup() {
-    const accountId = await this.auth.getId();
+    const accountId = await this.#auth.getId();
     if (!accountId) {
       return;
     }
@@ -138,7 +133,7 @@ export class ContactFormComponent {
       }
     }
 
-    this.popup.open<{ value: Rating; description: string } | 'delete'>(
+    this.#popup.open<{ value: Rating; description: string } | 'delete'>(
       {
         component: RatingPopupComponent,
         data: {
@@ -168,7 +163,7 @@ export class ContactFormComponent {
           }
 
           this.rating = [...this.rating];
-          this.ref.detectChanges();
+          this.#ref.detectChanges();
         }
       }
     );
@@ -179,7 +174,7 @@ export class ContactFormComponent {
       return;
     }
 
-    this.popup.open<void>({
+    this.#popup.open<void>({
       component: RatingHistoryPopupComponent,
       data: {
         rating: this.rating
@@ -221,7 +216,7 @@ export class ContactFormComponent {
 
   _confirm() {
     if (this.form.invalid) {
-      this.ref.detectChanges();
+      this.#ref.detectChanges();
       return;
     }
 

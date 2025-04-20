@@ -6,6 +6,7 @@ import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
+  BizyDeviceService,
   BizyLogService,
   BizyPopupService,
   BizyRouterService,
@@ -41,11 +42,12 @@ export class TopicsComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
-  readonly #mobile = inject(MobileService);
+  readonly #device = inject(BizyDeviceService);
   readonly #popup = inject(BizyPopupService);
   readonly #usersService = inject(UsersService);
   readonly #copyToClipboard = inject(BizyCopyToClipboardService);
   readonly #home = inject(HomeService);
+  readonly #mobile = inject(MobileService);
 
   loading = false;
   csvLoading = false;
@@ -56,7 +58,7 @@ export class TopicsComponent implements OnInit {
   searchKeys = ['title', 'description', '_status'];
   order: 'asc' | 'desc' = 'desc';
   orderBy = 'updated';
-  isMobile: boolean = this.#mobile.isMobile();
+  isDesktop: boolean = this.#device.isDesktop();
   filterStates: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
   accountEmail = this.#auth.getEmail();

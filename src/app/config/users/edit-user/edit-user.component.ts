@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BIZY_TAG_TYPE, BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyDeviceService, BizyLogService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
@@ -24,6 +24,7 @@ export class EditUserComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
   readonly #home = inject(HomeService);
+  readonly #device = inject(BizyDeviceService);
 
   readonly MIN = 0;
   readonly MAX = LOTS.length;
@@ -32,6 +33,7 @@ export class EditUserComponent implements OnInit {
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly USER_STATES: Array<USER_STATE> = [USER_STATE.ACTIVE, USER_STATE.PENDING, USER_STATE.REJECTED, USER_STATE.SUSPENDED];
 
+  isMobile: boolean = this.#device.isMobile();
   user: IUser | null = null;
   userEmail: string | null = null;
   loading = false;

@@ -4,7 +4,7 @@
         #titleInput
         [disabled]="disabled"
         [value]="_title.value"
-        [autofocus]="!isMobile"
+        [autofocus]="isDesktop"
         (onChange)="_title.setValue($event)">
         <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TITLE' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_title.hasError('required') && titleInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>

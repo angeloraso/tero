@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
-import { BIZY_TAG_TYPE } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyDeviceService } from '@bizy/core';
 import { AVAILABLE_SECURITY_GROUPS, DEFAULT_USER_PICTURE, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
-import { MobileService } from '@core/services';
 
 @Component({
   selector: 'tero-neighbor-form',
@@ -13,6 +12,9 @@ import { MobileService } from '@core/services';
   imports: SharedModules
 })
 export class NeighborFormComponent {
+  readonly #device = inject(BizyDeviceService);
+  readonly #fb = inject(FormBuilder);
+
   @Input() alarmNumber: number | null = null;
   @Output() canceled = new EventEmitter<void>();
   @Output() confirmed = new EventEmitter<{
@@ -24,14 +26,6 @@ export class NeighborFormComponent {
     security: boolean;
     lot: number;
   }>();
-  form: FormGroup;
-  isMobile = true;
-
-  alarmControlSearch: string | number = '';
-  selectedAlarmControls: Array<number> = [];
-  availableAlarmControls: Array<number> = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
-  ];
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly MIN_VALUE = 0;
@@ -41,6 +35,25 @@ export class NeighborFormComponent {
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly GROUPS = AVAILABLE_SECURITY_GROUPS;
   readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
+
+  form = this.#fb.group({
+    id: [null],
+    created: [null],
+    updated: [null],
+    group: [null],
+    surname: [null],
+    name: [null, [Validators.required]],
+    security: [true],
+    lot: [null, [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]]
+  });
+
+  isDesktop = this.#device.isDesktop();
+
+  alarmControlSearch: string | number = '';
+  selectedAlarmControls: Array<number> = [];
+  availableAlarmControls: Array<number> = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+  ];
 
   @Input() set group(group: number) {
     if (!group) {
@@ -89,23 +102,6 @@ export class NeighborFormComponent {
     }
 
     this.setSecurity(security);
-  }
-
-  constructor(
-    @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(MobileService) private mobile: MobileService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-    this.form = this.fb.group({
-      id: [null],
-      created: [null],
-      updated: [null],
-      group: [null],
-      surname: [null],
-      name: [null, [Validators.required]],
-      security: [true],
-      lot: [null, [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]]
-    });
   }
 
   get _id() {

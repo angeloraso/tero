@@ -8,7 +8,7 @@
             #productNameInput
             [disabled]="disabled"
             [value]="_productName.value"
-            [autofocus]="!isMobile"
+            [autofocus]="isDesktop"
             (onChange)="_productName.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="_productName.hasError('required') && productNameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>

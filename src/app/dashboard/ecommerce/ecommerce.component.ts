@@ -6,6 +6,7 @@ import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
+  BizyDeviceService,
   BizyExportToCSVService,
   BizyLogService,
   BizyOrderByPipe,
@@ -19,6 +20,7 @@ import { IEcommerceProduct } from '@core/model';
 import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { PATH as ECOMMERCE_PATH } from '@dashboard/ecommerce/ecommerce.routing';
+import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -41,6 +43,7 @@ export class EcommerceComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
   readonly #mobile = inject(MobileService);
+  readonly #device = inject(BizyDeviceService);
   readonly #exportToCSV = inject(BizyExportToCSVService);
   readonly #copyToClipboard = inject(BizyCopyToClipboardService);
   readonly #searchPipe = inject(BizySearchPipe);
@@ -57,7 +60,8 @@ export class EcommerceComponent implements OnInit {
   searchKeys = ['name', 'tags', 'description', '_phones'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
-  isMobile = this.#mobile.isMobile();
+  isDesktop = this.#device.isDesktop();
+  isMobile = ENV.mobile;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
 

@@ -70,7 +70,7 @@
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
         </bizy-input>
 
-        <bizy-select [disabled]="loading">
+        <bizy-select [disabled]="loading" [readonly]="isMobile">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
             <bizy-select-option 
                 *ngFor="let s of USER_STATES"

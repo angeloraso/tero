@@ -11,6 +11,7 @@ import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import { es } from '@core/i18n';
 import { ERROR } from '@core/model';
 import { DatabaseService, MobileService, UsersService } from '@core/services';
+import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH } from './app.routing';
 
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
       this.#translate.use(LANGUAGE.SPANISH);
       this.#translate.loadTranslations(es);
 
-      if (this.#mobile.isMobile()) {
+      if (ENV.mobile) {
         await this.#mobile.init();
         this.#mobile.backButton$.subscribe(() => {
           if (this.#popup.openedPopups() > 0) {

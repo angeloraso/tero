@@ -34,15 +34,7 @@ export class MobileService {
     return this.#backButton.asObservable();
   }
 
-  isMobile() {
-    return ENV.mobile;
-  }
-
   async init() {
-    if (!this.isMobile()) {
-      return;
-    }
-
     App.addListener('backButton', () => {
       this.#backButton.next();
     });

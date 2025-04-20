@@ -6,6 +6,7 @@ import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
+  BizyDeviceService,
   BizyExportToCSVService,
   BizyFilterPipe,
   BizyLogService,
@@ -20,6 +21,7 @@ import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
 import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { ContactsService, MobileService, UsersService } from '@core/services';
+import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { RatingHistoryPopupComponent, RatingPopupComponent } from './components';
@@ -42,6 +44,7 @@ export class ContactsComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
+  readonly #device = inject(BizyDeviceService);
   readonly #mobile = inject(MobileService);
   readonly #exportToCSV = inject(BizyExportToCSVService);
   readonly #copyToClipboard = inject(BizyCopyToClipboardService);
@@ -61,7 +64,8 @@ export class ContactsComponent implements OnInit {
   searchKeys = ['name', 'tags', 'surname', '_phones', 'score'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
-  isMobile = this.#mobile.isMobile();
+  isDesktop = this.#device.isDesktop();
+  isMobile = ENV.mobile;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
 

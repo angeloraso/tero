@@ -13,7 +13,7 @@
     <bizy-input
         #nameInput
         [value]="_name.value"
-        [autofocus]="!isMobile"
+        [autofocus]="!isDesktop"
         (onChange)="_name.setValue($event)">
         <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="_name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>

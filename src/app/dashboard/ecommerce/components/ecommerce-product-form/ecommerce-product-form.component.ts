@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
-import { BIZY_TAG_TYPE } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyDeviceService } from '@bizy/core';
 import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IPhone } from '@core/model';
-import { MobileService } from '@core/services';
 
 @Component({
   selector: 'tero-ecommerce-product-form',
@@ -14,6 +13,10 @@ import { MobileService } from '@core/services';
   imports: SharedModules
 })
 export class EcommerceProductFormComponent {
+  readonly #fb = inject(FormBuilder);
+  readonly #ref = inject(ChangeDetectorRef);
+  readonly #device = inject(BizyDeviceService);
+
   @Input() disabled: boolean = false;
   @Output() cancelled = new EventEmitter<void>();
   @Output() confirmed = new EventEmitter<{
@@ -25,17 +28,25 @@ export class EcommerceProductFormComponent {
     phones: Array<IPhone>;
     tags: Array<string>;
   }>();
-  form: FormGroup;
-  tagSearch: string | number = '';
-  availableTags: Array<string> = [];
-  selectedTags: Array<string> = [];
-  isMobile: boolean = true;
-  checkPrice: boolean = false;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly DESCRIPTION_LENGTH = 1024;
+
+  tagSearch: string | number = '';
+  availableTags: Array<string> = [];
+  selectedTags: Array<string> = [];
+  isDesktop = this.#device.isDesktop();
+  checkPrice: boolean = false;
+
+  form = this.#fb.group({
+    productName: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
+    price: [null, [Validators.required]],
+    phone: [null, [Validators.required]],
+    contactName: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
+    description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
+  });
 
   @Input() set tags(tags: { available: Array<string>; selected: Array<string> }) {
     if (!tags) {
@@ -86,21 +97,6 @@ export class EcommerceProductFormComponent {
     }
 
     this._description.setValue(description);
-  }
-
-  constructor(
-    @Inject(FormBuilder) private fb: FormBuilder,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(MobileService) private mobile: MobileService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-    this.form = this.fb.group({
-      productName: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
-      price: [null, [Validators.required]],
-      phone: [null, [Validators.required]],
-      contactName: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
-      description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]]
-    });
   }
 
   get _productName() {
@@ -169,7 +165,7 @@ export class EcommerceProductFormComponent {
 
   _confirm() {
     if (this.form.invalid) {
-      this.ref.detectChanges();
+      this.#ref.detectChanges();
       return;
     }
 

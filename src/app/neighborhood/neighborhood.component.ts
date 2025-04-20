@@ -5,6 +5,7 @@ import { BizyLogService, BizyPopupService, BizyToastService, BizyTranslateServic
 import { LOGO_PATH, LOTS } from '@core/constants';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { FILE_TYPE } from '@core/services/mobile.service';
+import { ENV } from '@env/environment';
 import { HomeService } from '@home/home.service';
 import html2canvas from 'html2canvas';
 import { LotComponent, LotPopupComponent } from './components';
@@ -132,7 +133,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
       const date = new Date();
       const fileName = `${this.#datePipe.transform(date, 'yyyyMMddHHmmss')}_${this.#translate.get('NEIGHBORHOOD.PNG_FILE_NAME')}`;
 
-      if (this.#mobile.isMobile()) {
+      if (ENV.mobile) {
         const base64Data = pngDataUrl.split(',')[1];
         await this.#mobile.downloadFile({
           name: fileName,

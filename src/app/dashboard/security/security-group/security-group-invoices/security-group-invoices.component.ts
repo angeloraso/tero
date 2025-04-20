@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
+  BizyDeviceService,
   BizyExportToCSVService,
   BizyLogService,
   BizyOrderByPipe,
@@ -17,6 +18,7 @@ import { PopupComponent } from '@components/popup';
 import { ISecurityNeighborInvoice, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
+import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
@@ -31,6 +33,23 @@ interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
   imports: SharedModules
 })
 export class SecurityGroupInvoicesComponent implements OnInit {
+  readonly #router = inject(BizyRouterService);
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #datePipe = inject(DatePipe);
+  readonly #securityService = inject(SecurityService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #mobile = inject(MobileService);
+  readonly #exportToCSV = inject(BizyExportToCSVService);
+  readonly #searchPipe = inject(BizySearchPipe);
+  readonly #orderByPipe = inject(BizyOrderByPipe);
+  readonly #usersService = inject(UsersService);
+  readonly #neighborsService = inject(NeighborsService);
+  readonly #popup = inject(BizyPopupService);
+  readonly #home = inject(HomeService);
+  readonly #device = inject(BizyDeviceService);
+
   group: number | null = null;
   loading = false;
   csvLoading = false;
@@ -42,44 +61,24 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   searchKeys = ['_neighborName', '_date', 'group'];
   order: 'asc' | 'desc' = 'desc';
   orderBy = '_date';
-  isMobile = true;
+  isDesktop = this.#device.isDesktop();
   activatedFilters: number = 0;
-
-  constructor(
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
-    @Inject(DatePipe) private datePipe: DatePipe,
-    @Inject(SecurityService) private securityService: SecurityService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
-    @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
-    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UsersService) private usersService: UsersService,
-    @Inject(NeighborsService) private neighborsService: NeighborsService,
-    @Inject(BizyPopupService) private popup: BizyPopupService,
-    @Inject(HomeService) private home: HomeService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-  }
 
   async ngOnInit() {
     try {
       this.loading = true;
-      this.home.hideTabs();
-      this.group = Number(this.router.getId(this.activatedRoute, 'group'));
+      this.#home.hideTabs();
+      this.group = Number(this.#router.getId(this.#activatedRoute, 'group'));
       if (!this.group) {
         this.goBack();
         return;
       }
 
       const [security, neighbors, currentUser, isConfig] = await Promise.all([
-        this.securityService.getSecurity(),
-        this.neighborsService.getNeighbors(),
-        this.usersService.getCurrentUser(),
-        this.usersService.isConfig()
+        this.#securityService.getSecurity(),
+        this.#neighborsService.getNeighbors(),
+        this.#usersService.getCurrentUser(),
+        this.#usersService.isConfig()
       ]);
 
       this.isConfig = isConfig;
@@ -95,24 +94,24 @@ export class SecurityGroupInvoicesComponent implements OnInit {
                 return {
                   ..._invoice,
                   _neighborName,
-                  _date: this.datePipe.transform(_invoice.timestamp, 'yyyy/MM/dd HH:mm')!
+                  _date: this.#datePipe.transform(_invoice.timestamp, 'yyyy/MM/dd HH:mm')!
                 };
               })
           : [];
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'security-group-invoices.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
   }
 
   goBack() {
-    this.router.goBack({
+    this.#router.goBack({
       path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}/${this.group}`
     });
   }
@@ -122,19 +121,19 @@ export class SecurityGroupInvoicesComponent implements OnInit {
       return;
     }
 
-    this.popup.open<boolean>(
+    this.#popup.open<boolean>(
       {
         component: PopupComponent,
         data: {
-          title: this.translate.get('SECURITY_GROUP.DELETE_POPUP.TITLE'),
-          msg: `${this.translate.get('SECURITY_GROUP.DELETE_POPUP.MSG')}: ${this.translate.get('CORE.FORM.FIELD.GROUP')} ${invoice._neighborName} - ${invoice._date}`
+          title: this.#translate.get('SECURITY_GROUP.DELETE_POPUP.TITLE'),
+          msg: `${this.#translate.get('SECURITY_GROUP.DELETE_POPUP.MSG')}: ${this.#translate.get('CORE.FORM.FIELD.GROUP')} ${invoice._neighborName} - ${invoice._date}`
         }
       },
       async res => {
         try {
           if (res) {
             this.loading = true;
-            await this.securityService.deleteNeighborInvoice(invoice);
+            await this.#securityService.deleteNeighborInvoice(invoice);
             const index = this.invoices.findIndex(_invoice => _invoice.group === invoice.group && _invoice.timestamp === invoice.timestamp);
             if (index !== -1) {
               this.invoices.splice(index, 1);
@@ -142,12 +141,12 @@ export class SecurityGroupInvoicesComponent implements OnInit {
             }
           }
         } catch (error) {
-          this.log.error({
+          this.#log.error({
             fileName: 'security-group-invoices.component',
             functionName: 'deleteInvoice',
             param: error
           });
-          this.toast.danger();
+          this.#toast.danger();
         } finally {
           this.loading = false;
         }
@@ -188,27 +187,27 @@ export class SecurityGroupInvoicesComponent implements OnInit {
 
       const items = this.#filter(this.invoices);
 
-      const fileName = this.translate.get('SECURITY_GROUP.SECURITY_GROUP_INVOICES.CSV_FILE_NAME');
+      const fileName = this.#translate.get('SECURITY_GROUP.SECURITY_GROUP_INVOICES.CSV_FILE_NAME');
       const model = {
-        _date: this.translate.get('CORE.FORM.FIELD.DATE'),
-        group: this.translate.get('CORE.FORM.FIELD.GROUP')
+        _date: this.#translate.get('CORE.FORM.FIELD.DATE'),
+        group: this.#translate.get('CORE.FORM.FIELD.GROUP')
       };
 
-      if (this.isMobile) {
-        const csv = this.exportToCSV.getCSV({ items, model });
-        await this.mobile.downloadFile({ data: csv, name: fileName });
+      if (ENV.mobile) {
+        const csv = this.#exportToCSV.getCSV({ items, model });
+        await this.#mobile.downloadFile({ data: csv, name: fileName });
       } else {
-        this.exportToCSV.download({ items, model, fileName });
+        this.#exportToCSV.download({ items, model, fileName });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'security-group-invoices.component',
         functionName: 'export',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+        msg: `${this.#translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
       });
     } finally {
       this.csvLoading = false;
@@ -216,9 +215,9 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   }
 
   #filter(items: Array<ISecurityInvoiceRow>): Array<ISecurityInvoiceRow> {
-    let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
-    _items = this.bizySearchPipe.transform(items, this.nameSearch, 'name');
-    _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
+    let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.#searchPipe.transform(items, this.nameSearch, 'name');
+    _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }
 

@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
+  BizyDeviceService,
   BizyExportToCSVService,
   BizyFilterPipe,
   BizyLogService,
@@ -18,6 +19,7 @@ import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { WHATSAPP_URL } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { MobileService, UsersService } from '@core/services';
+import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -35,6 +37,20 @@ interface IUserCard extends IUser {
   imports: SharedModules
 })
 export class UsersComponent implements OnInit {
+  readonly #router = inject(BizyRouterService);
+  readonly #log = inject(BizyLogService);
+  readonly #toast = inject(BizyToastService);
+  readonly #translate = inject(BizyTranslateService);
+  readonly #mobile = inject(MobileService);
+  readonly #exportToCSV = inject(BizyExportToCSVService);
+  readonly #copyToClipboard = inject(BizyCopyToClipboardService);
+  readonly #searchPipe = inject(BizySearchPipe);
+  readonly #filterPipe = inject(BizyFilterPipe);
+  readonly #orderByPipe = inject(BizyOrderByPipe);
+  readonly #usersService = inject(UsersService);
+  readonly #home = inject(HomeService);
+  readonly #device = inject(BizyDeviceService);
+
   loading = false;
   csvLoading = false;
   isNeighbor = false;
@@ -44,7 +60,7 @@ export class UsersComponent implements OnInit {
   searchKeys = ['name', 'email', '_status', '_roles'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
-  isMobile = true;
+  isDesktop = this.#device.isDesktop();
   filterStates: Array<{ id: string; value: string; selected: boolean }> = [];
   filterRoles: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
@@ -53,32 +69,18 @@ export class UsersComponent implements OnInit {
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly USER_STATE = USER_STATE;
 
-  constructor(
-    @Inject(BizyRouterService) private router: BizyRouterService,
-    @Inject(BizyLogService) private log: BizyLogService,
-    @Inject(BizyToastService) private toast: BizyToastService,
-    @Inject(BizyTranslateService) private translate: BizyTranslateService,
-    @Inject(MobileService) private mobile: MobileService,
-    @Inject(BizyCopyToClipboardService) private bizyCopyToClipboard: BizyCopyToClipboardService,
-    @Inject(BizyExportToCSVService) private exportToCSV: BizyExportToCSVService,
-    @Inject(BizyFilterPipe) private bizyFilterPipe: BizyFilterPipe,
-    @Inject(BizySearchPipe) private bizySearchPipe: BizySearchPipe,
-    @Inject(BizyOrderByPipe) private bizyOrderByPipe: BizyOrderByPipe,
-    @Inject(UsersService) private usersService: UsersService,
-    @Inject(HomeService) private home: HomeService
-  ) {
-    this.isMobile = this.mobile.isMobile();
-  }
-
   async ngOnInit() {
     try {
       this.loading = true;
-      this.home.hideTabs();
-      this.translate.loadTranslations(es);
+      this.#home.hideTabs();
+      this.#device.getUserAgent().then(res => {
+        console.log(res);
+      });
+      this.#translate.loadTranslations(es);
       const [users, isConfig, isNeighbor] = await Promise.all([
-        this.usersService.getUsers(),
-        this.usersService.isConfig(),
-        this.usersService.isNeighbor()
+        this.#usersService.getUsers(),
+        this.#usersService.isConfig(),
+        this.#usersService.isNeighbor()
       ]);
 
       this.isConfig = isConfig;
@@ -98,8 +100,8 @@ export class UsersComponent implements OnInit {
         return {
           ..._user,
           _isAdmin: _user.roles && _user.roles.includes(USER_ROLE.ADMIN),
-          _status: this.translate.get(`CORE.USER_STATE.${_user.status}`),
-          _roles: _user.roles.map(_role => this.translate.get(`CORE.USER_ROLE.${_role}`))
+          _status: this.#translate.get(`CORE.USER_STATE.${_user.status}`),
+          _roles: _user.roles.map(_role => this.#translate.get(`CORE.USER_ROLE.${_role}`))
         };
       });
 
@@ -115,12 +117,12 @@ export class UsersComponent implements OnInit {
         return { id: _role, value: `CORE.USER_ROLE.${_role}`, selected: true };
       });
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'users.component',
         functionName: 'ngOnInit',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     } finally {
       this.loading = false;
     }
@@ -131,7 +133,7 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    this.router.goTo({
+    this.#router.goTo({
       path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}/${user.email}`
     });
   }
@@ -142,28 +144,28 @@ export class UsersComponent implements OnInit {
         return;
       }
 
-      await this.mobile.call(user.phone);
+      await this.#mobile.call(user.phone);
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'users.component',
         functionName: 'onCall',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
   async copyText(text: string) {
     try {
-      await this.bizyCopyToClipboard.copy(text);
-      this.toast.success();
+      await this.#copyToClipboard.copy(text);
+      this.#toast.success();
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'users.component',
         functionName: 'copyText',
         param: error
       });
-      this.toast.danger();
+      this.#toast.danger();
     }
   }
 
@@ -176,7 +178,7 @@ export class UsersComponent implements OnInit {
   }
 
   goBack() {
-    this.router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
   }
 
   checkFilters(activated: boolean) {
@@ -210,29 +212,29 @@ export class UsersComponent implements OnInit {
 
       const items = this.#filter(this.users);
 
-      const fileName = this.translate.get('USERS.CSV_FILE_NAME');
+      const fileName = this.#translate.get('USERS.CSV_FILE_NAME');
       const model = {
-        name: this.translate.get('CORE.FORM.FIELD.NAME'),
-        email: this.translate.get('CORE.FORM.FIELD.EMAIL'),
-        _status: this.translate.get('CORE.FORM.FIELD.STATE'),
-        _roles: this.translate.get('CORE.FORM.FIELD.ROLE')
+        name: this.#translate.get('CORE.FORM.FIELD.NAME'),
+        email: this.#translate.get('CORE.FORM.FIELD.EMAIL'),
+        _status: this.#translate.get('CORE.FORM.FIELD.STATE'),
+        _roles: this.#translate.get('CORE.FORM.FIELD.ROLE')
       };
 
-      if (this.isMobile) {
-        const csv = this.exportToCSV.getCSV({ items, model });
-        await this.mobile.downloadFile({ data: csv, name: fileName });
+      if (ENV.mobile) {
+        const csv = this.#exportToCSV.getCSV({ items, model });
+        await this.#mobile.downloadFile({ data: csv, name: fileName });
       } else {
-        this.exportToCSV.download({ items, model, fileName });
+        this.#exportToCSV.download({ items, model, fileName });
       }
     } catch (error) {
-      this.log.error({
+      this.#log.error({
         fileName: 'users.component',
         functionName: 'export',
         param: error
       });
-      this.toast.danger({
+      this.#toast.danger({
         title: 'Error',
-        msg: `${this.translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
+        msg: `${this.#translate.get('CORE.FORM.ERROR.APP')}: Excel, Spreadsheet, etc`
       });
     } finally {
       this.csvLoading = false;
@@ -240,9 +242,9 @@ export class UsersComponent implements OnInit {
   }
 
   #filter(items: Array<IUserCard>): Array<IUserCard> {
-    let _items = this.bizySearchPipe.transform(items, this.search, this.searchKeys);
-    _items = this.bizyFilterPipe.transform(_items, 'status', this.filterStates);
-    _items = this.bizyOrderByPipe.transform(_items, this.order, this.orderBy);
+    let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.#filterPipe.transform(_items, 'status', this.filterStates);
+    _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }
 }

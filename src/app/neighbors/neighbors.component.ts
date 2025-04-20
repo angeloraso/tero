@@ -4,6 +4,7 @@ import { SharedModules } from '@app/shared';
 import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
+  BizyDeviceService,
   BizyExportToCSVService,
   BizyFilterPipe,
   BizyLogService,
@@ -18,6 +19,7 @@ import { PopupComponent } from '@components/popup';
 import { LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
+import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { PATH as NEIGHBORS_PATH } from '@neighbors/neighbors.routing';
@@ -47,6 +49,7 @@ export class NeighborsComponent implements OnInit {
   readonly #usersService = inject(UsersService);
   readonly #popup = inject(BizyPopupService);
   readonly #home = inject(HomeService);
+  readonly #device = inject(BizyDeviceService);
 
   loading = false;
   csvLoading = false;
@@ -65,7 +68,7 @@ export class NeighborsComponent implements OnInit {
   activatedFilters: number = 0;
   orderBy: string = 'name';
   order: 'asc' | 'desc' = 'asc';
-  isMobile = this.#mobile.isMobile();
+  isDesktop = this.#device.isDesktop();
 
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
@@ -214,7 +217,7 @@ export class NeighborsComponent implements OnInit {
         _security: this.#translate.get('CORE.FORM.FIELD.SECURITY')
       };
 
-      if (this.isMobile) {
+      if (ENV.mobile) {
         const csv = this.#exportToCSV.getCSV({ items, model });
         await this.#mobile.downloadFile({ data: csv, name: fileName });
       } else {

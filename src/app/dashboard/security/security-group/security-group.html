@@ -32,7 +32,7 @@
                 [disabled]="loading"
                 [(value)]="search"
                 (onChange)="checkFilters(!!search)"
-                [autofocus]="!isMobile">
+                [autofocus]="isDesktop">
                 <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
