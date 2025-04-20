@@ -11,6 +11,9 @@ export const locale = {
       },
       USER_STATES_POPUP: {
         TITLE: 'Seleccionar estado'
+      },
+      USER_ROLES_POPUP: {
+        TITLE: 'Seleccionar rol'
       }
     }
   }

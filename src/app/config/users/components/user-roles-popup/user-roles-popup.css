@@ -3,12 +3,13 @@
   --bizy-card-cursor: pointer;
   --bizy-card-height: 3rem;
   --bizy-list-row-gap: 1rem;
+  --bizy-list-height: 22rem;
 }
 
-.user-states-popup {
+.user-roles-popup {
   row-gap: 2rem;
 }
 
-.user-states-popup--selected {
+.user-roles-popup--selected {
   --bizy-card-background-color: var(--bizy-light-info-color);
 }

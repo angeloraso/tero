@@ -89,14 +89,21 @@
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
         </bizy-input>
 
-        <bizy-input #roleInput [(value)]="roleSearch" [disabled]="loading || status.value !== USER_STATE.ACTIVE">
+        <bizy-input 
+            #roleInput
+            [(value)]="roleSearch"
+            [disabled]="loading || status.value !== USER_STATE.ACTIVE"
+            [readonly]="!isDesktop"
+            (onSelect)="openUserRolesPopup()">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>
     
-            <bizy-input-option 
-                *ngFor="let role of availableRoles | bizySearch : roleSearch | bizyOrderBy : 'asc'"
-                (onSelect)="addRole(role); roleSearch = ''">
-                <h5>{{'CORE.USER_ROLE.' + role | translate}}</h5>
-            </bizy-input-option>
+            <ng-container *ngIf="isDesktop">
+                <bizy-input-option 
+                    *ngFor="let role of availableRoles | bizySearch : roleSearch | bizyOrderBy : 'asc'"
+                    (onSelect)="addRole(role); roleSearch = ''">
+                    <h5>{{'CORE.USER_ROLE.' + role | translate}}</h5>
+                </bizy-input-option>
+            </ng-container>
     
             <bizy-tag slot="prefix" *ngFor="let role of selectedRoles" [type]="BIZY_TAG_TYPE.INFO" (onSelect)="removeRole(role)">
                 <h6>{{'CORE.USER_ROLE.' + role | translate}}</h6>

@@ -17,7 +17,9 @@ export class UserStatesPopupComponent implements OnInit {
 
   ngOnInit() {
     const data = this.#popup.getData<{ state: USER_STATE }>();
-    this.state = data.state;
+    if (data && data.state) {
+      this.state = data.state;
+    }
   }
 
   selectState(state: USER_STATE) {

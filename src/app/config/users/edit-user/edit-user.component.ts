@@ -10,7 +10,7 @@ import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
-import { UserStatesPopupComponent } from '../components';
+import { UserRolesPopupComponent, UserStatesPopupComponent } from '../components';
 @Component({
   selector: 'tero-edit-user',
   templateUrl: './edit-user.html',
@@ -149,6 +149,34 @@ export class EditUserComponent implements OnInit {
           this.#log.error({
             fileName: 'edit-user.component',
             functionName: 'openUserStatesPopup',
+            param: error
+          });
+          this.#toast.danger();
+        }
+      }
+    );
+  }
+
+  openUserRolesPopup(): void {
+    if (this.isDesktop) {
+      return;
+    }
+
+    this.#popup.open<Array<USER_ROLE>>(
+      {
+        component: UserRolesPopupComponent,
+        fullScreen: true,
+        data: { roles: this.selectedRoles }
+      },
+      async roles => {
+        try {
+          if (roles) {
+            this.selectedRoles = roles;
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'edit-user.component',
+            functionName: 'openUserRolesPopup',
             param: error
           });
           this.#toast.danger();

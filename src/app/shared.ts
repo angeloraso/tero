@@ -4,6 +4,7 @@ import {
   BizyButtonModule,
   BizyCalendarModule,
   BizyCardModule,
+  BizyCheckboxModule,
   BizyDirectivesModule,
   BizyFilterModule,
   BizyFormModule,
@@ -52,7 +53,8 @@ const BIZY_MODULES = [
   BizyTableModule,
   BizyCalendarModule,
   BizySectionModule,
-  BizyRadioModule
+  BizyRadioModule,
+  BizyCheckboxModule
 ];
 
 const TERO_COMPONENTS = [WrapperComponent];
