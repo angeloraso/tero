@@ -5,7 +5,7 @@
 
   --bizy-card-cursor: pointer;
   --bizy-grid-row-height: 12rem;
-  --bizy-section-start-column-gap: 0.3rem
+  --bizy-section-start-column-gap: 0.3rem;
 }
 
 .users__card__profile-pic {
