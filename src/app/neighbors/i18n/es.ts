@@ -24,6 +24,15 @@ export const locale = {
           TITLE: 'Borrar vecino/a',
           MSG: 'Se borrará el vecino/a'
         }
+      },
+      SECURITY_GROUP_POPUP: {
+        TITLE: 'Seleccionar grupo'
+      },
+      ALARM_POPUP: {
+        TITLE: 'Seleccionar número de alarma'
+      },
+      ALARM_CONTROLS_POPUP: {
+        TITLE: 'Seleccionar controles'
       }
     }
   }

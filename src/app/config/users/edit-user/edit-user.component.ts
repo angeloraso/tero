@@ -134,6 +134,10 @@ export class EditUserComponent implements OnInit {
   }
 
   openUserStatesPopup(): void {
+    if (this.loading || this.isDesktop) {
+      return;
+    }
+
     this.#popup.open<USER_STATE>(
       {
         component: UserStatesPopupComponent,
@@ -158,7 +162,7 @@ export class EditUserComponent implements OnInit {
   }
 
   openUserRolesPopup(): void {
-    if (this.isDesktop) {
+    if (this.loading || this.isDesktop) {
       return;
     }
 

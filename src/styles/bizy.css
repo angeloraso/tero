@@ -23,6 +23,7 @@
   --bizy-table-header-background-color: var(--light-primary-color);
   --bizy-table-column-arrows-color: var(--text-color);
 
+  --bizy-select-min-width: 8rem;
   --bizy-input-min-width: 8rem;
   --bizy-input-max-width: 20rem;
 

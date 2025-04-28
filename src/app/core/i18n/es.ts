@@ -48,10 +48,12 @@ export const locale = {
           LOT: 'Lote',
           ALIAS_CBU: 'Alias/CBU',
           ALARM_NUMBER: 'Alarma',
+          NO_ALARM_NUMBER: 'Sin alarma',
+          ALARM_CONTROL: 'Control',
           ALARM_CONTROLS: 'Controles',
+          NO_ALARM_CONTROLS: 'Sin controles',
           SURNAME: 'Apellido',
           NAME: 'Nombre',
-          GROUP: 'Grupo',
           SECURITY: 'Seguridad',
           EMAIL: 'Email',
           PASSWORD: 'Contraseña',
@@ -67,7 +69,10 @@ export const locale = {
           TITLE: 'Título',
           DATA_TYPE: 'Tipo de información',
           VALUE: 'Valor',
-          ADMIN: 'Administrador'
+          ADMIN: 'Administrador',
+          GROUP: 'Grupo',
+          NO_GROUP: 'Sin grupo',
+          SECURITY_GROUP: 'Grupo de seguridad'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

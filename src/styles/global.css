@@ -89,6 +89,12 @@ h6 {
   --bizy-table-column-justify-content: flex-end;
 }
 
+.tero-block-button {
+  flex: 1;
+  width: 100%;
+  --bizy-button-width: 100%;
+}
+
 .tero-button--accent {
   --bizy-button-background-color: var(--bizy-accent-color) !important;
 }
@@ -111,6 +117,66 @@ h6 {
 
 .tero-button--danger {
   --bizy-button-background-color: var(--bizy-danger-color) !important;
+}
+
+.tero-outlined-button--accent {
+  --bizy-button-background-color: transparent;
+  --bizy-button-border: 0.1rem solid var(--bizy-accent-color);
+  --bizy-button-color: var(--bizy-accent-color);
+}
+
+.tero-outlined-button--accent:hover {
+  --bizy-button-background-color: var(--bizy-light-accent-color);
+}
+
+.tero-outlined-button--success {
+  --bizy-button-background-color: transparent;
+  --bizy-button-border: 0.1rem solid var(--bizy-success-color);
+  --bizy-button-color: var(--bizy-success-color);
+}
+
+.tero-outlined-button--success:hover {
+  --bizy-button-background-color: var(--bizy-light-success-color);
+}
+
+.tero-outlined-button--default {
+  --bizy-button-background-color: transparent;
+  --bizy-button-border: 0.1rem solid var(--bizy-default-color);
+  --bizy-button-color: var(--bizy-default-color);
+}
+
+.tero-outlined-button--default:hover {
+  --bizy-button-background-color: var(--bizy-light-default-color);
+}
+
+.tero-outlined-button--info {
+  --bizy-button-background-color: transparent;
+  --bizy-button-border: 0.1rem solid var(--bizy-info-color);
+  --bizy-button-color: var(--bizy-info-color);
+}
+
+.tero-outlined-button--info:hover {
+  --bizy-button-background-color: var(--bizy-light-info-color);
+}
+
+.tero-outlined-button--warning {
+  --bizy-button-background-color: transparent;
+  --bizy-button-border: 0.1rem solid var(--bizy-warning-color);
+  --bizy-button-color: var(--bizy-warning-color);
+}
+
+.tero-outlined-button--warning:hover {
+  --bizy-button-background-color: var(--bizy-light-warning-color);
+}
+
+.tero-outlined-button--danger {
+  --bizy-button-background-color: transparent;
+  --bizy-button-border: 0.1rem solid var(--bizy-danger-color);
+  --bizy-button-color: var(--bizy-danger-color);
+}
+
+.tero-outlined-button--danger:hover {
+  --bizy-button-background-color: var(--bizy-light-danger-color);
 }
 
 .tero-logo {
@@ -226,6 +292,14 @@ h6 {
   --bizy-input-max-width: 4.6rem;
 }
 
+.tero--primary {
+  color: var(--primary-color);
+}
+
+.tero--accent {
+  color: var(--bizy-accent-color);
+}
+
 .tero--success {
   color: var(--bizy-success-color);
 }
@@ -257,4 +331,21 @@ h6 {
 .tero-no-matches__text {
   text-wrap: auto;
   text-align: center;
+}
+
+.tero-confirm-buttons {
+  padding: 1rem;
+  --bizy-section-background-color: #fff;
+}
+
+.tero-confirm-buttons__cancel {
+  --bizy-button-min-width: 6rem;
+  --bizy-button-background-color: transparent;
+  --bizy-button-color: var(--bizy-info-color);
+}
+
+.tero-confirm-buttons__confirm {
+  flex: 1;
+  --bizy-button-width: 100%;
+  --bizy-button-background-color: var(--bizy-accent-color);
 }

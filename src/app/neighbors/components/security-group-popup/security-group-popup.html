@@ -1,0 +1,41 @@
+<tero-wrapper class="security-group-popup">
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <h2 class="tero--info"><strong>{{'NEIGHBORS.SECURITY_GROUP_POPUP.TITLE' | translate}}</strong></h2>
+
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-list>
+
+        <bizy-card (onSelect)="selectGroup(NO_ID)" [ngClass]="{'security-group-popup--selected': group === NO_ID}">
+
+            <h5 slot="header-start" class="tero--danger"><i class="fa-solid fa-shield-halved"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.FORM.FIELD.NO_GROUP' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="group === NO_ID"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectGroup(g)" *ngFor="let g of GROUPS" [ngClass]="{'security-group-popup--selected': g === group}">
+
+            <h5 slot="header-start" class="tero--primary" [ngClass]="{'tero--info': g === group}"><i class="fa-solid fa-shield-halved"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.FORM.FIELD.GROUP' | translate}} {{g}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="g === group"></bizy-radio>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-button class="tero-outlined-button--info tero-block-button" (onSelect)="close()">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+    
+</tero-wrapper>

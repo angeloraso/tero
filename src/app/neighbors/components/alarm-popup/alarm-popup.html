@@ -1,0 +1,41 @@
+<tero-wrapper class="alarm-popup">
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <h2 class="tero--info"><strong>{{'NEIGHBORS.ALARM_POPUP.TITLE' | translate}}</strong></h2>
+
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-list>
+
+        <bizy-card (onSelect)="selectAlarm(NO_ID)" [ngClass]="{'alarm-popup--selected': alarm === NO_ID}">
+
+            <h5 slot="header-start" class="tero--danger"><i class="fa-solid fa-land-mine-on"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.FORM.FIELD.NO_ALARM_NUMBER' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="alarm === NO_ID"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectAlarm(a)" *ngFor="let a of ALARMS" [ngClass]="{'alarm-popup--selected': a === alarm}">
+
+            <h5 slot="header-start" [ngClass]="{'tero--info': a === alarm}"><i class="fa-solid fa-land-mine-on"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}} {{a}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="a === alarm"></bizy-radio>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-button class="tero-outlined-button--info tero-block-button" (onSelect)="close()">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+    
+</tero-wrapper>

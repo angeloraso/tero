@@ -1,9 +1,9 @@
-<span class="lot-popup">
+<tero-wrapper>
 
     <bizy-section>
         <bizy-section-start>
             <h2 class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</strong></h2>
-            <h2 class="lot-popup__security" *ngIf="data && data.neighbors.length > 0 && data.neighbors[0].security"><i class="fa-solid fa-shield-halved"></i></h2>
+            <h2 class="tero--primary" *ngIf="data && data.neighbors.length > 0 && data.neighbors[0].security"><i class="fa-solid fa-shield-halved"></i></h2>
         </bizy-section-start>
     </bizy-section>
 
@@ -24,7 +24,7 @@
         <h5 class="tero--info"><strong>{{'NEIGHBORHOOD.ALARM.TITLE' | translate}}</strong></h5>
     </bizy-section>
 
-    <span class="lot-popup__section" *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
+    <bizy-list *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">
     
         <bizy-section-start>
             <h5><strong>{{'NEIGHBORHOOD.ALARM.NUMBER' | translate}}:</strong></h5>
@@ -42,7 +42,7 @@
             </bizy-tag>
         </bizy-section-start>
 
-    </span>
+    </bizy-list>
 
     <bizy-section>
         <bizy-section-start>
@@ -51,7 +51,7 @@
         </bizy-section-start>
     </bizy-section>
 
-    <span class="lot-popup__section">
+    <bizy-list>
 
         <bizy-section-start>
             <h5><strong>{{'NEIGHBORHOOD.DATA.DISTRICT' | translate}}:</strong></h5>
@@ -102,6 +102,6 @@
             </bizy-tag>
         </bizy-section-start>
         
-    </span>
+    </bizy-list>
     
-</span>
+</tero-wrapper>

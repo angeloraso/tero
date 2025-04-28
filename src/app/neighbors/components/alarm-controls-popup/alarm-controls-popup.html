@@ -1,10 +1,10 @@
-<tero-wrapper class="user-roles-popup">
+<tero-wrapper class="alarm-controls-popup">
 
     <bizy-section>
 
         <bizy-section-center>
 
-            <h2 class="tero--info"><strong>{{'USERS.USER_ROLES_POPUP.TITLE' | translate}}</strong></h2>
+            <h2 class="tero--info"><strong>{{'NEIGHBORS.ALARM_CONTROLS_POPUP.TITLE' | translate}}</strong></h2>
 
         </bizy-section-center>
 
@@ -12,13 +12,13 @@
 
     <bizy-list>
 
-        <bizy-card *ngFor="let r of roles" (onSelect)="setRole(r)" [ngClass]="{'user-roles-popup--selected': r.selected}">
+        <bizy-card *ngFor="let c of controls" (onSelect)="setControl(c)" [ngClass]="{'alarm-controls-popup--selected': c.selected}">
 
-            <h5 slot="header-start" class="tero--info"><i class="fa-solid fa-user"></i></h5>
+            <h5 slot="header-start" [ngClass]="{'tero--info': c.selected}"><i class="fa-solid fa-mobile-retro"></i></h5>
 
-            <h5 slot="header-start">{{'CORE.USER_ROLE.' + r.value | translate}}</h5>
+            <h5 slot="header-start">{{'CORE.FORM.FIELD.ALARM_CONTROL' | translate}} {{c.value}}</h5>
 
-            <bizy-checkbox slot="header-end" [selected]="r.selected"></bizy-checkbox>
+            <bizy-checkbox slot="header-end" [selected]="c.selected"></bizy-checkbox>
 
         </bizy-card>
 

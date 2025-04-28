@@ -1,26 +1,119 @@
 <bizy-toolbar>
 
-    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+    <bizy-button slot="start" (onSelect)="goBack()" [disabled]="loading" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
 
-    <h1 slot=start>{{'NEIGHBORS.EDIT_NEIGHBOR.TITLE' | translate}}</h1>
+    <h1 slot="start">{{'NEIGHBORS.EDIT_NEIGHBOR.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteNeighbor()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" [disabled]="loading" (onSelect)="deleteNeighbor()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
+
+    <span slot="start" [bizyLoading]="loading"></span>
 
 </bizy-toolbar>
 
-<tero-wrapper [bizyLoading]="loading">
+<tero-wrapper>
 
-    <tero-neighbor-form
-        *ngIf="neighbor"
-        [name]="neighbor.name"
-        [group]="neighbor.group"
-        [alarmNumber]="neighbor.alarmNumber"
-        [alarmControls]="neighbor.alarmControls"
-        [surname]="neighbor.surname"
-        [lot]="neighbor.lot"
-        [security]="neighbor.security"
-        (canceled)="goBack()"
-        (confirmed)="save($event)">
-    </tero-neighbor-form>
+    <bizy-form>
+
+        <bizy-section>
+            <bizy-section-center>
+
+                <img 
+                    slot="header-start"
+                    height="70"
+                    src="/assets/img/picture_user.svg"
+                    alt="Imagen de usuario"/>
+
+            </bizy-section-center>
+        </bizy-section>
+    
+        <bizy-input
+            #nameInput
+            [disabled]="loading"
+            [value]="name.value"
+            [autofocus]="!isDesktop"
+            (onChange)="name.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            #surnameInput
+            [disabled]="loading"
+            [value]="surname.value"
+            (onChange)="surname.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="surname.hasError('minlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            #lotInput
+            [disabled]="loading"
+            [value]="lot.value"
+            type="number"
+            (onChange)="lot.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="lot.hasError('required') && lotInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</h6>
+            <h6 slot="error" *ngIf="lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_LOT_VALUE}}</h6>
+        </bizy-input>
+    
+        <bizy-section>
+
+            <bizy-section-start>
+
+                <bizy-input 
+                    [disabled]="loading"
+                    (onSelect)="openAlarmPopup()"
+                    [readonly]="true"
+                    [value]="alarmNumber.value !== NO_ID ? ('CORE.FORM.FIELD.ALARM_NUMBER' | translate) + ' ' + alarmNumber.value : ('CORE.FORM.FIELD.NO_ALARM_NUMBER' | translate)">
+                    <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALARM_NUMBER' | translate}}</strong></h6>
+                </bizy-input>
+
+            </bizy-section-start>
+
+            <bizy-section-end>
+
+                <bizy-input
+                    [disabled]="loading"
+                    [value]="alarmControls.value.length === 0 ? ('CORE.FORM.FIELD.NO_ALARM_CONTROLS' | translate) : ''"
+                    (onSelect)="openAlarmControlsPopup()"
+                    [readonly]="true">
+                    <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}</strong></h6>
+
+                    <bizy-tag slot="prefix" *ngFor="let c of alarmControls.value" [type]="BIZY_TAG_TYPE.INFO">
+                        <h6>C.{{c}}</h6>
+                    </bizy-tag>
+
+                </bizy-input>
+
+            </bizy-section-end>
+
+        </bizy-section>
+
+        <bizy-input 
+            [disabled]="loading"
+            (onSelect)="openSecurityGroupsPopup()"
+            [readonly]="true"
+            [value]="group.value !== NO_ID ? ('CORE.FORM.FIELD.GROUP' | translate) + ' ' + group.value: ('CORE.FORM.FIELD.NO_GROUP' | translate)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SECURITY_GROUP' | translate}}</strong></h6>
+        </bizy-input>
+                
+    </bizy-form>
 
 </tero-wrapper>
+
+<bizy-section class="tero-confirm-buttons">
+
+    <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="goBack()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+
+    <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="save()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+        <h5><i class="fa-solid fa-check"></i></h5>
+    </bizy-button>
+        
+</bizy-section>
