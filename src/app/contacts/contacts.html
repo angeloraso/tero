@@ -51,6 +51,11 @@
                 </bizy-filter>
             </bizy-button>
 
+            <bizy-button class="tero-button--default" (onSelect)="onSort()" [disabled]="loading">
+                <h5 *ngIf="order === 'desc'"><i class="fa-solid fa-arrow-up-a-z"></i></h5>
+                <h5 *ngIf="order !== 'desc'"><i class="fa-solid fa-arrow-down-a-z"></i></h5>
+            </bizy-button>
+
             <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>

@@ -29,6 +29,7 @@ import { es } from './i18n';
 
 interface IContactCard extends IContact {
   _phones: Array<string>;
+  _surnameName: string;
 }
 
 @Component({
@@ -63,7 +64,7 @@ export class ContactsComponent implements OnInit {
   search: string | number = '';
   searchKeys = ['name', 'tags', 'surname', '_phones', 'score'];
   order: 'asc' | 'desc' = 'asc';
-  orderBy = 'name';
+  orderBy = '_surnameName';
   isDesktop = this.#device.isDesktop();
   isMobile = ENV.mobile;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
@@ -96,6 +97,7 @@ export class ContactsComponent implements OnInit {
 
         return {
           ..._contact,
+          _surnameName: _contact.surname + _contact.name,
           _phones: _contact.phones.map(_phone => _phone.number)
         };
       });
@@ -229,6 +231,10 @@ export class ContactsComponent implements OnInit {
     } else if (this.activatedFilters > 0) {
       this.activatedFilters--;
     }
+  }
+
+  onSort() {
+    this.order = this.order === 'asc' ? 'desc' : 'asc';
   }
 
   onRemoveFilters() {
