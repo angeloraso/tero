@@ -115,14 +115,16 @@ export interface ISecurity {
 export type Rating = 1 | 2 | 3 | 4 | 5;
 
 export interface IContactRating {
-  accountId: string;
+  accountId?: string;
+  accountEmail: string;
   description: string;
   value: Rating;
 }
 
 export interface IContact {
   id: string;
-  accountId: string;
+  accountId?: string; // Deprecated
+  accountEmail: string;
   name: string;
   surname: string;
   description: string;
@@ -136,7 +138,8 @@ export interface IContact {
 
 export class Contact implements IContact {
   id: string;
-  accountId: string;
+  accountId?: string; // Deprecated
+  accountEmail: string;
   name: string;
   surname: string;
   description: string;
@@ -147,9 +150,9 @@ export class Contact implements IContact {
   created: number;
   updated: number;
 
-  constructor(contact: Omit<IContact, 'id' | 'score'>) {
+  constructor(contact: Omit<IContact, 'id' | 'created' | 'updated'>) {
     this.id = uuid4();
-    this.accountId = contact.accountId;
+    this.accountEmail = contact.accountEmail;
     this.name = contact.name ?? '';
     this.surname = contact.surname ?? '';
     this.description = contact.description ?? '';

@@ -4,26 +4,106 @@
 
     <h1 slot=start>{{'CONTACTS.EDIT_CONTACT.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteContact()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteContact()" [disabled]="loading"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
-<tero-wrapper [bizyLoading]="loading">
+<tero-wrapper>
 
-    <tero-contact-form
-        *ngIf="contact"
-        [id]="contact.id"
-        [rating]="contact.rating"
-        [picture]="contact.picture"
-        [name]="contact.name"
-        [description]="contact.description"
-        [tags]="{available: tags, selected: contact.tags}"
-        [phone]="contact.phones[0].number"
-        [created]="contact.created"
-        [updated]="contact.updated"
-        [surname]="contact.surname"
-        (canceled)="goBack()"
-        (confirmed)="save($event)">
-    </tero-contact-form>
+    <bizy-form>
+
+        <bizy-section>
+
+            <bizy-section-center>
+
+                <img 
+                    height="70"
+                    loading="lazy"
+                    [src]="picture.value"
+                    onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                    alt="Imagen de usuario"/>
+        
+                <bizy-tag [type]="BIZY_TAG_TYPE.WARNING" class="contact-form__picture__rating" (onSelect)="openRatingPopup()">
+                    <h3>{{rating.value ? (rating.value | bizyAverage : 'value') : 0}}/5 <i class="fa-solid fa-star"></i></h3>
+                </bizy-tag>
+        
+                <bizy-tag *ngIf="rating.value && rating.value.length > 0" (onSelect)="openRatingHistoryPopup()">
+                    <h3><i class="fa-regular fa-comment"></i></h3>
+                </bizy-tag>
+
+            </bizy-section-center>
+
+        </bizy-section>
+
+        <bizy-input
+            #nameInput
+            [disabled]="loading"
+            [value]="name.value"
+            (onChange)="name.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="name.hasError('minlength') && nameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="name.hasError('maxlength') && nameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            #surnameInput
+            [disabled]="loading"
+            [value]="surname.value"
+            (onChange)="surname.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SURNAME' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="surname.hasError('required') && surnameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="surname.hasError('minlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="surname.hasError('maxlength') && surnameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            #phoneInput
+            type="tel"
+            [disabled]="loading"
+            [value]="phone.value"
+            (onChange)="phone.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="phone.hasError('required') && phoneInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            type="textarea"
+            [disabled]="loading"
+            [value]="description.value"
+            (onChange)="description.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h6>
+        </bizy-input>
+
+        <bizy-input
+            #tagsInput
+            [disabled]="loading"
+            [value]="!tags.value || tags.value.length === 0 ? ('CORE.FORM.FIELD.NO_TAG' | translate) : ''"
+            (onSelect)="openTagsPopup()"
+            [readonly]="true">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TAG' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="tags.hasError('required') && tagsInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+
+            <bizy-tag slot="prefix" *ngFor="let c of tags.value" [type]="BIZY_TAG_TYPE.INFO">
+                <h6>C.{{c}}</h6>
+            </bizy-tag>
+
+        </bizy-input>
+    
+    </bizy-form>
 
 </tero-wrapper>
+
+<bizy-section class="tero-confirm-buttons">
+
+    <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="goBack()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+
+    <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="save()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+        <h5><i class="fa-solid fa-check"></i></h5>
+    </bizy-button>
+        
+</bizy-section>

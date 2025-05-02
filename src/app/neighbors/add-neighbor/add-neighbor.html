@@ -28,7 +28,6 @@
             #nameInput
             [disabled]="loading"
             [value]="name.value"
-            [autofocus]="isDesktop"
             (onChange)="name.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="name.hasError('required') && nameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>

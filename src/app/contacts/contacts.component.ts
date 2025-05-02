@@ -123,7 +123,12 @@ export class ContactsComponent implements OnInit {
   }
 
   selectContact(contact: IContactCard) {
-    if (!contact || !this.isNeighbor || (contact.accountId && contact.accountId !== this.#auth.getId())) {
+    if (
+      !contact ||
+      !this.isNeighbor ||
+      (contact.accountId && contact.accountId !== this.#auth.getId() && !this.isConfig) ||
+      (contact.accountEmail && contact.accountEmail !== this.#auth.getEmail() && !this.isConfig)
+    ) {
       return;
     }
 
@@ -135,8 +140,8 @@ export class ContactsComponent implements OnInit {
       return;
     }
 
-    const accountId = await this.#auth.getId();
-    if (!accountId) {
+    const [accountEmail, accountId] = await Promise.all([this.#auth.getEmail(), this.#auth.getId()]);
+    if (!accountId || !accountEmail) {
       return;
     }
 
@@ -144,7 +149,7 @@ export class ContactsComponent implements OnInit {
     let description = null;
 
     if (contact.rating && contact.rating.length > 0) {
-      const contactRating = contact.rating.find(_rating => _rating.accountId === accountId);
+      const contactRating = contact.rating.find(_rating => _rating.accountId === accountId || _rating.accountEmail === accountEmail);
       if (contactRating) {
         value = contactRating.value;
         description = contactRating.description;
@@ -163,15 +168,17 @@ export class ContactsComponent implements OnInit {
         try {
           if (data) {
             if (data === 'delete') {
-              const index = contact.rating.findIndex(_rating => _rating.accountId === accountId);
+              const index = contact.rating.findIndex(_rating => _rating.accountId === accountId || _rating.accountEmail === accountEmail);
               if (index !== -1) {
                 contact.rating.splice(index, 1);
               }
             } else {
-              const contactRating: IContactRating = { ...data, accountId };
+              const contactRating: IContactRating = { ...data, accountId, accountEmail };
               this.loading = true;
               if (contact.rating && contact.rating.length > 0) {
-                const index = contact.rating.findIndex(_rating => _rating.accountId === contactRating.accountId);
+                const index = contact.rating.findIndex(
+                  _rating => _rating.accountId === contactRating.accountId || _rating.accountEmail === contactRating.accountEmail
+                );
                 if (index !== -1) {
                   contact.rating[index] = contactRating;
                 } else {

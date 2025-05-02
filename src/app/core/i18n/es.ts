@@ -62,6 +62,7 @@ export const locale = {
           PHONE: 'Teléfono',
           DESCRIPTION: 'Descripción',
           TAG: 'Categoría',
+          NO_TAG: 'Sin categorías',
           PRICE: 'Precio',
           STATE: 'Estado',
           ROLE: 'Rol',
@@ -72,7 +73,8 @@ export const locale = {
           ADMIN: 'Administrador',
           GROUP: 'Grupo',
           NO_GROUP: 'Sin grupo',
-          SECURITY_GROUP: 'Grupo de seguridad'
+          SECURITY_GROUP: 'Grupo de seguridad',
+          SELECTED: 'Seleccionados'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

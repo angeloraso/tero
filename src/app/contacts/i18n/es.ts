@@ -14,6 +14,9 @@ export const locale = {
       RATING_HISTORY_POPUP: {
         TITLE: 'Opiniones'
       },
+      CONTACT_TAGS_POPUP: {
+        TITLE: 'Seleccionar categorías'
+      },
       ADD_CONTACT: {
         TITLE: 'Agregar contacto'
       },

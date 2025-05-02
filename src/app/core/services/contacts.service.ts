@@ -12,12 +12,13 @@ export class ContactsService {
 
   getContact = (contactId: string) => this.#database.getContact(contactId);
 
-  postContact = (contact: Omit<IContact, 'id'>) => this.#database.postContact(new Contact(contact));
+  postContact = (contact: Omit<IContact, 'id' | 'created' | 'updated'>) => this.#database.postContact(new Contact(contact));
 
   putContact = (contact: IContact) =>
     this.#database.putContact({
       id: contact.id,
       accountId: contact.accountId,
+      accountEmail: contact.accountEmail,
       name: contact.name,
       surname: contact.surname,
       description: contact.description,

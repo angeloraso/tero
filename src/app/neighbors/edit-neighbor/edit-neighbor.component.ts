@@ -6,7 +6,6 @@ import { HomeService } from '@app/home/home.service';
 import { SharedModules } from '@app/shared';
 import {
   BIZY_TAG_TYPE,
-  BizyDeviceService,
   BizyFormComponent,
   BizyLogService,
   BizyPopupService,
@@ -32,7 +31,6 @@ export class EditNeighborComponent implements OnInit {
   readonly #home = inject(HomeService);
   readonly #router = inject(BizyRouterService);
   readonly #activatedRoute = inject(ActivatedRoute);
-  readonly #device = inject(BizyDeviceService);
   readonly #fb = inject(FormBuilder);
   readonly #popup = inject(BizyPopupService);
   readonly #log = inject(BizyLogService);
@@ -58,7 +56,6 @@ export class EditNeighborComponent implements OnInit {
   readonly NO_ID = NO_ID;
   neighbor: INeighbor | null = null;
   loading: boolean = false;
-  isDesktop = this.#device.isDesktop();
 
   get name() {
     return this.#form.get('name') as FormControl;
@@ -94,7 +91,9 @@ export class EditNeighborComponent implements OnInit {
         return;
       }
 
-      this.neighbor = await this.#neighborsService.getNeighbor(neighborId);
+      const neighbor = await this.#neighborsService.getNeighbor(neighborId);
+      this.neighbor = structuredClone(neighbor);
+
       if (this.neighbor.name) {
         this.name.setValue(this.neighbor.name);
       }
@@ -145,9 +144,9 @@ export class EditNeighborComponent implements OnInit {
       },
       async res => {
         try {
-          if (res) {
+          if (res && this.neighbor) {
             this.loading = true;
-            await this.#neighborsService.deleteNeighbor(this.neighbor as INeighbor);
+            await this.#neighborsService.deleteNeighbor(this.neighbor);
             this.goBack();
           }
         } catch (error) {
@@ -165,7 +164,7 @@ export class EditNeighborComponent implements OnInit {
   };
 
   openSecurityGroupsPopup() {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 
@@ -193,7 +192,7 @@ export class EditNeighborComponent implements OnInit {
   }
 
   openAlarmPopup() {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 
@@ -221,7 +220,7 @@ export class EditNeighborComponent implements OnInit {
   }
 
   openAlarmControlsPopup() {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 

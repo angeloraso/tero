@@ -3,15 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { HomeService } from '@app/home/home.service';
 import { SharedModules } from '@app/shared';
-import {
-  BIZY_TAG_TYPE,
-  BizyDeviceService,
-  BizyFormComponent,
-  BizyLogService,
-  BizyPopupService,
-  BizyRouterService,
-  BizyToastService
-} from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyFormComponent, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { DEFAULT_USER_PICTURE, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -27,7 +19,6 @@ export class AddNeighborComponent implements OnInit {
   readonly #neighborsService = inject(NeighborsService);
   readonly #home = inject(HomeService);
   readonly #router = inject(BizyRouterService);
-  readonly #device = inject(BizyDeviceService);
   readonly #fb = inject(FormBuilder);
   readonly #popup = inject(BizyPopupService);
   readonly #log = inject(BizyLogService);
@@ -51,7 +42,6 @@ export class AddNeighborComponent implements OnInit {
   });
 
   loading: boolean = false;
-  isDesktop = this.#device.isDesktop();
 
   get name() {
     return this.#form.get('name') as FormControl;
@@ -82,7 +72,7 @@ export class AddNeighborComponent implements OnInit {
   }
 
   openSecurityGroupsPopup() {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 
@@ -108,7 +98,7 @@ export class AddNeighborComponent implements OnInit {
   }
 
   openAlarmPopup() {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 
@@ -136,7 +126,7 @@ export class AddNeighborComponent implements OnInit {
   }
 
   openAlarmControlsPopup() {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 
