@@ -12,16 +12,63 @@
 
 <tero-wrapper>
 
-    <tero-topic-form
-        *ngIf="topic"
-        [users]="users"
-        [disabled]="loading"
-        [title]="topic.title"
-        [description]="topic.description"
-        [status]="topic.status"
-        [accountEmails]="topic.accountEmails"
-        (canceled)="goBack()"
-        (confirmed)="save($event)">
-    </tero-topic-form>
+    <bizy-form>
 
+        <bizy-input
+            #titleInput
+            [disabled]="loading"
+            [value]="title.value"
+            (onChange)="title.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TITLE' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="title.hasError('required') && titleInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="title.hasError('minlength') && titleInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="title.hasError('maxlength') && titleInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            type="textarea"
+            [disabled]="loading"
+            [value]="description.value"
+            (onChange)="description.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{DESCRIPTION_LENGTH}}</h6>
+        </bizy-input>
+    
+        <bizy-input
+            #usersInput
+            [disabled]="loading"
+            [value]="!users.value || users.value.length === 0 ? ('CORE.FORM.FIELD.NO_PARTNERS' | translate) : ''"
+            (onSelect)="openUsersPopup()"
+            [readonly]="true">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.PARTNERS' | translate}}</strong></h6>
+
+            <bizy-tag slot="prefix" *ngFor="let u of users.value" [type]="BIZY_TAG_TYPE.INFO">
+                <h6>{{u.name}}</h6>
+            </bizy-tag>
+
+        </bizy-input>
+
+        <bizy-input 
+            [disabled]="loading"
+            (onSelect)="openTopicStatesPopup()"
+            [readonly]="true"
+            value="{{'CORE.TOPIC_STATE.' + status.value | translate}}">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
+        </bizy-input>
+    
+    </bizy-form>
+    
 </tero-wrapper>
+
+<bizy-section class="tero-confirm-buttons">
+
+    <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="goBack()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+
+    <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="save()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+        <h5><i class="fa-solid fa-check"></i></h5>
+    </bizy-button>
+        
+</bizy-section>

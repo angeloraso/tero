@@ -8,9 +8,6 @@ export const locale = {
       EMPTY: 'No hay asuntos para mostrar',
       NO_MILESTONES: 'Sin avances',
       MILESTONES: 'Avances',
-      TOPIC_FORM: {
-        ACCOUNT_EMAILS: 'Agregar usuarios involucrados'
-      },
       TOPIC_MILESTONES: {
         TITLE: 'Avances',
         DELETE_POPUP: {
@@ -31,6 +28,12 @@ export const locale = {
       },
       TOPIC_DATA_POPUP: {
         TITLE: 'Agregar información'
+      },
+      TOPIC_STATES_POPUP: {
+        TITLE: 'Seleccionar estado'
+      },
+      TOPIC_USERS_POPUP: {
+        TITLE: 'Seleccionar usuario'
       },
       ADD_TOPIC: {
         TITLE: 'Agregar asunto'

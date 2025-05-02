@@ -1,19 +1,21 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BizyLogService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
-import { TOPIC_SUBSCRIPTION } from '@core/constants';
-import { ERROR, IUser, TOPIC_STATE } from '@core/model';
-import { MobileService, TopicsService, UsersService } from '@core/services';
+import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
+import { AuthService } from '@core/auth/auth.service';
+import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
+import { ERROR, TOPIC_STATE } from '@core/model';
+import { MobileService, TopicsService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
-import { TopicFormComponent } from '@dashboard/topics/components';
+import { TopicStatesPopupComponent, TopicUsersPopupComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 @Component({
   selector: 'tero-add-topic',
   templateUrl: './add-topic.html',
   styleUrls: ['./add-topic.css'],
-  imports: [...SharedModules, TopicFormComponent]
+  imports: SharedModules
 })
 export class AddTopicComponent implements OnInit {
   readonly #topicsService = inject(TopicsService);
@@ -21,18 +23,31 @@ export class AddTopicComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #mobile = inject(MobileService);
   readonly #log = inject(BizyLogService);
-  readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
   readonly #translate = inject(BizyTranslateService);
+  readonly #fb = inject(FormBuilder);
+  readonly #popup = inject(BizyPopupService);
+  readonly #auth = inject(AuthService);
 
   loading: boolean = false;
-  users: Array<IUser> = [];
+  accountEmail = this.#auth.getEmail()!;
+
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
+  readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
+  readonly DESCRIPTION_LENGTH = 1024;
+
+  readonly #form = this.#fb.group({
+    title: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
+    description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH), Validators.required]],
+    status: [TOPIC_STATE.ACTIVE, [Validators.required]],
+    users: [null]
+  });
 
   async ngOnInit() {
     try {
       this.loading = true;
       this.#home.hideTabs();
-      this.users = await this.#usersService.getUsers();
     } catch (error) {
       this.#log.error({
         fileName: 'add-topic.component',
@@ -45,23 +60,106 @@ export class AddTopicComponent implements OnInit {
     }
   }
 
+  get title() {
+    return this.#form.get('title') as FormControl;
+  }
+
+  get description() {
+    return this.#form.get('description') as FormControl;
+  }
+
+  get status() {
+    return this.#form.get('status') as FormControl<TOPIC_STATE>;
+  }
+
+  get users() {
+    return this.#form.get('users') as FormControl;
+  }
+
   goBack() {
     this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
   }
 
-  async save(topic: { title: string; description: string; accountEmails: Array<string>; status: TOPIC_STATE }) {
+  openUsersPopup() {
+    if (this.loading) {
+      return;
+    }
+
+    this.#popup.open<Array<{ name: string; email: string }>>(
+      {
+        component: TopicUsersPopupComponent,
+        fullScreen: true,
+        data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [] }
+      },
+      async users => {
+        try {
+          if (users) {
+            if (users.length > 0) {
+              this.users.setValue(users);
+            } else {
+              this.users.setValue(null);
+            }
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'add-topic.component',
+            functionName: 'openUsersPopup',
+            param: error
+          });
+          this.#toast.danger();
+        }
+      }
+    );
+  }
+
+  openTopicStatesPopup(): void {
+    if (this.loading) {
+      return;
+    }
+
+    this.#popup.open<TOPIC_STATE>(
+      {
+        component: TopicStatesPopupComponent,
+        fullScreen: true,
+        data: { state: this.status.value }
+      },
+      async state => {
+        try {
+          if (state) {
+            this.status.setValue(state);
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'add-topic.component',
+            functionName: 'openTopicStatesPopup',
+            param: error
+          });
+          this.#toast.danger();
+        }
+      }
+    );
+  }
+
+  async save() {
     try {
-      if (!topic || this.loading) {
+      if (this.#form.invalid || this.loading) {
         return;
       }
 
       this.loading = true;
 
-      await this.#topicsService.postTopic(topic);
+      await this.#topicsService.postTopic({
+        title: this.title.value ? this.title.value.trim() : '',
+        description: this.description.value ? this.description.value.trim() : '',
+        status: this.status.value,
+        accountEmails: this.users.value
+          ? this.users.value.map((_user: { email: string }) => _user.email).concat([this.accountEmail])
+          : [this.accountEmail]
+      });
       await this.#mobile.sendPushNotification({
         topicId: TOPIC_SUBSCRIPTION.NEW_TOPIC,
         title: this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.TITLE'),
-        body: `${this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.BODY')}: ${topic.title}`
+        body: `${this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.BODY')}: ${this.title.value}`
       });
       this.goBack();
     } catch (error) {

@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BIZY_TAG_TYPE, BizyDeviceService, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
@@ -25,7 +25,6 @@ export class EditUserComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
   readonly #home = inject(HomeService);
-  readonly #device = inject(BizyDeviceService);
   readonly #popup = inject(BizyPopupService);
 
   readonly MIN = 0;
@@ -34,8 +33,6 @@ export class EditUserComponent implements OnInit {
   readonly USER_STATE = USER_STATE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
 
-  isMobile: boolean = this.#device.isMobile();
-  isDesktop: boolean = this.#device.isDesktop();
   user: IUser | null = null;
   userEmail: string | null = null;
   loading = false;
@@ -134,7 +131,7 @@ export class EditUserComponent implements OnInit {
   }
 
   openUserStatesPopup(): void {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 
@@ -162,7 +159,7 @@ export class EditUserComponent implements OnInit {
   }
 
   openUserRolesPopup(): void {
-    if (this.loading || this.isDesktop) {
+    if (this.loading) {
       return;
     }
 

@@ -34,7 +34,6 @@
 
         <bizy-input 
             [disabled]="loading"
-            [autofocus]="isDesktop"
             [value]="name.value"
             (onChange)="name.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
@@ -70,19 +69,8 @@
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
         </bizy-input>
 
-        <bizy-select [disabled]="loading" *ngIf="isDesktop">
-            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.STATE' | translate}}</strong></h6>
-            <bizy-select-option 
-                *ngFor="let s of USER_STATE | bizyEnumToArray"
-                [selected]="status.value === s.value"
-                (onSelect)="setStatus(s.value)">
-                <h6>{{'CORE.USER_STATE.' + s.key | translate}}</h6>
-            </bizy-select-option>
-        </bizy-select>
-
         <bizy-input 
             [disabled]="loading"
-            *ngIf="!isDesktop"
             (onSelect)="openUserStatesPopup()"
             [readonly]="true"
             value="{{'CORE.USER_STATE.' + status.value | translate}}">
@@ -93,17 +81,9 @@
             #roleInput
             [(value)]="roleSearch"
             [disabled]="loading || status.value !== USER_STATE.ACTIVE"
-            [readonly]="!isDesktop"
+            [readonly]="true"
             (onSelect)="openUserRolesPopup()">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ROLE' | translate}}</strong></h6>
-    
-            <ng-container *ngIf="isDesktop">
-                <bizy-input-option 
-                    *ngFor="let role of availableRoles | bizySearch : roleSearch | bizyOrderBy : 'asc'"
-                    (onSelect)="addRole(role); roleSearch = ''">
-                    <h5>{{'CORE.USER_ROLE.' + role | translate}}</h5>
-                </bizy-input-option>
-            </ng-container>
     
             <bizy-tag slot="prefix" *ngFor="let role of selectedRoles" [type]="BIZY_TAG_TYPE.INFO" (onSelect)="removeRole(role)">
                 <h6>{{'CORE.USER_ROLE.' + role | translate}}</h6>

@@ -1,0 +1,98 @@
+<tero-wrapper>
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <h2 class="tero--info"><strong>{{'TOPICS.TOPIC_USERS_POPUP.TITLE' | translate}}</strong></h2>
+
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-section>
+
+        <bizy-section-end>
+
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((users | bizySearch: search : searchKeys).length + '/' + users.length) : users.length">
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
+    
+            <bizy-input 
+                [disabled]="loading"
+                [(value)]="search"
+                (onChange)="checkFilters(!!search)">
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+            </bizy-input>
+
+            <bizy-button class="tero-button--default" (onSelect)="onSort()" [disabled]="loading">
+                <h5 *ngIf="order === 'desc'"><i class="fa-solid fa-arrow-up-a-z"></i></h5>
+                <h5 *ngIf="order !== 'desc'"><i class="fa-solid fa-arrow-down-a-z"></i></h5>
+            </bizy-button>
+    
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
+        </bizy-section-end>
+
+    </bizy-section>
+
+    <bizy-section>
+
+        <bizy-section-end>
+
+            <h6>{{'CORE.FORM.FIELD.SELECTED' | translate}}: <strong>{{(users | bizyFilter : 'selected' : true).length}}/{{MAX_LIMIT}}</strong></h6>
+
+        </bizy-section-end>
+
+    </bizy-section>
+
+    <bizy-list *ngIf="loading" class="animated fade-in">
+
+        <bizy-card *ngFor="let i of 6 | bizyRepeat">
+    
+            <h5 slot="header-start"><i class="fa-solid fa-user"></i></h5>
+    
+            <bizy-skeleton slot="header-start"></bizy-skeleton>
+    
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-list *ngIf="!loading" class="animated fade-in">
+
+        <bizy-card 
+            *ngFor="let u of users | bizySearch: search : searchKeys | bizyOrderBy: order : orderBy"
+            [disabled]="!u.selected && selectedUsers >= MAX_LIMIT"
+            (onSelect)="selectUser(u)"
+            [ngClass]="{'topic-users-popup--selected': u.selected}">
+
+            <h5 slot="header-start" [ngClass]="{'tero--info': u.selected}"><i class="fa-solid fa-user"></i></h5>
+
+            <h5 slot="header-start">{{u.value}}</h5>
+
+            <bizy-checkbox slot="header-end" [selected]="u.selected"></bizy-checkbox>
+
+        </bizy-card>
+
+    </bizy-list>
+
+</tero-wrapper>
+
+<bizy-section class="tero-confirm-buttons">
+
+    <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+
+    <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+        <h5><i class="fa-solid fa-check"></i></h5>
+    </bizy-button>
+        
+</bizy-section>

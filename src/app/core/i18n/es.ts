@@ -74,7 +74,9 @@ export const locale = {
           GROUP: 'Grupo',
           NO_GROUP: 'Sin grupo',
           SECURITY_GROUP: 'Grupo de seguridad',
-          SELECTED: 'Seleccionados'
+          SELECTED: 'Seleccionados',
+          PARTNERS: 'Colaboradores',
+          NO_PARTNERS: 'Sin colaboradores'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

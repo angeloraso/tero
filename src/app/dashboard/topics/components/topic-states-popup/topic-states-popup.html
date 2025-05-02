@@ -1,0 +1,51 @@
+<tero-wrapper class="topic-states-popup">
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <h2 class="tero--info"><strong>{{'TOPICS.TOPIC_STATES_POPUP.TITLE' | translate}}</strong></h2>
+
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-list>
+
+        <bizy-card (onSelect)="selectState(TOPIC_STATE.ACTIVE)" [ngClass]="{'topic-states-popup--selected': state === TOPIC_STATE.ACTIVE}">
+
+            <h5 slot="header-start" class="tero--success"><i class="fa-solid fa-bookmark"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.TOPIC_STATE.ACTIVE' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === TOPIC_STATE.ACTIVE"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectState(TOPIC_STATE.STOPPED)" [ngClass]="{'topic-states-popup--selected': state === TOPIC_STATE.STOPPED}">
+
+            <h5 slot="header-start" class="tero--warning"><i class="fa-solid fa-bookmark"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.TOPIC_STATE.STOPPED' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === TOPIC_STATE.STOPPED"></bizy-radio>
+
+        </bizy-card>
+
+        <bizy-card (onSelect)="selectState(TOPIC_STATE.CLOSED)" [ngClass]="{'topic-states-popup--selected': state === TOPIC_STATE.CLOSED}">
+
+            <h5 slot="header-start" class="tero--danger"><i class="fa-solid fa-bookmark"></i></h5>
+
+            <h5 slot="header-start">{{'CORE.TOPIC_STATE.CLOSED' | translate}}</h5>
+
+            <bizy-radio slot="header-end" [selected]="state === TOPIC_STATE.CLOSED"></bizy-radio>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-button class="tero-outlined-button--info tero-block-button" (onSelect)="close()">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+    
+</tero-wrapper>

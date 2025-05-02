@@ -76,8 +76,6 @@
 
         <bizy-input
             #tagsInput
-            type="textarea"
-            [rows]="1"
             [disabled]="loading"
             [value]="!tags.value || tags.value.length === 0 ? ('CORE.FORM.FIELD.NO_TAG' | translate) : ''"
             (onSelect)="openTagsPopup()"

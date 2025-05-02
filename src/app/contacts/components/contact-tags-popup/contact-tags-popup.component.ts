@@ -45,6 +45,8 @@ export class ContactTagsPopupComponent implements OnInit {
           _tag.selected = data.tags.includes(_tag.value);
         });
       }
+
+      this.selectedTags = this.#filterPipe.transform(this.tags, 'selected', true).length;
     } catch (error) {
       this.#log.error({
         fileName: 'contact-tags-popup.component',
