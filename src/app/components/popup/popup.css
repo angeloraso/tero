@@ -1,7 +1,3 @@
 :host {
   --bizy-list-row-gap: 2rem
 }
-
-.popup__text {
-  text-align: center;
-}

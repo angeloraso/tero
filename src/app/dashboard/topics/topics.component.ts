@@ -13,6 +13,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { WHATSAPP_URL } from '@core/constants';
 import { ITopic, ITopicData, TOPIC_DATA_TYPE, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService, UsersService } from '@core/services';
@@ -243,26 +244,37 @@ export class TopicsComponent implements OnInit {
   }
 
   async deleteTopicData(topic: ITopic, index: number) {
-    try {
-      if (this.loading || !topic || typeof index === 'undefined' || index === null) {
-        return;
-      }
-
-      this.loading = true;
-
-      topic.data.splice(index, 1);
-
-      await this.#topicsService.putTopic(topic);
-    } catch (error) {
-      this.#log.error({
-        fileName: 'topics.component',
-        functionName: 'deleteTopicData',
-        param: error
-      });
-      this.#toast.danger();
-    } finally {
-      this.loading = false;
+    if (this.loading || !topic || typeof index === 'undefined' || index === null) {
+      return;
     }
+
+    this.#popup.open<boolean>(
+      {
+        component: PopupComponent,
+        data: {
+          title: this.#translate.get('TOPICS.DELETE_TOPIC_DATA_POPUP.TITLE'),
+          msg: `${this.#translate.get('TOPICS.DELETE_TOPIC_DATA_POPUP.MSG')}: ${topic.data[index].key} ${topic.data[index].value}`
+        }
+      },
+      async res => {
+        try {
+          if (res) {
+            this.loading = true;
+            topic.data.splice(index, 1);
+            await this.#topicsService.putTopic(topic);
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'topics.component',
+            functionName: 'deleteTopicData',
+            param: error
+          });
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
   }
 
   checkFilters(activated: boolean) {

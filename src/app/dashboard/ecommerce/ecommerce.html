@@ -158,14 +158,14 @@
         *ngIf="products.length !== 0 && (products 
                                             | bizySearch: search : searchKeys
                                             | bizyFilter : 'tags' : filterTags).length === 0">
-        <h4 class="tero-no-matches__text">{{'CORE.NO_MATCHES' | translate}}</h4>
+        <h4 class="tero-text--center">{{'CORE.NO_MATCHES' | translate}}</h4>
     </bizy-tag>
 
     <bizy-tag 
         [type]="BIZY_TAG_TYPE.WARNING"
         class="animated fade-in tero-no-matches"
         *ngIf="!loading && products.length === 0">
-        <h4 class="tero-no-matches__text">{{'ECOMMERCE.EMPTY' | translate}}</h4>
+        <h4 class="tero-text--center">{{'ECOMMERCE.EMPTY' | translate}}</h4>
     </bizy-tag>
 
 </tero-wrapper>

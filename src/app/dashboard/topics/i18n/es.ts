@@ -29,6 +29,10 @@ export const locale = {
       TOPIC_DATA_POPUP: {
         TITLE: 'Agregar información'
       },
+      DELETE_TOPIC_DATA_POPUP: {
+        TITLE: 'Borrar información',
+        MSG: 'Se borrará la siguiente información del asunto'
+      },
       TOPIC_STATES_POPUP: {
         TITLE: 'Seleccionar estado'
       },
