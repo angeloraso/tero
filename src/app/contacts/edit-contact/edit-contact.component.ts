@@ -17,7 +17,7 @@ import { PopupComponent } from '@components/popup';
 import { ContactTagsPopupComponent, RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
 import { DEFAULT_USER_PICTURE, LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
-import { ContactsService } from '@core/services';
+import { ContactsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 
@@ -40,9 +40,9 @@ export class EditContactComponent implements OnInit {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #popup = inject(BizyPopupService);
   readonly #translate = inject(BizyTranslateService);
+  readonly #usersService = inject(UsersService);
 
   loading: boolean = false;
-  tagSearch: string | number = '';
   contact: IContact | null = null;
   contactId: string | null = null;
 
@@ -72,7 +72,17 @@ export class EditContactComponent implements OnInit {
         return;
       }
 
-      const contact = await this.#contactsService.getContact(this.contactId);
+      const [contact, isConfig] = await Promise.all([this.#contactsService.getContact(this.contactId), this.#usersService.isConfig()]);
+
+      if (
+        !contact ||
+        (contact.accountId && contact.accountId !== this.#auth.getId() && !isConfig) ||
+        (contact.accountEmail && contact.accountEmail !== this.#auth.getEmail() && !isConfig)
+      ) {
+        this.goBack();
+        return;
+      }
+
       this.contact = structuredClone(contact);
 
       if (this.contact.picture) {

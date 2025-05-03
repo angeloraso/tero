@@ -167,7 +167,8 @@ export class Contact implements IContact {
 
 export interface IEcommerceProduct {
   id: string;
-  accountId: string;
+  accountId?: string; // Deprecated
+  accountEmail: string;
   contactName: string;
   productName: string;
   price: number | null;
@@ -175,13 +176,15 @@ export interface IEcommerceProduct {
   pictures: Array<string>;
   phones: Array<IPhone>;
   tags: Array<string>;
+  aliasCBU?: string;
   created: number;
   updated: number;
 }
 
 export class EcommerceProduct implements IEcommerceProduct {
   id: string;
-  accountId: string;
+  accountId?: string; // Deprecated
+  accountEmail: string;
   contactName: string;
   productName: string;
   description: string;
@@ -189,12 +192,14 @@ export class EcommerceProduct implements IEcommerceProduct {
   pictures: Array<string>;
   phones: Array<IPhone>;
   tags: Array<string>;
+  aliasCBU?: string;
   created: number;
   updated: number;
 
   constructor(product: Omit<IEcommerceProduct, 'id' | 'created' | 'updated'>) {
     this.id = uuid4();
     this.accountId = product.accountId;
+    this.accountEmail = product.accountEmail;
     this.contactName = product.contactName;
     this.productName = product.productName;
     this.price = product.price ?? null;
@@ -202,6 +207,7 @@ export class EcommerceProduct implements IEcommerceProduct {
     this.pictures = product.pictures ?? [];
     this.phones = product.phones ?? [];
     this.tags = product.tags ?? [];
+    this.aliasCBU = product.aliasCBU ?? '';
     this.created = Date.now();
     this.updated = Date.now();
   }

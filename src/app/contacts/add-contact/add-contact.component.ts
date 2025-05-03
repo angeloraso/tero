@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
@@ -26,7 +26,6 @@ export class AddContactComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #home = inject(HomeService);
   readonly #fb = inject(FormBuilder);
-  readonly #ref = inject(ChangeDetectorRef);
   readonly #popup = inject(BizyPopupService);
 
   loading: boolean = false;
@@ -150,8 +149,6 @@ export class AddContactComponent implements OnInit {
               this.rating.setValue([contactRating]);
             }
           }
-
-          this.#ref.detectChanges();
         }
       }
     );
@@ -210,7 +207,7 @@ export class AddContactComponent implements OnInit {
       }
 
       this.loading = true;
-      const accountEmail = await this.#auth.getEmail();
+      const accountEmail = this.#auth.getEmail();
       if (!accountEmail) {
         throw new Error();
       }

@@ -19,6 +19,7 @@ export class EcommerceService {
     this.#database.putEcommerceProduct({
       id: product.id,
       accountId: product.accountId,
+      accountEmail: product.accountEmail,
       productName: product.productName,
       contactName: product.contactName,
       price: product.price,

@@ -4,7 +4,7 @@
 
     <h1 slot=start>{{'CONTACTS.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
     <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig || isNeighbor" (onSelect)="addContact()"><h2><i class="fa-solid fa-user-plus"></i></h2></bizy-button>
 

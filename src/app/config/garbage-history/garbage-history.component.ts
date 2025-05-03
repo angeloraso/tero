@@ -88,12 +88,12 @@ export class GarbageHistoryComponent implements OnInit {
           if (res) {
             this.loading = true;
 
-            const email = await this.#auth.getEmail();
-            if (!email) {
-              return;
+            const accountEmail = this.#auth.getEmail();
+            if (!accountEmail) {
+              throw new Error();
             }
 
-            await this.#garbageTruckService.postRecord({ accountEmail: email, date: data.start });
+            await this.#garbageTruckService.postRecord({ accountEmail, date: data.start });
             await this.#buildCalendar();
           }
         } catch (error) {

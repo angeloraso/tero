@@ -173,15 +173,15 @@ export class DashboardComponent implements OnInit {
         try {
           if (res) {
             this.loading = true;
-            const email = await this.#auth.getEmail();
-            if (!email) {
-              return;
+            const accountEmail = this.#auth.getEmail();
+            if (!accountEmail) {
+              throw new Error();
             }
 
             const date = new Date();
             date.setHours(0, 0, 0, 0);
 
-            await this.#garbageTruckService.postRecord({ accountEmail: email, date: date.getTime() });
+            await this.#garbageTruckService.postRecord({ accountEmail, date: date.getTime() });
 
             await this.#mobile.sendPushNotification({
               topicId: TOPIC_SUBSCRIPTION.GARBAGE,

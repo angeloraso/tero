@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  --bizy-tab-background-color: #fff;
+  --bizy-tab-selected-background-color: var(--bizy-light-accent-color);
+  --bizy-tab-padding: 0.7rem;
+}

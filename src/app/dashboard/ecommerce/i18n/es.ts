@@ -8,6 +8,9 @@ export const locale = {
       EMPTY: 'No hay productos para mostrar',
       CHECK_PRICE: 'Consultar precio',
       FREE: 'Gratis',
+      PRODUCT_TAGS_POPUP: {
+        TITLE: 'Seleccionar categoría'
+      },
       ADD_ECOMMERCE_PRODUCT: {
         TITLE: 'Agregar producto'
       },

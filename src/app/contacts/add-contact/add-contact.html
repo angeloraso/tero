@@ -85,8 +85,8 @@
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TAG' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="tags.hasError('required') && tagsInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
 
-            <bizy-tag slot="prefix" *ngFor="let c of tags.value" [type]="BIZY_TAG_TYPE.INFO">
-                <h6>{{c}}</h6>
+            <bizy-tag slot="prefix" *ngFor="let t of tags.value" [type]="BIZY_TAG_TYPE.INFO">
+                <h6>{{t}}</h6>
             </bizy-tag>
 
         </bizy-input>

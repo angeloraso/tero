@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { BizyPopupService, BizyValidatorService } from '@bizy/core';
-import { EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, TEL_MAX_LENGTH } from '@core/constants';
+import { EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, PHONE_MAX_LENGTH } from '@core/constants';
 import { TOPIC_DATA_TYPE } from '@core/model';
 @Component({
   selector: 'tero-topic-data-popup',
@@ -53,8 +53,8 @@ export class TopicDataPopupComponent {
       this.MAX_LENGTH = EMAIL_MAX_LENGTH;
     } else if (type === TOPIC_DATA_TYPE.TEL) {
       this.dataType = 'tel';
-      this.value.setValidators(defaultValidators.concat(Validators.maxLength(TEL_MAX_LENGTH)));
-      this.MAX_LENGTH = TEL_MAX_LENGTH;
+      this.value.setValidators(defaultValidators.concat(Validators.maxLength(PHONE_MAX_LENGTH)));
+      this.MAX_LENGTH = PHONE_MAX_LENGTH;
     } else if (type === TOPIC_DATA_TYPE.NUMBER) {
       this.dataType = 'number';
       this.value.setValidators(defaultValidators.concat(this.#validator.numberValidator()));

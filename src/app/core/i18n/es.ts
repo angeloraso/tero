@@ -64,6 +64,7 @@ export const locale = {
           TAG: 'Categoría',
           NO_TAG: 'Sin categorías',
           PRICE: 'Precio',
+          CHECK_PRICE: 'Consultar precio',
           STATE: 'Estado',
           ROLE: 'Rol',
           TRANSACTION_ID: 'Identificador de pago (recomendado)',
@@ -76,7 +77,9 @@ export const locale = {
           SECURITY_GROUP: 'Grupo de seguridad',
           SELECTED: 'Seleccionados',
           PARTNERS: 'Colaboradores',
-          NO_PARTNERS: 'Sin colaboradores'
+          NO_PARTNERS: 'Sin colaboradores',
+          PRODUCT: 'Producto',
+          CONTACT: 'Contacto'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',

@@ -8,6 +8,7 @@ import {
   BizyCopyToClipboardService,
   BizyDeviceService,
   BizyExportToCSVService,
+  BizyFilterPipe,
   BizyLogService,
   BizyOrderByPipe,
   BizyRouterService,
@@ -47,6 +48,7 @@ export class EcommerceComponent implements OnInit {
   readonly #exportToCSV = inject(BizyExportToCSVService);
   readonly #copyToClipboard = inject(BizyCopyToClipboardService);
   readonly #searchPipe = inject(BizySearchPipe);
+  readonly #filterPipe = inject(BizyFilterPipe);
   readonly #orderByPipe = inject(BizyOrderByPipe);
   readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
@@ -57,9 +59,9 @@ export class EcommerceComponent implements OnInit {
   isConfig = false;
   products: Array<IEcommerceProductCard> = [];
   search: string | number = '';
-  searchKeys = ['name', 'tags', 'description', '_phones'];
+  searchKeys = ['productName', 'tags', 'description', '_phones'];
   order: 'asc' | 'desc' = 'asc';
-  orderBy = 'name';
+  orderBy = 'updated';
   isDesktop = this.#device.isDesktop();
   isMobile = ENV.mobile;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
@@ -120,13 +122,16 @@ export class EcommerceComponent implements OnInit {
   }
 
   selectEcommerceProduct(product: IEcommerceProduct) {
-    if (!product || (!this.isNeighbor && !this.isConfig) || product.accountId !== this.#auth.getId()) {
+    if (
+      !product ||
+      !this.isNeighbor ||
+      (product.accountId && product.accountId !== this.#auth.getId() && !this.isConfig) ||
+      (product.accountEmail && product.accountEmail !== this.#auth.getEmail() && !this.isConfig)
+    ) {
       return;
     }
 
-    this.#router.goTo({
-      path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.ECOMMERCE}/${product.id}`
-    });
+    this.#router.goTo({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.ECOMMERCE}/${product.id}` });
   }
 
   checkFilters(activated: boolean) {
@@ -259,6 +264,7 @@ ${this.#translate.get('CORE.FORM.FIELD.TAG')}: ${product.tags.join(', ')}`
 
   #filter(items: Array<IEcommerceProductCard>): Array<IEcommerceProductCard> {
     let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);
+    _items = this.#filterPipe.transform(_items, 'tags', this.filterTags);
     _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }

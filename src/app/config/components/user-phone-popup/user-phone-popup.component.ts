@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { BizyPopupService } from '@bizy/core';
+import { PHONE_MAX_LENGTH, PHONE_MIN_LENGTH } from './../../../core/constants';
 
 @Component({
   selector: 'tero-user-phone-popup',
@@ -14,11 +15,11 @@ export class UserPhonePopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #fb = inject(FormBuilder);
 
-  readonly MIN_LENGTH = 10;
-  readonly MAX_LENGTH = 10;
+  readonly PHONE_MIN_LENGTH = PHONE_MIN_LENGTH;
+  readonly PHONE_MAX_LENGTH = PHONE_MAX_LENGTH;
 
   readonly #form = this.#fb.group({
-    phone: [null, [Validators.minLength(this.MIN_LENGTH), Validators.maxLength(this.MAX_LENGTH), Validators.required]]
+    phone: [null, [Validators.minLength(this.PHONE_MIN_LENGTH), Validators.maxLength(this.PHONE_MAX_LENGTH), Validators.required]]
   });
 
   get phone() {

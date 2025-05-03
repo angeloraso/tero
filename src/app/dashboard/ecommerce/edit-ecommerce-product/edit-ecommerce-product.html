@@ -6,23 +6,145 @@
 
     <span slot=start [bizyLoading]="loading"></span>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteEcommerceProduct()" [disabled]="loading"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteProduct()" [disabled]="loading"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
 <tero-wrapper>
 
-    <tero-ecommerce-product-form
-        *ngIf="product"
-        [disabled]="loading"
-        [productName]="product.productName"
-        [contactName]="product.contactName"
-        [price]="product.price"
-        [description]="product.description"
-        [phone]="product.phones[0].number"
-        [tags]="{available: tags, selected: product.tags}"
-        (canceled)="goBack()"
-        (confirmed)="save($event)">
-    </tero-ecommerce-product-form>
+    <bizy-tabs>
+
+        <bizy-tab linePosition="bottom" [selected]="selectedTab === 'product'" (onSelect)="selectedTab = 'product'">
+
+            <h5>{{'CORE.FORM.FIELD.PRODUCT' | translate}}</h5>
+
+        </bizy-tab>
+
+        <bizy-tab linePosition="bottom" [selected]="selectedTab === 'contact'" (onSelect)="selectedTab = 'contact'">
+
+            <h5>{{'CORE.FORM.FIELD.CONTACT' | translate}}</h5>
+
+        </bizy-tab>
+        
+    </bizy-tabs>
+
+    <bizy-form>
+
+        <bizy-input
+            #productNameInput
+            class="animated fade-in-left"
+            *ngIf="selectedTab === 'product'"
+            [disabled]="loading"
+            [value]="productName.value"
+            (onChange)="productName.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="productName.hasError('required') && productNameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="productName.hasError('minlength') && productNameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="productName.hasError('maxlength') && productNameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+
+        <bizy-input
+            #productDescriptionInput
+            class="animated fade-in-left"
+            *ngIf="selectedTab === 'product'"
+            type="textarea"
+            [disabled]="loading"
+            [value]="productDescription.value"
+            (onChange)="productDescription.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="productDescription.hasError('maxlength') && productDescriptionInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{DESCRIPTION_LENGTH}}</h6>
+        </bizy-input>
+
+        <bizy-section *ngIf="selectedTab === 'product'" class="animated fade-in-left">
+
+            <bizy-section-start>
+
+                <bizy-input
+                    #productPriceInput
+                    [disabled]="loading"
+                    type="currency"
+                    [disabled]="loading || checkPrice"
+                    [value]="productPrice.value"
+                    (onChange)="productPrice.setValue($event)">
+                    <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.PRICE' | translate}}</strong></h6>
+                    <h6 slot="prefix" class="tero--info">$</h6>
+                    <h6 slot="error" *ngIf="productPrice.hasError('required') && productPriceInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+                </bizy-input>
+
+            </bizy-section-start>
+
+            <bizy-toggle [(selected)]="checkPrice" (onSelect)="onCheckPrice()" [disabled]="loading">
+                <h6 slot="end"><strong>{{'CORE.FORM.FIELD.CHECK_PRICE' | translate}}</strong></h6>
+            </bizy-toggle>
+
+        </bizy-section>
+
+        <bizy-input
+            #productTagsInput
+            class="animated fade-in-left"
+            *ngIf="selectedTab === 'product'"
+            [disabled]="loading"
+            [value]="!productTags.value || productTags.value.length === 0 ? ('CORE.FORM.FIELD.NO_TAG' | translate) : ''"
+            (onSelect)="openTagsPopup()"
+            [readonly]="true">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TAG' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="productTags.hasError('required') && productTagsInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+
+            <bizy-tag slot="prefix" *ngFor="let t of productTags.value" [type]="BIZY_TAG_TYPE.INFO">
+                <h6>{{t}}</h6>
+            </bizy-tag>
+
+        </bizy-input>
+
+        <bizy-input
+            #contactNameInput
+            class="animated fade-in-right"
+            *ngIf="selectedTab === 'contact'"
+            [disabled]="loading"
+            [value]="contactName.value"
+            (onChange)="contactName.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="contactName.hasError('required') && contactNameInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="contactName.hasError('minlength') && contactNameInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{NAME_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="contactName.hasError('maxlength') && contactNameInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+        </bizy-input>
+
+        <bizy-input
+            #contactPhoneInput
+            class="animated fade-in-right"
+            *ngIf="selectedTab === 'contact'"
+            [disabled]="loading"
+            [value]="contactPhone.value"
+            type="tel"
+            (onChange)="contactPhone.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.PHONE' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="contactPhone.hasError('required') && contactPhoneInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="contactPhone.hasError('minlength') && contactPhoneInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{PHONE_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="contactPhone.hasError('maxlength') && contactPhoneInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{PHONE_MAX_LENGTH}}</h6>
+        </bizy-input>
+
+        <bizy-input
+            [value]="contactAliasCBU.value"
+            class="animated fade-in-right"
+            *ngIf="selectedTab === 'contact'"
+            [disabled]="loading"
+            (onChange)="contactAliasCBU.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.ALIAS_CBU' | translate}}</strong></h6>
+        </bizy-input>
+
+    </bizy-form>
 
 </tero-wrapper>
+
+<bizy-section class="tero-confirm-buttons">
+
+    <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="goBack()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+    </bizy-button>
+
+    <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="save()" [disabled]="loading">
+        <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+        <h5><i class="fa-solid fa-check"></i></h5>
+    </bizy-button>
+        
+</bizy-section>

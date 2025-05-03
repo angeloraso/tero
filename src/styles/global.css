@@ -331,6 +331,7 @@ h6 {
 .tero-text--center {
   text-wrap: auto;
   text-align: center;
+  width: 100%;
 }
 
 .tero-confirm-buttons {
