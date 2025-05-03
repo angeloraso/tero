@@ -1,15 +1,7 @@
-.popup__header {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  row-gap: 2rem;
-  margin-bottom: 1rem;
+:host {
+  --bizy-list-row-gap: 2rem
 }
 
-.popup__header .tero--info {
-  text-align: center;
-}
-
-.popup__header__msg {
+.popup__text {
   text-align: center;
 }

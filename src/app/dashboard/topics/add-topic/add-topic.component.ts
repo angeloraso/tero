@@ -1,8 +1,16 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
+import {
+  BIZY_TAG_TYPE,
+  BizyFormComponent,
+  BizyLogService,
+  BizyPopupService,
+  BizyRouterService,
+  BizyToastService,
+  BizyTranslateService
+} from '@bizy/core';
 import { AuthService } from '@core/auth/auth.service';
 import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { ERROR, TOPIC_STATE } from '@core/model';
@@ -18,6 +26,7 @@ import { HomeService } from '@home/home.service';
   imports: SharedModules
 })
 export class AddTopicComponent implements OnInit {
+  @ViewChild(BizyFormComponent) formComponent: BizyFormComponent | null = null;
   readonly #topicsService = inject(TopicsService);
   readonly #router = inject(BizyRouterService);
   readonly #toast = inject(BizyToastService);
@@ -143,6 +152,7 @@ export class AddTopicComponent implements OnInit {
   async save() {
     try {
       if (this.#form.invalid || this.loading) {
+        this.formComponent?.setTouched();
         return;
       }
 

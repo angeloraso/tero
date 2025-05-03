@@ -1,24 +1,24 @@
-<tero-wrapper>
 
-    <span class="popup__header">
+<bizy-list>
+
+    <bizy-section-center>
+        <h1 class="tero--info popup__text">{{title}}</h1>
+    </bizy-section-center>
+
+    <h3 class="popup__text">{{msg}}</h3>
+
+    <bizy-section>
+
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+        </bizy-button>
     
-        <h1 class="tero--info">{{title}}</h1>
-
-        <h3 class="popup__header__msg">{{msg}}</h3>
-    
-    </span>
-    
-</tero-wrapper>
-
-<bizy-section class="tero-confirm-buttons">
-
-    <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
-        <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
-    </bizy-button>
-
-    <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
-        <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
-        <h5><i class="fa-solid fa-check"></i></h5>
-    </bizy-button>
+        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+            <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+            <h5><i class="fa-solid fa-check"></i></h5>
+        </bizy-button>
+            
+    </bizy-section>
         
-</bizy-section>
+</bizy-list>
+

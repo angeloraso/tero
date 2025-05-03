@@ -39,7 +39,7 @@ export class AddContactComponent implements OnInit {
     phone: [null, [Validators.required]],
     description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH)]],
     tags: [null, [Validators.required]],
-    rating: [null, [Validators.required]]
+    rating: [null]
   });
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;

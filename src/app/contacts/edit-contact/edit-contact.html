@@ -4,6 +4,8 @@
 
     <h1 slot=start>{{'CONTACTS.EDIT_CONTACT.TITLE' | translate}}</h1>
 
+    <span slot="start" [bizyLoading]="loading"></span>
+
     <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="deleteContact()" [disabled]="loading"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
 
 </bizy-toolbar>

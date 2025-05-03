@@ -1,6 +1,8 @@
 <bizy-form>
 
-    <h4 class="tero--info"><strong>{{'CONFIG.USER_ALIAS_CBU_POPUP.TITLE' | translate}}</strong></h4>
+    <bizy-section-center>
+        <h4 class="tero--info"><strong>{{'CONFIG.USER_ALIAS_CBU_POPUP.TITLE' | translate}}</strong></h4>
+    </bizy-section-center>
 
     <bizy-input
         #aliasCBUInput
@@ -13,24 +15,15 @@
 
     <bizy-section>
 
-        <bizy-section-center>
-
-            <bizy-button class="tero-button--danger" (onSelect)="close()">
-                <h5><i class="fa-solid fa-xmark"></i></h5>
-                <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
-            </bizy-button>
-
-        </bizy-section-center>
-
-        <bizy-section-center>
-
-            <bizy-button type="submit" class="tero-button--accent" (onSelect)="apply()">
-                <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
-                <h5><i class="fa-solid fa-check"></i></h5>
-            </bizy-button>
+        <bizy-button class="tero-confirm-buttons__cancel" (onSelect)="close()">
+            <h5>{{'CORE.BUTTON.CANCEL' | translate}}</h5>
+        </bizy-button>
+    
+        <bizy-button type="submit" class="tero-confirm-buttons__confirm" (onSelect)="apply()">
+            <h5>{{'CORE.BUTTON.CONFIRM' | translate}}</h5>
+            <h5><i class="fa-solid fa-check"></i></h5>
+        </bizy-button>
             
-        </bizy-section-center>
-
     </bizy-section>
 
 </bizy-form>

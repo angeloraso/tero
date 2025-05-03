@@ -4,9 +4,9 @@
 
     <h1 slot="start">{{'NEIGHBORS.EDIT_NEIGHBOR.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" class="tero-toolbar-action" [disabled]="loading" (onSelect)="deleteNeighbor()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
-
     <span slot="start" [bizyLoading]="loading"></span>
+    
+    <bizy-button slot="end" class="tero-toolbar-action" [disabled]="loading" (onSelect)="deleteNeighbor()"><h2><i class="fa-solid fa-trash-alt"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
