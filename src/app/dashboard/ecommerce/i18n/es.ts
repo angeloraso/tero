@@ -14,11 +14,6 @@ export const locale = {
       ADD_ECOMMERCE_PRODUCT: {
         TITLE: 'Agregar producto'
       },
-      ECOMMERCE_PRODUCT_FORM: {
-        PRODUCT: 'Producto',
-        CONTACT: 'Contacto',
-        CHECK_PRICE: 'Consultar'
-      },
       EDIT_ECOMMERCE_PRODUCT: {
         TITLE: 'Editar producto',
         DELETE_POPUP: {
