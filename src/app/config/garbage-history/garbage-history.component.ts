@@ -69,6 +69,10 @@ export class GarbageHistoryComponent implements OnInit {
       return;
     }
 
+    if (data.start > Date.now()) {
+      return;
+    }
+
     const date = new Date(data.start);
 
     this.#popup.open<boolean>(
