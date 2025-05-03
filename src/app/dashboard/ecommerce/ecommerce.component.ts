@@ -60,7 +60,7 @@ export class EcommerceComponent implements OnInit {
   products: Array<IEcommerceProductCard> = [];
   search: string | number = '';
   searchKeys = ['productName', 'tags', 'description', '_phones'];
-  order: 'asc' | 'desc' = 'asc';
+  order: 'asc' | 'desc' = 'desc';
   orderBy = 'updated';
   isDesktop = this.#device.isDesktop();
   isMobile = ENV.mobile;
