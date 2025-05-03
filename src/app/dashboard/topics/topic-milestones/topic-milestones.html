@@ -34,15 +34,19 @@
 
         <h4 slot="header-start" class="tero--info"><strong>{{topic.title}}</strong></h4>
 
-        <span class="topics__card__content">
+        <bizy-list>
 
-            <ng-container *ngFor="let name of topic._names; let i = index">
-                <bizy-tag *ngIf="i < 2"><h6>{{name}}</h6></bizy-tag>
-            </ng-container>
+            <bizy-section-start>
+                
+                <ng-container *ngFor="let name of topic._names; let i = index">
+                    <bizy-tag *ngIf="i < 2"><h6>{{name}}</h6></bizy-tag>
+                </ng-container>
+
+            </bizy-section-start>
 
             <h6>{{topic.description}}</h6>
 
-        </span>
+        </bizy-list>
 
         <bizy-tag 
             slot="footer-end" 
