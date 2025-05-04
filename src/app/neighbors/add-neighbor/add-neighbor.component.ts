@@ -84,7 +84,9 @@ export class AddNeighborComponent implements OnInit {
       },
       async group => {
         try {
-          this.group.setValue(group);
+          if (group) {
+            this.group.setValue(group);
+          }
         } catch (error) {
           this.#log.error({
             fileName: 'add-neighbor.component',
