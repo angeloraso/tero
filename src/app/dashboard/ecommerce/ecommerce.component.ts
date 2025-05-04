@@ -6,7 +6,6 @@ import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
-  BizyDeviceService,
   BizyExportToCSVService,
   BizyFilterPipe,
   BizyLogService,
@@ -44,7 +43,6 @@ export class EcommerceComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
   readonly #mobile = inject(MobileService);
-  readonly #device = inject(BizyDeviceService);
   readonly #exportToCSV = inject(BizyExportToCSVService);
   readonly #copyToClipboard = inject(BizyCopyToClipboardService);
   readonly #searchPipe = inject(BizySearchPipe);
@@ -62,7 +60,6 @@ export class EcommerceComponent implements OnInit {
   searchKeys = ['productName', 'tags', 'description', '_phones'];
   order: 'asc' | 'desc' = 'desc';
   orderBy = 'updated';
-  isDesktop = this.#device.isDesktop();
   isMobile = ENV.mobile;
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
@@ -155,14 +152,14 @@ export class EcommerceComponent implements OnInit {
     this.products = [...this.products];
   }
 
-  async copyPhone(phone: string) {
+  async copyText(text: string) {
     try {
-      await this.#copyToClipboard.copy(phone);
+      await this.#copyToClipboard.copy(text);
       this.#toast.success();
     } catch (error) {
       this.#log.error({
         fileName: 'ecommerce.component',
-        functionName: 'copyPhone',
+        functionName: 'copyText',
         param: error
       });
       this.#toast.danger();

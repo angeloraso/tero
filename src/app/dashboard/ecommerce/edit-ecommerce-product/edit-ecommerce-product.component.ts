@@ -254,14 +254,15 @@ export class EditEcommerceProductComponent implements OnInit {
   async save() {
     try {
       if (this.#form.invalid || this.loading || !this.product) {
-        this.formComponent?.setTouched();
-
         if (this.productName.invalid || this.productPrice.invalid || this.productTags.invalid) {
           this.selectedTab = 'product';
         } else {
           this.selectedTab = 'contact';
         }
 
+        setTimeout(() => {
+          this.formComponent?.setTouched();
+        }, 1);
         return;
       }
 

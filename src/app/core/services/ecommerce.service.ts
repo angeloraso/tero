@@ -27,6 +27,7 @@ export class EcommerceService {
       pictures: product.pictures,
       phones: product.phones,
       tags: product.tags,
+      aliasCBU: product.aliasCBU,
       created: Number(product.created) || Date.now(),
       updated: Date.now()
     });
