@@ -4,6 +4,8 @@
   height: 100%;
 
   --bizy-tab-background-color: #fff;
-  --bizy-tab-selected-background-color: var(--bizy-light-accent-color);
+  --bizy-tab-selected-color: var(--bizy-dark-warning-color);
+  --bizy-tab-selected-background-color: var(--bizy-light-warning-color);
+  --bizy-tab-selected-bar-color: var(--bizy-dark-warning-color);
   --bizy-tab-padding: 0.7rem;
 }
