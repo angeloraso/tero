@@ -171,7 +171,7 @@ export class AddNeighborComponent implements OnInit {
         name: this.name.value ? this.name.value.trim() : '',
         surname: this.surname.value ? this.surname.value.trim() : '',
         lot: Number(this.lot.value),
-        alarmNumber: this.alarmNumber.value,
+        alarmNumber: this.alarmNumber.value && this.alarmNumber.value !== NO_ID ? this.alarmNumber.value : null,
         alarmControls: this.alarmControls.value,
         security: Boolean(this.group.value),
         group: this.group.value

@@ -142,7 +142,7 @@
                 <h6><i [bizyLoading]="securityLoading" class="fa-solid fa-shield-halved"></i></h6>
             </bizy-tag>
 
-            <bizy-section-start slot="footer-start" *ngIf="neighbor.alarmNumber">
+            <bizy-section-start slot="footer-start" *ngIf="neighbor.alarmNumber && neighbor.alarmControls && neighbor.alarmControls.length > 0">
                 <h6><strong>{{'CORE.FORM.FIELD.ALARM_CONTROLS' | translate}}:</strong></h6>
                 <bizy-tag *ngFor="let control of neighbor.alarmControls">
                     <h6><i class="fa-solid fa-mobile-retro"></i></h6>
