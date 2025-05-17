@@ -96,7 +96,7 @@
             [disabled]="loading"
             (onSelect)="openSecurityGroupsPopup()"
             [readonly]="true"
-            [value]="group.value !== NO_ID ? ('CORE.FORM.FIELD.GROUP' | translate) + ' ' + group.value: ('CORE.FORM.FIELD.NO_GROUP' | translate)">
+            [value]="group.value && group.value !== NO_ID ? ('CORE.FORM.FIELD.GROUP' | translate) + ' ' + group.value : ('CORE.FORM.FIELD.NO_GROUP' | translate)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SECURITY_GROUP' | translate}}</strong></h6>
         </bizy-input>
                 

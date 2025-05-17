@@ -266,8 +266,8 @@ export class EditNeighborComponent implements OnInit {
         lot: Number(this.lot.value),
         alarmNumber: this.alarmNumber.value && this.alarmNumber.value !== NO_ID ? this.alarmNumber.value : null,
         alarmControls: this.alarmControls.value,
-        security: Boolean(this.group.value),
-        group: this.group.value
+        security: this.group.value && this.group.value !== NO_ID,
+        group: this.group.value && this.group.value !== NO_ID ? this.group.value : null
       });
       this.goBack();
     } catch (error) {
