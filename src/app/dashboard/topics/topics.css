@@ -13,6 +13,7 @@
 
 .topics__card__content__data {
   --bizy-card-border: 0.1rem solid var(--bizy-info-color);
+  --bizy-card-padding: 0.3rem;
   --bizy-section-end-column-gap: 0;
   --bizy-list-row-gap: 0;
 }
