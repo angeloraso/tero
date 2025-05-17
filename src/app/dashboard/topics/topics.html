@@ -57,7 +57,7 @@
 
     </bizy-section>
     
-    <span *ngIf="!loading" class="topics__cards animated fade-in">
+    <bizy-list *ngIf="!loading" class="animated fade-in">
 
         <bizy-card 
             (onSelect)="goToTopicMilestones(topic)"
@@ -87,24 +87,26 @@
                 <h4><i class="fa-solid fa-pencil-alt"></i></h4>
             </bizy-button>
 
-            <span class="topics__card__content">
+            <bizy-list>
 
-                <span class="topics__card__names">
+                <bizy-section-start>
                     <ng-container *ngFor="let name of topic._names; let i = index">
                         <bizy-tag *ngIf="i < 2"><h6>{{name}}</h6></bizy-tag>
                     </ng-container>
-                </span>
+
+                    <h6 *ngIf="topic._names.length > 2">...</h6>
+                </bizy-section-start>
     
                 <h6 bizyTooltip [tooltipLineClamp]="5">{{topic.description}}</h6>
 
-                <span class="topics__card__content__data" *ngFor="let data of topic.data; let j = index">
+                <bizy-card class="topics__card__content__data" *ngFor="let data of topic.data; let j = index">
 
-                    <span class="topics__card__content__data__key-value">
+                    <bizy-list slot="header-start">
                         <h6 class="tero--info">{{data.key}}</h6>
                         <h6 bizyTooltip [tooltipLineClamp]="1">{{data.value}}</h6>
-                    </span>
+                    </bizy-list>
 
-                    <span class="topics__card__content__data__actions">
+                    <bizy-section-end slot="header-end">
 
                         <bizy-button 
                             class="tero-action tero-action--info"
@@ -147,11 +149,11 @@
                             <h6><i class="fa-solid fa-trash-alt"></i></h6>
                         </bizy-button>
 
-                    </span>
+                    </bizy-section-end>
         
-                </span>
+                </bizy-card>
 
-            </span>
+            </bizy-list>
 
             <bizy-tag 
                 slot="footer-start" 
@@ -175,7 +177,7 @@
 
         </bizy-card>
 
-    </span>
+    </bizy-list>
 
     <bizy-grid *ngIf="loading" class="animated fade-in">
 
