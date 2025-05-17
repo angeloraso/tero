@@ -21,6 +21,7 @@ export class NeighborsService {
       alarmControls: neighbor.alarmControls,
       name: neighbor.name,
       surname: neighbor.surname,
+      email: neighbor.email,
       security: neighbor.security,
       created: Number(neighbor.created) || Date.now(),
       updated: Date.now()

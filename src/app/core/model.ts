@@ -56,6 +56,7 @@ export interface INeighbor {
   alarmNumber: number | null;
   alarmControls: Array<number>;
   group: number;
+  email?: string;
   created: number;
   updated: number;
 }
@@ -69,6 +70,7 @@ export class Neighbor implements INeighbor {
   alarmNumber: number | null;
   alarmControls: Array<number>;
   group: number;
+  email?: string;
   created: number;
   updated: number;
 
@@ -81,6 +83,7 @@ export class Neighbor implements INeighbor {
     this.name = neighbor.name ?? '';
     this.surname = neighbor.surname ?? '';
     this.security = neighbor.security ?? false;
+    this.email = neighbor.email ?? '';
     this.created = Date.now();
     this.updated = Date.now();
   }

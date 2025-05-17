@@ -55,8 +55,21 @@
             (onChange)="lot.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="lot.hasError('required') && lotInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
-            <h6 slot="error" *ngIf="lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_VALUE}}</h6>
+            <h6 slot="error" *ngIf="lot.hasError('min') && lotInput.touched">{{'CORE.FORM.ERROR.MIN' | translate}} {{MIN_LOT_VALUE}}</h6>
             <h6 slot="error" *ngIf="lot.hasError('max') && lotInput.touched">{{'CORE.FORM.ERROR.MAX' | translate}} {{MAX_LOT_VALUE}}</h6>
+        </bizy-input>
+
+        <bizy-input
+            #emailInput
+            type="email"
+            [disabled]="loading"
+            [value]="email.value"
+            (onChange)="email.setValue($event)">
+            <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.EMAIL' | translate}}</strong></h6>
+            <h6 slot="error" *ngIf="email.hasError('required') && emailInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="email.hasError('minlength') && emailInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{EMAIL_MIN_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="email.hasError('maxlength') && emailInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{EMAIL_MAX_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="email.hasError('bizyEmail') && emailInput.touched">{{'CORE.FORM.ERROR.EMAIL' | translate}}</h6>
         </bizy-input>
     
         <bizy-section>

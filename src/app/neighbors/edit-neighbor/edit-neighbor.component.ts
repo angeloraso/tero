@@ -11,10 +11,11 @@ import {
   BizyPopupService,
   BizyRouterService,
   BizyToastService,
-  BizyTranslateService
+  BizyTranslateService,
+  BizyValidatorService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { DEFAULT_USER_PICTURE, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
+import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -36,21 +37,25 @@ export class EditNeighborComponent implements OnInit {
   readonly #log = inject(BizyLogService);
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
+  readonly #validator = inject(BizyValidatorService);
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
-  readonly MIN_VALUE = 0;
+  readonly MIN_LOT_VALUE = 0;
   readonly MAX_LOT_VALUE = LOTS.length;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
+  readonly EMAIL_MIN_LENGTH = EMAIL_MIN_LENGTH;
+  readonly EMAIL_MAX_LENGTH = EMAIL_MAX_LENGTH;
   readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
 
   readonly #form = this.#fb.group({
     name: [null, [Validators.required]],
     surname: [null],
-    lot: [null, [Validators.min(this.MIN_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]],
+    lot: [null, [Validators.min(this.MIN_LOT_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]],
     alarmNumber: [NO_ID],
     alarmControls: [[]],
-    group: [NO_ID]
+    group: [NO_ID],
+    email: [null, [Validators.minLength(this.EMAIL_MIN_LENGTH), Validators.maxLength(this.EMAIL_MAX_LENGTH), this.#validator.emailValidator()]]
   });
 
   readonly NO_ID = NO_ID;
@@ -71,6 +76,10 @@ export class EditNeighborComponent implements OnInit {
 
   get group() {
     return this.#form.get('group') as FormControl;
+  }
+
+  get email() {
+    return this.#form.get('email') as FormControl;
   }
 
   get alarmNumber() {
@@ -108,6 +117,10 @@ export class EditNeighborComponent implements OnInit {
 
       if (this.neighbor.group) {
         this.group.setValue(this.neighbor.group);
+      }
+
+      if (this.neighbor.email) {
+        this.email.setValue(this.neighbor.email);
       }
 
       if (this.neighbor.alarmNumber) {
@@ -263,6 +276,7 @@ export class EditNeighborComponent implements OnInit {
         ...this.neighbor,
         name: this.name.value ? this.name.value.trim() : '',
         surname: this.surname.value ? this.surname.value.trim() : '',
+        email: this.email.value ? this.email.value.trim() : '',
         lot: Number(this.lot.value),
         alarmNumber: this.alarmNumber.value && this.alarmNumber.value !== NO_ID ? this.alarmNumber.value : null,
         alarmControls: this.alarmControls.value,
