@@ -110,7 +110,7 @@ export class SecurityInvoicesComponent implements OnInit {
   }
 
   deleteInvoice(invoice: ISecurityInvoiceRow) {
-    if (!invoice || this.loading || !this.isConfig || !this.isSecurity) {
+    if (!invoice || this.loading || (!this.isConfig && !this.isSecurity)) {
       return;
     }
 
