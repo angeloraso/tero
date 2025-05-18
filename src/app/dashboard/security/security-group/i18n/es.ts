@@ -21,6 +21,10 @@ export const locale = {
           NO_DEBT: 'Sin deuda'
         }
       },
+      USER_INVOICE_NOTIFICATION: {
+        TITLE: 'Registración de pago',
+        BODY: 'Se registró su pago de seguridad'
+      },
       SECURITY_GROUP_INVOICES: {
         TITLE: 'Historial de pagos'
       }

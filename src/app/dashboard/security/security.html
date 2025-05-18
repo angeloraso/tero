@@ -166,7 +166,7 @@
                         slot="header-end"
                         *ngIf="isSecurity && group.debt"
                         class="tero-button--success"
-                        (onSelect)="setGroupDebt(group); $event.stopPropagation()">
+                        (onSelect)="registerGroupPayment(group); $event.stopPropagation()">
                         <h6><i class="fa-solid fa-money-check-dollar"></i></h6>
                         <h6>{{'SECURITY.GROUPS.DEBT_POPUP.TITLE' | translate}}</h6>
                     </bizy-button>

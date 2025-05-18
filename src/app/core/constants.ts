@@ -8,7 +8,9 @@ export enum MENU_OPTION_ID {
 
 export enum TOPIC_SUBSCRIPTION {
   GARBAGE = 'garbage',
-  NEW_TOPIC = 'newTopic'
+  NEW_TOPIC = 'newTopic',
+  USER_SECURITY_INVOICE = 'userSecurityInvoice',
+  GROUP_SECURITY_INVOICE = 'groupSecurityInvoice'
 }
 
 export const LOGO_PATH = '/assets/favicons/favicon.ico';

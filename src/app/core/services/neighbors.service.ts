@@ -10,6 +10,8 @@ export class NeighborsService {
 
   getNeighbor = (neighborId: string) => this.#database.getNeighbor(neighborId);
 
+  getNeighborByEmail = (email: string) => this.#database.getNeighborByEmail(email);
+
   postNeighbor = (neighbor: Omit<INeighbor, 'id' | 'created' | 'updated'>) => this.#database.postNeighbor(new Neighbor(neighbor));
 
   putNeighbor = (neighbor: INeighbor) =>

@@ -240,7 +240,7 @@ export class DashboardComponent implements OnInit {
     this.#router.goTo({ path: PATH.TOPICS });
   }
 
-  setGroupDebt(group: IGroup, event: PointerEvent) {
+  registerGroupPayment(group: IGroup, event: PointerEvent) {
     if (this.loading || !group || !group.debt || !this.isSecurity) {
       return;
     }
@@ -261,6 +261,11 @@ export class DashboardComponent implements OnInit {
             await this.#securityService.postGroupInvoice(group.value);
             group.debt = false;
             this.groups = [...this.groups];
+            await this.#mobile.sendPushNotification({
+              topicId: `${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${group.value}`,
+              title: this.#translate.get('DASHBOARD.SECURITY.GROUP_INVOICE_NOTIFICATION.TITLE'),
+              body: `${this.#translate.get('DASHBOARD.SECURITY.GROUP_INVOICE_NOTIFICATION.BODY')} ${group.value}`
+            });
           }
         } catch (error) {
           this.#log.error({

@@ -7,10 +7,10 @@ import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService, LANGUAGE } from '@bizy/core';
 import { AnalyticsService } from '@core/analytics';
-import { TOPIC_SUBSCRIPTION } from '@core/constants';
+import { SECURITY_GROUPS, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { es } from '@core/i18n';
 import { ERROR } from '@core/model';
-import { DatabaseService, MobileService, UsersService } from '@core/services';
+import { DatabaseService, MobileService, NeighborsService, UsersService } from '@core/services';
 import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { PATH } from './app.routing';
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
   readonly #translate = inject(BizyTranslateService);
   readonly #analytics = inject(AnalyticsService);
+  readonly #neighborsService = inject(NeighborsService);
 
   readonly ROOT_PATHS = [
     `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}`,
@@ -75,10 +76,26 @@ export class AppComponent implements OnInit {
             const user = await this.#usersService.getCurrentUser();
             await this.#analytics.setUserId(String(user.id));
 
+            const neighbor = await this.#neighborsService.getNeighborByEmail(user.email);
+            // Fix possible security group changes
+            await this.#unsubscribeFromSecurityGroupSubscription();
+
             if (user.topicSubscriptions) {
               user.topicSubscriptions.forEach(async _topicSubscription => {
                 try {
-                  await this.#mobile.subscribeToTopic(_topicSubscription);
+                  if (_topicSubscription === TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE && neighbor && neighbor.security && neighbor.group) {
+                    await this.#mobile.subscribeToTopic(`${_topicSubscription}${neighbor.group}`);
+                  } else if (
+                    _topicSubscription === TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE &&
+                    neighbor &&
+                    neighbor.email &&
+                    neighbor.security &&
+                    neighbor.group
+                  ) {
+                    await this.#mobile.subscribeToTopic(`${_topicSubscription}${user.email}`);
+                  } else {
+                    await this.#mobile.subscribeToTopic(_topicSubscription);
+                  }
                 } catch (error) {
                   this.#log.error({
                     fileName: 'app.component',
@@ -146,4 +163,17 @@ export class AppComponent implements OnInit {
       this.#toast.danger();
     }
   }
+
+  #unsubscribeFromSecurityGroupSubscription = () => {
+    try {
+      return Promise.all(SECURITY_GROUPS.map(_group => this.#mobile.unsubscribeFromTopic(`${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${_group}`)));
+    } catch (error) {
+      this.#log.error({
+        fileName: 'app.component',
+        functionName: 'unsubscribeFromSecuritySubscription',
+        param: error
+      });
+      return Promise.resolve();
+    }
+  };
 }

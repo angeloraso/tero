@@ -12,7 +12,7 @@
 
     <ng-container *ngIf="loading.main">
 
-        <bizy-card *ngFor="let i of 2 | bizyRepeat" class="notification-settings__skeleton-card" class="notification-settings__card">
+        <bizy-card *ngFor="let i of 3 | bizyRepeat" class="notification-settings__skeleton-card" class="notification-settings__card">
 
             <bizy-skeleton slot="header-start" height="2rem"></bizy-skeleton>
 
@@ -42,6 +42,24 @@
     
             <bizy-toggle [selected]="newTopicSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewTopicNotification()">
                 <h5 slot="end">{{'NOTIFICATION_SETTINGS.GENERAL.NEW_TOPIC' | translate}}</h5>
+            </bizy-toggle>
+    
+        </bizy-list>
+
+    </bizy-card>
+
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && currentUser" class="notification-settings__card">
+
+        <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.SECURITY.MAIN' | translate}}</h4>
+
+        <bizy-list>
+
+            <bizy-toggle [selected]="userSecurityInvoiceSubscriptionTopic" [disabled]="loading.content || !neighbor || !neighbor.email || !neighbor.security || !neighbor.group" (onSelect)="subscribeToUserSecurityInvoiceNotification()">
+                <h5 slot="end">{{'NOTIFICATION_SETTINGS.SECURITY.USER_SECURITY_INVOICE' | translate}}</h5>
+            </bizy-toggle>
+    
+            <bizy-toggle [selected]="groupSecurityInvoiceSubscriptionTopic" [disabled]="loading.content || !neighbor || !neighbor.security || !neighbor.group" (onSelect)="subscribeToGroupSecurityInvoiceNotification()">
+                <h5 slot="end">{{'NOTIFICATION_SETTINGS.SECURITY.GROUP_SECURITY_INVOICE' | translate}}</h5>
             </bizy-toggle>
     
         </bizy-list>

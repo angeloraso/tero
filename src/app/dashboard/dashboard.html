@@ -90,7 +90,7 @@
             <bizy-tag 
                 slot="footer-start"
                 *ngFor="let group of groups"
-                (onSelect)="setGroupDebt(group, $event)"
+                (onSelect)="registerGroupPayment(group, $event)"
                 [type]="group.debt ? BIZY_TAG_TYPE.DANGER : BIZY_TAG_TYPE.SUCCESS">
                 <h6 [bizyLoading]="loading"><i class="fa-solid fa-users"></i></h6>
             </bizy-tag>

@@ -13,7 +13,7 @@ import {
   LOADING_TYPE
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
+import { LOGO_PATH, TOPIC_SUBSCRIPTION, WHATSAPP_URL } from '@core/constants';
 import { ISecurityGuard, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService, UtilsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -219,7 +219,7 @@ export class SecurityComponent implements OnInit {
     }
   }
 
-  setGroupDebt(group: IGroup) {
+  registerGroupPayment(group: IGroup) {
     if (this.loading || !group || !group.debt || !this.isSecurity) {
       return;
     }
@@ -239,11 +239,16 @@ export class SecurityComponent implements OnInit {
             await this.#securityService.postGroupInvoice(group.value);
             group.debt = false;
             this.groups = [...this.groups];
+            await this.#mobile.sendPushNotification({
+              topicId: `${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${group.value}`,
+              title: this.#translate.get('SECURITY.GROUP_INVOICE_NOTIFICATION.TITLE'),
+              body: `${this.#translate.get('SECURITY.GROUP_INVOICE_NOTIFICATION.BODY')} ${group.value}`
+            });
           }
         } catch (error) {
           this.#log.error({
             fileName: 'security.component',
-            functionName: 'setGroupDebt',
+            functionName: 'registerGroupPayment',
             param: error
           });
           this.#toast.danger();

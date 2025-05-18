@@ -3,8 +3,8 @@ import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { BIZY_CALENDAR_DAY, BIZY_CALENDAR_MODE, BizyLogService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { TOPIC_SUBSCRIPTION } from '@core/constants';
-import { ERROR, ITopic, IUser } from '@core/model';
-import { MobileService, TopicsService, UsersService } from '@core/services';
+import { ERROR, INeighbor, ITopic, IUser } from '@core/model';
+import { MobileService, NeighborsService, TopicsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -28,6 +28,7 @@ export class NotificationSettingsComponent implements OnInit {
   readonly #mobile = inject(MobileService);
   readonly #usersService = inject(UsersService);
   readonly #topicsService = inject(TopicsService);
+  readonly #neighborsService = inject(NeighborsService);
 
   readonly BIZY_CALENDAR_MODE = BIZY_CALENDAR_MODE;
   readonly BIZY_CALENDAR_DAY = BIZY_CALENDAR_DAY;
@@ -41,6 +42,9 @@ export class NotificationSettingsComponent implements OnInit {
 
   garbageSubscriptionTopic: boolean = false;
   newTopicSubscriptionTopic: boolean = false;
+  userSecurityInvoiceSubscriptionTopic: boolean = false;
+  groupSecurityInvoiceSubscriptionTopic: boolean = false;
+  neighbor: INeighbor | null = null;
 
   async ngOnInit() {
     try {
@@ -55,6 +59,8 @@ export class NotificationSettingsComponent implements OnInit {
         return;
       }
 
+      this.neighbor = await this.#neighborsService.getNeighborByEmail(currentUser.email);
+
       this.topics = topics.map(_topic => {
         return { ..._topic, _selected: false };
       });
@@ -64,6 +70,9 @@ export class NotificationSettingsComponent implements OnInit {
       if (this.currentUser.topicSubscriptions) {
         this.garbageSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GARBAGE);
         this.newTopicSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_TOPIC);
+
+        this.userSecurityInvoiceSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE);
+        this.groupSecurityInvoiceSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE);
 
         this.topics.forEach(_topic => {
           _topic._selected = this.currentUser!.topicSubscriptions!.includes(_topic.id);
@@ -76,6 +85,7 @@ export class NotificationSettingsComponent implements OnInit {
         param: error
       });
       this.#toast.danger();
+      throw error;
     } finally {
       this.loading.main = false;
     }
@@ -83,6 +93,10 @@ export class NotificationSettingsComponent implements OnInit {
 
   async subscribeToGarbageNotification() {
     try {
+      if (this.loading.main || this.loading.content) {
+        return;
+      }
+
       this.loading.content = true;
       if (!this.garbageSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.GARBAGE);
@@ -102,9 +116,97 @@ export class NotificationSettingsComponent implements OnInit {
       if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
         this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
         return;
+      } else {
+        this.#toast.danger();
       }
 
-      this.#toast.danger();
+      throw error;
+    } finally {
+      this.loading.content = false;
+    }
+  }
+
+  async subscribeToUserSecurityInvoiceNotification() {
+    try {
+      if (
+        this.loading.main ||
+        this.loading.content ||
+        !this.currentUser ||
+        !this.neighbor ||
+        !this.neighbor.email ||
+        !this.neighbor.security ||
+        !this.neighbor.group
+      ) {
+        return;
+      }
+
+      this.loading.content = true;
+      const topicId = `${TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE}${this.neighbor.email}`;
+      if (!this.userSecurityInvoiceSubscriptionTopic) {
+        await this.#mobile.subscribeToTopic(topicId);
+        await this.addTopicSubscription(topicId);
+      } else {
+        await this.#mobile.unsubscribeFromTopic(topicId);
+        await this.removeTopicSubscription(topicId);
+      }
+      this.userSecurityInvoiceSubscriptionTopic = !this.userSecurityInvoiceSubscriptionTopic;
+    } catch (error) {
+      this.#log.error({
+        fileName: 'notification-settings.component',
+        functionName: 'subscribeToUserSecurityInvoiceNotification',
+        param: error
+      });
+
+      if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+        this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
+      } else {
+        this.#toast.danger();
+      }
+
+      throw error;
+    } finally {
+      this.loading.content = false;
+    }
+  }
+
+  async subscribeToGroupSecurityInvoiceNotification() {
+    try {
+      if (
+        this.loading.main ||
+        this.loading.content ||
+        !this.currentUser ||
+        !this.neighbor ||
+        !this.neighbor.email ||
+        !this.neighbor.security ||
+        !this.neighbor.group
+      ) {
+        return;
+      }
+
+      this.loading.content = true;
+      const topicId = `${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${this.neighbor.group}`;
+      if (!this.groupSecurityInvoiceSubscriptionTopic) {
+        await this.#mobile.subscribeToTopic(topicId);
+        await this.addTopicSubscription(topicId);
+      } else {
+        await this.#mobile.unsubscribeFromTopic(topicId);
+        await this.removeTopicSubscription(topicId);
+      }
+      this.groupSecurityInvoiceSubscriptionTopic = !this.groupSecurityInvoiceSubscriptionTopic;
+    } catch (error) {
+      this.#log.error({
+        fileName: 'notification-settings.component',
+        functionName: 'subscribeToGroupSecurityInvoiceNotification',
+        param: error
+      });
+
+      if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+        this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
+      } else {
+        this.#toast.danger();
+      }
+
+      throw error;
     } finally {
       this.loading.content = false;
     }
@@ -112,6 +214,10 @@ export class NotificationSettingsComponent implements OnInit {
 
   async subscribeToNewTopicNotification() {
     try {
+      if (this.loading.main || this.loading.content) {
+        return;
+      }
+
       this.loading.content = true;
       if (!this.newTopicSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.NEW_TOPIC);
@@ -130,10 +236,11 @@ export class NotificationSettingsComponent implements OnInit {
 
       if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
         this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
-        return;
+      } else {
+        this.#toast.danger();
       }
 
-      this.#toast.danger();
+      throw error;
     } finally {
       this.loading.content = false;
     }
@@ -141,6 +248,10 @@ export class NotificationSettingsComponent implements OnInit {
 
   async subscribeToTopicUpdateNotification(topic: IExtendedTopic) {
     try {
+      if (this.loading.main || this.loading.content) {
+        return;
+      }
+
       this.loading.content = true;
       if (!topic._selected) {
         await this.#mobile.subscribeToTopic(topic.id);
@@ -159,10 +270,11 @@ export class NotificationSettingsComponent implements OnInit {
 
       if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
         this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
-        return;
+      } else {
+        this.#toast.danger();
       }
 
-      this.#toast.danger();
+      throw error;
     } finally {
       this.loading.content = false;
     }
@@ -170,8 +282,8 @@ export class NotificationSettingsComponent implements OnInit {
 
   async addTopicSubscription(topicId: string) {
     try {
-      if (!this.currentUser) {
-        return Promise.resolve();
+      if (this.loading.main || this.loading.content || !this.currentUser) {
+        return;
       }
 
       this.loading.content = true;
@@ -186,6 +298,7 @@ export class NotificationSettingsComponent implements OnInit {
         param: error
       });
       this.#toast.danger();
+      throw error;
     } finally {
       this.loading.content = false;
     }
@@ -194,7 +307,7 @@ export class NotificationSettingsComponent implements OnInit {
   async removeTopicSubscription(topicId: string) {
     try {
       if (!this.currentUser) {
-        return Promise.resolve();
+        return;
       }
 
       this.loading.content = true;
@@ -209,6 +322,7 @@ export class NotificationSettingsComponent implements OnInit {
         param: error
       });
       this.#toast.danger();
+      throw error;
     } finally {
       this.loading.content = false;
     }

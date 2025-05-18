@@ -23,6 +23,10 @@ export const locale = {
           MSG: 'El grupo dejará de mostrarse como deudor durante el resto del mes'
         }
       },
+      GROUP_INVOICE_NOTIFICATION: {
+        TITLE: 'Grupo de seguridad abonado',
+        BODY: 'Se registró el pago del grupo número'
+      },
       SECURITY_INVOICES: {
         TITLE: 'Historial de pagos',
         CSV_FILE_NAME: 'tero_seguridad_historial_pagos.csv',

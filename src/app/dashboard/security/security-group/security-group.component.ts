@@ -15,6 +15,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/core';
+import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -197,12 +198,24 @@ export class SecurityGroupComponent implements OnInit {
 
             await Promise.all(promises);
 
+            const pushNotificationPromises: Array<Promise<void>> = [];
             neighbors.forEach(_neighbor => {
               const index = this.neighbors.findIndex(__neighbor => __neighbor.id === _neighbor.id);
               if (index !== -1) {
                 this.neighbors[index]._debt = false;
+                if (this.neighbors[index].email) {
+                  pushNotificationPromises.push(
+                    this.#mobile.sendPushNotification({
+                      topicId: `${TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE}${this.neighbors[index].email}`,
+                      title: this.#translate.get('SECURITY_GROUP.USER_INVOICE_NOTIFICATION.TITLE'),
+                      body: this.#translate.get('SECURITY_GROUP.USER_INVOICE_NOTIFICATION.BODY')
+                    })
+                  );
+                }
               }
             });
+
+            await Promise.all(pushNotificationPromises);
 
             this.refresh();
           }

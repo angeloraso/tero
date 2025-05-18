@@ -100,6 +100,25 @@ export class DatabaseService implements OnDestroy {
     return Promise.resolve(neighbor);
   }
 
+  async getNeighborByEmail(email: string): Promise<INeighbor | null> {
+    if (typeof this.#neighbors.value !== 'undefined' && this.#neighbors.value !== null) {
+      const neighbor = this.#neighbors.value.find(_neighbor => _neighbor.email === email);
+      if (!neighbor) {
+        return Promise.resolve(null);
+      }
+
+      return Promise.resolve(neighbor);
+    }
+
+    const neighbors = await this.getNeighbors();
+    const neighbor = neighbors.find(_neighbor => _neighbor.email === email);
+    if (!neighbor) {
+      return Promise.resolve(null);
+    }
+
+    return Promise.resolve(neighbor);
+  }
+
   async postNeighbor(neighbor: INeighbor): Promise<void> {
     const neighbors = await this.getNeighbors();
     const index = neighbors.findIndex(_neighbor => _neighbor.id === neighbor.id);
