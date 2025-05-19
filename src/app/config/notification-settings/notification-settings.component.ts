@@ -71,8 +71,12 @@ export class NotificationSettingsComponent implements OnInit {
         this.garbageSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GARBAGE);
         this.newTopicSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_TOPIC);
 
-        this.userSecurityInvoiceSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE);
-        this.groupSecurityInvoiceSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE);
+        this.userSecurityInvoiceSubscriptionTopic = Boolean(
+          this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE))
+        );
+        this.groupSecurityInvoiceSubscriptionTopic = Boolean(
+          this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE))
+        );
 
         this.topics.forEach(_topic => {
           _topic._selected = this.currentUser!.topicSubscriptions!.includes(_topic.id);
