@@ -100,10 +100,10 @@ export class NotificationSettingsComponent implements OnInit {
       this.loading.content = true;
       if (!this.garbageSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.GARBAGE);
-        await this.addTopicSubscription(TOPIC_SUBSCRIPTION.GARBAGE);
+        await this.#addTopicSubscription(TOPIC_SUBSCRIPTION.GARBAGE);
       } else {
         await this.#mobile.unsubscribeFromTopic(TOPIC_SUBSCRIPTION.GARBAGE);
-        await this.removeTopicSubscription(TOPIC_SUBSCRIPTION.GARBAGE);
+        await this.#removeTopicSubscription(TOPIC_SUBSCRIPTION.GARBAGE);
       }
       this.garbageSubscriptionTopic = !this.garbageSubscriptionTopic;
     } catch (error) {
@@ -144,10 +144,10 @@ export class NotificationSettingsComponent implements OnInit {
       const topicId = `${TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE}${this.neighbor.email}`;
       if (!this.userSecurityInvoiceSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(topicId);
-        await this.addTopicSubscription(topicId);
+        await this.#addTopicSubscription(topicId);
       } else {
         await this.#mobile.unsubscribeFromTopic(topicId);
-        await this.removeTopicSubscription(topicId);
+        await this.#removeTopicSubscription(topicId);
       }
       this.userSecurityInvoiceSubscriptionTopic = !this.userSecurityInvoiceSubscriptionTopic;
     } catch (error) {
@@ -187,10 +187,10 @@ export class NotificationSettingsComponent implements OnInit {
       const topicId = `${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${this.neighbor.group}`;
       if (!this.groupSecurityInvoiceSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(topicId);
-        await this.addTopicSubscription(topicId);
+        await this.#addTopicSubscription(topicId);
       } else {
         await this.#mobile.unsubscribeFromTopic(topicId);
-        await this.removeTopicSubscription(topicId);
+        await this.#removeTopicSubscription(topicId);
       }
       this.groupSecurityInvoiceSubscriptionTopic = !this.groupSecurityInvoiceSubscriptionTopic;
     } catch (error) {
@@ -221,10 +221,10 @@ export class NotificationSettingsComponent implements OnInit {
       this.loading.content = true;
       if (!this.newTopicSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.NEW_TOPIC);
-        await this.addTopicSubscription(TOPIC_SUBSCRIPTION.NEW_TOPIC);
+        await this.#addTopicSubscription(TOPIC_SUBSCRIPTION.NEW_TOPIC);
       } else {
         await this.#mobile.unsubscribeFromTopic(TOPIC_SUBSCRIPTION.NEW_TOPIC);
-        await this.removeTopicSubscription(TOPIC_SUBSCRIPTION.NEW_TOPIC);
+        await this.#removeTopicSubscription(TOPIC_SUBSCRIPTION.NEW_TOPIC);
       }
       this.newTopicSubscriptionTopic = !this.newTopicSubscriptionTopic;
     } catch (error) {
@@ -255,10 +255,10 @@ export class NotificationSettingsComponent implements OnInit {
       this.loading.content = true;
       if (!topic._selected) {
         await this.#mobile.subscribeToTopic(topic.id);
-        await this.addTopicSubscription(topic.id);
+        await this.#addTopicSubscription(topic.id);
       } else {
         await this.#mobile.unsubscribeFromTopic(topic.id);
-        await this.removeTopicSubscription(topic.id);
+        await this.#removeTopicSubscription(topic.id);
       }
       topic._selected = !topic._selected;
     } catch (error) {
@@ -280,13 +280,12 @@ export class NotificationSettingsComponent implements OnInit {
     }
   }
 
-  async addTopicSubscription(topicId: string) {
+  #addTopicSubscription = async (topicId: string) => {
     try {
-      if (this.loading.main || this.loading.content || !this.currentUser) {
+      if (!this.currentUser) {
         return;
       }
 
-      this.loading.content = true;
       const topicSubscriptions = new Set(this.currentUser.topicSubscriptions ?? []);
       topicSubscriptions.add(topicId);
       await this.#usersService.putUser({ ...this.currentUser, topicSubscriptions: Array.from(topicSubscriptions) });
@@ -294,23 +293,20 @@ export class NotificationSettingsComponent implements OnInit {
     } catch (error) {
       this.#log.error({
         fileName: 'notification-settings.component',
-        functionName: 'addTopicSubscription',
+        functionName: '#addTopicSubscription',
         param: error
       });
       this.#toast.danger();
       throw error;
-    } finally {
-      this.loading.content = false;
     }
-  }
+  };
 
-  async removeTopicSubscription(topicId: string) {
+  #removeTopicSubscription = async (topicId: string) => {
     try {
       if (!this.currentUser) {
         return;
       }
 
-      this.loading.content = true;
       const topicSubscriptions = new Set(this.currentUser.topicSubscriptions ?? []);
       topicSubscriptions.delete(topicId);
       await this.#usersService.putUser({ ...this.currentUser, topicSubscriptions: Array.from(topicSubscriptions) });
@@ -323,10 +319,8 @@ export class NotificationSettingsComponent implements OnInit {
       });
       this.#toast.danger();
       throw error;
-    } finally {
-      this.loading.content = false;
     }
-  }
+  };
 
   goBack() {
     this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
