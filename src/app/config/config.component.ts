@@ -18,7 +18,7 @@ import {
   UserNamePopupComponent,
   UserPhonePopupComponent
 } from '@config/components';
-import { DEFAULT_USER_PICTURE, LOGO_PATH } from '@core/constants';
+import { LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { HomeService } from '@home/home.service';
@@ -42,7 +42,6 @@ export class ConfigComponent implements OnInit {
   readonly #home = inject(HomeService);
   loading = false;
 
-  defaultProfilePic: string = `/assets/img/${DEFAULT_USER_PICTURE}`;
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly USER_STATE = USER_STATE;
