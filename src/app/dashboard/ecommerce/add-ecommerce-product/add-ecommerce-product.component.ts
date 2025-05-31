@@ -3,10 +3,19 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
-import { BIZY_TAG_TYPE, BizyFormComponent, BizyLogService, BizyPopupService, BizyRouterService, BizyTabsModule, BizyToastService } from '@bizy/core';
-import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, PHONE_MAX_LENGTH, PHONE_MIN_LENGTH } from '@core/constants';
+import {
+  BIZY_TAG_TYPE,
+  BizyFormComponent,
+  BizyLogService,
+  BizyPopupService,
+  BizyRouterService,
+  BizyTabsModule,
+  BizyToastService,
+  BizyTranslateService
+} from '@bizy/core';
+import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, PHONE_MAX_LENGTH, PHONE_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { IUser } from '@core/model';
-import { EcommerceService, UsersService } from '@core/services';
+import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { EcommerceTagsPopupComponent } from '@dashboard/ecommerce/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -29,6 +38,8 @@ export class AddEcommerceProductComponent implements OnInit {
   readonly #home = inject(HomeService);
   readonly #fb = inject(FormBuilder);
   readonly #popup = inject(BizyPopupService);
+  readonly #mobile = inject(MobileService);
+  readonly #translate = inject(BizyTranslateService);
 
   loading: boolean = false;
   tags: Array<string> = [];
@@ -200,6 +211,12 @@ export class AddEcommerceProductComponent implements OnInit {
       };
 
       await this.#ecommerceService.postProduct(product);
+
+      await this.#mobile.sendPushNotification({
+        topicId: TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT,
+        title: this.#translate.get('ECOMMERCE.NEW_ECOMMERCE_PRODUCT_NOTIFICATION.TITLE'),
+        body: `${this.#translate.get('ECOMMERCE.NEW_ECOMMERCE_PRODUCT_NOTIFICATION.BODY')}: ${product.productName}${product.price ? ' ($' + product.price + ')' : ''}`
+      });
 
       if (this.currentUser && !this.currentUser.name && product.contactName) {
         await this.#usersService.putUser({ ...this.currentUser, name: product.contactName });

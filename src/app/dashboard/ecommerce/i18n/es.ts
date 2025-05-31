@@ -20,6 +20,10 @@ export const locale = {
           TITLE: 'Borrar producto',
           MSG: 'Se borrará el producto'
         }
+      },
+      NEW_ECOMMERCE_PRODUCT_NOTIFICATION: {
+        TITLE: 'Nuevo producto en la tienda!',
+        BODY: 'Agregar el producto'
       }
     }
   }

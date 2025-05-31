@@ -68,6 +68,20 @@
 
     <bizy-card class="animated fade-in" *ngIf="!loading.main && currentUser" class="notification-settings__card">
 
+        <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.ECOMMERCE.MAIN' | translate}}</h4>
+
+        <bizy-list>
+
+            <bizy-toggle [selected]="newEcommerceProductSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewEcommerceProductNotification()">
+                <h5 slot="end">{{'NOTIFICATION_SETTINGS.ECOMMERCE.NEW_ECOMMERCE_PRODUCT' | translate}}</h5>
+            </bizy-toggle>
+    
+        </bizy-list>
+
+    </bizy-card>
+
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && currentUser" class="notification-settings__card">
+
         <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.TOPIC_UPDATES.MAIN' | translate}}</h4>
 
         <bizy-list>

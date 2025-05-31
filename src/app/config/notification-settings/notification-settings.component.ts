@@ -44,6 +44,7 @@ export class NotificationSettingsComponent implements OnInit {
   newTopicSubscriptionTopic: boolean = false;
   userSecurityInvoiceSubscriptionTopic: boolean = false;
   groupSecurityInvoiceSubscriptionTopic: boolean = false;
+  newEcommerceProductSubscriptionTopic: boolean = false;
   neighbor: INeighbor | null = null;
 
   async ngOnInit() {
@@ -70,6 +71,7 @@ export class NotificationSettingsComponent implements OnInit {
       if (this.currentUser.topicSubscriptions) {
         this.garbageSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GARBAGE);
         this.newTopicSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_TOPIC);
+        this.newEcommerceProductSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
 
         this.userSecurityInvoiceSubscriptionTopic = Boolean(
           this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE))
@@ -269,6 +271,40 @@ export class NotificationSettingsComponent implements OnInit {
       this.#log.error({
         fileName: 'notification-settings.component',
         functionName: 'subscribeToTopicUpdateNotification',
+        param: error
+      });
+
+      if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+        this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
+      } else {
+        this.#toast.danger();
+      }
+
+      throw error;
+    } finally {
+      this.loading.content = false;
+    }
+  }
+
+  async subscribeToNewEcommerceProductNotification() {
+    try {
+      if (this.loading.main || this.loading.content) {
+        return;
+      }
+
+      this.loading.content = true;
+      if (!this.newEcommerceProductSubscriptionTopic) {
+        await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
+        await this.#addTopicSubscription(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
+      } else {
+        await this.#mobile.unsubscribeFromTopic(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
+        await this.#removeTopicSubscription(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
+      }
+      this.newEcommerceProductSubscriptionTopic = !this.newEcommerceProductSubscriptionTopic;
+    } catch (error) {
+      this.#log.error({
+        fileName: 'notification-settings.component',
+        functionName: 'subscribeToNewEcommerceProductNotification',
         param: error
       });
 

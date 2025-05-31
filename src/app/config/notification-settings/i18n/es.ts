@@ -17,6 +17,10 @@ export const locale = {
       },
       TOPIC_UPDATES: {
         MAIN: 'Notificaciones de asuntos'
+      },
+      ECOMMERCE: {
+        MAIN: 'Tienda Tero',
+        NEW_ECOMMERCE_PRODUCT: 'Nuevo producto en la tienda'
       }
     }
   }
