@@ -32,7 +32,8 @@
               "html2canvas",
               "autonumeric",
               "@transloadit/prettier-bytes",
-              "mime-match"
+              "mime-match",
+              "validator"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
