@@ -87,7 +87,6 @@
     
             <bizy-tag slot="prefix" *ngFor="let role of selectedRoles" [type]="BIZY_TAG_TYPE.INFO" (onSelect)="removeRole(role)">
                 <h6>{{'CORE.USER_ROLE.' + role | translate}}</h6>
-                <h6><i class="fa-solid fa-xmark"></i></h6>
             </bizy-tag>
 
             <h6 slot="error" *ngIf="selectedRoles.length === 0 && status.value === USER_STATE.ACTIVE && roleInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>

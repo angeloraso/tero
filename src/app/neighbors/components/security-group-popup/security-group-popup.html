@@ -12,13 +12,13 @@
 
     <bizy-list>
 
-        <bizy-card (onSelect)="selectGroup(NO_ID)" [ngClass]="{'security-group-popup--selected': group === NO_ID}">
+        <bizy-card (onSelect)="selectGroup(null)" [ngClass]="{'security-group-popup--selected': group === null}">
 
             <h5 slot="header-start" class="tero--danger"><i class="fa-solid fa-shield-halved"></i></h5>
 
             <h5 slot="header-start">{{'CORE.FORM.FIELD.NO_GROUP' | translate}}</h5>
 
-            <bizy-radio slot="header-end" [selected]="group === NO_ID"></bizy-radio>
+            <bizy-radio slot="header-end" [selected]="group === null"></bizy-radio>
 
         </bizy-card>
 

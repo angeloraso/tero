@@ -291,20 +291,16 @@ export class EditContactComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<Array<string>>(
+    this.#popup.open<{ tags: Array<string> }>(
       {
         component: ContactTagsPopupComponent,
         fullScreen: true,
         data: { tags: this.tags.value }
       },
-      async tags => {
+      async res => {
         try {
-          if (tags) {
-            if (tags.length > 0) {
-              this.tags.setValue(tags);
-            } else {
-              this.tags.setValue(null);
-            }
+          if (res) {
+            this.tags.setValue(res.tags);
           }
         } catch (error) {
           this.#log.error({

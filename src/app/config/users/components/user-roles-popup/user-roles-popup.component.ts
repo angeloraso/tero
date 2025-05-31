@@ -37,7 +37,11 @@ export class UserRolesPopupComponent implements OnInit {
   }
 
   apply() {
-    this.#popup.close({ response: this.roles.filter(_role => _role.selected).map(_role => _role.value) });
+    this.#popup.close({
+      response: {
+        roles: this.roles.filter(_role => _role.selected).map(_role => _role.value)
+      }
+    });
   }
 
   close() {

@@ -23,7 +23,11 @@ export class UserStatesPopupComponent implements OnInit {
   }
 
   selectState(state: USER_STATE) {
-    this.#popup.close({ response: state });
+    if (!state) {
+      return;
+    }
+
+    this.#popup.close({ response: { state } });
   }
 
   close() {

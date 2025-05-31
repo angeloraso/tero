@@ -16,7 +16,6 @@ export enum TOPIC_SUBSCRIPTION {
 
 export const LOGO_PATH = '/assets/favicons/favicon.ico';
 export const IMG_PATH = '/assets/img/';
-export const NO_ID = -1;
 export const NAME_MIN_LENGTH = 2;
 export const NAME_MAX_LENGTH = 128;
 export const EMAIL_MIN_LENGTH = 6;

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { SharedModules } from '@app/shared';
 import { BizyPopupService } from '@bizy/core';
-import { ALARMS, NO_ID } from '@core/constants';
+import { ALARMS } from '@core/constants';
 
 @Component({
   selector: 'tero-alarm-popup',
@@ -15,7 +15,6 @@ export class AlarmPopupComponent implements OnInit {
   alarm: number | null = null;
 
   readonly ALARMS = ALARMS;
-  readonly NO_ID = NO_ID;
 
   ngOnInit() {
     const data = this.#popup.getData<{ alarm: number }>();
@@ -25,7 +24,7 @@ export class AlarmPopupComponent implements OnInit {
   }
 
   selectAlarm(alarm: number | null) {
-    this.#popup.close({ response: alarm });
+    this.#popup.close({ response: { alarmNumber: alarm } });
   }
 
   close() {

@@ -135,16 +135,16 @@ export class EditUserComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<USER_STATE>(
+    this.#popup.open<{ state: USER_STATE }>(
       {
         component: UserStatesPopupComponent,
         fullScreen: true,
         data: { state: this.status.value }
       },
-      async state => {
+      async res => {
         try {
-          if (state) {
-            this.status.setValue(state);
+          if (res) {
+            this.status.setValue(res.state);
           }
         } catch (error) {
           this.#log.error({
@@ -163,16 +163,16 @@ export class EditUserComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<Array<USER_ROLE>>(
+    this.#popup.open<{ roles: Array<USER_ROLE> }>(
       {
         component: UserRolesPopupComponent,
         fullScreen: true,
         data: { roles: this.selectedRoles }
       },
-      async roles => {
+      async res => {
         try {
-          if (roles) {
-            this.selectedRoles = roles;
+          if (res) {
+            this.selectedRoles = res.roles;
           }
         } catch (error) {
           this.#log.error({

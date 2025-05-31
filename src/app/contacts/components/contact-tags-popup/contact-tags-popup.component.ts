@@ -93,7 +93,11 @@ export class ContactTagsPopupComponent implements OnInit {
       return;
     }
 
-    this.#popup.close({ response: this.tags.filter(_tag => _tag.selected).map(_tag => _tag.value) });
+    this.#popup.close({
+      response: {
+        tags: this.tags.filter(_tag => _tag.selected).map(_tag => _tag.value)
+      }
+    });
   }
 
   close() {

@@ -23,10 +23,10 @@ export class AlarmControlsPopupComponent implements OnInit {
       });
     });
 
-    const data = this.#popup.getData<{ controls: Array<number> }>();
-    if (data && data.controls) {
+    const data = this.#popup.getData<{ alarmControls: Array<number> }>();
+    if (data && data.alarmControls) {
       this.controls.forEach(_control => {
-        _control.selected = data.controls.includes(_control.value);
+        _control.selected = data.alarmControls.includes(_control.value);
       });
     }
   }
@@ -37,7 +37,11 @@ export class AlarmControlsPopupComponent implements OnInit {
   }
 
   apply() {
-    this.#popup.close({ response: this.controls.filter(_control => _control.selected).map(_control => _control.value) });
+    this.#popup.close({
+      response: {
+        alarmControls: this.controls.filter(_control => _control.selected).map(_control => _control.value)
+      }
+    });
   }
 
   close() {

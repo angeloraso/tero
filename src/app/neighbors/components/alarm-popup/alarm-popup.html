@@ -12,13 +12,13 @@
 
     <bizy-list>
 
-        <bizy-card (onSelect)="selectAlarm(NO_ID)" [ngClass]="{'alarm-popup--selected': alarm === NO_ID}">
+        <bizy-card (onSelect)="selectAlarm(null)" [ngClass]="{'alarm-popup--selected': alarm === null}">
 
             <h5 slot="header-start" class="tero--danger"><i class="fa-solid fa-land-mine-on"></i></h5>
 
             <h5 slot="header-start">{{'CORE.FORM.FIELD.NO_ALARM_NUMBER' | translate}}</h5>
 
-            <bizy-radio slot="header-end" [selected]="alarm === NO_ID"></bizy-radio>
+            <bizy-radio slot="header-end" [selected]="alarm === null"></bizy-radio>
 
         </bizy-card>
 

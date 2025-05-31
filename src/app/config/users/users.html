@@ -170,7 +170,7 @@
 
             </bizy-list>
 
-            <bizy-tag slot="footer-start" *ngFor="let role of user._roles"><h5>{{role | translate}}</h5></bizy-tag>
+            <bizy-tag slot="footer-start" [type]="BIZY_TAG_TYPE.INFO" *ngFor="let role of user._roles"><h5>{{role | translate}}</h5></bizy-tag>
 
             <bizy-tag slot="footer-end" *ngIf="user.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h5>{{('CORE.USER_STATE.ACTIVE') | translate}}</h5></bizy-tag>
             <bizy-tag slot="footer-end" *ngIf="user.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h5>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h5></bizy-tag>

@@ -15,7 +15,7 @@ import {
   BizyValidatorService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, IMG_PATH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
+import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, IMG_PATH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -53,13 +53,12 @@ export class EditNeighborComponent implements OnInit {
     name: [null, [Validators.required]],
     surname: [null],
     lot: [null, [Validators.min(this.MIN_LOT_VALUE), Validators.max(this.MAX_LOT_VALUE), Validators.required]],
-    alarmNumber: [NO_ID],
+    alarmNumber: [null],
     alarmControls: [[]],
-    group: [NO_ID],
+    group: [null],
     email: [null, [Validators.minLength(this.EMAIL_MIN_LENGTH), Validators.maxLength(this.EMAIL_MAX_LENGTH), this.#validator.emailValidator()]]
   });
 
-  readonly NO_ID = NO_ID;
   neighbor: INeighbor | null = null;
   loading: boolean = false;
 
@@ -182,16 +181,16 @@ export class EditNeighborComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<number | null>(
+    this.#popup.open<{ group: number | null }>(
       {
         component: SecurityGroupPopupComponent,
         fullScreen: true,
         data: { group: this.group.value }
       },
-      async group => {
+      async res => {
         try {
-          if (group) {
-            this.group.setValue(group);
+          if (res) {
+            this.group.setValue(res.group);
           }
         } catch (error) {
           this.#log.error({
@@ -210,16 +209,16 @@ export class EditNeighborComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<number | null>(
+    this.#popup.open<{ alarmNumber: number | null }>(
       {
         component: AlarmPopupComponent,
         fullScreen: true,
         data: { alarm: this.alarmNumber.value }
       },
-      async alarm => {
+      async res => {
         try {
-          if (alarm) {
-            this.alarmNumber.setValue(alarm);
+          if (res) {
+            this.alarmNumber.setValue(res.alarmNumber);
           }
         } catch (error) {
           this.#log.error({
@@ -238,16 +237,16 @@ export class EditNeighborComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<Array<number>>(
+    this.#popup.open<{ alarmControls: Array<number> }>(
       {
         component: AlarmControlsPopupComponent,
         fullScreen: true,
-        data: { controls: this.alarmControls.value }
+        data: { alarmControls: this.alarmControls.value }
       },
-      async controls => {
+      async res => {
         try {
-          if (controls) {
-            this.alarmControls.setValue(controls);
+          if (res) {
+            this.alarmControls.setValue(res.alarmControls);
           }
         } catch (error) {
           this.#log.error({
@@ -279,10 +278,10 @@ export class EditNeighborComponent implements OnInit {
         surname: this.surname.value ? this.surname.value.trim() : '',
         email: this.email.value ? this.email.value.trim() : '',
         lot: Number(this.lot.value),
-        alarmNumber: this.alarmNumber.value && this.alarmNumber.value !== NO_ID ? this.alarmNumber.value : null,
+        alarmNumber: this.alarmNumber.value,
         alarmControls: this.alarmControls.value,
-        security: this.group.value && this.group.value !== NO_ID,
-        group: this.group.value && this.group.value !== NO_ID ? this.group.value : null
+        security: Boolean(this.group.value),
+        group: this.group.value
       });
       this.goBack();
     } catch (error) {
