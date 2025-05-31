@@ -16,7 +16,7 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { LOGO_PATH } from '@core/constants';
+import { DEFAULT_USER_PICTURE, IMG_PATH, LOGO_PATH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { MobileService, NeighborsService, UsersService } from '@core/services';
 import { ENV } from '@env/environment';
@@ -73,6 +73,8 @@ export class NeighborsComponent implements OnInit {
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly IMG_PATH = IMG_PATH;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
 
   async ngOnInit() {
     try {

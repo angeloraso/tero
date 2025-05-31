@@ -17,6 +17,9 @@ export const locale = {
       CONTACT_TAGS_POPUP: {
         TITLE: 'Seleccionar categorías'
       },
+      CONTACT_PICTURES_POPUP: {
+        TITLE: 'Seleccionar imagen'
+      },
       ADD_CONTACT: {
         TITLE: 'Agregar contacto'
       },

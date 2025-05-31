@@ -1,0 +1,48 @@
+<tero-wrapper>
+
+    <bizy-section>
+
+        <bizy-section-center>
+
+            <h2 class="tero--info"><strong>{{'CONTACTS.CONTACT_PICTURES_POPUP.TITLE' | translate}}</strong></h2>
+
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <span class="contact-picture-popup__pictures">
+
+        <span class="contact-picture-popup__pictures__picture">
+
+            <img 
+                loading="lazy"
+                class="contact-picture-popup__pictures__picture"
+                (click)="selectedPicture = null; apply()"
+                [src]="IMG_PATH + DEFAULT_USER_PICTURE"
+                alt="Imagen"/>
+
+            <span class="contact-picture-popup__pictures__picture__check" *ngIf="selectedPicture === null">
+                <h6><i class="fa-solid fa-check"></i></h6>
+            </span>
+
+        </span>
+
+        <span class="contact-picture-popup__pictures__picture" *ngFor="let picture of CONTACT_PICTURES">
+
+            <img 
+                loading="lazy"
+                class="contact-picture-popup__pictures__picture"
+                (click)="selectedPicture = picture; apply()"
+                (keyup.enter)="selectedPicture = picture; apply()"
+                [src]="IMG_PATH + picture"
+                alt="Imagen"/>
+
+            <span class="contact-picture-popup__pictures__picture__check" *ngIf="selectedPicture === picture">
+                <h5><i class="fa-solid fa-check"></i></h5>
+            </span>
+
+        </span>
+
+    </span>
+
+</tero-wrapper>

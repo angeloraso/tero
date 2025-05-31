@@ -18,12 +18,20 @@
 
             <bizy-section-center>
 
-                <img 
-                    height="70"
-                    loading="lazy"
-                    [src]="picture.value"
-                    onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
-                    alt="Imagen de usuario"/>
+                <span class="edit-content__picture">
+
+                    <img 
+                        height="70"
+                        loading="lazy"
+                        [src]="picture.value ? IMG_PATH + picture.value : IMG_PATH + DEFAULT_USER_PICTURE"
+                        onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                        alt="Imagen de usuario"/>
+
+                    <bizy-button class="edit-content__picture__edit-button" (onSelect)="openPicturePopup()">
+                        <h6><i class="fa-solid fa-pencil-alt"></i></h6>
+                    </bizy-button>
+
+                </span>
         
                 <bizy-tag [type]="BIZY_TAG_TYPE.WARNING" class="contact-form__picture__rating" (onSelect)="openRatingPopup()">
                     <h3>{{rating.value ? (rating.value | bizyAverage : 'value') : 0}}/5 <i class="fa-solid fa-star"></i></h3>

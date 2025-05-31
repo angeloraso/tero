@@ -18,7 +18,7 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PATH as CONTACTS_PATH } from '@contacts/contacts.routing';
-import { LOGO_PATH, WHATSAPP_URL } from '@core/constants';
+import { DEFAULT_USER_PICTURE, IMG_PATH, LOGO_PATH, WHATSAPP_URL } from '@core/constants';
 import { IContact, IContactRating, Rating } from '@core/model';
 import { ContactsService, MobileService, UsersService } from '@core/services';
 import { ENV } from '@env/environment';
@@ -70,6 +70,8 @@ export class ContactsComponent implements OnInit {
   filterTags: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
 
+  readonly IMG_PATH = IMG_PATH;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;

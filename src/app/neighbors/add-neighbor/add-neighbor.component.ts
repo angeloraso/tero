@@ -12,7 +12,7 @@ import {
   BizyToastService,
   BizyValidatorService
 } from '@bizy/core';
-import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
+import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, IMG_PATH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { AlarmControlsPopupComponent, AlarmPopupComponent, SecurityGroupPopupComponent } from '@neighbors/components';
@@ -40,8 +40,9 @@ export class AddNeighborComponent implements OnInit {
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly EMAIL_MIN_LENGTH = EMAIL_MIN_LENGTH;
   readonly EMAIL_MAX_LENGTH = EMAIL_MAX_LENGTH;
-  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
   readonly NO_ID = NO_ID;
+  readonly IMG_PATH = IMG_PATH;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
 
   readonly #form = this.#fb.group({
     name: [null, [Validators.minLength(this.NAME_MIN_LENGTH), Validators.maxLength(this.NAME_MAX_LENGTH), Validators.required]],

@@ -15,7 +15,7 @@ import {
   BizyValidatorService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
+import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, IMG_PATH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, NO_ID } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { NeighborsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -46,6 +46,7 @@ export class EditNeighborComponent implements OnInit {
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
   readonly EMAIL_MIN_LENGTH = EMAIL_MIN_LENGTH;
   readonly EMAIL_MAX_LENGTH = EMAIL_MAX_LENGTH;
+  readonly IMG_PATH = IMG_PATH;
   readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
 
   readonly #form = this.#fb.group({

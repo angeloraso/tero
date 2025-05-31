@@ -76,7 +76,7 @@
             <img 
                 slot="header-start"
                 height="30"
-                [src]="contact?.picture"
+                [src]="contact?.picture ? IMG_PATH + contact?.picture : IMG_PATH + DEFAULT_USER_PICTURE"
                 onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
                 alt="Imagen de usuario"/>
 

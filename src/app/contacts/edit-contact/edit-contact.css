@@ -3,3 +3,17 @@
   flex-direction: column;
   height: 100%;
 }
+
+.edit-content__picture {
+  position: relative;
+}
+
+.edit-content__picture__edit-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  --bizy-button-border-radius: 50%;
+  --bizy-button-background-color: #ffffff;
+  --bizy-button-color: var(--bizy-warning-color);
+  --bizy-button-padding: 0.3rem;
+}

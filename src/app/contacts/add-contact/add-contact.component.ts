@@ -4,8 +4,8 @@ import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE, BizyFormComponent, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
-import { ContactTagsPopupComponent, RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
-import { DEFAULT_USER_PICTURE, LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
+import { ContactPicturePopupComponent, ContactTagsPopupComponent, RatingHistoryPopupComponent, RatingPopupComponent } from '@contacts/components';
+import { DEFAULT_USER_PICTURE, IMG_PATH, LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { IContactRating, Rating } from '@core/model';
 import { ContactsService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -32,7 +32,7 @@ export class AddContactComponent implements OnInit {
   tagSearch: string | number = '';
 
   readonly #form = this.#fb.group({
-    picture: [DEFAULT_USER_PICTURE, [Validators.required]],
+    picture: [null],
     name: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
     surname: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH)]],
     phone: [null, [Validators.required]],
@@ -41,6 +41,8 @@ export class AddContactComponent implements OnInit {
     rating: [null]
   });
 
+  readonly IMG_PATH = IMG_PATH;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
@@ -149,6 +151,34 @@ export class AddContactComponent implements OnInit {
               this.rating.setValue([contactRating]);
             }
           }
+        }
+      }
+    );
+  }
+
+  openPicturePopup() {
+    if (this.loading) {
+      return;
+    }
+
+    this.#popup.open<{ picture: string }>(
+      {
+        component: ContactPicturePopupComponent,
+        fullScreen: true,
+        data: { picture: this.picture.value }
+      },
+      async res => {
+        try {
+          if (res) {
+            this.picture.setValue(res.picture);
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'add-contact.component',
+            functionName: 'openPicturePopup',
+            param: error
+          });
+          this.#toast.danger();
         }
       }
     );

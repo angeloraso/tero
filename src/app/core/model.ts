@@ -1,5 +1,4 @@
 import uuid4 from 'uuid4';
-import { DEFAULT_USER_PICTURE } from './constants';
 
 export interface IPhone {
   number: string;
@@ -160,7 +159,7 @@ export class Contact implements IContact {
     this.surname = contact.surname ?? '';
     this.description = contact.description ?? '';
     this.rating = contact.rating ?? [];
-    this.picture = contact.picture ?? DEFAULT_USER_PICTURE;
+    this.picture = contact.picture ?? '';
     this.phones = contact.phones ?? [];
     this.tags = contact.tags ?? [];
     this.created = Date.now();
