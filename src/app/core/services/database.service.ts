@@ -70,11 +70,11 @@ export class DatabaseService implements OnDestroy {
         { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.NEIGHBORS}` },
         (event, error) => {
           if (error) {
-            reject(error);
+            return reject(error);
           } else {
             const neighbors = event && event.snapshot.data && event.snapshot.data.data ? event.snapshot.data.data : [];
             this.#neighbors.next(neighbors);
-            resolve(neighbors);
+            return resolve(neighbors);
           }
         }
       );
@@ -176,12 +176,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
         if (error) {
-          reject(error);
+          return reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#contactData.next(event.snapshot.data);
-          resolve(event.snapshot.data.tags ?? []);
+          return resolve(event.snapshot.data.tags ?? []);
         } else {
-          resolve([]);
+          return resolve([]);
         }
       });
     });
@@ -198,12 +198,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
         if (error) {
-          reject(error);
+          return reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#contactData.next(event.snapshot.data);
-          resolve(event.snapshot.data.data ?? []);
+          return resolve(event.snapshot.data.data ?? []);
         } else {
-          resolve([]);
+          return resolve([]);
         }
       });
     });
@@ -288,11 +288,11 @@ export class DatabaseService implements OnDestroy {
     return new Promise<ISecurity | null>((resolve, reject) => {
       FirebaseFirestore.addDocumentSnapshotListener<ISecurity>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}` }, (event, error) => {
         if (error) {
-          reject(error);
+          return reject(error);
         } else {
           const security = event && event.snapshot.data ? event.snapshot.data : undefined;
           this.#security.next(security);
-          resolve(security ?? null);
+          return resolve(security ?? null);
         }
       });
     });
@@ -419,16 +419,16 @@ export class DatabaseService implements OnDestroy {
     return new Promise<IUser>((resolve, reject) => {
       FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${userEmail}` }, (event, error) => {
         if (error) {
-          reject(error);
+          return reject(error);
         } else {
           const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
           this.#currentUser.next(currentUser);
 
           if (!currentUser) {
-            throw new Error(ERROR.ITEM_NOT_FOUND);
+            return reject(new Error(ERROR.ITEM_NOT_FOUND));
           }
 
-          resolve(currentUser);
+          return resolve(currentUser);
         }
       });
     });
@@ -506,12 +506,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
         if (error) {
-          reject(error);
+          return reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#ecommerceData.next(event.snapshot.data);
-          resolve(event.snapshot.data.tags ?? []);
+          return resolve(event.snapshot.data.tags ?? []);
         } else {
-          resolve([]);
+          return resolve([]);
         }
       });
     });
@@ -528,12 +528,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
         if (error) {
-          reject(error);
+          return reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#ecommerceData.next(event.snapshot.data);
-          resolve(event.snapshot.data.data ?? []);
+          return resolve(event.snapshot.data.data ?? []);
         } else {
-          resolve([]);
+          return resolve([]);
         }
       });
     });
@@ -659,11 +659,11 @@ export class DatabaseService implements OnDestroy {
         { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}` },
         (event, error) => {
           if (error) {
-            reject(error);
+            return reject(error);
           } else {
             const topics = event && event.snapshot.data && event.snapshot.data.data ? event.snapshot.data.data : [];
             this.#topics.next(topics);
-            resolve(topics);
+            return resolve(topics);
           }
         }
       );
