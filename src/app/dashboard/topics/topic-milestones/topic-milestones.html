@@ -14,17 +14,19 @@
 
     <bizy-card *ngIf="loading" class="animated fade-in">
 
-        <bizy-list slot="header-start">
+        <bizy-skeleton slot="header-start"></bizy-skeleton>
 
-            <bizy-skeleton></bizy-skeleton>
+        <bizy-list>
 
-            <bizy-skeleton></bizy-skeleton>
+            <bizy-skeleton width="8rem"></bizy-skeleton>
+
+            <bizy-skeleton width="16rem" height="0.8rem"></bizy-skeleton>
+
+            <bizy-skeleton width="18rem" height="0.8rem"></bizy-skeleton>
+
+            <bizy-skeleton width="12rem" height="0.8rem"></bizy-skeleton>
 
         </bizy-list>
-
-        <bizy-skeleton></bizy-skeleton>
-
-        <bizy-skeleton></bizy-skeleton>
 
     </bizy-card>
 
@@ -56,73 +58,70 @@
 
     </bizy-card>
 
-    <span *ngIf="topic" class="topic-milestones__milestones">
-        
-        <ng-container *ngIf="!loading">
+    <bizy-timeline *ngIf="topic && !loading" class="animated fade-in">
 
-            <ng-container *ngFor="let milestone of topic.milestones | bizyOrderBy : 'desc' : 'created'; let i = index; let first = first; let last = last;">
-        
-                <span class="topic-milestones__milestones__milestone__line"></span>
-        
-                <span class="topic-milestones__milestones__milestone">
+        <bizy-timeline-event 
+            *ngFor="let milestone of topic.milestones | bizyOrderBy : 'desc' : 'created'; let i = index; let last = last"
+            [ngClass]="{'topic-milestones__milestone--last': last}">
+
+            <h6 slot="bullet" class="topic-milestones__bullet"><strong>{{topic.milestones.length - i}}</strong></h6>
+
+            <bizy-card slot="end">
     
-                    <span class="topic-milestones__milestones__milestone__circle">
-                        <h6 class="topic-milestones__milestones__milestone__circle__index animated fade-in"><strong>{{topic.milestones.length - i}}</strong></h6>
-                    </span>
+                <h6 slot="header-start" class="tero--info"><strong>{{milestone.created | date: 'yyyy/MM/dd HH:mm' }}</strong></h6>
+
+                <bizy-button 
+                    slot="header-end"
+                    *ngIf="topic._editEnabled"
+                    [disabled]="loading"
+                    class="tero-action tero-action--warning"
+                    (onSelect)="openMilestonePopup(milestone); $event.stopPropagation()">
+                    <h6><i class="fa-solid fa-pencil-alt"></i></h6>
+                </bizy-button>
         
-                    <bizy-card class="animated fade-in">
-    
-                        <h6 slot="header-start" class="tero--info"><strong>{{milestone.created | date: 'yyyy/MM/dd HH:mm' }}</strong></h6>
-    
-                        <bizy-button 
-                            slot="header-end"
-                            *ngIf="topic._editEnabled"
-                            [disabled]="loading"
-                            class="tero-action tero-action--warning"
-                            (onSelect)="openMilestonePopup(milestone); $event.stopPropagation()">
-                            <h6><i class="fa-solid fa-pencil-alt"></i></h6>
-                        </bizy-button>
+                <bizy-button 
+                    slot="header-end"
+                    *ngIf="topic._editEnabled"
+                    [disabled]="loading"
+                    class="tero-action tero-action--danger"
+                    (onSelect)="deleteTopicMilestone(milestone); $event.stopPropagation()">
+                    <h6><i class="fa-solid fa-trash-alt"></i></h6>
+                </bizy-button>
+
+                <h5>{{milestone.description}}</h5>
                 
-                        <bizy-button 
-                            slot="header-end"
-                            *ngIf="topic._editEnabled"
-                            [disabled]="loading"
-                            class="tero-action tero-action--danger"
-                            (onSelect)="deleteTopicMilestone(milestone); $event.stopPropagation()">
-                            <h6><i class="fa-solid fa-trash-alt"></i></h6>
-                        </bizy-button>
-    
-                        <h5>{{milestone.description}}</h5>
-                        
-                    </bizy-card>
-        
-                </span>
-        
-            </ng-container>
+            </bizy-card>
 
-        </ng-container>
+        </bizy-timeline-event>
 
-        <bizy-grid *ngIf="loading" class="animated fade-in">
+    </bizy-timeline>
 
-            <bizy-card *gridFor="let i of topic.milestones.length > 0 ? topic.milestones : 30 | bizyRepeat">
+    <bizy-timeline *ngIf="loading" class="animated fade-in">
 
-                <bizy-list slot="header-start">
+        <bizy-timeline-event *ngFor="let i of 10 | bizyRepeat">
+
+            <h6 slot="bullet" class="topic-milestones__bullet"><i class="fa-solid fa-hourglass-start"></i></h6>
+
+            <bizy-card slot="end">
+
+                <bizy-skeleton slot="header-start"></bizy-skeleton>
+
+                <bizy-skeleton slot="header-end" width="2rem"></bizy-skeleton>
+
+                <bizy-skeleton slot="header-end" width="2rem"></bizy-skeleton>
+
+                <bizy-list>
         
-                    <bizy-skeleton></bizy-skeleton>
+                    <bizy-skeleton width="10rem" height="0.8rem"></bizy-skeleton>
         
-                    <bizy-skeleton></bizy-skeleton>
-        
+                    <bizy-skeleton width="12rem" height="0.8rem"></bizy-skeleton>
+
                 </bizy-list>
-        
-                <bizy-skeleton></bizy-skeleton>
-        
-                <bizy-skeleton></bizy-skeleton>
         
             </bizy-card>
 
-        </bizy-grid>
+        </bizy-timeline-event>
 
-    </span>
-
+    </bizy-timeline>
 
 </tero-wrapper>

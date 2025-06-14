@@ -21,6 +21,7 @@ import {
   BizySkeletonModule,
   BizyTableModule,
   BizyTagModule,
+  BizyTimelineModule,
   BizyToastModule,
   BizyToggleModule,
   BizyToolbarModule,
@@ -54,7 +55,8 @@ const BIZY_MODULES = [
   BizyCalendarModule,
   BizySectionModule,
   BizyRadioModule,
-  BizyCheckboxModule
+  BizyCheckboxModule,
+  BizyTimelineModule
 ];
 
 const TERO_COMPONENTS = [WrapperComponent];
