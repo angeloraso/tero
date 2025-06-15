@@ -13,8 +13,9 @@ import {
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { AuthService } from '@core/auth/auth.service';
-import { MONTHS } from '@core/constants';
-import { GarbageTruckService, UsersService } from '@core/services';
+import { MONTHS, TOPIC_SUBSCRIPTION } from '@core/constants';
+import { ERROR } from '@core/model';
+import { GarbageTruckService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -35,6 +36,7 @@ export class GarbageHistoryComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #home = inject(HomeService);
   readonly #usersService = inject(UsersService);
+  readonly #mobile = inject(MobileService);
 
   loading = false;
   calendarEvents: Array<IBizyCalendarEvent> = [];
@@ -110,6 +112,66 @@ export class GarbageHistoryComponent implements OnInit {
     );
   }
 
+  showGarbageTruckPopup() {
+    if (this.loading || !this.isNeighbor) {
+      return;
+    }
+
+    this.#popup.open<boolean>(
+      {
+        component: PopupComponent,
+        data: {
+          title: this.#translate.get('DASHBOARD.GARBAGE_TRUCK_POPUP.TITLE'),
+          msg: this.#translate.get('DASHBOARD.GARBAGE_TRUCK_POPUP.MSG')
+        }
+      },
+      async res => {
+        try {
+          if (res) {
+            this.loading = true;
+            const accountEmail = this.#auth.getEmail();
+            if (!accountEmail) {
+              throw new Error();
+            }
+
+            const date = new Date();
+            date.setHours(0, 0, 0, 0);
+
+            await this.#garbageTruckService.postRecord({ accountEmail, date: date.getTime() });
+
+            await this.#mobile.sendPushNotification({
+              topicId: TOPIC_SUBSCRIPTION.GARBAGE,
+              title: this.#translate.get('DASHBOARD.GARBAGE_NOTIFICATION.TITLE'),
+              body: this.#translate.get('DASHBOARD.GARBAGE_NOTIFICATION.BODY')
+            });
+
+            this.#toast.success(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'garbage-history.component',
+            functionName: 'showGarbageTruckPopup',
+            param: error
+          });
+
+          if (error instanceof Error && error.message === ERROR.ITEM_ALREADY_EXISTS) {
+            this.#toast.info(this.#translate.get('DASHBOARD.GARBAGE_TRUCK_MSG'));
+            return;
+          }
+
+          if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+            this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
+            return;
+          }
+
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
+  }
+
   previousDate() {
     this.viewDate = this.#subtractOneMonth(this.viewDate);
     this.currentDate = this.#getCurrentDate(this.viewDate);
@@ -167,6 +229,6 @@ export class GarbageHistoryComponent implements OnInit {
   };
 
   goBack() {
-    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}` });
   }
 }

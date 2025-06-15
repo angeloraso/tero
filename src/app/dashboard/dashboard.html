@@ -4,6 +4,8 @@
 
     <h1 slot=start>{{'DASHBOARD.TITLE' | translate}}</h1>
 
+    <bizy-button slot="end" [disabled]="loading" class="tero-toolbar-action" *ngIf="isNeighbor" (onSelect)="goToGarbageHistory()"><h2><i class="fa-solid fa-calendar-days"></i></h2></bizy-button>
+
     <bizy-button slot="end" [disabled]="loading" class="tero-toolbar-action" *ngIf="isNeighbor" (onSelect)="showGarbageTruckPopup()"><h2><i class="fa-solid fa-truck"></i></h2></bizy-button>
 
 </bizy-toolbar>

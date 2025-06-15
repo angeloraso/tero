@@ -7,6 +7,7 @@ export enum PATH {
   EMPTY = '',
   SECURITY = 'security',
   ECOMMERCE = 'ecommerce',
+  GARBAGE_HISTORY = 'garbage-history',
   TOPICS = 'topics'
 }
 
@@ -40,6 +41,10 @@ export const ROUTES: Routes = [
   {
     path: PATH.ECOMMERCE,
     loadChildren: () => import('@dashboard/ecommerce/ecommerce.routing').then(m => m.ROUTES)
+  },
+  {
+    path: PATH.GARBAGE_HISTORY,
+    loadChildren: () => import('@dashboard/garbage-history/garbage-history.routing').then(m => m.ROUTES)
   },
   {
     path: PATH.TOPICS,

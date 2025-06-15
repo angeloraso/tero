@@ -9,7 +9,7 @@ export enum PATH {
 export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    loadComponent: () => import('@config/garbage-history/garbage-history.component').then(m => m.GarbageHistoryComponent),
+    loadComponent: () => import('@dashboard/garbage-history/garbage-history.component').then(m => m.GarbageHistoryComponent),
     pathMatch: 'full',
     canActivate: [neighborGuard],
     resolve: { data: analyticsResolver },

@@ -44,4 +44,5 @@
   --bizy-tab-selected-background-color: var(--bizy-tab-background-color);
 
   --bizy-grid-row-height: 5rem;
+  --bizy-toolbar-column-gap: 0.5rem;
 }

@@ -219,10 +219,6 @@ export class ConfigComponent implements OnInit {
     this.#router.goTo({ path: PATH.USERS });
   }
 
-  goToGarbageHistory() {
-    this.#router.goTo({ path: PATH.GARBAGE_HISTORY });
-  }
-
   goToNotificationSettings() {
     this.#router.goTo({ path: PATH.NOTIFICATION_SETTINGS });
   }

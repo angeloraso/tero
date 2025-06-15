@@ -146,16 +146,6 @@
 
         </bizy-card>
 
-        <bizy-card *ngIf="isNeighbor" (onSelect)="goToGarbageHistory()" class="config__card">
-            
-            <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-truck"></i></h1>
-
-            <h3 slot="header-start"><strong>{{'CONFIG.GARBAGE' | translate}}</strong></h3>
-
-            <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
-
-        </bizy-card>
-
         <bizy-card *ngIf="isConfig" (onSelect)="goToUsers()" class="config__card">
             
             <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-users"></i></h1>

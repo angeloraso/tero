@@ -216,6 +216,14 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  goToGarbageHistory() {
+    if (this.loading) {
+      return;
+    }
+
+    this.#router.goTo({ path: PATH.GARBAGE_HISTORY });
+  }
+
   goToSecurity() {
     if (this.loading) {
       return;
