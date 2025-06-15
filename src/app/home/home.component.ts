@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     {
       path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}`,
       label: 'CORE.MENU.CONFIG',
-      icon: 'fa-solid fa-gears',
+      icon: 'fa-solid fa-circle-user',
       selected: false
     }
   ];
