@@ -9,7 +9,7 @@ export enum PATH {
 export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    loadComponent: () => import('@config/notification-settings/notification-settings.component').then(m => m.NotificationSettingsComponent),
+    loadComponent: () => import('@account/notification-settings/notification-settings.component').then(m => m.NotificationSettingsComponent),
     pathMatch: 'full',
     canActivate: [neighborGuard],
     resolve: { data: analyticsResolver },

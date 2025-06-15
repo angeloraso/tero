@@ -1,3 +1,4 @@
+import { PATH as ACCOUNT_PATH } from '@account/account.routing';
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
@@ -15,7 +16,6 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/core';
-import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { WHATSAPP_URL } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { MobileService, UsersService } from '@core/services';
@@ -134,7 +134,7 @@ export class UsersComponent implements OnInit {
     }
 
     this.#router.goTo({
-      path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}/${user.email}`
+      path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}/${ACCOUNT_PATH.USERS}/${user.email}`
     });
   }
 
@@ -178,7 +178,7 @@ export class UsersComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}` });
   }
 
   checkFilters(activated: boolean) {

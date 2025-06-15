@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}`,
     `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORHOOD}`,
     `/${APP_PATH.HOME}/${HOME_PATH.CONTACTS}`,
-    `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}`,
+    `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}`,
     `/${APP_PATH.AUTH}`
   ];
 

@@ -34,7 +34,7 @@
       "@neighborhood/*": ["src/app/neighborhood/*"],
       "@neighbors/*": ["src/app/neighbors/*"],
       "@contacts/*": ["src/app/contacts/*"],
-      "@config/*": ["src/app/config/*"]
+      "@account/*": ["src/app/account/*"]
     }
   },
   "angularCompilerOptions": {

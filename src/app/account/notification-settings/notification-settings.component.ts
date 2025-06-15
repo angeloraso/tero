@@ -363,6 +363,6 @@ export class NotificationSettingsComponent implements OnInit {
   };
 
   goBack() {
-    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}` });
   }
 }

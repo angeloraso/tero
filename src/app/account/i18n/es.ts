@@ -3,8 +3,8 @@ import { LANGUAGE } from '@bizy/core';
 export const locale = {
   lang: LANGUAGE.SPANISH,
   translations: {
-    CONFIG: {
-      TITLE: 'Configuración',
+    ACCOUNT: {
+      TITLE: 'Cuenta',
       NOTIFICATIONS: 'Notificaciones',
       GARBAGE: 'Historial recolección',
       USERS: 'Usuarios',

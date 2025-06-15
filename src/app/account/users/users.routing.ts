@@ -9,14 +9,14 @@ export enum PATH {
 export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    loadComponent: () => import('@config/users/users.component').then(m => m.UsersComponent),
+    loadComponent: () => import('@account/users/users.component').then(m => m.UsersComponent),
     pathMatch: 'full',
     resolve: { data: analyticsResolver },
     data: { pageViewEventName: 'users' }
   },
   {
     path: ':userEmail',
-    loadComponent: () => import('@config/users/edit-user/edit-user.component').then(m => m.EditUserComponent),
+    loadComponent: () => import('@account/users/edit-user/edit-user.component').then(m => m.EditUserComponent),
     canActivate: [configGuard],
     resolve: { data: analyticsResolver },
     data: { pageViewEventName: 'edit-user' }

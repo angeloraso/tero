@@ -30,7 +30,7 @@ export const locale = {
         NEIGHBORHOOD: 'Barrio',
         NEIGHBORS: 'Vecinos',
         CONTACTS: 'Agenda',
-        CONFIG: 'Cuenta'
+        ACCOUNT: 'Cuenta'
       },
       BUTTON: {
         CANCEL: 'Cancelar',

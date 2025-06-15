@@ -70,8 +70,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       selected: false
     },
     {
-      path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}`,
-      label: 'CORE.MENU.CONFIG',
+      path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}`,
+      label: 'CORE.MENU.ACCOUNT',
       icon: 'fa-solid fa-circle-user',
       selected: false
     }

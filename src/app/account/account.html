@@ -2,7 +2,7 @@
 
     <img slot=start class="tero-logo" [src]="LOGO_PATH" alt="logo"/>
 
-    <h1 slot=start>{{'CONFIG.TITLE' | translate}}</h1>
+    <h1 slot=start>{{'ACCOUNT.TITLE' | translate}}</h1>
 
     <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="openAboutPopup()"><h2><i class="fa-solid fa-circle-info"></i></h2></bizy-button>
 
@@ -92,7 +92,7 @@
                     </bizy-button>
 
                     <bizy-button *ngIf="!currentUser.name" class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserNamePopup()">
-                        <h5>{{'CONFIG.ADD_NAME' | translate}}</h5>
+                        <h5>{{'ACCOUNT.ADD_NAME' | translate}}</h5>
                         <h5><i class="fa-solid fa-circle-plus"></i></h5>
                     </bizy-button>
 
@@ -106,19 +106,19 @@
 
                     <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserPhonePopup()">
                         <h5 *ngIf="currentUser?.phone" class="tero--info"><i class="fa-solid fa-phone"></i></h5>
-                        <h5>{{currentUser?.phone || ('CONFIG.ADD_PHONE' | translate)}}</h5>
+                        <h5>{{currentUser?.phone || ('ACCOUNT.ADD_PHONE' | translate)}}</h5>
                         <h5 *ngIf="!currentUser?.phone"><i class="fa-solid fa-circle-plus"></i></h5>
                     </bizy-button>
     
                     <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserLotPopup()">
                         <h5 *ngIf="currentUser?.lot" class="tero--info"><i class="fa-solid fa-location-dot"></i></h5>
-                        <h5>{{currentUser?.lot ? ('CORE.FORM.FIELD.LOT' | translate) + ' ' + currentUser?.lot : ('CONFIG.ADD_LOT' | translate)}}</h5>
+                        <h5>{{currentUser?.lot ? ('CORE.FORM.FIELD.LOT' | translate) + ' ' + currentUser?.lot : ('ACCOUNT.ADD_LOT' | translate)}}</h5>
                         <h5 *ngIf="!currentUser?.lot"><i class="fa-solid fa-circle-plus"></i></h5>
                     </bizy-button>
     
                     <bizy-button class="tero-action tero-action--info tero-no-padding" (onSelect)="openUserAliasCBUPopup()">
                         <h5 *ngIf="currentUser?.aliasCBU" class="tero--info"><i class="fa-solid fa-building-columns"></i></h5>
-                        <h5>{{currentUser?.aliasCBU ? ('CORE.FORM.FIELD.ALIAS_CBU' | translate) + ' ' + currentUser?.aliasCBU : ('CONFIG.ADD_ALIAS_CBU' | translate)}}</h5>
+                        <h5>{{currentUser?.aliasCBU ? ('CORE.FORM.FIELD.ALIAS_CBU' | translate) + ' ' + currentUser?.aliasCBU : ('ACCOUNT.ADD_ALIAS_CBU' | translate)}}</h5>
                         <h5 *ngIf="!currentUser?.aliasCBU"><i class="fa-solid fa-circle-plus"></i></h5>
                     </bizy-button>
 
@@ -140,7 +140,7 @@
             
             <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-bell"></i></h1>
 
-            <h3 slot="header-start"><strong>{{'CONFIG.NOTIFICATIONS' | translate}}</strong></h3>
+            <h3 slot="header-start"><strong>{{'ACCOUNT.NOTIFICATIONS' | translate}}</strong></h3>
 
             <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
 
@@ -150,7 +150,7 @@
             
             <h1 slot="header-start" class="tero--info"><i class="fa-solid fa-users"></i></h1>
 
-            <h3 slot="header-start"><strong>{{'CONFIG.USERS' | translate}}</strong></h3>
+            <h3 slot="header-start"><strong>{{'ACCOUNT.USERS' | translate}}</strong></h3>
 
             <h5 slot="header-start">({{users.length}})</h5>
 

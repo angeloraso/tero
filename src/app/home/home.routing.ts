@@ -7,7 +7,7 @@ export enum PATH {
   DASHBOARD = 'dashboard',
   NEIGHBORHOOD = 'neighborhood',
   CONTACTS = 'contacts',
-  CONFIG = 'config',
+  ACCOUNT = 'account',
   ANY = '**'
 }
 
@@ -42,8 +42,8 @@ export const ROUTES: Routes = [
         canActivate: [authGuard]
       },
       {
-        path: PATH.CONFIG,
-        loadChildren: () => import('@config/config.routing').then(m => m.ROUTES),
+        path: PATH.ACCOUNT,
+        loadChildren: () => import('@account/account.routing').then(m => m.ROUTES),
         canActivate: [authGuard]
       },
       {

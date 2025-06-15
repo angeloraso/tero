@@ -1,10 +1,10 @@
+import { PATH as ACCOUNT_PATH } from '@account/account.routing';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
-import { PATH as CONFIG_PATH } from '@config/config.routing';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
@@ -231,7 +231,7 @@ export class EditUserComponent implements OnInit {
   }
 
   goBack() {
-    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.CONFIG}/${CONFIG_PATH.USERS}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}/${ACCOUNT_PATH.USERS}` });
   }
 
   async save() {

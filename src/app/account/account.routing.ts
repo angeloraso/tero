@@ -10,17 +10,17 @@ export enum PATH {
 export const ROUTES: Routes = [
   {
     path: PATH.EMPTY,
-    loadComponent: () => import('@config/config.component').then(m => m.ConfigComponent),
+    loadComponent: () => import('@account/account.component').then(m => m.AccountComponent),
     pathMatch: 'full',
     resolve: { data: analyticsResolver },
-    data: { pageViewEventName: 'config' }
+    data: { pageViewEventName: 'account' }
   },
   {
     path: PATH.USERS,
-    loadChildren: () => import('@config/users/users.routing').then(m => m.ROUTES)
+    loadChildren: () => import('@account/users/users.routing').then(m => m.ROUTES)
   },
   {
     path: PATH.NOTIFICATION_SETTINGS,
-    loadChildren: () => import('@config/notification-settings/notification-settings.routing').then(m => m.ROUTES)
+    loadChildren: () => import('@account/notification-settings/notification-settings.routing').then(m => m.ROUTES)
   }
 ];

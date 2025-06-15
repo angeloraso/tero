@@ -1,3 +1,10 @@
+import {
+  AboutPopupComponent,
+  UserAliasCBUPopupComponent,
+  UserLotPopupComponent,
+  UserNamePopupComponent,
+  UserPhonePopupComponent
+} from '@account/components';
 import { Component, inject, OnInit } from '@angular/core';
 import { SharedModules } from '@app/shared';
 import { AuthService } from '@auth/auth.service';
@@ -11,27 +18,20 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import {
-  AboutPopupComponent,
-  UserAliasCBUPopupComponent,
-  UserLotPopupComponent,
-  UserNamePopupComponent,
-  UserPhonePopupComponent
-} from '@config/components';
 import { LOGO_PATH } from '@core/constants';
 import { IUser, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { HomeService } from '@home/home.service';
-import { PATH } from './config.routing';
+import { PATH } from './account.routing';
 import { es } from './i18n';
 
 @Component({
-  selector: 'tero-config',
-  templateUrl: './config.html',
-  styleUrls: ['./config.css'],
+  selector: 'tero-account',
+  templateUrl: './account.html',
+  styleUrls: ['./account.css'],
   imports: SharedModules
 })
-export class ConfigComponent implements OnInit {
+export class AccountComponent implements OnInit {
   readonly #router = inject(BizyRouterService);
   readonly #popup = inject(BizyPopupService);
   readonly #auth = inject(AuthService);
@@ -85,7 +85,7 @@ export class ConfigComponent implements OnInit {
       }
     } catch (error) {
       this.#log.error({
-        fileName: 'config.component',
+        fileName: 'account.component',
         functionName: 'ngOnInit',
         param: error
       });
@@ -118,7 +118,7 @@ export class ConfigComponent implements OnInit {
           }
         } catch (error) {
           this.#log.error({
-            fileName: 'config.component',
+            fileName: 'account.component',
             functionName: 'openUserNamePopup',
             param: error
           });
@@ -145,7 +145,7 @@ export class ConfigComponent implements OnInit {
           }
         } catch (error) {
           this.#log.error({
-            fileName: 'config.component',
+            fileName: 'account.component',
             functionName: 'openUserPhonePopup',
             param: error
           });
@@ -172,7 +172,7 @@ export class ConfigComponent implements OnInit {
           }
         } catch (error) {
           this.#log.error({
-            fileName: 'config.component',
+            fileName: 'account.component',
             functionName: 'openUserLotPopup',
             param: error
           });
@@ -199,7 +199,7 @@ export class ConfigComponent implements OnInit {
           }
         } catch (error) {
           this.#log.error({
-            fileName: 'config.component',
+            fileName: 'account.component',
             functionName: 'openUserAliasCBUPopup',
             param: error
           });
@@ -232,8 +232,8 @@ export class ConfigComponent implements OnInit {
       {
         component: PopupComponent,
         data: {
-          title: this.#translate.get('CONFIG.SIGN_OUT_POPUP.TITLE'),
-          msg: `${this.#translate.get('CONFIG.SIGN_OUT_POPUP.MSG')}: ${this.#auth.getEmail()}`
+          title: this.#translate.get('ACCOUNT.SIGN_OUT_POPUP.TITLE'),
+          msg: `${this.#translate.get('ACCOUNT.SIGN_OUT_POPUP.MSG')}: ${this.#auth.getEmail()}`
         }
       },
       res => {
