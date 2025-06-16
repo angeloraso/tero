@@ -13,12 +13,13 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
+import { UsersPopupComponent } from '@components/users-popup';
 import { AuthService } from '@core/auth/auth.service';
-import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
+import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { ERROR, ITopic, IUser, TOPIC_STATE } from '@core/model';
 import { TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
-import { TopicStatesPopupComponent, TopicUsersPopupComponent } from '@dashboard/topics/components';
+import { TopicStatesPopupComponent } from '@dashboard/topics/components';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 @Component({
@@ -49,11 +50,11 @@ export class EditTopicComponent implements OnInit {
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
-  readonly DESCRIPTION_LENGTH = 1024;
+  readonly BODY_MAX_LENGTH = BODY_MAX_LENGTH;
 
   readonly #form = this.#fb.group({
     title: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
-    description: [null, [Validators.maxLength(LONG_TEXT_MAX_LENGTH), Validators.required]],
+    description: [null, [Validators.maxLength(BODY_MAX_LENGTH), Validators.required]],
     status: [TOPIC_STATE.ACTIVE, [Validators.required]],
     users: [null]
   });
@@ -146,9 +147,9 @@ export class EditTopicComponent implements OnInit {
 
     this.#popup.open<Array<{ name: string; email: string }>>(
       {
-        component: TopicUsersPopupComponent,
+        component: UsersPopupComponent,
         fullScreen: true,
-        data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [] }
+        data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: 2 }
       },
       async users => {
         try {

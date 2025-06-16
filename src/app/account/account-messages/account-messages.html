@@ -1,0 +1,124 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'ACCOUNT_MESSAGES.TITLE' | translate}}</h1>
+
+    <span slot=start [bizyLoading]="loading"></span>
+
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isNeighbor" (onSelect)="addAccountMessage()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<tero-wrapper>
+
+    <bizy-section>
+
+        <bizy-section-end>
+
+            <bizy-input 
+                class="tero-counter"
+                [readonly]="true"
+                [value]="activatedFilters ? ((messageHistories | bizySearch: search : searchKeys).length + '/' + messageHistories.length) : messageHistories.length">
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
+            </bizy-input>
+
+            <bizy-input 
+                [disabled]="loading"
+                [(value)]="search"
+                (onChange)="checkFilters(!!search)">
+                <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.SEARCH' | translate}}</strong></h6>
+                <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
+            </bizy-input>
+
+            <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
+                <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
+            </bizy-button>
+
+        </bizy-section-end>
+
+    </bizy-section>
+
+    <bizy-list *ngIf="!loading" class="animated fade-in">
+
+        <bizy-card 
+            (onSelect)="goToMessageHistory(messageHistory)"
+            *ngFor="let messageHistory of messageHistories 
+                                    | bizySearch: search : searchKeys
+                                    | bizyOrderBy: order : orderBy">
+
+            <h4 slot="header-start" *ngIf="messageHistory.messages.length > 0 && !messageHistory.messages[messageHistory.messages.length - 1].read" class="tero--info account-messages__unread"><i class="fa-solid fa-envelope"></i><span class="account-messages__unread__badge"></span></h4>
+
+            <h4 slot="header-start" *ngIf="messageHistory.messages.length > 0 && messageHistory.messages[messageHistory.messages.length - 1].read"><i class="fa-solid fa-envelope-open-text"></i></h4>
+
+            <h4 slot="header-start" class="tero--info" *ngIf="messageHistory.user"><strong>{{messageHistory.user.name}}</strong></h4>
+
+            <h4 slot="header-start" class="tero--info" *ngIf="!messageHistory.user && messageHistory.messages.length > 0"><strong>{{messageHistory.messages[messageHistory.messages.length - 1].title}}</strong></h4>
+
+            <bizy-button 
+                slot="header-end"
+                *ngIf="currentUser && messageHistory.user && messageHistory.messages.length > 0 && messageHistory.messages[messageHistory.messages.length - 1].from !== currentUser.email"
+                class="tero-action tero-action--info"
+                (onSelect)="replyMessage(messageHistory); $event.stopPropagation()">
+                <h4><i class="fa-solid fa-reply"></i></h4>
+            </bizy-button>
+
+            <bizy-list *ngIf="messageHistory.messages.length > 0">
+
+                <bizy-tag>
+                    <h6>{{'ACCOUNT_MESSAGES.LAST_MESSAGE' | translate}}</h6>
+                </bizy-tag>
+
+                <h5><strong>{{messageHistory.messages[messageHistory.messages.length - 1].title}}</strong></h5>
+
+                <h6 *ngIf="messageHistory.messages[messageHistory.messages.length - 1].body" [bizyTooltip]="messageHistory.messages[messageHistory.messages.length - 1].body!" [tooltipLineClamp]="5">{{messageHistory.messages[messageHistory.messages.length - 1].body}}</h6>
+
+            </bizy-list>
+
+            <bizy-tag slot="footer-end" [type]="BIZY_TAG_TYPE.INFO" *ngIf="messageHistory.messages.length > 1">
+                <h6>{{messageHistory.messages.length}} {{'CORE.MESSAGES' | translate}}</h6>
+            </bizy-tag>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-list *ngIf="loading" class="animated fade-in">
+
+        <bizy-card *gridFor="let i of messageHistories.length > 0 ? messageHistories : 30 | bizyRepeat">
+
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+
+            <bizy-list slot="header-start">
+
+                <bizy-skeleton></bizy-skeleton>
+
+                <bizy-skeleton></bizy-skeleton>
+
+            </bizy-list>
+
+            <bizy-skeleton></bizy-skeleton>
+
+            <bizy-skeleton slot="footer-start"></bizy-skeleton>
+
+            <bizy-skeleton slot="footer-end"></bizy-skeleton>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.INFO" 
+        class="animated fade-in tero-no-matches"
+        *ngIf="messageHistories.length !== 0 && (messageHistories | bizySearch: search : searchKeys).length === 0">
+        <h4 class="tero-text--center">{{'CORE.NO_MATCHES' | translate}}</h4>
+    </bizy-tag>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="!loading && messageHistories.length === 0">
+        <h4 class="tero-text--center">{{'ACCOUNT_MESSAGES.EMPTY' | translate}}</h4>
+    </bizy-tag>
+
+</tero-wrapper>

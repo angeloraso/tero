@@ -10,7 +10,8 @@ export enum ERROR {
   ITEM_ALREADY_EXISTS = 'ITEM_ALREADY_EXISTS',
   AUTH_ERROR = 'AUTH_ERROR',
   NOT_SUPPORTED = 'NOT_SUPPORTED',
-  NOTIFICATION_PERMISSIONS = 'NOTIFICATION_PERMISSIONS'
+  NOTIFICATION_PERMISSIONS = 'NOTIFICATION_PERMISSIONS',
+  REQUIRED_PROPERTIES = 'REQUIRED_PROPERTIES'
 }
 
 export enum USER_ROLE {
@@ -309,6 +310,48 @@ export class GarbageTruckRecord implements IGarbageTruckRecord {
     this.id = uuid4();
     this.date = record.date;
     this.accountEmail = record.accountEmail;
+    this.created = Date.now();
+  }
+}
+
+export enum ACCOUNT_MESSAGE_TAG {
+  STANDARD = 'STANDARD',
+  IMPORTANT = 'IMPORTANT',
+  SPAM = 'SPAM'
+}
+
+export interface IAccountMessage {
+  id: string;
+  from: string;
+  to: Array<string>;
+  read: boolean;
+  archived: boolean;
+  tag: ACCOUNT_MESSAGE_TAG;
+  title: string;
+  body: string | null;
+  created: number;
+}
+
+export class AccountMessage implements IAccountMessage {
+  id: string;
+  from: string;
+  to: Array<string>;
+  read: boolean;
+  archived: boolean;
+  tag: ACCOUNT_MESSAGE_TAG;
+  title: string;
+  body: string | null;
+  created: number;
+
+  constructor(message: Omit<IAccountMessage, 'id' | 'created'>) {
+    this.id = uuid4();
+    this.from = message.from;
+    this.to = message.to;
+    this.read = message.read;
+    this.archived = message.archived;
+    this.tag = message.tag;
+    this.title = message.title;
+    this.body = message.body;
     this.created = Date.now();
   }
 }

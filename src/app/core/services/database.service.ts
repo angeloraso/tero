@@ -4,6 +4,7 @@ import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import {
   ERROR,
+  IAccountMessage,
   IContact,
   IEcommerceProduct,
   IGarbageTruckRecord,
@@ -21,6 +22,10 @@ import { BehaviorSubject } from 'rxjs';
 enum COLLECTION {
   CORE = 'core',
   USERS = 'users'
+}
+
+enum SUB_COLLECTION {
+  MESSAGES = 'messages'
 }
 
 enum CORE_DOCUMENT {
@@ -55,6 +60,7 @@ export class DatabaseService implements OnDestroy {
   #currentUser = new BehaviorSubject<IUser | undefined>(undefined);
   #ecommerceData = new BehaviorSubject<{ data: Array<IEcommerceProduct>; tags: Array<string> } | undefined>(undefined);
   #topics = new BehaviorSubject<Array<ITopic> | undefined>(undefined);
+  #accountMessages = new BehaviorSubject<Array<IAccountMessage> | undefined>(undefined);
 
   start() {
     return FirebaseFirestore.clearPersistence();
@@ -798,6 +804,52 @@ export class DatabaseService implements OnDestroy {
       data: topicsDocument
     });
   }
+
+  async getAccountMessages(accountEmail: string): Promise<Array<IAccountMessage>> {
+    if (typeof this.#accountMessages.value !== 'undefined' && this.#accountMessages.value !== null) {
+      return Promise.resolve(this.#accountMessages.value);
+    }
+
+    return new Promise<Array<IAccountMessage>>((resolve, reject) => {
+      FirebaseFirestore.addCollectionSnapshotListener<IAccountMessage>(
+        { reference: `${COLLECTION.USERS}/${accountEmail}/${SUB_COLLECTION.MESSAGES}` },
+        (event, error) => {
+          if (error) {
+            return reject(error);
+          } else {
+            const messages = event && event.snapshots ? event.snapshots.map(_snapshot => _snapshot.data).filter(_message => _message !== null) : [];
+            this.#accountMessages.next(messages);
+            return resolve(messages);
+          }
+        }
+      );
+    });
+  }
+
+  postAccountMessage = (data: { accountEmail: string; message: IAccountMessage }): Promise<void> =>
+    FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.USERS}/${data.accountEmail}/${SUB_COLLECTION.MESSAGES}/${data.message.id}`,
+      data: JSON.parse(JSON.stringify(data.message))
+    });
+
+  async putAccountMessage(data: { accountEmail: string; message: IAccountMessage }): Promise<void> {
+    const messages = await this.getAccountMessages(data.accountEmail);
+    const index = messages.findIndex(_message => _message.id === data.message.id);
+
+    if (index === -1) {
+      throw new Error(ERROR.ITEM_NOT_FOUND);
+    }
+
+    await FirebaseFirestore.setDocument({
+      reference: `${COLLECTION.USERS}/${data.accountEmail}/${SUB_COLLECTION.MESSAGES}/${data.message.id}`,
+      data: JSON.parse(JSON.stringify(data.message))
+    });
+  }
+
+  deleteAccountMessage = (data: { accountEmail: string; id: string }): Promise<void> =>
+    FirebaseFirestore.deleteDocument({
+      reference: `${COLLECTION.USERS}/${data.accountEmail}/${SUB_COLLECTION.MESSAGES}/${data.id}`
+    });
 
   destroy = () => {
     this.#neighbors.next(undefined);

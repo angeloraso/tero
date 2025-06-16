@@ -6,7 +6,7 @@ export const locale = {
     ACCOUNT: {
       TITLE: 'Cuenta',
       NOTIFICATIONS: 'Notificaciones',
-      GARBAGE: 'Historial recolección',
+      MESSAGES: 'Mensajes',
       USERS: 'Usuarios',
       ADD_NAME: 'Agregar nombre',
       ADD_PHONE: 'Agregar teléfono',

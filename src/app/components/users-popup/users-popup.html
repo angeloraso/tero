@@ -4,7 +4,7 @@
 
         <bizy-section-center>
 
-            <h2 class="tero--info"><strong>{{'TOPICS.TOPIC_USERS_POPUP.TITLE' | translate}}</strong></h2>
+            <h2 class="tero--info"><strong>{{'USERS_POPUP.TITLE' | translate}}</strong></h2>
 
         </bizy-section-center>
 
@@ -46,7 +46,7 @@
 
         <bizy-section-end>
 
-            <h6>{{'CORE.FORM.FIELD.SELECTED' | translate}}: <strong>{{(users | bizyFilter : 'selected' : true).length}}/{{MAX_LIMIT}}</strong></h6>
+            <h6>{{'CORE.FORM.FIELD.SELECTED' | translate}}: <strong>{{(users | bizyFilter : 'selected' : true).length}}<ng-container *ngIf="maxLimit > 0">/{{maxLimit}}</ng-container></strong></h6>
 
         </bizy-section-end>
 
@@ -68,9 +68,9 @@
 
         <bizy-card 
             *ngFor="let u of users | bizySearch: search : searchKeys | bizyOrderBy: order : orderBy"
-            [disabled]="!u.selected && selectedUsers >= MAX_LIMIT"
+            [disabled]="!u.selected && maxLimit !== 0 && selectedUsers >= maxLimit"
             (onSelect)="selectUser(u)"
-            [ngClass]="{'topic-users-popup--selected': u.selected}">
+            [ngClass]="{'users-popup--selected': u.selected}">
 
             <h5 slot="header-start" [ngClass]="{'tero--info': u.selected}"><i class="fa-solid fa-user"></i></h5>
 

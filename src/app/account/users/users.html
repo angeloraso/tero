@@ -99,7 +99,7 @@
                 *ngIf="user.phone"
                 class="tero-action tero-action--info users__card__action"
                 (onSelect)="onCall(user); $event.stopPropagation()">
-                <i class="fa-solid fa-phone"></i>
+                <h5><i class="fa-solid fa-phone"></i></h5>
             </bizy-button>
 
             <bizy-button 
@@ -107,7 +107,7 @@
                 *ngIf="user.phone"
                 class="tero-action tero-action--success users__card__action"
                 (onSelect)="onWhatsapp(user); $event.stopPropagation()">
-                <i class="fa-brands fa-whatsapp"></i>
+                <h5><i class="fa-brands fa-whatsapp"></i></h5>
             </bizy-button>
 
             <bizy-list>

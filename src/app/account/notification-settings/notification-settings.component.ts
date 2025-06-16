@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
-import { BIZY_CALENDAR_DAY, BIZY_CALENDAR_MODE, BizyLogService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
+import { BizyLogService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import { ERROR, INeighbor, ITopic, IUser } from '@core/model';
 import { MobileService, NeighborsService, TopicsService, UsersService } from '@core/services';
@@ -29,9 +29,6 @@ export class NotificationSettingsComponent implements OnInit {
   readonly #usersService = inject(UsersService);
   readonly #topicsService = inject(TopicsService);
   readonly #neighborsService = inject(NeighborsService);
-
-  readonly BIZY_CALENDAR_MODE = BIZY_CALENDAR_MODE;
-  readonly BIZY_CALENDAR_DAY = BIZY_CALENDAR_DAY;
 
   currentUser: IUser | null = null;
   topics: Array<IExtendedTopic> = [];

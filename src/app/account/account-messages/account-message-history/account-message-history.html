@@ -1,0 +1,72 @@
+<bizy-toolbar>
+
+    <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"  [disabled]="loading"><i class="fa-solid fa-angle-left"></i></bizy-button>
+
+    <h1 slot=start>{{'ACCOUNT_MESSAGE_HISTORY.TITLE' | translate}}</h1>
+
+    <span slot=start [bizyLoading]="loading"></span>
+
+    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="addAccountMessage()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+
+</bizy-toolbar>
+
+<tero-wrapper>
+
+    <bizy-list *ngIf="!loading && otherUser && currentUser" class="animated fade-in" #messageList>
+
+        <bizy-card 
+            *ngFor="let message of messages | bizyOrderBy: 'asc' : 'created'"
+            [ngClass]="{
+                'account-messages-history__other-user-message': message.from === otherUser.email,
+                'account-messages-history__current-user-message': message.from === currentUser.email
+            }">
+
+            <h5 slot="header-start" class="tero--info" *ngIf="message.from === otherUser.email"><strong>{{otherUser.name}}</strong></h5>
+
+            <h5 slot="header-start" class="tero--info" *ngIf="message.from === currentUser.email"><strong>{{currentUser.name}}</strong></h5>
+
+            <bizy-button 
+                slot="header-end"
+                class="tero-action tero-action--danger tero-no-padding"
+                (onSelect)="deleteMessage(message); $event.stopPropagation()">
+                <h5><i class="fa-solid fa-trash-alt"></i></h5>
+            </bizy-button>
+
+            <bizy-list>
+
+                <h5><strong>{{message.title}}</strong></h5>
+    
+                <h6 *ngIf="message.body">{{message.body}}</h6>
+
+            </bizy-list>
+
+            <h6 slot="footer-end"><strong>{{message.created | date : 'yyyy/MM/dd HH:mm'}}</strong></h6>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    <bizy-list *ngIf="loading" class="animated fade-in">
+
+        <bizy-card *gridFor="let i of messages.length > 0 ? messages : 30 | bizyRepeat">
+
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+
+            <bizy-skeleton slot="header-start"></bizy-skeleton>
+
+            <bizy-list>
+
+                <bizy-skeleton width="12rem" height="0.8rem"></bizy-skeleton>
+
+                <bizy-skeleton width="16rem" height="0.8rem"></bizy-skeleton>
+
+                <bizy-skeleton width="8rem" height="0.8rem"></bizy-skeleton>
+
+            </bizy-list>
+
+        </bizy-card>
+
+    </bizy-list>
+
+    
+</tero-wrapper>

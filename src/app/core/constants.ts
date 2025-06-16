@@ -23,6 +23,7 @@ export const EMAIL_MAX_LENGTH = 128;
 export const PHONE_MIN_LENGTH = 2;
 export const PHONE_MAX_LENGTH = 128;
 export const LONG_TEXT_MAX_LENGTH = 256;
+export const BODY_MAX_LENGTH = 2048;
 export const SECURITY_GROUPS = [1, 2, 3, 4, 5, 6];
 export const ALARMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 export const ALARM_CONTROLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];

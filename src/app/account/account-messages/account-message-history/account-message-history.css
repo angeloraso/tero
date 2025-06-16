@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.account-messages-history__other-user-message {
+  --bizy-card-width: calc(100% - 1.5rem);
+}
+
+.account-messages-history__current-user-message {
+  --bizy-card-width: calc(100% - 1rem);
+  --bizy-card-background-color: var(--bizy-light-success-color);
+  margin-left: 1rem;
+}

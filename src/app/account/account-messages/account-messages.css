@@ -1,0 +1,19 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-messages__unread {
+  position: relative;
+}
+
+.account-messages__unread__badge {
+  position: absolute;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--bizy-danger-color);
+  top: 0;
+  right: -0.2rem;
+}

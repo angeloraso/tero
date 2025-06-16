@@ -1,5 +1,7 @@
+import { PATH as ACCOUNT_PATH } from '@account/account.routing';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
@@ -13,34 +15,36 @@ import {
 } from '@bizy/core';
 import { UsersPopupComponent } from '@components/users-popup';
 import { AuthService } from '@core/auth/auth.service';
-import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
-import { ERROR, TOPIC_STATE } from '@core/model';
-import { MobileService, TopicsService } from '@core/services';
-import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
-import { TopicStatesPopupComponent } from '@dashboard/topics/components';
+import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
+import { ERROR } from '@core/model';
+import { AccountMessagesService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
+import { es } from './i18n';
+
 @Component({
-  selector: 'tero-add-topic',
-  templateUrl: './add-topic.html',
-  styleUrls: ['./add-topic.css'],
+  selector: 'tero-add-account-message',
+  templateUrl: './add-account-message.html',
+  styleUrls: ['./add-account-message.css'],
   imports: SharedModules
 })
-export class AddTopicComponent implements OnInit {
+export class AddAccountMessageComponent implements OnInit {
   @ViewChild(BizyFormComponent) formComponent: BizyFormComponent | null = null;
-  readonly #topicsService = inject(TopicsService);
+  readonly #accountMessagesService = inject(AccountMessagesService);
   readonly #router = inject(BizyRouterService);
+  readonly #activatedRoute = inject(ActivatedRoute);
   readonly #toast = inject(BizyToastService);
-  readonly #mobile = inject(MobileService);
   readonly #log = inject(BizyLogService);
   readonly #home = inject(HomeService);
   readonly #translate = inject(BizyTranslateService);
   readonly #fb = inject(FormBuilder);
   readonly #popup = inject(BizyPopupService);
   readonly #auth = inject(AuthService);
+  readonly #usersService = inject(UsersService);
 
   loading: boolean = false;
   accountEmail = this.#auth.getEmail()!;
+  isConfig: boolean = false;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
@@ -48,19 +52,25 @@ export class AddTopicComponent implements OnInit {
   readonly BODY_MAX_LENGTH = BODY_MAX_LENGTH;
 
   readonly #form = this.#fb.group({
+    users: [null, [Validators.required]],
     title: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
-    description: [null, [Validators.maxLength(BODY_MAX_LENGTH), Validators.required]],
-    status: [TOPIC_STATE.ACTIVE, [Validators.required]],
-    users: [null]
+    body: [null, [Validators.maxLength(BODY_MAX_LENGTH)]]
   });
 
   async ngOnInit() {
     try {
       this.loading = true;
+      this.#translate.loadTranslations(es);
       this.#home.hideTabs();
+      this.isConfig = await this.#usersService.isConfig();
+      const user = this.#router.getQueryParam(this.#activatedRoute, 'user');
+      if (user) {
+        this.users.setValue([JSON.parse(user)]);
+        this.users.disable();
+      }
     } catch (error) {
       this.#log.error({
-        fileName: 'add-topic.component',
+        fileName: 'add-account-message.component',
         functionName: 'ngOnInit',
         param: error
       });
@@ -70,28 +80,24 @@ export class AddTopicComponent implements OnInit {
     }
   }
 
-  get title() {
-    return this.#form.get('title') as FormControl;
-  }
-
-  get description() {
-    return this.#form.get('description') as FormControl;
-  }
-
-  get status() {
-    return this.#form.get('status') as FormControl<TOPIC_STATE>;
-  }
-
   get users() {
     return this.#form.get('users') as FormControl;
   }
 
+  get title() {
+    return this.#form.get('title') as FormControl;
+  }
+
+  get body() {
+    return this.#form.get('body') as FormControl;
+  }
+
   goBack() {
-    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.TOPICS}` });
+    this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}/${ACCOUNT_PATH.ACCOUNT_MESSAGES}` });
   }
 
   openUsersPopup() {
-    if (this.loading) {
+    if (this.loading || this.users.disabled) {
       return;
     }
 
@@ -99,7 +105,7 @@ export class AddTopicComponent implements OnInit {
       {
         component: UsersPopupComponent,
         fullScreen: true,
-        data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: 2 }
+        data: { emails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: this.isConfig ? 0 : 3 }
       },
       async users => {
         try {
@@ -112,36 +118,8 @@ export class AddTopicComponent implements OnInit {
           }
         } catch (error) {
           this.#log.error({
-            fileName: 'add-topic.component',
+            fileName: 'add-account-message.component',
             functionName: 'openUsersPopup',
-            param: error
-          });
-          this.#toast.danger();
-        }
-      }
-    );
-  }
-
-  openTopicStatesPopup(): void {
-    if (this.loading) {
-      return;
-    }
-
-    this.#popup.open<TOPIC_STATE>(
-      {
-        component: TopicStatesPopupComponent,
-        fullScreen: true,
-        data: { state: this.status.value }
-      },
-      async state => {
-        try {
-          if (state) {
-            this.status.setValue(state);
-          }
-        } catch (error) {
-          this.#log.error({
-            fileName: 'add-topic.component',
-            functionName: 'openTopicStatesPopup',
             param: error
           });
           this.#toast.danger();
@@ -157,25 +135,22 @@ export class AddTopicComponent implements OnInit {
         return;
       }
 
+      const emails = this.users.value.map((_user: { email: string }) => _user.email);
+      if (emails.length === 0) {
+        return;
+      }
+
       this.loading = true;
 
-      await this.#topicsService.postTopic({
+      await this.#accountMessagesService.postMessage({
         title: this.title.value ? this.title.value.trim() : '',
-        description: this.description.value ? this.description.value.trim() : '',
-        status: this.status.value,
-        accountEmails: this.users.value
-          ? this.users.value.map((_user: { email: string }) => _user.email).concat([this.accountEmail])
-          : [this.accountEmail]
-      });
-      await this.#mobile.sendPushNotification({
-        topicId: TOPIC_SUBSCRIPTION.NEW_TOPIC,
-        title: this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.TITLE'),
-        body: `${this.#translate.get('TOPICS.NEW_TOPIC_NOTIFICATION.BODY')}: ${this.title.value}`
+        body: this.body.value ? this.body.value.trim() : '',
+        emails
       });
       this.goBack();
     } catch (error) {
       this.#log.error({
-        fileName: 'add-topic.component',
+        fileName: 'add-account-message.component',
         functionName: 'save',
         param: error
       });

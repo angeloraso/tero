@@ -212,7 +212,7 @@ export class AccountComponent implements OnInit {
   }
 
   goToUsers(): void {
-    if (!this.isConfig) {
+    if (this.loading || !this.isConfig) {
       return;
     }
 
@@ -220,7 +220,19 @@ export class AccountComponent implements OnInit {
   }
 
   goToNotificationSettings() {
+    if (this.loading || !this.isNeighbor) {
+      return;
+    }
+
     this.#router.goTo({ path: PATH.NOTIFICATION_SETTINGS });
+  }
+
+  goToMessages() {
+    if (this.loading || !this.isNeighbor) {
+      return;
+    }
+
+    this.#router.goTo({ path: PATH.ACCOUNT_MESSAGES });
   }
 
   onSignOut(): void {

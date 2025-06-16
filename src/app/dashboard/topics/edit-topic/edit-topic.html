@@ -26,12 +26,14 @@
         </bizy-input>
     
         <bizy-input
+            #descriptionInput
             type="textarea"
             [disabled]="loading"
             [value]="description.value"
             (onChange)="description.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.DESCRIPTION' | translate}}</strong></h6>
-            <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{DESCRIPTION_LENGTH}}</h6>
+            <h6 slot="error" *ngIf="description.hasError('required') && descriptionInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+            <h6 slot="error" *ngIf="description.hasError('maxlength') && descriptionInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{BODY_MAX_LENGTH}}</h6>
         </bizy-input>
     
         <bizy-input

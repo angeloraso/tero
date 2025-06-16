@@ -36,9 +36,6 @@ export const locale = {
       TOPIC_STATES_POPUP: {
         TITLE: 'Seleccionar estado'
       },
-      TOPIC_USERS_POPUP: {
-        TITLE: 'Seleccionar usuario'
-      },
       ADD_TOPIC: {
         TITLE: 'Agregar asunto'
       },

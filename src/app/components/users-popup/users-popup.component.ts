@@ -1,16 +1,18 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { SharedModules } from '@app/shared';
-import { BizyFilterPipe, BizyLogService, BizyPopupService, BizyToastService } from '@bizy/core';
+import { BizyFilterPipe, BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { AuthService } from '@core/auth/auth.service';
 import { USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
+import { es } from './i18n';
+
 @Component({
-  selector: 'tero-topic-users-popup',
-  templateUrl: 'topic-users-popup.html',
-  styleUrls: ['topic-users-popup.css'],
+  selector: 'tero-users-popup',
+  templateUrl: 'users-popup.html',
+  styleUrls: ['users-popup.css'],
   imports: SharedModules
 })
-export class TopicUsersPopupComponent implements OnInit {
+export class UsersPopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #usersService = inject(UsersService);
   readonly #ref = inject(ChangeDetectorRef);
@@ -18,6 +20,7 @@ export class TopicUsersPopupComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #filterPipe = inject(BizyFilterPipe);
   readonly #auth = inject(AuthService);
+  readonly #translate = inject(BizyTranslateService);
 
   users: Array<{ value: string; email: string; selected: boolean }> = [];
   loading: boolean = false;
@@ -28,37 +31,43 @@ export class TopicUsersPopupComponent implements OnInit {
   activatedFilters: number = 0;
   selectedUsers: number = 0;
 
-  readonly MAX_LIMIT: number = 2;
+  maxLimit: number = 0;
 
   async ngOnInit() {
     try {
       this.loading = true;
-      this.users.length = 0;
+      this.#translate.loadTranslations(es);
+      const users: Array<{ value: string; email: string; selected: boolean }> = [];
       const accountEmail = this.#auth.getEmail()!;
-      const users = await this.#usersService.getUsers();
-      users
-        .filter(_user => _user.status === USER_STATE.ACTIVE)
+      const _users = await this.#usersService.getUsers();
+      _users
+        .filter(_user => _user.status === USER_STATE.ACTIVE && _user.email !== accountEmail)
         .forEach(_user => {
-          if (_user.email !== accountEmail) {
-            this.users.push({
-              email: _user.email,
-              value: _user.name || _user.email,
-              selected: false
-            });
-          }
+          users.push({
+            email: _user.email,
+            value: _user.name || _user.email,
+            selected: false
+          });
         });
 
-      const data = this.#popup.getData<{ userEmails: Array<string> }>();
-      if (data && data.userEmails) {
-        this.users.forEach(_user => {
-          _user.selected = data.userEmails.includes(_user.email);
-        });
+      const data = this.#popup.getData<{ emails: Array<string>; maxLimit: number }>();
+      if (data) {
+        if (data.emails) {
+          users.forEach(_user => {
+            _user.selected = data.emails.includes(_user.email);
+          });
+        }
+
+        if (data.maxLimit > 0) {
+          this.maxLimit = data.maxLimit;
+        }
       }
 
-      this.selectedUsers = this.#filterPipe.transform(this.users, 'selected', true).length;
+      this.selectedUsers = this.#filterPipe.transform(users, 'selected', true).length;
+      this.users = users;
     } catch (error) {
       this.#log.error({
-        fileName: 'topic-users-popup.component',
+        fileName: 'users-popup.component',
         functionName: 'ngOnInit',
         param: error
       });
@@ -98,7 +107,7 @@ export class TopicUsersPopupComponent implements OnInit {
   }
 
   apply() {
-    if (this.selectedUsers > this.MAX_LIMIT) {
+    if (this.maxLimit !== 0 && this.selectedUsers > this.maxLimit) {
       return;
     }
 

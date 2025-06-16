@@ -7,6 +7,6 @@
   --bizy-list-height: 22rem;
 }
 
-.topic-users-popup--selected {
+.users-popup--selected {
   --bizy-card-background-color: var(--bizy-light-info-color);
 }

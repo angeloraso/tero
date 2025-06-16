@@ -10,6 +10,7 @@ export const locale = {
       YES: 'Si',
       NO: 'No',
       MORE_INFO: 'Más info',
+      MESSAGES: 'Mensajes',
       MONTH: {
         MAIN: 'Mes',
         JANUARY: 'Enero',
@@ -79,7 +80,10 @@ export const locale = {
           PARTNERS: 'Colaboradores',
           NO_PARTNERS: 'Sin colaboradores',
           PRODUCT: 'Producto',
-          CONTACT: 'Contacto'
+          CONTACT: 'Contacto',
+          TO: 'Destinatario',
+          NO_TO: 'Sin destinatario',
+          BODY: 'Mensaje'
         },
         ERROR: {
           REQUIRED: 'Este campo es requerido',
@@ -122,6 +126,11 @@ export const locale = {
         LINK: 'Link',
         EMAIL: 'Email',
         NUMBER: 'Número'
+      },
+      MESSAGE_TAG: {
+        STANDARD: 'Estandar',
+        IMPORTANT: 'Importante',
+        SPAM: 'Spam'
       },
       ERROR: {
         NOTIFICATION_PERMISSIONS: 'Debe dar permisos de notificación'

@@ -13,7 +13,15 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/core';
-import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, PHONE_MAX_LENGTH, PHONE_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
+import {
+  BODY_MAX_LENGTH,
+  LONG_TEXT_MAX_LENGTH,
+  NAME_MAX_LENGTH,
+  NAME_MIN_LENGTH,
+  PHONE_MAX_LENGTH,
+  PHONE_MIN_LENGTH,
+  TOPIC_SUBSCRIPTION
+} from '@core/constants';
 import { IUser } from '@core/model';
 import { EcommerceService, MobileService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -53,7 +61,7 @@ export class AddEcommerceProductComponent implements OnInit {
   readonly PHONE_MIN_LENGTH = PHONE_MIN_LENGTH;
   readonly PHONE_MAX_LENGTH = PHONE_MAX_LENGTH;
   readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
-  readonly DESCRIPTION_LENGTH = 1024;
+  readonly DESCRIPTION_LENGTH = BODY_MAX_LENGTH;
 
   readonly #form = this.#fb.group({
     productName: [null, [Validators.minLength(NAME_MIN_LENGTH), Validators.maxLength(NAME_MAX_LENGTH), Validators.required]],
