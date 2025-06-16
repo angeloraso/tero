@@ -128,6 +128,10 @@ export class AccountMessageHistoryComponent implements OnInit {
           if (res && message) {
             this.loading = true;
             await this.#accountMessagesService.deleteMessage(message.id);
+            const index = this.messages.findIndex(_message => _message.id === message.id);
+            if (index !== -1) {
+              this.messages.splice(index, 1);
+            }
           }
         } catch (error) {
           this.#log.error({
