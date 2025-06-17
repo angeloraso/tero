@@ -15,9 +15,9 @@ import {
 } from '@bizy/core';
 import { UsersPopupComponent } from '@components/users-popup';
 import { AuthService } from '@core/auth/auth.service';
-import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
+import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { ERROR } from '@core/model';
-import { AccountMessagesService, UsersService } from '@core/services';
+import { AccountMessagesService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { es } from './i18n';
@@ -38,6 +38,7 @@ export class AddAccountMessageComponent implements OnInit {
   readonly #home = inject(HomeService);
   readonly #translate = inject(BizyTranslateService);
   readonly #fb = inject(FormBuilder);
+  readonly #mobile = inject(MobileService);
   readonly #popup = inject(BizyPopupService);
   readonly #auth = inject(AuthService);
   readonly #usersService = inject(UsersService);
@@ -135,18 +136,37 @@ export class AddAccountMessageComponent implements OnInit {
         return;
       }
 
-      const emails = this.users.value.map((_user: { email: string }) => _user.email);
+      const emails: Array<string> = this.users.value.map((_user: { email: string }) => _user.email);
       if (emails.length === 0) {
         return;
       }
 
       this.loading = true;
 
+      const title = this.title.value.trim();
+
       await this.#accountMessagesService.postMessage({
-        title: this.title.value ? this.title.value.trim() : '',
-        body: this.body.value ? this.body.value.trim() : '',
+        title,
+        body: this.body.value ? this.body.value.trim() : null,
         emails
       });
+
+      const promises: Array<Promise<void>> = [];
+
+      this.users.value.forEach((user: { name: string; email: string }) => {
+        if (user && user.name && user.email) {
+          promises.push(
+            this.#mobile.sendPushNotification({
+              topicId: `${TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE}${user.email}`,
+              title: `${this.#translate.get('ADD_ACCOUNT_MESSAGE.USER_NEW_MESSAGE_NOTIFICATION.TITLE')} ${user.name}`,
+              body: title
+            })
+          );
+        }
+      });
+
+      await Promise.all(promises);
+
       this.goBack();
     } catch (error) {
       this.#log.error({

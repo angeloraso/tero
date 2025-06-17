@@ -39,9 +39,9 @@
             <bizy-toggle [selected]="garbageSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToGarbageNotification()">
                 <h5 slot="end">{{'NOTIFICATION_SETTINGS.GENERAL.GARBAGE' | translate}}</h5>
             </bizy-toggle>
-    
-            <bizy-toggle [selected]="newTopicSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewTopicNotification()">
-                <h5 slot="end">{{'NOTIFICATION_SETTINGS.GENERAL.NEW_TOPIC' | translate}}</h5>
+
+            <bizy-toggle [selected]="userNewMessageSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToUserNewMessageNotification()">
+                <h5 slot="end">{{'NOTIFICATION_SETTINGS.GENERAL.USER_NEW_MESSAGE' | translate}}</h5>
             </bizy-toggle>
     
         </bizy-list>
@@ -74,6 +74,20 @@
 
             <bizy-toggle [selected]="newEcommerceProductSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewEcommerceProductNotification()">
                 <h5 slot="end">{{'NOTIFICATION_SETTINGS.ECOMMERCE.NEW_ECOMMERCE_PRODUCT' | translate}}</h5>
+            </bizy-toggle>
+    
+        </bizy-list>
+
+    </bizy-card>
+
+    <bizy-card class="animated fade-in" *ngIf="!loading.main" class="notification-settings__card">
+
+        <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.TOPICS.MAIN' | translate}}</h4>
+
+        <bizy-list>
+
+            <bizy-toggle [selected]="newTopicSubscriptionTopic" [disabled]="loading.content" (onSelect)="subscribeToNewTopicNotification()">
+                <h5 slot="end">{{'NOTIFICATION_SETTINGS.TOPICS.NEW_TOPIC' | translate}}</h5>
             </bizy-toggle>
     
         </bizy-list>

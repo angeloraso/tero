@@ -8,6 +8,10 @@ export const locale = {
       GENERAL: {
         MAIN: 'Noificaciones generales',
         GARBAGE: 'Camión de basura',
+        USER_NEW_MESSAGE: 'Nuevo mensaje'
+      },
+      TOPICS: {
+        MAIN: 'Temario',
         NEW_TOPIC: 'Creación de nuevo asunto'
       },
       SECURITY: {

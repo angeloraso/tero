@@ -83,16 +83,8 @@ export class AppComponent implements OnInit {
             if (user.topicSubscriptions) {
               user.topicSubscriptions.forEach(async _topicSubscription => {
                 try {
-                  if (_topicSubscription === TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE && neighbor && neighbor.security && neighbor.group) {
-                    await this.#mobile.subscribeToTopic(`${_topicSubscription}${neighbor.group}`);
-                  } else if (
-                    _topicSubscription === TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE &&
-                    neighbor &&
-                    neighbor.email &&
-                    neighbor.security &&
-                    neighbor.group
-                  ) {
-                    await this.#mobile.subscribeToTopic(`${_topicSubscription}${user.email}`);
+                  if (_topicSubscription.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE) && neighbor && neighbor.security && neighbor.group) {
+                    await this.#mobile.subscribeToTopic(`${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${neighbor.group}`);
                   } else {
                     await this.#mobile.subscribeToTopic(_topicSubscription);
                   }

@@ -38,6 +38,7 @@ export class NotificationSettingsComponent implements OnInit {
   };
 
   garbageSubscriptionTopic: boolean = false;
+  userNewMessageSubscriptionTopic: boolean = false;
   newTopicSubscriptionTopic: boolean = false;
   userSecurityInvoiceSubscriptionTopic: boolean = false;
   groupSecurityInvoiceSubscriptionTopic: boolean = false;
@@ -67,6 +68,11 @@ export class NotificationSettingsComponent implements OnInit {
 
       if (this.currentUser.topicSubscriptions) {
         this.garbageSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GARBAGE);
+
+        this.userNewMessageSubscriptionTopic = Boolean(
+          this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE))
+        );
+
         this.newTopicSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_TOPIC);
         this.newEcommerceProductSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
 
@@ -119,6 +125,41 @@ export class NotificationSettingsComponent implements OnInit {
       if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
         this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
         return;
+      } else {
+        this.#toast.danger();
+      }
+
+      throw error;
+    } finally {
+      this.loading.content = false;
+    }
+  }
+
+  async subscribeToUserNewMessageNotification() {
+    try {
+      if (this.loading.main || this.loading.content || !this.currentUser) {
+        return;
+      }
+
+      this.loading.content = true;
+      const topicId = `${TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE}${this.currentUser.email}`;
+      if (!this.userNewMessageSubscriptionTopic) {
+        await this.#mobile.subscribeToTopic(topicId);
+        await this.#addTopicSubscription(topicId);
+      } else {
+        await this.#mobile.unsubscribeFromTopic(topicId);
+        await this.#removeTopicSubscription(topicId);
+      }
+      this.userNewMessageSubscriptionTopic = !this.userNewMessageSubscriptionTopic;
+    } catch (error) {
+      this.#log.error({
+        fileName: 'notification-settings.component',
+        functionName: 'subscribeToUserNewMessageNotification',
+        param: error
+      });
+
+      if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
+        this.#toast.warning(this.#translate.get('CORE.ERROR.NOTIFICATION_PERMISSIONS'));
       } else {
         this.#toast.danger();
       }
