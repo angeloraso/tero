@@ -31,6 +31,33 @@
                 <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
             </bizy-input>
 
+            <bizy-button class="tero-button--default" [disabled]="loading">
+
+                <bizy-menu [hideArrow]="true">
+
+                    <h5><i class="fa-solid fa-arrow-up-a-z"></i></h5>
+
+                    <bizy-menu-title>{{ 'CORE.BUTTON.ORDER_BY' | translate }}</bizy-menu-title>
+
+                    <bizy-menu-option (onSelect)="orderBy = 'recent'; sortBy()" [ngClass]="{'account-messages__menu__option--selected': orderBy === 'recent'}">
+                        <h5><i class="fa-solid fa-envelope-circle-check"></i></h5>
+                        <h5>{{ 'ACCOUNT_MESSAGES.SORT_BY.RECENT' | translate }}</h5>
+                    </bizy-menu-option>
+
+                    <bizy-menu-option (onSelect)="orderBy = 'oldest'; sortBy()" [ngClass]="{'account-messages__menu__option--selected': orderBy === 'oldest'}">
+                        <h5><i class="fa-solid fa-hourglass-start"></i></h5>
+                        <h5>{{ 'ACCOUNT_MESSAGES.SORT_BY.OLDEST' | translate }}</h5>
+                    </bizy-menu-option>
+
+                    <bizy-menu-option (onSelect)="orderBy = 'title'; sortBy()" [ngClass]="{'account-messages__menu__option--selected': orderBy === 'title'}">
+                        <h5><i class="fa-solid fa-envelope"></i></h5>
+                        <h5>{{ 'ACCOUNT_MESSAGES.SORT_BY.TITLE' | translate }}</h5>
+                    </bizy-menu-option>
+
+                </bizy-menu>
+
+            </bizy-button>
+
             <bizy-button class="tero-button--warning" (onSelect)="onRemoveFilters()" [disabled]="loading || !activatedFilters">
                 <h6><i class="fa-solid fa-filter-circle-xmark"></i></h6>
             </bizy-button>
@@ -43,17 +70,14 @@
 
         <bizy-card 
             (onSelect)="goToMessageHistory(messageHistory)"
-            *ngFor="let messageHistory of messageHistories 
-                                    | bizySearch: search : searchKeys
-                                    | bizyOrderBy: order : orderBy">
+            (bizyLongPress)="deleteMessageHistory(messageHistory)"
+            *ngFor="let messageHistory of messageHistories | bizySearch: search : searchKeys">
 
             <h4 slot="header-start" *ngIf="messageHistory.messages.length > 0 && !messageHistory.messages[messageHistory.messages.length - 1].read" class="tero--info account-messages__unread"><i class="fa-solid fa-envelope"></i><span class="account-messages__unread__badge"></span></h4>
 
             <h4 slot="header-start" *ngIf="messageHistory.messages.length > 0 && messageHistory.messages[messageHistory.messages.length - 1].read"><i class="fa-solid fa-envelope-open-text"></i></h4>
 
-            <h4 slot="header-start" class="tero--info" *ngIf="messageHistory.user"><strong>{{messageHistory.user.name}}</strong></h4>
-
-            <h4 slot="header-start" class="tero--info" *ngIf="!messageHistory.user && messageHistory.messages.length > 0"><strong>{{messageHistory.messages[messageHistory.messages.length - 1].title}}</strong></h4>
+            <h4 slot="header-start" class="tero--info"><strong>{{messageHistory.title}}</strong></h4>
 
             <bizy-button 
                 slot="header-end"
@@ -71,7 +95,9 @@
 
                 <h5><strong>{{messageHistory.messages[messageHistory.messages.length - 1].title}}</strong></h5>
 
-                <h6 *ngIf="messageHistory.messages[messageHistory.messages.length - 1].body" [bizyTooltip]="messageHistory.messages[messageHistory.messages.length - 1].body!" [tooltipLineClamp]="5">{{messageHistory.messages[messageHistory.messages.length - 1].body}}</h6>
+                <h6 *ngIf="messageHistory.user && messageHistory.messages[messageHistory.messages.length - 1].body" [bizyTooltip]="messageHistory.messages[messageHistory.messages.length - 1].body!" [tooltipLineClamp]="5">{{messageHistory.messages[messageHistory.messages.length - 1].body}}</h6>
+
+                <h6 *ngIf="!messageHistory.user && messageHistory.messages[messageHistory.messages.length - 1].body && !messageHistory.user">{{messageHistory.messages[messageHistory.messages.length - 1].body}}</h6>
 
             </bizy-list>
 
@@ -85,7 +111,7 @@
 
     <bizy-list *ngIf="loading" class="animated fade-in">
 
-        <bizy-card *gridFor="let i of messageHistories.length > 0 ? messageHistories : 30 | bizyRepeat">
+        <bizy-card *ngFor="let i of 30 | bizyRepeat">
 
             <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
 

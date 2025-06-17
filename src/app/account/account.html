@@ -142,6 +142,10 @@
 
             <h3 slot="header-start"><strong>{{'ACCOUNT.MESSAGES' | translate}}</strong></h3>
 
+            <h5 slot="header-start" *ngIf="newMessages.length > 0">({{newMessages.length}})</h5>
+
+            <span slot="header-start" *ngIf="newMessages.length > 0" class="config__icon--badge"></span>
+
             <bizy-button slot="header-end" class="tero-action tero-action--info"><i class="fa-solid fa-chevron-right"></i></bizy-button>
 
         </bizy-card>

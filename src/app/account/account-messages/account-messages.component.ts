@@ -8,10 +8,12 @@ import {
   BIZY_TAG_TYPE,
   BizyLogService,
   BizyOrderByPipe,
+  BizyPopupService,
   BizyRouterService,
   BizyToastService,
   BizyTranslateService
 } from '@bizy/core';
+import { PopupComponent } from '@components/popup';
 import { IAccountMessage, IUser } from '@core/model';
 import { AccountMessagesService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
@@ -20,6 +22,7 @@ import { es } from './i18n';
 
 interface IMessageHistory {
   user: IUser | null;
+  title: string;
   messages: Array<IAccountMessage>;
   selected: boolean;
 }
@@ -39,17 +42,17 @@ export class AccountMessagesComponent implements OnInit {
   readonly #orderByPipe = inject(BizyOrderByPipe);
   readonly #usersService = inject(UsersService);
   readonly #accountMessagesService = inject(AccountMessagesService);
+  readonly #popup = inject(BizyPopupService);
 
   isNeighbor = false;
   currentUser: IUser | null = null;
   loading = false;
-
+  orderBy: 'recent' | 'oldest' | 'title' = 'recent';
   search: string | number = '';
-  searchKeys = ['user.name'];
-  order: 'asc' | 'desc' = 'desc';
-  orderBy = 'created';
+  searchKeys = ['title'];
   activatedFilters: number = 0;
   messageHistories: Array<IMessageHistory> = [];
+  users: Array<IUser> = [];
 
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -72,43 +75,12 @@ export class AccountMessagesComponent implements OnInit {
         return;
       }
 
+      this.users = users;
       this.currentUser = currentUser;
       this.isNeighbor = isNeighbor;
 
-      const messageHistories: Array<IMessageHistory> = [];
-      messages.forEach(_message => {
-        let user: IUser | null = null;
-
-        if (_message.to.length === 1) {
-          user =
-            users.find(
-              _user =>
-                (_user.email === _message.from && _message.from !== currentUser.email) ||
-                (_user.email === _message.to[0] && _message.to[0] !== currentUser.email)
-            ) ?? null;
-        }
-
-        const index = messageHistories.findIndex(
-          _messageHistory => _messageHistory.user !== null && user !== null && _messageHistory.user.email === user.email
-        );
-
-        if (index !== -1) {
-          messageHistories[index].messages.push(_message);
-        } else {
-          messageHistories.push({
-            user,
-            messages: [_message],
-            selected: false
-          });
-        }
-      });
-
-      this.messageHistories = messageHistories.map(_messageHistory => {
-        return {
-          ..._messageHistory,
-          messages: this.#orderByPipe.transform(_messageHistory.messages, 'asc', 'created')
-        };
-      });
+      this.messageHistories = this.buildMessageHistories(messages);
+      this.sortBy();
     } catch (error) {
       this.#log.error({
         fileName: 'account-messages.component',
@@ -122,6 +94,54 @@ export class AccountMessagesComponent implements OnInit {
     }
   }
 
+  buildMessageHistories(messages: Array<IAccountMessage>): Array<IMessageHistory> {
+    try {
+      const messageHistories: Array<IMessageHistory> = [];
+      messages.forEach(_message => {
+        let user: IUser | null = null;
+
+        if (_message.to.length === 1) {
+          user =
+            this.users.find(
+              _user =>
+                (_user.email === _message.from && _message.from !== this.currentUser!.email) ||
+                (_user.email === _message.to[0] && _message.to[0] !== this.currentUser!.email)
+            ) ?? null;
+        }
+
+        const index = messageHistories.findIndex(
+          _messageHistory => _messageHistory.user !== null && user !== null && _messageHistory.user.email === user.email
+        );
+
+        if (index !== -1) {
+          messageHistories[index].messages.push(_message);
+        } else {
+          messageHistories.push({
+            user,
+            title: user && user.name ? user.name : _message.title,
+            messages: [_message],
+            selected: false
+          });
+        }
+      });
+
+      return messageHistories.map(_messageHistory => {
+        return {
+          ..._messageHistory,
+          messages: this.#orderByPipe.transform(_messageHistory.messages, 'asc', 'created')
+        };
+      });
+    } catch (error) {
+      this.#log.error({
+        fileName: 'account-messages.component',
+        functionName: 'buildMessageHistories',
+        param: error
+      });
+      this.#toast.danger();
+      throw error;
+    }
+  }
+
   addAccountMessage() {
     if (this.loading || !this.isNeighbor) {
       return;
@@ -130,6 +150,51 @@ export class AccountMessagesComponent implements OnInit {
     this.#router.goTo({
       path: `/${APP_PATH.HOME}/${HOME_PATH.ACCOUNT}/${ACCOUNT_PATH.ACCOUNT_MESSAGES}/${ACCOUNT_MESSAGES_PATH.ADD}`
     });
+  }
+
+  deleteMessageHistory(messageHistory: IMessageHistory) {
+    if (this.loading || !messageHistory || !this.currentUser) {
+      return;
+    }
+
+    this.#popup.open<boolean>(
+      {
+        component: PopupComponent,
+        data: {
+          title: this.#translate.get('ACCOUNT_MESSAGES.DELETE_POPUP.TITLE'),
+          msg:
+            messageHistory.user && messageHistory.user.name
+              ? `${this.#translate.get('ACCOUNT_MESSAGES.DELETE_POPUP.MSG_USER')}: ${messageHistory.user.name}`
+              : `${this.#translate.get('ACCOUNT_MESSAGES.DELETE_POPUP.MSG')}: ${messageHistory.title}`
+        }
+      },
+      async res => {
+        try {
+          if (res && messageHistory) {
+            this.loading = true;
+            const promises: Array<Promise<void>> = [];
+
+            messageHistory.messages.forEach(_message => {
+              promises.push(this.#accountMessagesService.deleteMessage(_message.id));
+            });
+
+            await Promise.all(promises);
+            const messages = await this.#accountMessagesService.getMessages();
+            this.messageHistories = this.buildMessageHistories(messages);
+            this.sortBy();
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'account-message-history.component',
+            functionName: 'deleteMessage',
+            param: error
+          });
+          this.#toast.danger();
+        } finally {
+          this.loading = false;
+        }
+      }
+    );
   }
 
   replyMessage(messageHistory: IMessageHistory) {
@@ -162,9 +227,29 @@ export class AccountMessagesComponent implements OnInit {
     }
   }
 
+  sortBy() {
+    if (this.orderBy === 'recent') {
+      this.messageHistories = this.messageHistories.sort((a, b) => {
+        const maxA = Math.max(...a.messages.map(_message => _message.created));
+        const maxB = Math.max(...b.messages.map(_message => _message.created));
+        return maxB - maxA;
+      });
+    } else if (this.orderBy === 'oldest') {
+      this.messageHistories = this.messageHistories.sort((a, b) => {
+        const maxA = Math.max(...a.messages.map(_message => _message.created));
+        const maxB = Math.max(...b.messages.map(_message => _message.created));
+        return maxA - maxB;
+      });
+    } else if (this.orderBy === 'title') {
+      this.messageHistories = this.#orderByPipe.transform(this.messageHistories, 'asc', 'title');
+    }
+  }
+
   onRemoveFilters() {
     this.search = '';
     this.activatedFilters = 0;
+    this.orderBy = 'recent';
+    this.sortBy();
     this.refresh();
   }
 

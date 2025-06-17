@@ -41,7 +41,7 @@
             type="textarea"
             [disabled]="loading"
             [value]="body.value"
-            [rows]="8"
+            [rows]="14"
             (onChange)="body.setValue($event)">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.BODY' | translate}}</strong></h6>
             <h6 slot="error" *ngIf="body.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{BODY_MAX_LENGTH}}</h6>

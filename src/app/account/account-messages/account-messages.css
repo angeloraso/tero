@@ -17,3 +17,11 @@
   top: 0;
   right: -0.2rem;
 }
+
+.account-messages__menu__option--selected {
+  background-color: var(--accent-color);
+}
+
+.account-messages__menu__option--selected * {
+  color: #fff;
+}

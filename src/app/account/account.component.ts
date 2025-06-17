@@ -19,8 +19,8 @@ import {
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { LOGO_PATH } from '@core/constants';
-import { IUser, USER_STATE } from '@core/model';
-import { UsersService } from '@core/services';
+import { IAccountMessage, IUser, USER_STATE } from '@core/model';
+import { AccountMessagesService, UsersService } from '@core/services';
 import { HomeService } from '@home/home.service';
 import { PATH } from './account.routing';
 import { es } from './i18n';
@@ -39,6 +39,7 @@ export class AccountComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #translate = inject(BizyTranslateService);
   readonly #usersService = inject(UsersService);
+  readonly #accountMessagesService = inject(AccountMessagesService);
   readonly #home = inject(HomeService);
   loading = false;
 
@@ -55,6 +56,7 @@ export class AccountComponent implements OnInit {
   users: Array<IUser> = [];
   pendingUsers: Array<IUser> = [];
   currentUser: IUser | null = null;
+  newMessages: Array<IAccountMessage> = [];
 
   async ngOnInit() {
     try {
@@ -64,11 +66,12 @@ export class AccountComponent implements OnInit {
       this.name = this.#auth.getName() ?? '';
       this.email = this.#auth.getEmail() ?? '';
 
-      const [profilePic, currentUser, isConfig, isNeighbor] = await Promise.all([
+      const [profilePic, currentUser, isConfig, isNeighbor, messages] = await Promise.all([
         this.#auth.getProfilePicture(),
         this.#usersService.getCurrentUser(),
         this.#usersService.isConfig(),
-        this.#usersService.isNeighbor()
+        this.#usersService.isNeighbor(),
+        this.#accountMessagesService.getMessages()
       ]);
 
       this.profilePic = profilePic;
@@ -78,6 +81,8 @@ export class AccountComponent implements OnInit {
       this.isConfig = isConfig;
 
       this.isNeighbor = isNeighbor;
+
+      this.newMessages = messages.filter(_message => !_message.read);
 
       if (this.isConfig) {
         this.users = await this.#usersService.getUsers();
