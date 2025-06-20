@@ -4,9 +4,9 @@
 
     <h1 slot=start>{{'DASHBOARD.TITLE' | translate}}</h1>
 
-    <bizy-button slot="end" [disabled]="loading" class="tero-toolbar-action" *ngIf="isNeighbor" (onSelect)="goToGarbageHistory()"><h2><i class="fa-solid fa-calendar-days"></i></h2></bizy-button>
+    <bizy-button slot="end" [disabled]="loading" class="tero-toolbar-action" *ngIf="isNeighbor || isConfig" (onSelect)="goToGarbageHistory()"><h2><i class="fa-solid fa-calendar-days"></i></h2></bizy-button>
 
-    <bizy-button slot="end" [disabled]="loading" class="tero-toolbar-action" *ngIf="isNeighbor" (onSelect)="showGarbageTruckPopup()"><h2><i class="fa-solid fa-truck"></i></h2></bizy-button>
+    <bizy-button slot="end" [disabled]="loading" class="tero-toolbar-action" *ngIf="isNeighbor || isConfig" (onSelect)="showGarbageTruckPopup()"><h2><i class="fa-solid fa-truck"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
@@ -58,7 +58,7 @@
 
     <ng-container *ngIf="!loading">
         
-        <bizy-card (onSelect)="goToSecurity()" *ngIf="showInfo" [ngClass]="{'dashboard__security--no-debt': securityNoDebt}">
+        <bizy-card (onSelect)="goToSecurity()" *ngIf="isNeighbor || isConfig || isSecurity" [ngClass]="{'dashboard__security--no-debt': securityNoDebt}">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-shield-halved"></i></h4>
     
@@ -104,7 +104,7 @@
     
         </bizy-card>
     
-        <bizy-card (onSelect)="goToEcommerce()" *ngIf="showInfo">
+        <bizy-card (onSelect)="goToEcommerce()" *ngIf="isNeighbor || isConfig">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-cart-shopping"></i></h4>
     
@@ -119,7 +119,7 @@
     
         </bizy-card>
 
-        <bizy-card (onSelect)="goToTopics()" *ngIf="showInfo">
+        <bizy-card (onSelect)="goToTopics()" *ngIf="isNeighbor || isConfig">
     
             <h4 slot="header-start" class="dashboard__header__icon"><i class="fa-solid fa-book-bookmark"></i></h4>
     
@@ -135,5 +135,12 @@
         </bizy-card>
 
     </ng-container>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="showNoPermissions">
+        <h4 class="tero-text--center">{{'DASHBOARD.NO_PERMISSIONS' | translate}}</h4>
+    </bizy-tag>
 
 </tero-wrapper>

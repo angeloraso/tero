@@ -6,7 +6,7 @@ export const locale = {
     ADD_ACCOUNT_MESSAGE: {
       TITLE: 'Crear mensaje',
       USER_NEW_MESSAGE_NOTIFICATION: {
-        TITLE: 'Nuevo mensaje de'
+        TITLE: 'Nuevo mensaje'
       }
     }
   }

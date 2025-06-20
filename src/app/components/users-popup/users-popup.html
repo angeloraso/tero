@@ -78,6 +78,11 @@
 
             <bizy-checkbox slot="header-end" [selected]="u.selected"></bizy-checkbox>
 
+            <bizy-tag slot="footer-end" *ngIf="u.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h6>{{('CORE.USER_STATE.ACTIVE') | translate}}</h6></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="u.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h6>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h6></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="u.status === USER_STATE.PENDING" [type]="BIZY_TAG_TYPE.INFO"><h6>{{('CORE.USER_STATE.PENDING') | translate}}</h6></bizy-tag>
+            <bizy-tag slot="footer-end" *ngIf="u.status === USER_STATE.REJECTED" [type]="BIZY_TAG_TYPE.DANGER"><h6>{{('CORE.USER_STATE.REJECTED') | translate}}</h6></bizy-tag>
+
         </bizy-card>
 
     </bizy-list>

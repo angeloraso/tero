@@ -11,6 +11,7 @@ export const ROUTES: Routes = [
     path: PATH.EMPTY,
     loadComponent: () => import('@account/users/users.component').then(m => m.UsersComponent),
     pathMatch: 'full',
+    canActivate: [configGuard],
     resolve: { data: analyticsResolver },
     data: { pageViewEventName: 'users' }
   },

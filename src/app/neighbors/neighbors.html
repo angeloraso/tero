@@ -14,7 +14,7 @@
 
     <bizy-section>
 
-        <bizy-section-end>
+        <bizy-section-end *ngIf="neighbors.length > 0">
 
             <bizy-input 
                 class="tero-counter"
@@ -110,7 +110,7 @@
 
     </bizy-section>
 
-    <bizy-grid *ngIf="!loading" class="animated fade-in">
+    <bizy-grid *ngIf="!loading && neighbors.length > 0" class="animated fade-in">
 
         <bizy-card 
             class="animated fade-in"

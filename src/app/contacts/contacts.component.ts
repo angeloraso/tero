@@ -119,7 +119,7 @@ export class ContactsComponent implements OnInit {
   }
 
   addContact() {
-    if (!this.isNeighbor) {
+    if (!this.isNeighbor && !this.isConfig) {
       return;
     }
 
@@ -140,7 +140,7 @@ export class ContactsComponent implements OnInit {
   }
 
   async openRatingPopup(contact: IContactCard) {
-    if (!contact || !this.isNeighbor) {
+    if (!contact || (!this.isNeighbor && !this.isConfig)) {
       return;
     }
 
@@ -215,7 +215,7 @@ export class ContactsComponent implements OnInit {
   }
 
   openRatingHistoryPopup(contact: IContactCard) {
-    if (!contact || !contact.rating || contact.rating.length === 0 || !this.isNeighbor) {
+    if (!contact || !contact.rating || contact.rating.length === 0 || (!this.isNeighbor && !this.isConfig)) {
       return;
     }
 
@@ -319,7 +319,7 @@ ${this.#translate.get('CORE.FORM.FIELD.TAG')}: ${contact.tags.join(', ')}`
 
   async export() {
     try {
-      if (this.csvLoading || this.loading || !this.contacts || this.contacts.length === 0) {
+      if (this.csvLoading || this.loading || !this.contacts || this.contacts.length === 0 || !this.isConfig) {
         return;
       }
 

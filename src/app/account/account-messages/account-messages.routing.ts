@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { neighborGuard } from '@core/guards';
+import { isActivePendingGuard } from '@core/guards';
 import { analyticsResolver } from '@core/resolvers';
 
 export enum PATH {
@@ -13,7 +13,6 @@ export const ROUTES: Routes = [
     path: PATH.EMPTY,
     loadComponent: () => import('@account/account-messages/account-messages.component').then(m => m.AccountMessagesComponent),
     pathMatch: 'full',
-    canActivate: [neighborGuard],
     resolve: { data: analyticsResolver },
     data: { pageViewEventName: 'account-messages' }
   },
@@ -21,6 +20,7 @@ export const ROUTES: Routes = [
     path: PATH.ADD,
     loadComponent: () =>
       import('@account/account-messages/add-account-message/add-account-message.component').then(m => m.AddAccountMessageComponent),
+    canActivate: [isActivePendingGuard],
     resolve: { data: analyticsResolver },
     data: { pageViewEventName: 'add-account-message' }
   },

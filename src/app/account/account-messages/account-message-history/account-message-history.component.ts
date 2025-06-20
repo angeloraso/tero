@@ -7,7 +7,7 @@ import { SharedModules } from '@app/shared';
 import { BIZY_SKELETON_SHAPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { AuthService } from '@core/auth/auth.service';
-import { IAccountMessage, IUser } from '@core/model';
+import { IAccountMessage, IUser, USER_STATE } from '@core/model';
 import { AccountMessagesService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
@@ -39,6 +39,7 @@ export class AccountMessageHistoryComponent implements OnInit {
   messages: Array<IAccountMessage> = [];
 
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
+  readonly USER_STATE = USER_STATE;
 
   async ngOnInit() {
     try {
@@ -51,25 +52,23 @@ export class AccountMessageHistoryComponent implements OnInit {
         return;
       }
 
-      const [currentUser, user, messages] = await Promise.all([
+      const [currentUser, otherUser, messages] = await Promise.all([
         this.#usersService.getCurrentUser(),
         this.#usersService.getUser(email),
         this.#accountMessagesService.getMessages()
       ]);
 
-      if (!currentUser || !user || messages.length === 0) {
+      if (!currentUser || !otherUser || messages.length === 0) {
         this.goBack();
         return;
       }
 
       this.currentUser = currentUser;
-      this.otherUser = user;
+      this.otherUser = otherUser;
       this.messages = messages.filter(
         _message =>
-          _message.from === currentUser.email ||
-          _message.from === user.email ||
-          _message.to.includes(currentUser.email) ||
-          _message.to.includes(user.email)
+          (_message.from === currentUser.email && _message.to.includes(otherUser.email)) ||
+          (_message.from === otherUser.email && _message.to.includes(currentUser.email))
       );
 
       const promises: Array<Promise<void>> = [];
@@ -100,7 +99,7 @@ export class AccountMessageHistoryComponent implements OnInit {
   }
 
   addAccountMessage() {
-    if (this.loading || !this.otherUser) {
+    if (this.loading || !this.otherUser || (this.currentUser?.status !== USER_STATE.ACTIVE && this.currentUser?.status !== USER_STATE.PENDING)) {
       return;
     }
 

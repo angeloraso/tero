@@ -7,7 +7,7 @@ import { SharedModules } from '@app/shared';
 import { BIZY_TAG_TYPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService } from '@bizy/core';
 import { LOTS } from '@core/constants';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
-import { UsersService } from '@core/services';
+import { MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
 import { UserRolesPopupComponent, UserStatesPopupComponent } from '../components';
@@ -26,6 +26,7 @@ export class EditUserComponent implements OnInit {
   readonly #toast = inject(BizyToastService);
   readonly #home = inject(HomeService);
   readonly #popup = inject(BizyPopupService);
+  readonly #mobile = inject(MobileService);
 
   readonly MIN = 0;
   readonly MAX = LOTS.length;
@@ -186,18 +187,6 @@ export class EditUserComponent implements OnInit {
     );
   }
 
-  setStatus(state: USER_STATE) {
-    if (this.loading || !state) {
-      return;
-    }
-
-    this.status.setValue(state);
-    if (state === USER_STATE.PENDING || state === USER_STATE.REJECTED) {
-      this.selectedRoles = [];
-      this.availableRoles = [USER_ROLE.CONFIG, USER_ROLE.NEIGHBOR, USER_ROLE.SECURITY];
-    }
-  }
-
   addRole(role: USER_ROLE) {
     if (!role) {
       return;
@@ -247,10 +236,20 @@ export class EditUserComponent implements OnInit {
         lot: this.lot.value ? Number(this.lot.value) : null,
         phone: this.phone.value ? String(this.phone.value).trim() : null,
         aliasCBU: this.aliasCBU.value ? String(this.aliasCBU.value).trim() : null,
-        roles: this.selectedRoles,
         status: this.status.value,
-        topicSubscriptions: this.user.topicSubscriptions
+        roles: this.status.value !== USER_STATE.ACTIVE && this.status.value !== USER_STATE.SUSPENDED ? [] : this.selectedRoles,
+        topicSubscriptions: this.status.value !== USER_STATE.ACTIVE ? [] : this.user.topicSubscriptions
       });
+
+      if (this.status.value !== USER_STATE.ACTIVE && this.user.topicSubscriptions && this.user.topicSubscriptions.length > 0) {
+        const promises: Array<Promise<void>> = [];
+        this.user.topicSubscriptions.forEach(_topicSubscription => {
+          promises.push(this.#mobile.unsubscribeFromTopic(_topicSubscription));
+        });
+
+        await Promise.all(promises);
+      }
+
       this.goBack();
     } catch (error) {
       this.#log.error({

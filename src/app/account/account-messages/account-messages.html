@@ -6,7 +6,7 @@
 
     <span slot=start [bizyLoading]="loading"></span>
 
-    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isNeighbor" (onSelect)="addAccountMessage()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="currentUser?.status === USER_STATE.ACTIVE || currentUser?.status === USER_STATE.PENDING" (onSelect)="addAccountMessage()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
 
 </bizy-toolbar>
 

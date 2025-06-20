@@ -44,6 +44,8 @@ export class NotificationSettingsComponent implements OnInit {
   groupSecurityInvoiceSubscriptionTopic: boolean = false;
   newEcommerceProductSubscriptionTopic: boolean = false;
   neighbor: INeighbor | null = null;
+  isNeighbor: boolean = false;
+  isConfig: boolean = false;
 
   async ngOnInit() {
     try {
@@ -51,12 +53,20 @@ export class NotificationSettingsComponent implements OnInit {
       this.#home.hideTabs();
       this.#translate.loadTranslations(es);
 
-      const [currentUser, topics] = await Promise.all([this.#usersService.getCurrentUser(), this.#topicsService.getTopics()]);
+      const [currentUser, topics, isNeighbor, isConfig] = await Promise.all([
+        this.#usersService.getCurrentUser(),
+        this.#topicsService.getTopics(),
+        this.#usersService.isNeighbor(),
+        this.#usersService.isConfig()
+      ]);
 
       if (!currentUser) {
         this.goBack();
         return;
       }
+
+      this.isNeighbor = isNeighbor;
+      this.isConfig = isConfig;
 
       this.neighbor = await this.#neighborsService.getNeighborByEmail(currentUser.email);
 
@@ -68,20 +78,11 @@ export class NotificationSettingsComponent implements OnInit {
 
       if (this.currentUser.topicSubscriptions) {
         this.garbageSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GARBAGE);
-
-        this.userNewMessageSubscriptionTopic = Boolean(
-          this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE))
-        );
-
+        this.userNewMessageSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE);
         this.newTopicSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_TOPIC);
         this.newEcommerceProductSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.NEW_ECOMMERCE_PRODUCT);
-
-        this.userSecurityInvoiceSubscriptionTopic = Boolean(
-          this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE))
-        );
-        this.groupSecurityInvoiceSubscriptionTopic = Boolean(
-          this.currentUser.topicSubscriptions.find(_subscription => _subscription.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE))
-        );
+        this.userSecurityInvoiceSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE);
+        this.groupSecurityInvoiceSubscriptionTopic = this.currentUser.topicSubscriptions.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE);
 
         this.topics.forEach(_topic => {
           _topic._selected = this.currentUser!.topicSubscriptions!.includes(_topic.id);
@@ -145,10 +146,10 @@ export class NotificationSettingsComponent implements OnInit {
       const topicId = `${TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE}${this.currentUser.email}`;
       if (!this.userNewMessageSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(topicId);
-        await this.#addTopicSubscription(topicId);
+        await this.#addTopicSubscription(TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE);
       } else {
         await this.#mobile.unsubscribeFromTopic(topicId);
-        await this.#removeTopicSubscription(topicId);
+        await this.#removeTopicSubscription(TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE);
       }
       this.userNewMessageSubscriptionTopic = !this.userNewMessageSubscriptionTopic;
     } catch (error) {
@@ -172,15 +173,7 @@ export class NotificationSettingsComponent implements OnInit {
 
   async subscribeToUserSecurityInvoiceNotification() {
     try {
-      if (
-        this.loading.main ||
-        this.loading.content ||
-        !this.currentUser ||
-        !this.neighbor ||
-        !this.neighbor.email ||
-        !this.neighbor.security ||
-        !this.neighbor.group
-      ) {
+      if (this.loading.main || this.loading.content || !this.neighbor || !this.neighbor.email || !this.neighbor.security || !this.neighbor.group) {
         return;
       }
 
@@ -188,10 +181,10 @@ export class NotificationSettingsComponent implements OnInit {
       const topicId = `${TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE}${this.neighbor.email}`;
       if (!this.userSecurityInvoiceSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(topicId);
-        await this.#addTopicSubscription(topicId);
+        await this.#addTopicSubscription(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE);
       } else {
         await this.#mobile.unsubscribeFromTopic(topicId);
-        await this.#removeTopicSubscription(topicId);
+        await this.#removeTopicSubscription(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE);
       }
       this.userSecurityInvoiceSubscriptionTopic = !this.userSecurityInvoiceSubscriptionTopic;
     } catch (error) {
@@ -215,15 +208,7 @@ export class NotificationSettingsComponent implements OnInit {
 
   async subscribeToGroupSecurityInvoiceNotification() {
     try {
-      if (
-        this.loading.main ||
-        this.loading.content ||
-        !this.currentUser ||
-        !this.neighbor ||
-        !this.neighbor.email ||
-        !this.neighbor.security ||
-        !this.neighbor.group
-      ) {
+      if (this.loading.main || this.loading.content || !this.neighbor || !this.neighbor.email || !this.neighbor.security || !this.neighbor.group) {
         return;
       }
 
@@ -231,10 +216,10 @@ export class NotificationSettingsComponent implements OnInit {
       const topicId = `${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${this.neighbor.group}`;
       if (!this.groupSecurityInvoiceSubscriptionTopic) {
         await this.#mobile.subscribeToTopic(topicId);
-        await this.#addTopicSubscription(topicId);
+        await this.#addTopicSubscription(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE);
       } else {
         await this.#mobile.unsubscribeFromTopic(topicId);
-        await this.#removeTopicSubscription(topicId);
+        await this.#removeTopicSubscription(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE);
       }
       this.groupSecurityInvoiceSubscriptionTopic = !this.groupSecurityInvoiceSubscriptionTopic;
     } catch (error) {

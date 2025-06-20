@@ -20,7 +20,7 @@ import {
 import { PopupComponent } from '@components/popup';
 import { LOGO_PATH } from '@core/constants';
 import { IAccountMessage, IUser, USER_STATE } from '@core/model';
-import { AccountMessagesService, UsersService } from '@core/services';
+import { AccountMessagesService, MobileService, UsersService } from '@core/services';
 import { HomeService } from '@home/home.service';
 import { PATH } from './account.routing';
 import { es } from './i18n';
@@ -41,6 +41,7 @@ export class AccountComponent implements OnInit {
   readonly #usersService = inject(UsersService);
   readonly #accountMessagesService = inject(AccountMessagesService);
   readonly #home = inject(HomeService);
+  readonly #mobile = inject(MobileService);
   loading = false;
 
   readonly LOGO_PATH = LOGO_PATH;
@@ -225,7 +226,7 @@ export class AccountComponent implements OnInit {
   }
 
   goToNotificationSettings() {
-    if (this.loading || !this.isNeighbor) {
+    if (this.loading) {
       return;
     }
 
@@ -233,7 +234,7 @@ export class AccountComponent implements OnInit {
   }
 
   goToMessages() {
-    if (this.loading || !this.isNeighbor) {
+    if (this.loading) {
       return;
     }
 
@@ -253,10 +254,31 @@ export class AccountComponent implements OnInit {
           msg: `${this.#translate.get('ACCOUNT.SIGN_OUT_POPUP.MSG')}: ${this.#auth.getEmail()}`
         }
       },
-      res => {
+      async res => {
         if (res) {
-          this.loading = true;
-          this.#auth.signOut().finally(() => (this.loading = false));
+          try {
+            this.loading = true;
+            if (this.currentUser && this.currentUser.topicSubscriptions && this.currentUser.topicSubscriptions.length > 0) {
+              const promises: Array<Promise<void>> = [];
+              this.currentUser.topicSubscriptions.forEach(_topicSubscription => {
+                promises.push(this.#mobile.unsubscribeFromTopic(_topicSubscription));
+              });
+
+              await Promise.all(promises);
+            }
+
+            await this.#auth.signOut();
+          } catch (error) {
+            this.#log.error({
+              fileName: 'account.component',
+              functionName: 'openUserLotPopup',
+              param: error
+            });
+            this.#toast.danger();
+            this.#router.reload(true);
+          } finally {
+            this.loading = false;
+          }
         }
       }
     );

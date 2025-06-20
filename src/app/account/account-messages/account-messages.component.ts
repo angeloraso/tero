@@ -18,6 +18,7 @@ import { IAccountMessage, IUser } from '@core/model';
 import { AccountMessagesService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
+import { USER_STATE } from './../../core/model';
 import { es } from './i18n';
 
 interface IMessageHistory {
@@ -44,7 +45,6 @@ export class AccountMessagesComponent implements OnInit {
   readonly #accountMessagesService = inject(AccountMessagesService);
   readonly #popup = inject(BizyPopupService);
 
-  isNeighbor = false;
   currentUser: IUser | null = null;
   loading = false;
   orderBy: 'recent' | 'oldest' | 'title' = 'recent';
@@ -56,6 +56,7 @@ export class AccountMessagesComponent implements OnInit {
 
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly USER_STATE = USER_STATE;
 
   async ngOnInit() {
     try {
@@ -63,11 +64,10 @@ export class AccountMessagesComponent implements OnInit {
       this.#home.hideTabs();
       this.#translate.loadTranslations(es);
 
-      const [currentUser, messages, users, isNeighbor] = await Promise.all([
+      const [currentUser, messages, users] = await Promise.all([
         this.#usersService.getCurrentUser(),
         this.#accountMessagesService.getMessages(),
-        this.#usersService.getUsers(),
-        this.#usersService.isNeighbor()
+        this.#usersService.getUsers()
       ]);
 
       if (!currentUser) {
@@ -77,7 +77,6 @@ export class AccountMessagesComponent implements OnInit {
 
       this.users = users;
       this.currentUser = currentUser;
-      this.isNeighbor = isNeighbor;
 
       this.messageHistories = this.buildMessageHistories(messages);
       this.sortBy();
@@ -143,7 +142,7 @@ export class AccountMessagesComponent implements OnInit {
   }
 
   addAccountMessage() {
-    if (this.loading || !this.isNeighbor) {
+    if (this.loading) {
       return;
     }
 
@@ -209,7 +208,7 @@ export class AccountMessagesComponent implements OnInit {
   }
 
   goToMessageHistory(messageHistory: IMessageHistory) {
-    if (this.loading || !this.isNeighbor || !this.currentUser || !messageHistory || !messageHistory.user) {
+    if (this.loading || !this.currentUser || !messageHistory || !messageHistory.user) {
       return;
     }
 

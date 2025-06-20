@@ -1,10 +1,17 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { SharedModules } from '@app/shared';
-import { BizyFilterPipe, BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
+import { BIZY_TAG_TYPE, BizyFilterPipe, BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { AuthService } from '@core/auth/auth.service';
-import { USER_STATE } from '@core/model';
+import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { es } from './i18n';
+
+interface IPopupUser {
+  value: string;
+  email: string;
+  status: USER_STATE;
+  selected: boolean;
+}
 
 @Component({
   selector: 'tero-users-popup',
@@ -22,7 +29,7 @@ export class UsersPopupComponent implements OnInit {
   readonly #auth = inject(AuthService);
   readonly #translate = inject(BizyTranslateService);
 
-  users: Array<{ value: string; email: string; selected: boolean }> = [];
+  users: Array<IPopupUser> = [];
   loading: boolean = false;
   search: string | number = '';
   searchKeys = ['value'];
@@ -33,24 +40,42 @@ export class UsersPopupComponent implements OnInit {
 
   maxLimit: number = 0;
 
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly USER_STATE = USER_STATE;
+
   async ngOnInit() {
     try {
       this.loading = true;
       this.#translate.loadTranslations(es);
-      const users: Array<{ value: string; email: string; selected: boolean }> = [];
+      const users: Array<IPopupUser> = [];
+
+      const data = this.#popup.getData<{ emails: Array<string>; maxLimit: number; currentUser: IUser }>();
+
       const accountEmail = this.#auth.getEmail()!;
       const _users = await this.#usersService.getUsers();
       _users
-        .filter(_user => _user.status === USER_STATE.ACTIVE && _user.email !== accountEmail)
+        .filter(_user =>
+          data && (!data.currentUser || (data.currentUser && data.currentUser.status === USER_STATE.ACTIVE))
+            ? true
+            : data && data.currentUser && data.currentUser.status === USER_STATE.PENDING
+              ? _user.roles.includes(USER_ROLE.ADMIN) || _user.roles.includes(USER_ROLE.CONFIG)
+              : false
+        )
+        .filter(_user =>
+          data && data.currentUser && (data.currentUser.roles.includes(USER_ROLE.ADMIN) || data.currentUser.roles.includes(USER_ROLE.CONFIG))
+            ? true
+            : _user.status === USER_STATE.ACTIVE
+        )
+        .filter(_user => _user.email !== accountEmail)
         .forEach(_user => {
           users.push({
             email: _user.email,
             value: _user.name || _user.email,
+            status: _user.status,
             selected: false
           });
         });
 
-      const data = this.#popup.getData<{ emails: Array<string>; maxLimit: number }>();
       if (data) {
         if (data.emails) {
           users.forEach(_user => {
@@ -100,7 +125,7 @@ export class UsersPopupComponent implements OnInit {
     this.users = [...this.users];
   }
 
-  selectUser(user: { value: string; email: string; selected: boolean }) {
+  selectUser(user: IPopupUser) {
     user.selected = !user.selected;
     this.selectedUsers = this.#filterPipe.transform(this.users, 'selected', true).length;
     this.refresh();

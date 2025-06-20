@@ -15,7 +15,7 @@ import {
 import { PopupComponent } from '@components/popup';
 import { UsersPopupComponent } from '@components/users-popup';
 import { AuthService } from '@core/auth/auth.service';
-import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
+import { BODY_MAX_LENGTH, MAX_TOPIC_USERS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { ERROR, ITopic, IUser, TOPIC_STATE } from '@core/model';
 import { TopicsService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -149,7 +149,7 @@ export class EditTopicComponent implements OnInit {
       {
         component: UsersPopupComponent,
         fullScreen: true,
-        data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: 2 }
+        data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: MAX_TOPIC_USERS }
       },
       async users => {
         try {

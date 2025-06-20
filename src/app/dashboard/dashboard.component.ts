@@ -57,8 +57,8 @@ export class DashboardComponent implements OnInit {
   readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
 
-  loading = false;
-  showInfo = false;
+  loading: boolean = false;
+  showNoPermissions: boolean = false;
   securityFee: number | null = null;
   groups: Array<IGroup> = Array.from({ length: 6 }, (_, i) => ({
     value: i + 1,
@@ -71,6 +71,7 @@ export class DashboardComponent implements OnInit {
   isSecurity: boolean = false;
   products: Array<IEcommerceProduct> = [];
   topics: Array<ITopic> = [];
+  isConfig: boolean = false;
   isNeighbor: boolean = false;
   securityNoDebt: boolean = false;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
@@ -93,11 +94,12 @@ export class DashboardComponent implements OnInit {
 
       this.isSecurity = isSecurity;
       this.isNeighbor = isNeighbor;
+      this.isConfig = isConfig;
       this.products = products;
       this.topics = topics.filter(_topic => _topic.status !== TOPIC_STATE.CLOSED);
 
-      this.showInfo = isNeighbor || isSecurity || isConfig;
-      if (!this.showInfo) {
+      if (!isNeighbor && !isSecurity && !isConfig) {
+        this.showNoPermissions = true;
         return;
       }
 
@@ -157,7 +159,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showGarbageTruckPopup() {
-    if (this.loading || !this.isNeighbor) {
+    if (this.loading || (!this.isNeighbor && !this.isConfig)) {
       return;
     }
 
@@ -217,7 +219,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goToGarbageHistory() {
-    if (this.loading) {
+    if (this.loading || (!this.isNeighbor && !this.isConfig)) {
       return;
     }
 
@@ -225,7 +227,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goToSecurity() {
-    if (this.loading) {
+    if (this.loading || (!this.isNeighbor && !this.isConfig && !this.isSecurity)) {
       return;
     }
 
@@ -233,7 +235,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goToEcommerce() {
-    if (this.loading) {
+    if (this.loading || (!this.isNeighbor && !this.isConfig)) {
       return;
     }
 
@@ -241,7 +243,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goToTopics() {
-    if (this.loading) {
+    if (this.loading || (!this.isNeighbor && !this.isConfig)) {
       return;
     }
 

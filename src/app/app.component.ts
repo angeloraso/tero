@@ -73,18 +73,27 @@ export class AppComponent implements OnInit {
           this.#router.goTo({ path: `/${PATH.AUTH}` });
         } else {
           try {
-            const user = await this.#usersService.getCurrentUser();
-            await this.#analytics.setUserId(String(user.id));
+            const currentUser = await this.#usersService.getCurrentUser();
+            await this.#analytics.setUserId(String(currentUser.id));
 
-            const neighbor = await this.#neighborsService.getNeighborByEmail(user.email);
-            // Fix possible security group changes
-            await this.#unsubscribeFromSecurityGroupSubscription();
-
-            if (user.topicSubscriptions) {
-              user.topicSubscriptions.forEach(async _topicSubscription => {
+            if (currentUser.topicSubscriptions) {
+              const neighbor = await this.#neighborsService.getNeighborByEmail(currentUser.email);
+              // Fix possible security group changes
+              await this.#unsubscribeFromSecurityGroupSubscription();
+              currentUser.topicSubscriptions.forEach(async _topicSubscription => {
                 try {
                   if (_topicSubscription.includes(TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE) && neighbor && neighbor.security && neighbor.group) {
                     await this.#mobile.subscribeToTopic(`${TOPIC_SUBSCRIPTION.GROUP_SECURITY_INVOICE}${neighbor.group}`);
+                  } else if (
+                    _topicSubscription.includes(TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE) &&
+                    neighbor &&
+                    neighbor.security &&
+                    neighbor.group &&
+                    neighbor.email
+                  ) {
+                    await this.#mobile.subscribeToTopic(`${TOPIC_SUBSCRIPTION.USER_SECURITY_INVOICE}${neighbor.email}`);
+                  } else if (_topicSubscription.includes(TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE)) {
+                    await this.#mobile.subscribeToTopic(`${TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE}${currentUser.email}`);
                   } else {
                     await this.#mobile.subscribeToTopic(_topicSubscription);
                   }
@@ -106,8 +115,8 @@ export class AppComponent implements OnInit {
                 }
               });
             } else {
-              user.topicSubscriptions = [TOPIC_SUBSCRIPTION.GARBAGE];
-              await this.#usersService.putUser(user);
+              currentUser.topicSubscriptions = [TOPIC_SUBSCRIPTION.GARBAGE];
+              await this.#usersService.putUser(currentUser);
               try {
                 await this.#mobile.subscribeToTopic(TOPIC_SUBSCRIPTION.GARBAGE);
               } catch (error) {

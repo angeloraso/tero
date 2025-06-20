@@ -12,7 +12,7 @@
 
     <ng-container *ngIf="loading.main">
 
-        <bizy-card *ngFor="let i of 3 | bizyRepeat" class="notification-settings__skeleton-card" class="notification-settings__card">
+        <bizy-card *ngFor="let i of 5 | bizyRepeat" class="notification-settings__skeleton-card" class="notification-settings__card">
 
             <bizy-skeleton slot="header-start" height="2rem"></bizy-skeleton>
 
@@ -48,7 +48,7 @@
 
     </bizy-card>
 
-    <bizy-card class="animated fade-in" *ngIf="!loading.main" class="notification-settings__card">
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && (isNeighbor || isConfig)" class="notification-settings__card">
 
         <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.SECURITY.MAIN' | translate}}</h4>
 
@@ -66,7 +66,7 @@
 
     </bizy-card>
 
-    <bizy-card class="animated fade-in" *ngIf="!loading.main" class="notification-settings__card">
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && (isNeighbor || isConfig)" class="notification-settings__card">
 
         <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.ECOMMERCE.MAIN' | translate}}</h4>
 
@@ -80,7 +80,7 @@
 
     </bizy-card>
 
-    <bizy-card class="animated fade-in" *ngIf="!loading.main" class="notification-settings__card">
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && (isNeighbor || isConfig)" class="notification-settings__card">
 
         <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.TOPICS.MAIN' | translate}}</h4>
 
@@ -94,7 +94,7 @@
 
     </bizy-card>
 
-    <bizy-card class="animated fade-in" *ngIf="!loading.main" class="notification-settings__card">
+    <bizy-card class="animated fade-in" *ngIf="!loading.main && (isNeighbor || isConfig)" class="notification-settings__card">
 
         <h4 slot="header-start" class="tero--info notification-settings__card__title">{{'NOTIFICATION_SETTINGS.TOPIC_UPDATES.MAIN' | translate}}</h4>
 

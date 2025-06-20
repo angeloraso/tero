@@ -15,8 +15,8 @@ import {
 } from '@bizy/core';
 import { UsersPopupComponent } from '@components/users-popup';
 import { AuthService } from '@core/auth/auth.service';
-import { BODY_MAX_LENGTH, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
-import { ERROR } from '@core/model';
+import { BODY_MAX_LENGTH, MAX_MESSAGE_USERS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
+import { ERROR, IUser } from '@core/model';
 import { AccountMessagesService, MobileService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
@@ -46,6 +46,7 @@ export class AddAccountMessageComponent implements OnInit {
   loading: boolean = false;
   accountEmail = this.#auth.getEmail()!;
   isConfig: boolean = false;
+  currentUser: IUser | null = null;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly NAME_MIN_LENGTH = NAME_MIN_LENGTH;
@@ -63,7 +64,11 @@ export class AddAccountMessageComponent implements OnInit {
       this.loading = true;
       this.#translate.loadTranslations(es);
       this.#home.hideTabs();
-      this.isConfig = await this.#usersService.isConfig();
+      const [isConfig, currentUser] = await Promise.all([this.#usersService.isConfig(), this.#usersService.getCurrentUser()]);
+
+      this.isConfig = isConfig;
+      this.currentUser = currentUser;
+
       const user = this.#router.getQueryParam(this.#activatedRoute, 'user');
       if (user) {
         this.users.setValue([JSON.parse(user)]);
@@ -98,7 +103,7 @@ export class AddAccountMessageComponent implements OnInit {
   }
 
   openUsersPopup() {
-    if (this.loading || this.users.disabled) {
+    if (this.loading || this.users.disabled || !this.currentUser) {
       return;
     }
 
@@ -106,7 +111,11 @@ export class AddAccountMessageComponent implements OnInit {
       {
         component: UsersPopupComponent,
         fullScreen: true,
-        data: { emails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: this.isConfig ? 0 : 3 }
+        data: {
+          emails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [],
+          maxLimit: this.isConfig ? 0 : MAX_MESSAGE_USERS,
+          currentUser: this.currentUser
+        }
       },
       async users => {
         try {
@@ -154,11 +163,11 @@ export class AddAccountMessageComponent implements OnInit {
       const promises: Array<Promise<void>> = [];
 
       this.users.value.forEach((user: { name: string; email: string }) => {
-        if (user && user.name && user.email) {
+        if (user && user.email) {
           promises.push(
             this.#mobile.sendPushNotification({
               topicId: `${TOPIC_SUBSCRIPTION.USER_NEW_MESSAGE}${user.email}`,
-              title: `${this.#translate.get('ADD_ACCOUNT_MESSAGE.USER_NEW_MESSAGE_NOTIFICATION.TITLE')} ${user.name}`,
+              title: `${this.#translate.get('ADD_ACCOUNT_MESSAGE.USER_NEW_MESSAGE_NOTIFICATION.TITLE')}: ${user.name}`,
               body: title
             })
           );

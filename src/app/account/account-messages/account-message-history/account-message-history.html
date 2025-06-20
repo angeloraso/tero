@@ -6,7 +6,7 @@
 
     <span slot=start [bizyLoading]="loading"></span>
 
-    <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="addAccountMessage()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="currentUser?.status === USER_STATE.ACTIVE || currentUser?.status === USER_STATE.PENDING" (onSelect)="addAccountMessage()"><h2><i class="fa-solid fa-square-plus"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
@@ -14,57 +14,99 @@
 
     <bizy-list *ngIf="!loading && otherUser && currentUser" class="animated fade-in" #messageList>
 
-        <bizy-card 
-            *ngFor="let message of messages | bizyOrderBy: 'asc' : 'created'"
-            [ngClass]="{
-                'account-messages-history__other-user-message': message.from === otherUser.email,
-                'account-messages-history__current-user-message': message.from === currentUser.email
-            }">
+        <bizy-section-start *ngFor="let message of messages | bizyOrderBy: 'asc' : 'created'">
 
-            <h5 slot="header-start" class="tero--info" *ngIf="message.from === otherUser.email"><strong>{{otherUser.name}}</strong></h5>
+            <img 
+                class="account-message-history__profile-pic"
+                *ngIf="message.from === otherUser.email"
+                [src]="otherUser.picture"
+                loading="lazy"
+                onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+                alt="Imagen de usuario"/>
 
-            <h5 slot="header-start" class="tero--info" *ngIf="message.from === currentUser.email"><strong>{{currentUser.name}}</strong></h5>
+            <bizy-card
+                [ngClass]="{
+                    'account-messages-history__other-user-message': message.from === otherUser.email,
+                    'account-messages-history__current-user-message': message.from === currentUser.email
+                }">
 
-            <bizy-button 
-                slot="header-end"
-                class="tero-action tero-action--danger tero-no-padding"
-                (onSelect)="deleteMessage(message); $event.stopPropagation()">
-                <h5><i class="fa-solid fa-trash-alt"></i></h5>
-            </bizy-button>
+                <h5 slot="header-start" class="tero--info" *ngIf="message.from === otherUser.email"><strong>{{otherUser.name}}</strong></h5>
 
-            <bizy-list>
+                <h5 slot="header-start" class="tero--info" *ngIf="message.from === currentUser.email"><strong>{{currentUser.name}}</strong></h5>
 
-                <h5><strong>{{message.title}}</strong></h5>
-    
-                <h6 *ngIf="message.body">{{message.body}}</h6>
+                <bizy-button 
+                    slot="header-end"
+                    class="tero-action tero-action--danger tero-no-padding"
+                    (onSelect)="deleteMessage(message); $event.stopPropagation()">
+                    <h5><i class="fa-solid fa-trash-alt"></i></h5>
+                </bizy-button>
 
-            </bizy-list>
+                <bizy-list>
 
-            <h6 slot="footer-end"><strong>{{message.created | date : 'yyyy/MM/dd HH:mm'}}</strong></h6>
+                    <h5><strong>{{message.title}}</strong></h5>
+        
+                    <h6 *ngIf="message.body">{{message.body}}</h6>
 
-        </bizy-card>
+                </bizy-list>
+
+                <h6 slot="footer-end"><strong>{{message.created | date : 'yyyy/MM/dd HH:mm'}}</strong></h6>
+
+            </bizy-card>
+
+        </bizy-section-start>
 
     </bizy-list>
 
     <bizy-list *ngIf="loading" class="animated fade-in">
 
-        <bizy-card *gridFor="let i of messages.length > 0 ? messages : 30 | bizyRepeat">
+        <ng-container *ngFor="let i of 3 | bizyRepeat">
 
-            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+            <bizy-section-start>
+                
+                <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="2rem" width="2rem"></bizy-skeleton>
+    
+                <bizy-card>
+        
+                    <bizy-skeleton slot="header-start"></bizy-skeleton>
+        
+                    <bizy-list>
+        
+                        <bizy-skeleton width="12rem" height="0.8rem"></bizy-skeleton>
+        
+                        <bizy-skeleton width="16rem" height="0.8rem"></bizy-skeleton>
+        
+                        <bizy-skeleton width="8rem" height="0.8rem"></bizy-skeleton>
+        
+                    </bizy-list>
+        
+                </bizy-card>
+    
+            </bizy-section-start>
 
-            <bizy-skeleton slot="header-start"></bizy-skeleton>
+            <bizy-section-start>
+    
+                <bizy-card>
+        
+                    <bizy-skeleton slot="header-start"></bizy-skeleton>
+        
+                    <bizy-list>
+        
+                        <bizy-skeleton width="12rem" height="0.8rem"></bizy-skeleton>
+        
+                        <bizy-skeleton width="16rem" height="0.8rem"></bizy-skeleton>
+        
+                        <bizy-skeleton width="8rem" height="0.8rem"></bizy-skeleton>
+        
+                    </bizy-list>
+        
+                </bizy-card>
 
-            <bizy-list>
+                <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="2rem" width="2rem"></bizy-skeleton>
 
-                <bizy-skeleton width="12rem" height="0.8rem"></bizy-skeleton>
+            </bizy-section-start>
 
-                <bizy-skeleton width="16rem" height="0.8rem"></bizy-skeleton>
+        </ng-container>
 
-                <bizy-skeleton width="8rem" height="0.8rem"></bizy-skeleton>
-
-            </bizy-list>
-
-        </bizy-card>
 
     </bizy-list>
 

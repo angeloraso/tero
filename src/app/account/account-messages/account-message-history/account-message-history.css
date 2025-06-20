@@ -2,14 +2,22 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  --bizy-section-start-align-items: flex-start;
+  --bizy-section-start-column-gap: 0.5rem;
+}
+
+.account-message-history__profile-pic {
+  height: 2rem;
+  border-radius: 50%;
 }
 
 .account-messages-history__other-user-message {
-  --bizy-card-width: calc(100% - 1.5rem);
+  --bizy-card-background-color: var(--bizy-light-default-color);
+  margin-right: 4rem;
 }
 
 .account-messages-history__current-user-message {
-  --bizy-card-width: calc(100% - 1rem);
-  --bizy-card-background-color: var(--bizy-light-success-color);
-  margin-left: 1rem;
+  --bizy-card-border: 0.1rem solid var(--bizy-light-info-color);
+  margin-left: 6rem;
 }
