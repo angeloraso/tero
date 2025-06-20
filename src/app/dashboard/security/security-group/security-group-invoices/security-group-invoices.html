@@ -2,7 +2,7 @@
 
     <bizy-button slot="start" (onSelect)="goBack()" class="tero-action tero-action--info"><i class="fa-solid fa-angle-left"></i></bizy-button>
 
-    <h1 slot=start>{{'SECURITY_GROUP.SECURITY_GROUP_INVOICES.TITLE' | translate}}</h1>
+    <h1 slot=start>{{'SECURITY_GROUP_INVOICES.TITLE' | translate}} {{group}}</h1>
 
     <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
 
@@ -40,67 +40,75 @@
 
     </bizy-section>
 
-    <bizy-table [bizyLoading]="loading">
+     <bizy-grid *ngIf="!loading && invoices.length > 0" class="animated fade-in">
 
-        <bizy-table-header>
+        <bizy-card 
+            class="animated fade-in"
+            *gridFor="let invoice of invoices 
+                                        | bizySearch: search : searchKeys
+                                        | bizySearch: nameSearch : '_nameSurname'
+                                        | bizyOrderBy: order : orderBy">
 
-            <bizy-table-column [ngStyle]="{flex: 6}" (onSelect)="onSort('timestamp')">
-                <h6><strong>{{'CORE.FORM.FIELD.DATE' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === 'timestamp'"></bizy-table-column-arrows>
-            </bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 6}" (onSelect)="onSort('_neighborName')">
+            <h6 slot="header-start"><strong>{{invoice._date}}</strong></h6>
 
-                <bizy-filter (onOpen)="$event.stopPropagation()" (onChange)="checkFilters($event)">
-                        
-                    <h6><i class="fa-solid fa-magnifying-glass"></i></h6>
+            <bizy-button 
+                slot="header-end"
+                class="tero-action tero-action--danger tero-no-padding"
+                (onSelect)="deleteInvoice(invoice); $event.stopPropagation()">
+                <h5><i class="fa-solid fa-trash-alt"></i></h5>
+            </bizy-button>
 
-                    <bizy-filter-section>
-                        <h6 slot="header" class="tero--info"><strong>{{ 'CORE.FORM.FIELD.NAME' | translate }}</strong></h6>
+            <bizy-list>
+                
+                <h6 bizyTooltip [tooltipLineClamp]="1">{{'CORE.FORM.FIELD.NAME' | translate}}: <strong>{{invoice._nameSurname}}</strong></h6>
 
-                        <bizy-filter-section-search-option 
-                            [(value)]="nameSearch"
-                            (onChange)="refresh()">
+                <h6 bizyTooltip [tooltipLineClamp]="1">{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}: <strong>{{invoice.transactionId || '---'}}</strong></h6>
 
-                            <h6 slot="prefix"><i class="fa-solid fa-magnifying-glass"></i></h6>
-                            
-                        </bizy-filter-section-search-option>
-                    </bizy-filter-section>
+                <h6 bizyTooltip [tooltipLineClamp]="1">{{'CORE.FORM.FIELD.COMMENT' | translate}}: <strong>{{invoice.description || '---'}}</strong></h6>
 
-                </bizy-filter>
+            </bizy-list>
 
-                <h6><strong>{{'CORE.FORM.FIELD.NAME' | translate}}</strong></h6>
-                <bizy-table-column-arrows [order]="order" [show]="orderBy === '_neighborName'"></bizy-table-column-arrows>
-            </bizy-table-column>
+        </bizy-card>
 
-            <bizy-table-column [ngStyle]="{flex: 2}" class="tero-table-column-center">
-                <h6><strong>{{'CORE.FORM.FIELD.GROUP' | translate}}</strong></h6>
-            </bizy-table-column>
+    </bizy-grid>
 
-            <bizy-table-column [ngStyle]="{flex: 1}" class="tero-table-column-center"></bizy-table-column>
+    <bizy-grid *ngIf="loading" class="animated fade-in">
 
-        </bizy-table-header>
+        <bizy-card *gridFor="let i of invoices.length > 0 ? invoices : 30 | bizyRepeat">
     
-        <bizy-table-row 
-            *tableFor="let invoice in: invoices 
-                | bizySearch: search : searchKeys
-                | bizySearch: nameSearch : 'name'
-                | bizyOrderBy: order : orderBy">
-    
-            <bizy-table-column [ngStyle]="{flex: 6}"><h6>{{invoice._date}}</h6></bizy-table-column>
+            <bizy-skeleton slot="header-start" width="8rem" height="0.8rem"></bizy-skeleton>
 
-            <bizy-table-column [ngStyle]="{flex: 6}"><h6>{{invoice._neighborName}}</h6></bizy-table-column>
+            <bizy-skeleton slot="header-end" width="2rem" height="1rem"></bizy-skeleton>
 
-            <bizy-table-column [ngStyle]="{flex: 2}" class="tero-table-column-center"><h6>{{invoice.group}}</h6></bizy-table-column>
-            
-            <bizy-table-column [ngStyle]="{flex: 1}" class="tero-table-column-center" (onSelect)="deleteInvoice(invoice)">
-                <bizy-button class="tero-action tero-action--danger" (onSelect)="deleteInvoice(invoice)" *ngIf="isConfig || isSecurityGroupAdmin">
-                    <h6><i class="fa-solid fa-trash-can"></i></h6>
-                </bizy-button>
-            </bizy-table-column>
+            <bizy-list>
+                
+                <bizy-skeleton width="8rem" height="0.8rem"></bizy-skeleton>
 
-        </bizy-table-row>
-    
-    </bizy-table>
+                <bizy-skeleton width="6rem" height="0.8rem"></bizy-skeleton>
+
+                <bizy-skeleton width="10rem" height="0.8rem"></bizy-skeleton>
+
+            </bizy-list>
+
+        </bizy-card>
+
+    </bizy-grid>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.INFO" 
+        class="animated fade-in tero-no-matches"
+        *ngIf="invoices.length !== 0 && (invoices 
+                                            | bizySearch: search : searchKeys
+                                            | bizySearch: nameSearch : '_nameSurname').length === 0">
+        <h4 class="tero-text--center">{{'CORE.NO_MATCHES' | translate}}</h4>
+    </bizy-tag>
+
+    <bizy-tag 
+        [type]="BIZY_TAG_TYPE.WARNING"
+        class="animated fade-in tero-no-matches"
+        *ngIf="!loading && invoices.length === 0">
+        <h4 class="tero-text--center">{{'SECURITY_GROUP_INVOICES.EMPTY' | translate}}</h4>
+    </bizy-tag>
 
 </tero-wrapper>

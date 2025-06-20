@@ -14,10 +14,11 @@ export class SecurityService {
 
   deleteNeighborInvoice = (invoice: ISecurityNeighborInvoice) => this.#database.deleteSecurityNeighborInvoice(invoice);
 
-  postNeighborInvoice = (data: { neighborId: string; group: number; transactionId?: string }) =>
+  postNeighborInvoice = (data: { neighborId: string; group: number; description?: string; transactionId?: string }) =>
     this.#database.postSecurityNeighborInvoice({
       neighborId: data.neighborId,
       group: data.group,
+      description: data.description || null,
       transactionId: data.transactionId || null,
       timestamp: Date.now()
     });

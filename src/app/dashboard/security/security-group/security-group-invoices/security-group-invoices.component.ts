@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
+  BIZY_SKELETON_SHAPE,
+  BIZY_TAG_TYPE,
   BizyDeviceService,
   BizyExportToCSVService,
   BizyLogService,
@@ -15,15 +17,18 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
+import { DEFAULT_USER_PICTURE, IMG_PATH } from '@core/constants';
 import { ISecurityNeighborInvoice, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
 import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { HomeService } from '@home/home.service';
+import { es } from './i18n';
+
 interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
   _date: string;
-  _neighborName: string;
+  _nameSurname: string;
 }
 
 @Component({
@@ -50,6 +55,11 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   readonly #home = inject(HomeService);
   readonly #device = inject(BizyDeviceService);
 
+  readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
+  readonly IMG_PATH = IMG_PATH;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
+
   group: number | null = null;
   loading = false;
   csvLoading = false;
@@ -58,7 +68,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   invoices: Array<ISecurityInvoiceRow> = [];
   search: string | number = '';
   nameSearch: string = '';
-  searchKeys = ['_neighborName', '_date', 'group'];
+  searchKeys = ['_nameSurname', '_date', 'group'];
   order: 'asc' | 'desc' = 'desc';
   orderBy = '_date';
   isDesktop = this.#device.isDesktop();
@@ -68,6 +78,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
     try {
       this.loading = true;
       this.#home.hideTabs();
+      this.#translate.loadTranslations(es);
       this.group = Number(this.#router.getId(this.#activatedRoute, 'group'));
       if (!this.group) {
         this.goBack();
@@ -90,10 +101,10 @@ export class SecurityGroupInvoicesComponent implements OnInit {
               .filter(_invoice => _invoice.group === this.group)
               .map(_invoice => {
                 const _neighbor = neighbors.find(_neighbor => _neighbor.id === _invoice.neighborId);
-                const _neighborName = _neighbor ? `${_neighbor.name}${_neighbor.surname ? ' ' + _neighbor.surname : ''}` : '';
+                const _nameSurname = _neighbor ? `${_neighbor.name}${_neighbor.surname ? ' ' + _neighbor.surname : ''}` : '';
                 return {
                   ..._invoice,
-                  _neighborName,
+                  _nameSurname,
                   _date: this.#datePipe.transform(_invoice.timestamp, 'yyyy/MM/dd HH:mm')!
                 };
               })
@@ -125,8 +136,8 @@ export class SecurityGroupInvoicesComponent implements OnInit {
       {
         component: PopupComponent,
         data: {
-          title: this.#translate.get('SECURITY_GROUP.DELETE_POPUP.TITLE'),
-          msg: `${this.#translate.get('SECURITY_GROUP.DELETE_POPUP.MSG')}: ${this.#translate.get('CORE.FORM.FIELD.GROUP')} ${invoice._neighborName} - ${invoice._date}`
+          title: this.#translate.get('SECURITY_GROUP_INVOICES.DELETE_POPUP.TITLE'),
+          msg: `${this.#translate.get('SECURITY_GROUP_INVOICES.DELETE_POPUP.MSG')}: ${this.#translate.get('CORE.FORM.FIELD.GROUP')} ${invoice._nameSurname} - ${invoice._date}`
         }
       },
       async res => {
@@ -187,9 +198,10 @@ export class SecurityGroupInvoicesComponent implements OnInit {
 
       const items = this.#filter(this.invoices);
 
-      const fileName = this.#translate.get('SECURITY_GROUP.SECURITY_GROUP_INVOICES.CSV_FILE_NAME');
+      const fileName = this.#translate.get('SECURITY_GROUP_INVOICES.CSV_FILE_NAME');
       const model = {
         _date: this.#translate.get('CORE.FORM.FIELD.DATE'),
+        _nameSurname: this.#translate.get('CORE.FORM.FIELD.NAME'),
         group: this.#translate.get('CORE.FORM.FIELD.GROUP')
       };
 
@@ -216,7 +228,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
 
   #filter(items: Array<ISecurityInvoiceRow>): Array<ISecurityInvoiceRow> {
     let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);
-    _items = this.#searchPipe.transform(items, this.nameSearch, 'name');
+    _items = this.#searchPipe.transform(items, this.nameSearch, '_nameSurname');
     _items = this.#orderByPipe.transform(_items, this.order, this.orderBy);
     return _items;
   }

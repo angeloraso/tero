@@ -1,5 +1,4 @@
 :host {
   --bizy-input-background-color: var(--dark-input-background-color);
-  --bizy-form-row-gap: 2rem;
   --bizy-input-max-width: 100%;
 }

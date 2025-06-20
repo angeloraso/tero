@@ -1,7 +1,7 @@
 <bizy-form>
     
     <bizy-section-center>
-        <h1 class="tero--info tero-text--center">{{'SECURITY.REGISTER_PAYMENT_POPUP.TITLE' | translate}} {{neighbor ? neighbor.lot + ' - ' + neighbor.name + ' ' + neighbor.surname : ''}}</h1>
+        <h1 class="tero--info tero-text--center">{{'REGISTER_PAYMENT_POPUP.TITLE' | translate}} {{neighbor ? neighbor.lot + ' - ' + neighbor.name + ' ' + neighbor.surname : ''}}</h1>
     </bizy-section-center>
 
     <bizy-input
@@ -9,6 +9,14 @@
         (onChange)="transactionId.setValue($event)">
         <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}</strong></h6>
         <h6 slot="error" *ngIf="transactionId.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
+    </bizy-input>
+
+    <bizy-input
+        type="textarea"
+        [value]="description.value"
+        (onChange)="description.setValue($event)">
+        <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.COMMENT' | translate}}</strong></h6>
+        <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h6>
     </bizy-input>
 
     <bizy-section>

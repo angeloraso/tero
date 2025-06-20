@@ -172,7 +172,7 @@ export class SecurityGroupComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<{ transactionId: string }>(
+    this.#popup.open<{ transactionId: string; description: string }>(
       {
         component: RegisterPaymentPopupComponent,
         data: {
@@ -191,7 +191,8 @@ export class SecurityGroupComponent implements OnInit {
                 this.#securityService.postNeighborInvoice({
                   neighborId: _neighbor.id,
                   group: _neighbor.group,
-                  transactionId: res.transactionId
+                  transactionId: res.transactionId,
+                  description: res.description
                 })
               );
             });

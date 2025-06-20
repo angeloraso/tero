@@ -4,12 +4,11 @@ export const locale = {
   lang: LANGUAGE.SPANISH,
   translations: {
     SECURITY_GROUP: {
-      TITLE: 'Vecinos del Grupo',
+      TITLE: 'Grupo',
       CSV_FILE_NAME: 'tero_vecinos_grupo_seguridad.csv',
       EMPTY: 'No hay vecinos para mostrar',
       DEBT: 'Deudor',
       TOTAL_CONTRIBUTORS: 'Total de contribuyentes',
-      REGISTER_PAYMENT: 'Registrar pago',
       DELETE_POPUP: {
         TITLE: 'Borrar registro de pago',
         MSG: 'Se borrará el siguiente registro de pago'
@@ -26,7 +25,8 @@ export const locale = {
         BODY: 'Se registró su pago de seguridad'
       },
       SECURITY_GROUP_INVOICES: {
-        TITLE: 'Historial de pagos'
+        TITLE: 'Historial de pagos',
+        EMPTY: 'No hay registros de pagos'
       }
     }
   }

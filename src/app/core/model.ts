@@ -106,6 +106,7 @@ export interface ISecurityNeighborInvoice {
   group: number;
   neighborId: string;
   transactionId: string | null;
+  description: string | null;
 }
 
 export interface ISecurity {

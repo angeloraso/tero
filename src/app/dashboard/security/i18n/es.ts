@@ -35,16 +35,12 @@ export const locale = {
           MSG: 'Se borrará el siguiente registro de pago'
         }
       },
-      REGISTER_PAYMENT_POPUP: {
-        TITLE: 'Registrar pago de'
-      },
       SECURITY_GROUP: {
         TITLE: 'Vecinos del Grupo',
         CSV_FILE_NAME: 'tero_vecinos_grupo_seguridad.csv',
         EMPTY: 'No hay vecinos para mostrar',
         DEBT: 'Deudor',
         TOTAL_CONTRIBUTORS: 'Total de contribuyentes',
-        REGISTER_PAYMENT: 'Registrar pago',
         FILTER: {
           DEBT: {
             TITLE: 'Deuda',
