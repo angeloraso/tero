@@ -111,9 +111,6 @@ export class SecurityGroupInvoicesComponent implements OnInit {
                 };
               })
           : [];
-
-      this.invoices[0].transactionId = '0140192503520951958612';
-      this.invoices[0].description = 'Pagó dos meses juntos';
     } catch (error) {
       this.#log.error({
         fileName: 'security-group-invoices.component',
