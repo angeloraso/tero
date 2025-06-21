@@ -6,7 +6,6 @@ import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyCopyToClipboardService,
-  BizyDeviceService,
   BizyExportToCSVService,
   BizyFilterPipe,
   BizyLogService,
@@ -49,7 +48,6 @@ export class UsersComponent implements OnInit {
   readonly #orderByPipe = inject(BizyOrderByPipe);
   readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
-  readonly #device = inject(BizyDeviceService);
 
   loading = false;
   csvLoading = false;
@@ -60,7 +58,6 @@ export class UsersComponent implements OnInit {
   searchKeys = ['name', 'email', '_status', '_roles'];
   order: 'asc' | 'desc' = 'asc';
   orderBy = 'name';
-  isDesktop = this.#device.isDesktop();
   filterStates: Array<{ id: string; value: string; selected: boolean }> = [];
   filterRoles: Array<{ id: string; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
@@ -73,9 +70,6 @@ export class UsersComponent implements OnInit {
     try {
       this.loading = true;
       this.#home.hideTabs();
-      this.#device.getUserAgent().then(res => {
-        console.log(res);
-      });
       this.#translate.loadTranslations(es);
       const [users, isConfig, isNeighbor] = await Promise.all([
         this.#usersService.getUsers(),
