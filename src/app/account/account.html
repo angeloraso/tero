@@ -4,6 +4,8 @@
 
     <h1 slot=start>{{'ACCOUNT.TITLE' | translate}}</h1>
 
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isAdmin && !isMobile" (onSelect)="onBackup()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+
     <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="openAboutPopup()"><h2><i class="fa-solid fa-circle-info"></i></h2></bizy-button>
 
     <bizy-button slot="end" class="tero-toolbar-action" (onSelect)="onSignOut()"><h2><i class="fa-solid fa-right-from-bracket"></i></h2></bizy-button>

@@ -20,7 +20,18 @@ import {
 import { PopupComponent } from '@components/popup';
 import { LOGO_PATH } from '@core/constants';
 import { IAccountMessage, IUser, USER_STATE } from '@core/model';
-import { AccountMessagesService, MobileService, UsersService } from '@core/services';
+import {
+  AccountMessagesService,
+  ContactsService,
+  EcommerceService,
+  GarbageTruckService,
+  MobileService,
+  NeighborsService,
+  SecurityService,
+  TopicsService,
+  UsersService
+} from '@core/services';
+import { ENV } from '@env/environment';
 import { HomeService } from '@home/home.service';
 import { PATH } from './account.routing';
 import { es } from './i18n';
@@ -42,13 +53,22 @@ export class AccountComponent implements OnInit {
   readonly #accountMessagesService = inject(AccountMessagesService);
   readonly #home = inject(HomeService);
   readonly #mobile = inject(MobileService);
-  loading = false;
+  readonly #neighborsService = inject(NeighborsService);
+  readonly #garbageTruckService = inject(GarbageTruckService);
+  readonly #contactsService = inject(ContactsService);
+  readonly #securityService = inject(SecurityService);
+  readonly #ecommerceService = inject(EcommerceService);
+  readonly #topicsService = inject(TopicsService);
 
   readonly LOGO_PATH = LOGO_PATH;
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly USER_STATE = USER_STATE;
   readonly DEFAULT_USER_ID = '00000000000000';
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
+
+  loading: boolean = false;
+  isMobile: boolean = ENV.mobile;
+  isAdmin: boolean = false;
   isConfig: boolean = false;
   isNeighbor: boolean = false;
   profilePic: string | null = null;
@@ -67,9 +87,10 @@ export class AccountComponent implements OnInit {
       this.name = this.#auth.getName() ?? '';
       this.email = this.#auth.getEmail() ?? '';
 
-      const [profilePic, currentUser, isConfig, isNeighbor, messages] = await Promise.all([
+      const [profilePic, currentUser, isAdmin, isConfig, isNeighbor, messages] = await Promise.all([
         this.#auth.getProfilePicture(),
         this.#usersService.getCurrentUser(),
+        this.#usersService.isAdmin(),
         this.#usersService.isConfig(),
         this.#usersService.isNeighbor(),
         this.#accountMessagesService.getMessages()
@@ -78,6 +99,8 @@ export class AccountComponent implements OnInit {
       this.profilePic = profilePic;
 
       this.currentUser = currentUser;
+
+      this.isAdmin = isAdmin;
 
       this.isConfig = isConfig;
 
@@ -239,6 +262,72 @@ export class AccountComponent implements OnInit {
     }
 
     this.#router.goTo({ path: PATH.ACCOUNT_MESSAGES });
+  }
+
+  async onBackup() {
+    try {
+      if (this.loading || ENV.mobile || !this.isAdmin) {
+        return;
+      }
+
+      this.loading = true;
+
+      function downloadJSON(data: unknown, filename = 'data.json') {
+        const jsonString = JSON.stringify(data, null, 2); // pretty-print with 2-space indent
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a); // Required for Firefox
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url); // Clean up
+      }
+
+      const [neighbors, garbageRecords, contacts, contactTags, securityData, users, ecommerceProductos, ecommerceTags, topics] = await Promise.all([
+        this.#neighborsService.getNeighbors(),
+        this.#garbageTruckService.getRecords(),
+        this.#contactsService.getContacts(),
+        this.#contactsService.getTags(),
+        this.#securityService.getSecurity(),
+        this.#usersService.getUsers(),
+        this.#ecommerceService.getProducts(),
+        this.#ecommerceService.getTags(),
+        this.#topicsService.getTopics()
+      ]);
+
+      const timestamp = Date.now();
+      const neighborsFileName = `tero_neighbors-${timestamp}`;
+      const garbageFileName = `tero_garbage_records-${timestamp}`;
+      const contactsFileName = `tero_contacts-${timestamp}`;
+      const contactTagsFileName = `tero_contacts_tags-${timestamp}`;
+      const securityDataFileName = `tero_security_data-${timestamp}`;
+      const usersFileName = `tero_users-${timestamp}`;
+      const ecommerceProductsFileName = `tero_ecommerce_products-${timestamp}`;
+      const ecommerceTagsFileName = `tero_ecommerce_tags-${timestamp}`;
+      const topicsFileName = `tero_topics-${timestamp}`;
+
+      downloadJSON(neighbors, neighborsFileName);
+      downloadJSON(garbageRecords, garbageFileName);
+      downloadJSON(contacts, contactsFileName);
+      downloadJSON(contactTags, contactTagsFileName);
+      downloadJSON(securityData, securityDataFileName);
+      downloadJSON(users, usersFileName);
+      downloadJSON(ecommerceProductos, ecommerceProductsFileName);
+      downloadJSON(ecommerceTags, ecommerceTagsFileName);
+      downloadJSON(topics, topicsFileName);
+    } catch (error) {
+      this.#log.error({
+        fileName: 'account.component',
+        functionName: 'onBackup',
+        param: error
+      });
+      this.#toast.danger();
+    } finally {
+      this.loading = false;
+    }
   }
 
   onSignOut(): void {
