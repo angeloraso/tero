@@ -97,7 +97,7 @@ export class EditEcommerceProductComponent implements OnInit {
       }
 
       this.currentUser = currentUser;
-      this.product = product;
+      this.product = structuredClone(product);
 
       if (this.product.productName) {
         this.productName.setValue(this.product.productName);

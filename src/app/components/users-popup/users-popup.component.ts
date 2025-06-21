@@ -7,7 +7,7 @@ import { UsersService } from '@core/services';
 import { es } from './i18n';
 
 interface IPopupUser {
-  value: string;
+  name: string;
   email: string;
   status: USER_STATE;
   selected: boolean;
@@ -32,9 +32,9 @@ export class UsersPopupComponent implements OnInit {
   users: Array<IPopupUser> = [];
   loading: boolean = false;
   search: string | number = '';
-  searchKeys = ['value'];
+  searchKeys = ['name', 'email'];
   order: 'asc' | 'desc' = 'asc';
-  orderBy = 'value';
+  orderBy = 'name';
   activatedFilters: number = 0;
   selectedUsers: number = 0;
 
@@ -70,7 +70,7 @@ export class UsersPopupComponent implements OnInit {
         .forEach(_user => {
           users.push({
             email: _user.email,
-            value: _user.name || _user.email,
+            name: _user.name || _user.email,
             status: _user.status,
             selected: false
           });
@@ -137,14 +137,16 @@ export class UsersPopupComponent implements OnInit {
     }
 
     this.#popup.close({
-      response: this.users
-        .filter(_user => _user.selected)
-        .map(_user => {
-          return {
-            email: _user.email,
-            name: _user.value
-          };
-        })
+      response: {
+        users: this.users
+          .filter(_user => _user.selected)
+          .map(_user => {
+            return {
+              email: _user.email,
+              name: _user.name
+            };
+          })
+      }
     });
   }
 

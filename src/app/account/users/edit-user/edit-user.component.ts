@@ -95,7 +95,7 @@ export class EditUserComponent implements OnInit {
         return;
       }
 
-      this.user = user;
+      this.user = structuredClone(user);
       this.status.setValue(user.status);
 
       if (user.name) {

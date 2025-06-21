@@ -107,7 +107,7 @@ export class AddAccountMessageComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<Array<{ name: string; email: string }>>(
+    this.#popup.open<{ users: Array<{ name: string; email: string }> }>(
       {
         component: UsersPopupComponent,
         fullScreen: true,
@@ -117,11 +117,11 @@ export class AddAccountMessageComponent implements OnInit {
           currentUser: this.currentUser
         }
       },
-      async users => {
+      async res => {
         try {
-          if (users) {
-            if (users.length > 0) {
-              this.users.setValue(users);
+          if (res && res.users) {
+            if (res.users.length > 0) {
+              this.users.setValue(res.users);
             } else {
               this.users.setValue(null);
             }

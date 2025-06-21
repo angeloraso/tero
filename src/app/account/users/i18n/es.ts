@@ -5,7 +5,7 @@ export const locale = {
   translations: {
     USERS: {
       TITLE: 'Usuarios',
-      CSV_FILE_NAME: 'tero_usuarios',
+      CSV_FILE_NAME: 'tero_usuarios.csv',
       EDIT_USER: {
         TITLE: 'Editar usuario'
       },

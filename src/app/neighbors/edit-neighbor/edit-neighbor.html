@@ -61,15 +61,19 @@
 
         <bizy-input
             #emailInput
-            type="email"
             [disabled]="loading"
-            [value]="email.value"
-            (onChange)="email.setValue($event)">
+            (onSelect)="openUsersPopup()"
+            [readonly]="true">
             <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.EMAIL' | translate}}</strong></h6>
-            <h6 slot="error" *ngIf="email.hasError('required') && emailInput.touched">{{'CORE.FORM.ERROR.REQUIRED' | translate}}</h6>
+
+            <bizy-tag slot="prefix" *ngIf="email.value" [type]="BIZY_TAG_TYPE.INFO">
+                <h6>{{email.value}}</h6>
+            </bizy-tag>
+
             <h6 slot="error" *ngIf="email.hasError('minlength') && emailInput.touched">{{'CORE.FORM.ERROR.MIN_LENGTH' | translate}}: {{EMAIL_MIN_LENGTH}}</h6>
             <h6 slot="error" *ngIf="email.hasError('maxlength') && emailInput.touched">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{EMAIL_MAX_LENGTH}}</h6>
             <h6 slot="error" *ngIf="email.hasError('bizyEmail') && emailInput.touched">{{'CORE.FORM.ERROR.EMAIL' | translate}}</h6>
+
         </bizy-input>
     
         <bizy-section>

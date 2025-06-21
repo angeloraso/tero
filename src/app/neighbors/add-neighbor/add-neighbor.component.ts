@@ -12,8 +12,10 @@ import {
   BizyToastService,
   BizyValidatorService
 } from '@bizy/core';
+import { UsersPopupComponent } from '@components/users-popup';
 import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, IMG_PATH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
-import { NeighborsService } from '@core/services';
+import { IUser } from '@core/model';
+import { NeighborsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { AlarmControlsPopupComponent, AlarmPopupComponent, SecurityGroupPopupComponent } from '@neighbors/components';
 @Component({
@@ -25,6 +27,7 @@ import { AlarmControlsPopupComponent, AlarmPopupComponent, SecurityGroupPopupCom
 export class AddNeighborComponent implements OnInit {
   @ViewChild(BizyFormComponent) formComponent: BizyFormComponent | null = null;
   readonly #neighborsService = inject(NeighborsService);
+  readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
   readonly #router = inject(BizyRouterService);
   readonly #fb = inject(FormBuilder);
@@ -54,6 +57,7 @@ export class AddNeighborComponent implements OnInit {
   });
 
   loading: boolean = false;
+  currentUser: IUser | null = null;
 
   get name() {
     return this.#form.get('name') as FormControl;
@@ -83,8 +87,23 @@ export class AddNeighborComponent implements OnInit {
     return this.#form.get('alarmControls') as FormControl;
   }
 
-  ngOnInit() {
-    this.#home.hideTabs();
+  async ngOnInit() {
+    try {
+      this.loading = true;
+      this.#home.hideTabs();
+      const currentUser = await this.#usersService.getCurrentUser();
+
+      this.currentUser = currentUser;
+    } catch (error) {
+      this.#log.error({
+        fileName: 'add-neighbor.component',
+        functionName: 'ngOnInit',
+        param: error
+      });
+      this.#toast.danger();
+    } finally {
+      this.loading = false;
+    }
   }
 
   openSecurityGroupsPopup() {
@@ -171,6 +190,42 @@ export class AddNeighborComponent implements OnInit {
     );
   }
 
+  openUsersPopup() {
+    if (this.loading) {
+      return;
+    }
+
+    this.#popup.open<{ users: Array<{ name: string; email: string }> }>(
+      {
+        component: UsersPopupComponent,
+        fullScreen: true,
+        data: {
+          emails: this.email.value ? [this.email.value] : [],
+          maxLimit: 1,
+          currentUser: this.currentUser
+        }
+      },
+      async res => {
+        try {
+          if (res && res.users) {
+            if (res.users.length > 0) {
+              this.email.setValue(res.users[0].email);
+            } else {
+              this.email.setValue(null);
+            }
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'add-neighbor.component',
+            functionName: 'openUsersPopup',
+            param: error
+          });
+          this.#toast.danger();
+        }
+      }
+    );
+  }
+
   goBack() {
     this.#router.goBack({ path: `/${APP_PATH.HOME}/${HOME_PATH.NEIGHBORS}` });
   }
@@ -186,7 +241,7 @@ export class AddNeighborComponent implements OnInit {
       await this.#neighborsService.postNeighbor({
         name: this.name.value ? this.name.value.trim() : '',
         surname: this.surname.value ? this.surname.value.trim() : '',
-        email: this.email.value ? this.email.value.trim() : '',
+        email: this.email.value || null,
         lot: Number(this.lot.value),
         alarmNumber: this.alarmNumber.value,
         alarmControls: this.alarmControls.value,

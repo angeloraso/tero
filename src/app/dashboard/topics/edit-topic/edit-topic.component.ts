@@ -77,7 +77,7 @@ export class EditTopicComponent implements OnInit {
         return;
       }
 
-      this.topic = topic;
+      this.topic = structuredClone(topic);
 
       if (this.topic.title) {
         this.title.setValue(this.topic.title);
@@ -145,17 +145,17 @@ export class EditTopicComponent implements OnInit {
       return;
     }
 
-    this.#popup.open<Array<{ name: string; email: string }>>(
+    this.#popup.open<{ users: Array<{ name: string; email: string }> }>(
       {
         component: UsersPopupComponent,
         fullScreen: true,
         data: { userEmails: this.users.value ? this.users.value.map((_user: { email: string }) => _user.email) : [], maxLimit: MAX_TOPIC_USERS }
       },
-      async users => {
+      async res => {
         try {
-          if (users) {
-            if (users.length > 0) {
-              this.users.setValue(users);
+          if (res && res.users) {
+            if (res.users.length > 0) {
+              this.users.setValue(res.users);
             } else {
               this.users.setValue(null);
             }

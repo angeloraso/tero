@@ -15,9 +15,10 @@ import {
   BizyValidatorService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
+import { UsersPopupComponent } from '@components/users-popup';
 import { DEFAULT_USER_PICTURE, EMAIL_MAX_LENGTH, EMAIL_MIN_LENGTH, IMG_PATH, LOTS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
-import { INeighbor } from '@core/model';
-import { NeighborsService } from '@core/services';
+import { INeighbor, IUser } from '@core/model';
+import { NeighborsService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';
 import { AlarmControlsPopupComponent, AlarmPopupComponent, SecurityGroupPopupComponent } from '@neighbors/components';
 @Component({
@@ -29,6 +30,7 @@ import { AlarmControlsPopupComponent, AlarmPopupComponent, SecurityGroupPopupCom
 export class EditNeighborComponent implements OnInit {
   @ViewChild(BizyFormComponent) formComponent: BizyFormComponent | null = null;
   readonly #neighborsService = inject(NeighborsService);
+  readonly #usersService = inject(UsersService);
   readonly #home = inject(HomeService);
   readonly #router = inject(BizyRouterService);
   readonly #activatedRoute = inject(ActivatedRoute);
@@ -61,6 +63,7 @@ export class EditNeighborComponent implements OnInit {
 
   neighbor: INeighbor | null = null;
   loading: boolean = false;
+  currentUser: IUser | null = null;
 
   get name() {
     return this.#form.get('name') as FormControl;
@@ -100,7 +103,8 @@ export class EditNeighborComponent implements OnInit {
         return;
       }
 
-      const neighbor = await this.#neighborsService.getNeighbor(neighborId);
+      const [neighbor, currentUser] = await Promise.all([this.#neighborsService.getNeighbor(neighborId), this.#usersService.getCurrentUser()]);
+      this.currentUser = currentUser;
       this.neighbor = structuredClone(neighbor);
 
       if (this.neighbor.name) {
@@ -252,6 +256,42 @@ export class EditNeighborComponent implements OnInit {
           this.#log.error({
             fileName: 'add-neighbor.component',
             functionName: 'openAlarmControlPopup',
+            param: error
+          });
+          this.#toast.danger();
+        }
+      }
+    );
+  }
+
+  openUsersPopup() {
+    if (this.loading) {
+      return;
+    }
+
+    this.#popup.open<{ users: Array<{ name: string; email: string }> }>(
+      {
+        component: UsersPopupComponent,
+        fullScreen: true,
+        data: {
+          emails: this.email.value ? [this.email.value] : [],
+          maxLimit: 1,
+          currentUser: this.currentUser
+        }
+      },
+      async res => {
+        try {
+          if (res && res.users) {
+            if (res.users.length > 0) {
+              this.email.setValue(res.users[0].email);
+            } else {
+              this.email.setValue(null);
+            }
+          }
+        } catch (error) {
+          this.#log.error({
+            fileName: 'add-neighbor.component',
+            functionName: 'openUsersPopup',
             param: error
           });
           this.#toast.danger();

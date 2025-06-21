@@ -74,9 +74,11 @@
 
             <h5 slot="header-start" [ngClass]="{'tero--info': u.selected}"><i class="fa-solid fa-user"></i></h5>
 
-            <h5 slot="header-start">{{u.value}}</h5>
+            <h5 slot="header-start">{{u.name}}</h5>
 
             <bizy-checkbox slot="header-end" [selected]="u.selected"></bizy-checkbox>
+
+            <h6 slot="footer-start" bizyTooltip [tooltipLineClamp]="1">{{u.email}}</h6>
 
             <bizy-tag slot="footer-end" *ngIf="u.status === USER_STATE.ACTIVE" [type]="BIZY_TAG_TYPE.SUCCESS"><h6>{{('CORE.USER_STATE.ACTIVE') | translate}}</h6></bizy-tag>
             <bizy-tag slot="footer-end" *ngIf="u.status === USER_STATE.SUSPENDED" [type]="BIZY_TAG_TYPE.WARNING"><h6>{{('CORE.USER_STATE.SUSPENDED') | translate}}</h6></bizy-tag>
