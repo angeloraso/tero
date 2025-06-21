@@ -16,7 +16,7 @@
         [value]="description.value"
         (onChange)="description.setValue($event)">
         <h6 slot="header" class="tero--info"><strong>{{'CORE.FORM.FIELD.COMMENT' | translate}}</strong></h6>
-        <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{LONG_TEXT_MAX_LENGTH}}</h6>
+        <h6 slot="error" *ngIf="description.hasError('maxlength')">{{'CORE.FORM.ERROR.MAX_LENGTH' | translate}}: {{NAME_MAX_LENGTH}}</h6>
     </bizy-input>
 
     <bizy-section>

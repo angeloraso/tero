@@ -61,11 +61,21 @@
 
             <bizy-list>
                 
-                <h6 bizyTooltip [tooltipLineClamp]="1">{{'CORE.FORM.FIELD.NAME' | translate}}: <strong>{{invoice._nameSurname}}</strong></h6>
+                <h6 bizyTooltip [tooltipLineClamp]="1"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}: </strong>{{invoice._nameSurname}}</h6>
 
-                <h6 bizyTooltip [tooltipLineClamp]="1">{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}: <strong>{{invoice.transactionId || '---'}}</strong></h6>
+                <span style="display: flex; align-items: center; column-gap: 0.3rem; width: 100%;">
+                    <h6><strong>{{'CORE.FORM.FIELD.TRANSACTION_ID' | translate}}:</strong></h6>
+                    <h6 *ngIf="!invoice.transactionId">---</h6>
+                    <bizy-button 
+                        *ngIf="invoice.transactionId"
+                        class="tero-action tero-action--info tero-no-padding"
+                        (onSelect)="copyText(invoice.transactionId); $event.stopPropagation()">
+                        <h6>{{invoice.transactionId}}</h6>
+                        <h6><i class="fa-regular fa-copy"></i></h6>
+                    </bizy-button>
+                </span>
 
-                <h6 bizyTooltip [tooltipLineClamp]="1">{{'CORE.FORM.FIELD.COMMENT' | translate}}: <strong>{{invoice.description || '---'}}</strong></h6>
+                <h6 bizyTooltip [tooltipLineClamp]="2"><strong>{{'CORE.FORM.FIELD.COMMENT' | translate}}:</strong> {{invoice.description || '---'}}</h6>
 
             </bizy-list>
 

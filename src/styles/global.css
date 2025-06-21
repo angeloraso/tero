@@ -45,11 +45,6 @@ h6 {
 .tero-action {
   --bizy-button-background-color: transparent;
   cursor: pointer;
-  transition: transform 100ms ease;
-}
-
-.tero-action:hover {
-  transform: scale(1.1);
 }
 
 .tero-action--primary {

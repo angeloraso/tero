@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { BizyPopupService, BizyTranslateService } from '@bizy/core';
-import { LONG_TEXT_MAX_LENGTH, NAME_MAX_LENGTH } from '@core/constants';
+import { NAME_MAX_LENGTH } from '@core/constants';
 import { INeighbor } from '@core/model';
 import { es } from './i18n';
 
@@ -19,11 +19,10 @@ export class RegisterPaymentPopupComponent implements OnInit {
   readonly #translate = inject(BizyTranslateService);
 
   readonly NAME_MAX_LENGTH = NAME_MAX_LENGTH;
-  readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
 
   readonly #form = this.#fb.group({
     transactionId: [null, [Validators.maxLength(this.NAME_MAX_LENGTH)]],
-    description: [null, [Validators.maxLength(this.LONG_TEXT_MAX_LENGTH)]]
+    description: [null, [Validators.maxLength(this.NAME_MAX_LENGTH)]]
   });
 
   neighbor: INeighbor | null = null;

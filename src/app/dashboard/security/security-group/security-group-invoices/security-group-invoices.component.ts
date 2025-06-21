@@ -6,6 +6,7 @@ import { SharedModules } from '@app/shared';
 import {
   BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
+  BizyCopyToClipboardService,
   BizyDeviceService,
   BizyExportToCSVService,
   BizyLogService,
@@ -54,6 +55,7 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #home = inject(HomeService);
   readonly #device = inject(BizyDeviceService);
+  readonly #copyToClipboard = inject(BizyCopyToClipboardService);
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
@@ -68,9 +70,9 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   invoices: Array<ISecurityInvoiceRow> = [];
   search: string | number = '';
   nameSearch: string = '';
-  searchKeys = ['_nameSurname', '_date', 'group'];
+  searchKeys = ['_nameSurname', '_date', 'description', 'transactionId'];
   order: 'asc' | 'desc' = 'desc';
-  orderBy = '_date';
+  orderBy = 'timestamp';
   isDesktop = this.#device.isDesktop();
   activatedFilters: number = 0;
 
@@ -109,6 +111,9 @@ export class SecurityGroupInvoicesComponent implements OnInit {
                 };
               })
           : [];
+
+      this.invoices[0].transactionId = '0140192503520951958612';
+      this.invoices[0].description = 'Pagó dos meses juntos';
     } catch (error) {
       this.#log.error({
         fileName: 'security-group-invoices.component',
@@ -125,6 +130,20 @@ export class SecurityGroupInvoicesComponent implements OnInit {
     this.#router.goBack({
       path: `/${APP_PATH.HOME}/${HOME_PATH.DASHBOARD}/${DASHBOARD_PATH.SECURITY}/${this.group}`
     });
+  }
+
+  async copyText(text: string) {
+    try {
+      await this.#copyToClipboard.copy(text);
+      this.#toast.success();
+    } catch (error) {
+      this.#log.error({
+        fileName: 'security-group-invoices.component',
+        functionName: 'copyText',
+        param: error
+      });
+      this.#toast.danger();
+    }
   }
 
   deleteInvoice(invoice: ISecurityInvoiceRow) {
