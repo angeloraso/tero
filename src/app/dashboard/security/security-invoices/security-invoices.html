@@ -84,7 +84,9 @@
     
             <bizy-table-column [ngStyle]="{flex: 4}"><h6>{{invoice._date}}</h6></bizy-table-column>
 
-            <bizy-table-column [ngStyle]="{flex: 4}" class="tero-table-column-center"><h6>{{invoice.group}}</h6></bizy-table-column>
+            <bizy-table-column [ngStyle]="{flex: 4}" class="tero-table-column-center">
+                <bizy-tag><h6>{{invoice.group}}</h6></bizy-tag>
+            </bizy-table-column>
             
             <bizy-table-column [ngStyle]="{flex: 1}" *ngIf="isConfig || isSecurity" class="tero-table-column-end" (onSelect)="deleteInvoice(invoice)">
                 <bizy-button class="tero-action tero-action--danger" (onSelect)="deleteInvoice(invoice)">

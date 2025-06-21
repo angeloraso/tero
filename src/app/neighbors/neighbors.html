@@ -113,7 +113,6 @@
     <bizy-grid *ngIf="!loading && neighbors.length > 0" class="animated fade-in">
 
         <bizy-card 
-            class="animated fade-in"
             (onSelect)="selectNeighbor(neighbor)"
             *gridFor="let neighbor of neighbors 
                                         | bizySearch: search : searchKeys

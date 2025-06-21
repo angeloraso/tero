@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
 import {
+  BIZY_SKELETON_SHAPE,
   BIZY_TAG_TYPE,
   BizyDeviceService,
   BizyExportToCSVService,
@@ -15,7 +16,7 @@ import {
   BizyToastService,
   BizyTranslateService
 } from '@bizy/core';
-import { TOPIC_SUBSCRIPTION } from '@core/constants';
+import { DEFAULT_USER_PICTURE, IMG_PATH, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { INeighbor, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -73,6 +74,9 @@ export class SecurityGroupComponent implements OnInit {
   contributors: number = 0;
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
+  readonly IMG_PATH = IMG_PATH;
+  readonly DEFAULT_USER_PICTURE = DEFAULT_USER_PICTURE;
 
   async ngOnInit() {
     try {
@@ -255,8 +259,8 @@ export class SecurityGroupComponent implements OnInit {
   }
 
   onSort(property: string) {
+    this.order = this.order === 'desc' || this.orderBy !== property ? 'asc' : 'desc';
     this.orderBy = property;
-    this.order = this.order === 'asc' ? 'desc' : 'asc';
   }
 
   refresh() {

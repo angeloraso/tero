@@ -9,6 +9,7 @@ export const locale = {
       EMPTY: 'No hay vecinos para mostrar',
       DEBT: 'Deudor',
       TOTAL_CONTRIBUTORS: 'Total de contribuyentes',
+      REGISTER_PAYMENT: 'Registrar pago',
       DELETE_POPUP: {
         TITLE: 'Borrar registro de pago',
         MSG: 'Se borrará el siguiente registro de pago'
