@@ -10,11 +10,6 @@ exports.sendPushNotification = onCall(async (request) => {
   try {
     const { topic, title, body, ttl } = request.data;
 
-    console.log("Topic:", topic);
-    console.log("Title:", title);
-    console.log("Body:", body);
-    console.log("TTL:", ttl);
-
     if (!topic) {
       throw new HttpsError("invalid-argument", "Topic is required");
     }
