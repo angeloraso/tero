@@ -1,5 +1,4 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
-import { AuthService } from '@auth/auth.service';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { TOPIC_SUBSCRIPTION } from '@core/constants';
 import {
@@ -51,7 +50,6 @@ enum CORE_DOCUMENT {
   providedIn: 'root'
 })
 export class DatabaseService implements OnDestroy {
-  readonly #auth = inject(AuthService);
   #neighbors = new BehaviorSubject<Array<INeighbor> | undefined>(undefined);
   #garbageTruckRecords = new BehaviorSubject<Array<IGarbageTruckRecord> | undefined>(undefined);
   #contactData = new BehaviorSubject<{ data: Array<IContact>; tags: Array<string> } | undefined>(undefined);
@@ -412,18 +410,13 @@ export class DatabaseService implements OnDestroy {
     }
   }
 
-  getCurrentUser(): Promise<IUser> {
+  getCurrentUser(email: string): Promise<IUser> {
     if (typeof this.#currentUser.value !== 'undefined' && this.#currentUser.value !== null) {
       Promise.resolve(this.#currentUser.value);
     }
 
-    const userEmail = this.#auth.getEmail();
-    if (!userEmail) {
-      throw new Error(ERROR.AUTH_ERROR);
-    }
-
     return new Promise<IUser>((resolve, reject) => {
-      FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${userEmail}` }, (event, error) => {
+      FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${email}` }, (event, error) => {
         if (error) {
           return reject(error);
         } else {
@@ -458,19 +451,14 @@ export class DatabaseService implements OnDestroy {
     return user;
   }
 
-  async postUser(): Promise<void> {
-    const userEmail = this.#auth.getEmail();
-    if (!userEmail) {
-      throw new Error(ERROR.AUTH_ERROR);
-    }
-
+  async postUser(data: { email: string; name: string; picture?: string | null }): Promise<void> {
     const userSettings: IUser = {
       roles: [],
       status: USER_STATE.PENDING,
       id: Date.now(),
-      email: userEmail,
-      name: this.#auth.getName(),
-      picture: this.#auth.getProfilePictureURL(),
+      email: data.email,
+      name: data.name,
+      picture: data.picture,
       phone: null,
       lot: null,
       aliasCBU: null,
@@ -480,7 +468,7 @@ export class DatabaseService implements OnDestroy {
     const userDocument = JSON.parse(JSON.stringify(userSettings));
 
     await FirebaseFirestore.setDocument({
-      reference: `${COLLECTION.USERS}/${userEmail}`,
+      reference: `${COLLECTION.USERS}/${data.email}`,
       data: userDocument
     });
   }

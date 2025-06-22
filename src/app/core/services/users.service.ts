@@ -1,18 +1,34 @@
 import { inject, Injectable } from '@angular/core';
-import { IUser, USER_ROLE } from '@core/model';
+import { AuthService } from '@auth/auth.service';
+import { ERROR, IUser, USER_ROLE } from '@core/model';
 import { DatabaseService } from '@core/services';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
+  readonly #auth = inject(AuthService);
   readonly #database = inject(DatabaseService);
 
   getUsers = () => this.#database.getUsers();
 
-  getCurrentUser = () => this.#database.getCurrentUser();
+  getCurrentUser = (): Promise<IUser> => {
+    const userEmail = this.#auth.getEmail();
+    if (!userEmail) {
+      throw new Error(ERROR.AUTH_ERROR);
+    }
+
+    return this.#database.getCurrentUser(userEmail);
+  };
 
   getUser = (email: string) => this.#database.getUser(email);
 
-  postUser = () => this.#database.postUser();
+  postUser = (): Promise<void> => {
+    const email = this.#auth.getEmail();
+    if (!email) {
+      throw new Error(ERROR.AUTH_ERROR);
+    }
+
+    return this.#database.postUser({ email, name: this.#auth.getName() || email, picture: this.#auth.getProfilePictureURL() });
+  };
 
   putUser = (user: IUser) => this.#database.putUser(user);
 
