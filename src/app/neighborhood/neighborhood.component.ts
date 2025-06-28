@@ -1,5 +1,5 @@
-import { DatePipe, DOCUMENT } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, inject, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, Renderer2, ViewChild, DOCUMENT } from '@angular/core';
 import { SharedModules } from '@app/shared';
 import { BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { LOGO_PATH, LOTS } from '@core/constants';
