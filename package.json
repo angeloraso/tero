@@ -11,7 +11,8 @@
     "android:config": "VERSION_NAME=$npm_package_version npx trapeze run config.yaml --android -y",
     "android": "rm -rf ./android && npm run build:mobile && capacitor add android && capacitor sync android && npm run android:resources && npm run android:config && capacitor open android",
     "lint": "eslint . --ext .ts, --fix",
-    "format": "prettier --write \"src/**/*.{ts,html,scss,css,json,md}\""
+    "format": "prettier --write \"src/**/*.{ts,html,scss,css,json,md}\"",
+    "analyze": "ng build --configuration=production && esbuild-visualizer --metadata ./dist/stats.json && npx open stats.html"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +26,7 @@
     "@angular/service-worker": "20.0.5",
     "@awesome-cordova-plugins/call-number": "8.0.2",
     "@awesome-cordova-plugins/core": "8.0.2",
-    "@bizy/core": "20.0.0",
+    "@bizy/core": "20.0.1",
     "@capacitor-community/file-opener": "7.0.1",
     "@capacitor-firebase/analytics": "7.2.0",
     "@capacitor-firebase/authentication": "7.2.0",
@@ -65,6 +66,7 @@
     "@types/uuid4": "2.0.3",
     "@typescript-eslint/eslint-plugin": "8.35.0",
     "@typescript-eslint/parser": "8.35.0",
+    "esbuild-visualizer": "0.7.0",
     "eslint": "9.30.0",
     "eslint-config-prettier": "10.1.5",
     "eslint-plugin-angular": "4.1.0",
