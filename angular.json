@@ -15,7 +15,8 @@
           "options": {
             "preserveSymlinks": true,
             "outputPath": {
-              "base": "dist"
+              "base": "dist",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [

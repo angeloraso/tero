@@ -2,7 +2,7 @@
   "appId": "ar.com.tero",
   "appName": "Tero",
   "npmClient": "npm",
-  "webDir": "dist/browser",
+  "webDir": "dist",
   "server": {
     "androidScheme": "https",
     "hostname": "tero.com.ar"
