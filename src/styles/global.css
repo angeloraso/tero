@@ -14,34 +14,6 @@ h6 {
   color: var(--text-color);
 }
 
-.tero-card {
-  background-color: #fff;
-  border-radius: 0.5em;
-  box-shadow:
-    0 4px 6px rgb(50 50 93 / 11%),
-    0 1px 3px rgb(0 0 0 / 8%);
-  padding: 0.5em;
-  transition: transform 250ms ease-in-out;
-  height: 100%;
-  width: 100%;
-}
-
-.tero-card:hover {
-  box-shadow:
-    0 7px 14px rgb(50 50 93 / 10%),
-    0 3px 6px rgb(0 0 0 / 8%);
-  transform: translateY(-1px);
-}
-
-.tero__table--empty {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 20em;
-  width: 100%;
-  text-align: center;
-}
-
 .tero-action {
   --bizy-button-background-color: transparent;
   cursor: pointer;
@@ -74,6 +46,10 @@ h6 {
 .tero-toolbar-action {
   --bizy-button-background-color: transparent;
   --bizy-button-color: var(--dark-secondary-color);
+}
+
+.tero-table-column-start {
+  --bizy-table-column-justify-content: flex-start;
 }
 
 .tero-table-column-center {
@@ -194,13 +170,6 @@ h6 {
   }
 }
 
-@media only screen and (max-width: 576px) {
-  .hidden-xs {
-    visibility: hidden !important;
-    display: none !important;
-  }
-}
-
 .bizy-table-row h5,
 .bizy-table-row h6,
 .bizy-table-footer h5,
@@ -223,45 +192,9 @@ h6 {
   -webkit-line-clamp: unset !important;
 }
 
-.tero-table-actions {
-  padding: 0 0.5rem;
-}
-
 .tero-no-padding {
   padding: 0 !important;
   --bizy-button-padding: 0;
-}
-
-.tero-content {
-  padding: 0.5rem;
-}
-
-.tero-form__section {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.tero-form__section bizy-input,
-.tero-form__section bizy-select {
-  flex: 1;
-}
-
-.hidden-xs {
-  @media only screen and (max-width: 576px) {
-    visibility: hidden;
-    display: none;
-  }
-}
-
-.hidden-xl {
-  @media only screen and (max-width: 1200px) {
-    visibility: hidden;
-    display: none;
-  }
 }
 
 .tero-counter {
