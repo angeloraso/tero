@@ -13,7 +13,6 @@ import { ERROR } from '@core/model';
 import { DatabaseService, MobileService, NeighborsService, UsersService } from '@core/services';
 import { ENV } from '@env/environment';
 import { PATH as HOME_PATH } from '@home/home.routing';
-import { PATH } from './app.routing';
 
 @Component({
   selector: 'app-root',
@@ -70,7 +69,7 @@ export class AppComponent implements OnInit {
       this.#auth.signedIn$.subscribe(async signedIn => {
         if (!signedIn) {
           this.#database.destroy();
-          this.#router.goTo({ path: `/${PATH.AUTH}` });
+          this.#router.goTo({ path: `/${APP_PATH.AUTH}` });
         } else {
           try {
             const currentUser = await this.#usersService.getCurrentUser();
@@ -105,8 +104,8 @@ export class AppComponent implements OnInit {
                   });
 
                   if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
-                    if (this.#router.getURL() === `/${PATH.AUTH}`) {
-                      this.#router.goTo({ path: `/${PATH.HOME}` });
+                    if (this.#router.getURL() === `/${APP_PATH.AUTH}`) {
+                      this.#router.goTo({ path: `/${APP_PATH.HOME}` });
                     }
                     return Promise.resolve();
                   }
@@ -127,8 +126,8 @@ export class AppComponent implements OnInit {
                 });
 
                 if (error instanceof Error && error.message === ERROR.NOTIFICATION_PERMISSIONS) {
-                  if (this.#router.getURL() === `/${PATH.AUTH}`) {
-                    this.#router.goTo({ path: `/${PATH.HOME}` });
+                  if (this.#router.getURL() === `/${APP_PATH.AUTH}`) {
+                    this.#router.goTo({ path: `/${APP_PATH.HOME}` });
                   }
                   return Promise.resolve();
                 }
@@ -150,8 +149,8 @@ export class AppComponent implements OnInit {
             }
           }
 
-          if (this.#router.getURL() === `/${PATH.AUTH}`) {
-            this.#router.goTo({ path: `/${PATH.HOME}` });
+          if (this.#router.getURL() === `/${APP_PATH.AUTH}`) {
+            this.#router.goTo({ path: `/${APP_PATH.HOME}` });
           }
         }
       });
