@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
+import { AuthService } from '@auth/auth.service';
 import {
   BIZY_TAG_TYPE,
   BizyFormComponent,
@@ -12,7 +13,6 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { UsersPopupComponent } from '@components/users-popup';
-import { AuthService } from '@core/auth/auth.service';
 import { BODY_MAX_LENGTH, MAX_TOPIC_USERS, NAME_MAX_LENGTH, NAME_MIN_LENGTH, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { ERROR, TOPIC_STATE } from '@core/model';
 import { MobileService, TopicsService } from '@core/services';

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
+import { AuthService } from '@auth/auth.service';
 import {
   BIZY_TAG_TYPE,
   BizyFormComponent,
@@ -14,7 +15,6 @@ import {
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
 import { UsersPopupComponent } from '@components/users-popup';
-import { AuthService } from '@core/auth/auth.service';
 import { BODY_MAX_LENGTH, MAX_TOPIC_USERS, NAME_MAX_LENGTH, NAME_MIN_LENGTH } from '@core/constants';
 import { ERROR, ITopic, IUser, TOPIC_STATE } from '@core/model';
 import { TopicsService, UsersService } from '@core/services';

@@ -33,7 +33,7 @@
         "src/app/core/*"
       ],
       "@auth/*": [
-        "src/app/core/auth/*"
+        "src/app/auth/*"
       ],
       "@components/*": [
         "src/app/components/*"

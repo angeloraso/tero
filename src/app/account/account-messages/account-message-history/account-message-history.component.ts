@@ -4,9 +4,9 @@ import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_SKELETON_SHAPE, BizyLogService, BizyPopupService, BizyRouterService, BizyToastService, BizyTranslateService } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { AuthService } from '@core/auth/auth.service';
 import { IAccountMessage, IUser, USER_STATE } from '@core/model';
 import { AccountMessagesService, UsersService } from '@core/services';
 import { PATH as HOME_PATH } from '@home/home.routing';

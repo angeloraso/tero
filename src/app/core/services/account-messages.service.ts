@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '@core/auth/auth.service';
+import { AuthService } from '@auth/auth.service';
 import { ACCOUNT_MESSAGE_TAG, AccountMessage, ERROR, IAccountMessage } from '@core/model';
 import { DatabaseService } from '@core/services';
 

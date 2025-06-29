@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PATH as APP_PATH } from '@app/app.routing';
 import { SharedModules } from '@app/shared';
+import { AuthService } from '@auth/auth.service';
 import {
   BIZY_CALENDAR_DAY,
   BIZY_CALENDAR_MODE,
@@ -12,7 +13,6 @@ import {
   IBizyCalendarEvent
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { AuthService } from '@core/auth/auth.service';
 import { MONTHS, TOPIC_SUBSCRIPTION } from '@core/constants';
 import { ERROR } from '@core/model';
 import { GarbageTruckService, MobileService, UsersService } from '@core/services';

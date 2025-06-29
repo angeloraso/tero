@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { SharedModules } from '@app/shared';
+import { AuthService } from '@auth/auth.service';
 import { BIZY_TAG_TYPE, BizyFilterPipe, BizyLogService, BizyPopupService, BizyToastService, BizyTranslateService } from '@bizy/core';
-import { AuthService } from '@core/auth/auth.service';
 import { IUser, USER_ROLE, USER_STATE } from '@core/model';
 import { UsersService } from '@core/services';
 import { es } from './i18n';
