@@ -8,7 +8,7 @@ import { es } from './i18n';
   selector: 'tero-auth',
   templateUrl: './auth.html',
   styleUrls: ['./auth.css'],
-  imports: [...SharedModules]
+  imports: SharedModules
 })
 export class AuthComponent {
   readonly #auth = inject(AuthService);
