@@ -232,24 +232,6 @@ h6 {
   --bizy-button-padding: 0;
 }
 
-.tero-wrapper {
-  flex: 1;
-  padding: 0.5rem;
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.tero-wrapper--light {
-  padding: 0.5rem;
-  flex: 1;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-}
-
 .tero-content {
   padding: 0.5rem;
 }

@@ -5,6 +5,7 @@ import {
   BizyCalendarModule,
   BizyCardModule,
   BizyCheckboxModule,
+  BizyContentModule,
   BizyDirectivesModule,
   BizyFilterModule,
   BizyFormModule,
@@ -27,7 +28,6 @@ import {
   BizyToolbarModule,
   BizyTranslateModule
 } from '@bizy/core';
-import { WrapperComponent } from '@components/wrapper';
 
 const ANGULAR = [CommonModule, FormsModule, ReactiveFormsModule];
 
@@ -56,9 +56,8 @@ const BIZY_MODULES = [
   BizySectionModule,
   BizyRadioModule,
   BizyCheckboxModule,
-  BizyTimelineModule
+  BizyTimelineModule,
+  BizyContentModule
 ];
 
-const TERO_COMPONENTS = [WrapperComponent];
-
-export const SharedModules = [...ANGULAR, ...BIZY_MODULES, ...TERO_COMPONENTS];
+export const SharedModules = [...ANGULAR, ...BIZY_MODULES];
