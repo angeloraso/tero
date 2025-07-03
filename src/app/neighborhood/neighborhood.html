@@ -4,9 +4,11 @@
 
     <h1 slot=start>{{'NEIGHBORHOOD.TITLE' | translate}}</h1>
 
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="isConfig" [bizyLoading]="csvLoading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+
     <bizy-button slot="end" class="tero-toolbar-action" *ngIf="showInfo" (onSelect)="showControls = !showControls"><h2><i class="fa-solid fa-mobile-retro"></i></h2></bizy-button>
 
-    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="showInfo" [bizyLoading]="downloading" (onSelect)="export()"><h2><i class="fa-solid fa-file-arrow-down"></i></h2></bizy-button>
+    <bizy-button slot="end" class="tero-toolbar-action" *ngIf="showInfo" [bizyLoading]="downloading" (onSelect)="download()"><h2><i class="fa-solid fa-image"></i></h2></bizy-button>
 
 </bizy-toolbar>
 
