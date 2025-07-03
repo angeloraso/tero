@@ -66,7 +66,7 @@ export class NeighborsComponent implements OnInit {
   filterGroups: Array<{ id: number | boolean; value: number | string; selected: boolean }> = [];
   filterAlarmControls: Array<{ id: boolean; value: string; selected: boolean }> = [];
   activatedFilters: number = 0;
-  orderBy: string = 'name';
+  orderBy: string = 'lot';
   order: 'asc' | 'desc' = 'asc';
   isDesktop = this.#device.isDesktop();
 
