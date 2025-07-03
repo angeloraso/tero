@@ -5,6 +5,10 @@
             <h2 class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</strong></h2>
             <h2 class="tero--primary" *ngIf="data && data.neighbors.length > 0 && data.neighbors[0].security"><i class="fa-solid fa-shield-halved"></i></h2>
         </bizy-section-start>
+
+        <bizy-section-end *ngIf="data.houseNumber">
+            <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h6>Nº {{data.houseNumber}}</h6></bizy-tag>
+        </bizy-section-end>
     </bizy-section>
 
     <bizy-section *ngIf="data && data.neighbors && data.neighbors.length > 0">
