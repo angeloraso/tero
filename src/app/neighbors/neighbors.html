@@ -163,16 +163,16 @@
 
         <bizy-card *gridFor="let i of neighbors.length > 0 ? neighbors : 30 | bizyRepeat">
     
-            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="3rem" width="3rem"></bizy-skeleton>
+            <bizy-skeleton slot="header-start" [shape]="BIZY_SKELETON_SHAPE.CIRCLE" height="2rem" width="2rem"></bizy-skeleton>
     
-            <bizy-list slot="header-start">
-    
-                <bizy-skeleton></bizy-skeleton>
-    
-                <bizy-skeleton></bizy-skeleton>
-    
-            </bizy-list>
-    
+            <bizy-skeleton slot="header-start" height="1rem" width="12rem"></bizy-skeleton>
+
+            <bizy-skeleton slot="header-end" height="1rem" width="2rem"></bizy-skeleton>
+
+            <bizy-skeleton slot="footer-start" height="1rem" width="8rem"></bizy-skeleton>
+
+            <bizy-skeleton slot="footer-end" height="1rem" width="2rem"></bizy-skeleton>
+
         </bizy-card>
 
     </bizy-grid>
