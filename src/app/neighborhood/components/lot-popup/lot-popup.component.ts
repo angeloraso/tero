@@ -19,6 +19,20 @@ export class LotPopupComponent {
 
   readonly BIZY_TAG_TYPE = BIZY_TAG_TYPE;
 
+  async copyDescription() {
+    try {
+      await this.#clipboard.copy(`${this.data.description} ${this.data.houseNumber ? 'nº ' + this.data.houseNumber : ''}`);
+      this.#toast.success();
+    } catch (error) {
+      this.#log.error({
+        fileName: 'lot-popup.component',
+        functionName: 'copyDescription',
+        param: error
+      });
+      this.#toast.danger();
+    }
+  }
+
   async copyLotData() {
     try {
       await this.#clipboard.copy(`${this.#translate.get('NEIGHBORHOOD.DATA.DISTRICT')}: ${this.data.district}

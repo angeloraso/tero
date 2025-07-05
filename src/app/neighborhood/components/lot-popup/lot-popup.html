@@ -5,10 +5,6 @@
             <h2 class="tero--info"><strong>{{'CORE.FORM.FIELD.LOT' | translate }} {{data ? data.number : ''}}</strong></h2>
             <h2 class="tero--primary" *ngIf="data && data.neighbors.length > 0 && data.neighbors[0].security"><i class="fa-solid fa-shield-halved"></i></h2>
         </bizy-section-start>
-
-        <bizy-section-end *ngIf="data.houseNumber">
-            <bizy-tag [type]="BIZY_TAG_TYPE.INFO"><h6>Nº {{data.houseNumber}}</h6></bizy-tag>
-        </bizy-section-end>
     </bizy-section>
 
     <bizy-section *ngIf="data && data.neighbors && data.neighbors.length > 0">
@@ -22,6 +18,24 @@
             <h5>{{neighbor.surname}} {{neighbor.name}}</h5>
         </bizy-tag>
     
+    </bizy-section>
+
+     <bizy-section *ngIf="data && data.description">
+        <h5 class="tero--info"><strong>{{'NEIGHBORHOOD.DESCRIPTION.TITLE' | translate}}</strong></h5>
+    </bizy-section>
+
+    <bizy-section>
+        <bizy-section-start>
+            <bizy-tag>
+                <h6>{{data.description}}</h6>
+                <h6 *ngIf="data.houseNumber">nº {{data.houseNumber}}</h6>
+            </bizy-tag>
+            <bizy-button 
+                class="tero-action tero-action--info tero-no-padding"
+                (onSelect)="copyDescription(); $event.stopPropagation()">
+                <h6><i class="fa-regular fa-copy"></i></h6>
+            </bizy-button>
+        </bizy-section-start>
     </bizy-section>
 
     <bizy-section *ngIf="data && data.neighbors && data.neighbors.length > 0 && data.neighbors[0].alarmControls && data.neighbors[0].alarmControls.length > 0">

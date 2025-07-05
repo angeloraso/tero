@@ -40,6 +40,7 @@ export const LOTS = [
   {
     number: 0,
     district: 0,
+    description: '',
     houseNumber: null,
     cadastralNumber: 0,
     cadastralJurisdiction: 0,
@@ -52,6 +53,7 @@ export const LOTS = [
   {
     number: 1,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41259,
     cadastralJurisdiction: 7,
@@ -64,6 +66,7 @@ export const LOTS = [
   {
     number: 2,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4609,
     cadastralNumber: 41260,
     cadastralJurisdiction: 7,
@@ -76,6 +79,7 @@ export const LOTS = [
   {
     number: 3,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4615,
     cadastralNumber: 41261,
     cadastralJurisdiction: 7,
@@ -88,6 +92,7 @@ export const LOTS = [
   {
     number: 4,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4621,
     cadastralNumber: 41262,
     cadastralJurisdiction: 7,
@@ -100,6 +105,7 @@ export const LOTS = [
   {
     number: 5,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4627,
     cadastralNumber: 41263,
     cadastralJurisdiction: 7,
@@ -112,6 +118,7 @@ export const LOTS = [
   {
     number: 6,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4633,
     cadastralNumber: 41264,
     cadastralJurisdiction: 7,
@@ -124,6 +131,7 @@ export const LOTS = [
   {
     number: 7,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41265,
     cadastralJurisdiction: 7,
@@ -136,6 +144,7 @@ export const LOTS = [
   {
     number: 8,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4649,
     cadastralNumber: 41266,
     cadastralJurisdiction: 7,
@@ -148,6 +157,7 @@ export const LOTS = [
   {
     number: 9,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4602,
     cadastralNumber: 41226,
     cadastralJurisdiction: 7,
@@ -160,6 +170,7 @@ export const LOTS = [
   {
     number: 10,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41225,
     cadastralJurisdiction: 7,
@@ -172,6 +183,7 @@ export const LOTS = [
   {
     number: 11,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41224,
     cadastralJurisdiction: 7,
@@ -184,6 +196,7 @@ export const LOTS = [
   {
     number: 12,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41223,
     cadastralJurisdiction: 7,
@@ -196,6 +209,7 @@ export const LOTS = [
   {
     number: 13,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41222,
     cadastralJurisdiction: 7,
@@ -208,6 +222,7 @@ export const LOTS = [
   {
     number: 14,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41221,
     cadastralJurisdiction: 7,
@@ -220,6 +235,7 @@ export const LOTS = [
   {
     number: 15,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41220,
     cadastralJurisdiction: 7,
@@ -232,6 +248,7 @@ export const LOTS = [
   {
     number: 16,
     district: 114,
+    description: '170 Norte e/46 y 46 Este',
     houseNumber: 4258,
     cadastralNumber: 41219,
     cadastralJurisdiction: 7,
@@ -244,6 +261,7 @@ export const LOTS = [
   {
     number: 17,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41211,
     cadastralJurisdiction: 7,
@@ -256,6 +274,7 @@ export const LOTS = [
   {
     number: 18,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4609,
     cadastralNumber: 41212,
     cadastralJurisdiction: 7,
@@ -268,6 +287,7 @@ export const LOTS = [
   {
     number: 19,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4615,
     cadastralNumber: 41213,
     cadastralJurisdiction: 7,
@@ -280,6 +300,7 @@ export const LOTS = [
   {
     number: 20,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41214,
     cadastralJurisdiction: 7,
@@ -292,6 +313,7 @@ export const LOTS = [
   {
     number: 21,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41215,
     cadastralJurisdiction: 7,
@@ -304,6 +326,7 @@ export const LOTS = [
   {
     number: 22,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4631,
     cadastralNumber: 41216,
     cadastralJurisdiction: 7,
@@ -316,6 +339,7 @@ export const LOTS = [
   {
     number: 23,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4639,
     cadastralNumber: 41217,
     cadastralJurisdiction: 7,
@@ -328,6 +352,7 @@ export const LOTS = [
   {
     number: 24,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41218,
     cadastralJurisdiction: 7,
@@ -340,6 +365,7 @@ export const LOTS = [
   {
     number: 25,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4604,
     cadastralNumber: 41168,
     cadastralJurisdiction: 7,
@@ -352,6 +378,7 @@ export const LOTS = [
   {
     number: 26,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4610,
     cadastralNumber: 41167,
     cadastralJurisdiction: 7,
@@ -364,6 +391,7 @@ export const LOTS = [
   {
     number: 27,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4614,
     cadastralNumber: 41166,
     cadastralJurisdiction: 7,
@@ -376,6 +404,7 @@ export const LOTS = [
   {
     number: 28,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41165,
     cadastralJurisdiction: 7,
@@ -388,6 +417,7 @@ export const LOTS = [
   {
     number: 29,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41164,
     cadastralJurisdiction: 7,
@@ -400,6 +430,7 @@ export const LOTS = [
   {
     number: 30,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4634,
     cadastralNumber: 41163,
     cadastralJurisdiction: 7,
@@ -412,6 +443,7 @@ export const LOTS = [
   {
     number: 31,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41162,
     cadastralJurisdiction: 7,
@@ -424,6 +456,7 @@ export const LOTS = [
   {
     number: 32,
     district: 114,
+    description: '171 e/46 y 46 Este',
     houseNumber: 4321,
     cadastralNumber: 41161,
     cadastralJurisdiction: 7,
@@ -436,6 +469,7 @@ export const LOTS = [
   {
     number: 33,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4603,
     cadastralNumber: 29845,
     cadastralJurisdiction: 7,
@@ -448,6 +482,7 @@ export const LOTS = [
   {
     number: 34,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4609,
     cadastralNumber: 41154,
     cadastralJurisdiction: 7,
@@ -460,6 +495,7 @@ export const LOTS = [
   {
     number: 35,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4615,
     cadastralNumber: 41155,
     cadastralJurisdiction: 7,
@@ -472,6 +508,7 @@ export const LOTS = [
   {
     number: 36,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4621,
     cadastralNumber: 41156,
     cadastralJurisdiction: 7,
@@ -484,6 +521,7 @@ export const LOTS = [
   {
     number: 37,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41157,
     cadastralJurisdiction: 7,
@@ -496,6 +534,7 @@ export const LOTS = [
   {
     number: 38,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4633,
     cadastralNumber: 41158,
     cadastralJurisdiction: 7,
@@ -508,6 +547,7 @@ export const LOTS = [
   {
     number: 39,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41159,
     cadastralJurisdiction: 7,
@@ -520,6 +560,7 @@ export const LOTS = [
   {
     number: 40,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4342,
     cadastralNumber: 41160,
     cadastralJurisdiction: 7,
@@ -532,6 +573,7 @@ export const LOTS = [
   {
     number: 41,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41110,
     cadastralJurisdiction: 7,
@@ -544,6 +586,7 @@ export const LOTS = [
   {
     number: 42,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41109,
     cadastralJurisdiction: 7,
@@ -556,6 +599,7 @@ export const LOTS = [
   {
     number: 43,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4616,
     cadastralNumber: 41108,
     cadastralJurisdiction: 7,
@@ -568,6 +612,7 @@ export const LOTS = [
   {
     number: 44,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4622,
     cadastralNumber: 41107,
     cadastralJurisdiction: 7,
@@ -580,6 +625,7 @@ export const LOTS = [
   {
     number: 45,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41106,
     cadastralJurisdiction: 7,
@@ -592,6 +638,7 @@ export const LOTS = [
   {
     number: 46,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4642,
     cadastralNumber: 41105,
     cadastralJurisdiction: 7,
@@ -604,6 +651,7 @@ export const LOTS = [
   {
     number: 47,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4640,
     cadastralNumber: 41104,
     cadastralJurisdiction: 7,
@@ -616,6 +664,7 @@ export const LOTS = [
   {
     number: 48,
     district: 114,
+    description: '171 Norte e/46 y 46 Este',
     houseNumber: 4646,
     cadastralNumber: 41103,
     cadastralJurisdiction: 7,
@@ -628,6 +677,7 @@ export const LOTS = [
   {
     number: 49,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4603,
     cadastralNumber: 29844,
     cadastralJurisdiction: 7,
@@ -640,6 +690,7 @@ export const LOTS = [
   {
     number: 50,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4607,
     cadastralNumber: 41096,
     cadastralJurisdiction: 7,
@@ -652,6 +703,7 @@ export const LOTS = [
   {
     number: 51,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4615,
     cadastralNumber: 41097,
     cadastralJurisdiction: 7,
@@ -664,6 +716,7 @@ export const LOTS = [
   {
     number: 52,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4621,
     cadastralNumber: 41098,
     cadastralJurisdiction: 7,
@@ -676,6 +729,7 @@ export const LOTS = [
   {
     number: 53,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4637,
     cadastralNumber: 41099,
     cadastralJurisdiction: 7,
@@ -688,6 +742,7 @@ export const LOTS = [
   {
     number: 54,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4635,
     cadastralNumber: 41100,
     cadastralJurisdiction: 7,
@@ -700,6 +755,7 @@ export const LOTS = [
   {
     number: 55,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4641,
     cadastralNumber: 41101,
     cadastralJurisdiction: 7,
@@ -712,6 +768,7 @@ export const LOTS = [
   {
     number: 56,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4390,
     cadastralNumber: 41102,
     cadastralJurisdiction: 7,
@@ -724,6 +781,7 @@ export const LOTS = [
   {
     number: 57,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4602,
     cadastralNumber: 41058,
     cadastralJurisdiction: 7,
@@ -736,6 +794,7 @@ export const LOTS = [
   {
     number: 58,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4608,
     cadastralNumber: 41057,
     cadastralJurisdiction: 7,
@@ -748,6 +807,7 @@ export const LOTS = [
   {
     number: 59,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41056,
     cadastralJurisdiction: 7,
@@ -760,6 +820,7 @@ export const LOTS = [
   {
     number: 60,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4622,
     cadastralNumber: 41055,
     cadastralJurisdiction: 7,
@@ -772,6 +833,7 @@ export const LOTS = [
   {
     number: 61,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: null,
     cadastralNumber: 41054,
     cadastralJurisdiction: 7,
@@ -784,6 +846,7 @@ export const LOTS = [
   {
     number: 62,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4634,
     cadastralNumber: 41053,
     cadastralJurisdiction: 7,
@@ -796,6 +859,7 @@ export const LOTS = [
   {
     number: 63,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4640,
     cadastralNumber: 41052,
     cadastralJurisdiction: 7,
@@ -808,6 +872,7 @@ export const LOTS = [
   {
     number: 64,
     district: 114,
+    description: '172 e/46 y 46 Este',
     houseNumber: 4646,
     cadastralNumber: 41051,
     cadastralJurisdiction: 7,
@@ -820,6 +885,7 @@ export const LOTS = [
   {
     number: 65,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41267,
     cadastralJurisdiction: 7,
@@ -832,6 +898,7 @@ export const LOTS = [
   {
     number: 66,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: 4655,
     cadastralNumber: 41268,
     cadastralJurisdiction: 7,
@@ -844,6 +911,7 @@ export const LOTS = [
   {
     number: 67,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: 4659,
     cadastralNumber: 41269,
     cadastralJurisdiction: 7,
@@ -856,6 +924,7 @@ export const LOTS = [
   {
     number: 68,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: 4661,
     cadastralNumber: 41270,
     cadastralJurisdiction: 7,
@@ -868,6 +937,7 @@ export const LOTS = [
   {
     number: 69,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: 4669,
     cadastralNumber: 41271,
     cadastralJurisdiction: 7,
@@ -880,6 +950,7 @@ export const LOTS = [
   {
     number: 70,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41272,
     cadastralJurisdiction: 7,
@@ -892,6 +963,7 @@ export const LOTS = [
   {
     number: 71,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41246,
     cadastralJurisdiction: 7,
@@ -904,6 +976,7 @@ export const LOTS = [
   {
     number: 72,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41245,
     cadastralJurisdiction: 7,
@@ -916,6 +989,7 @@ export const LOTS = [
   {
     number: 73,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41244,
     cadastralJurisdiction: 7,
@@ -928,6 +1002,7 @@ export const LOTS = [
   {
     number: 74,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41243,
     cadastralJurisdiction: 7,
@@ -940,6 +1015,7 @@ export const LOTS = [
   {
     number: 75,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41242,
     cadastralJurisdiction: 7,
@@ -952,6 +1028,7 @@ export const LOTS = [
   {
     number: 76,
     district: 114,
+    description: '170 Norte e/46 Este y 47',
     houseNumber: 4672,
     cadastralNumber: 41241,
     cadastralJurisdiction: 7,
@@ -964,6 +1041,7 @@ export const LOTS = [
   {
     number: 77,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41227,
     cadastralJurisdiction: 7,
@@ -976,6 +1054,7 @@ export const LOTS = [
   {
     number: 78,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41228,
     cadastralJurisdiction: 7,
@@ -988,6 +1067,7 @@ export const LOTS = [
   {
     number: 79,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41229,
     cadastralJurisdiction: 7,
@@ -1000,6 +1080,7 @@ export const LOTS = [
   {
     number: 80,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4667,
     cadastralNumber: 41230,
     cadastralJurisdiction: 7,
@@ -1012,6 +1093,7 @@ export const LOTS = [
   {
     number: 81,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41231,
     cadastralJurisdiction: 7,
@@ -1024,6 +1106,7 @@ export const LOTS = [
   {
     number: 82,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41232,
     cadastralJurisdiction: 7,
@@ -1036,6 +1119,7 @@ export const LOTS = [
   {
     number: 83,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41233,
     cadastralJurisdiction: 7,
@@ -1048,6 +1132,7 @@ export const LOTS = [
   {
     number: 84,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4687,
     cadastralNumber: 41234,
     cadastralJurisdiction: 7,
@@ -1060,6 +1145,7 @@ export const LOTS = [
   {
     number: 85,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41235,
     cadastralJurisdiction: 7,
@@ -1072,6 +1158,7 @@ export const LOTS = [
   {
     number: 86,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41236,
     cadastralJurisdiction: 7,
@@ -1084,6 +1171,7 @@ export const LOTS = [
   {
     number: 87,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4652,
     cadastralNumber: 41187,
     cadastralJurisdiction: 7,
@@ -1096,6 +1184,7 @@ export const LOTS = [
   {
     number: 88,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4660,
     cadastralNumber: 41186,
     cadastralJurisdiction: 7,
@@ -1108,6 +1197,7 @@ export const LOTS = [
   {
     number: 89,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4662,
     cadastralNumber: 41185,
     cadastralJurisdiction: 7,
@@ -1120,6 +1210,7 @@ export const LOTS = [
   {
     number: 90,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41184,
     cadastralJurisdiction: 7,
@@ -1132,6 +1223,7 @@ export const LOTS = [
   {
     number: 91,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41183,
     cadastralJurisdiction: 7,
@@ -1144,6 +1236,7 @@ export const LOTS = [
   {
     number: 92,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41182,
     cadastralJurisdiction: 7,
@@ -1156,6 +1249,7 @@ export const LOTS = [
   {
     number: 93,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4682,
     cadastralNumber: 41181,
     cadastralJurisdiction: 7,
@@ -1168,6 +1262,7 @@ export const LOTS = [
   {
     number: 94,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4686,
     cadastralNumber: 41180,
     cadastralJurisdiction: 7,
@@ -1180,6 +1275,7 @@ export const LOTS = [
   {
     number: 95,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: 4692,
     cadastralNumber: 41179,
     cadastralJurisdiction: 7,
@@ -1192,6 +1288,7 @@ export const LOTS = [
   {
     number: 96,
     district: 114,
+    description: '171 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41178,
     cadastralJurisdiction: 7,
@@ -1204,6 +1301,7 @@ export const LOTS = [
   {
     number: 97,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4334,
     cadastralNumber: 29849,
     cadastralJurisdiction: 7,
@@ -1216,6 +1314,7 @@ export const LOTS = [
   {
     number: 98,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4657,
     cadastralNumber: 41169,
     cadastralJurisdiction: 7,
@@ -1228,6 +1327,7 @@ export const LOTS = [
   {
     number: 99,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4661,
     cadastralNumber: 41170,
     cadastralJurisdiction: 7,
@@ -1240,6 +1340,7 @@ export const LOTS = [
   {
     number: 100,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4667,
     cadastralNumber: 41171,
     cadastralJurisdiction: 7,
@@ -1252,6 +1353,7 @@ export const LOTS = [
   {
     number: 101,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4673,
     cadastralNumber: 41172,
     cadastralJurisdiction: 7,
@@ -1264,6 +1366,7 @@ export const LOTS = [
   {
     number: 102,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41173,
     cadastralJurisdiction: 7,
@@ -1276,6 +1379,7 @@ export const LOTS = [
   {
     number: 103,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4681,
     cadastralNumber: 41174,
     cadastralJurisdiction: 7,
@@ -1288,6 +1392,7 @@ export const LOTS = [
   {
     number: 104,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41175,
     cadastralJurisdiction: 7,
@@ -1300,6 +1405,7 @@ export const LOTS = [
   {
     number: 105,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41176,
     cadastralJurisdiction: 7,
@@ -1312,6 +1418,7 @@ export const LOTS = [
   {
     number: 106,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4697,
     cadastralNumber: 41177,
     cadastralJurisdiction: 7,
@@ -1324,6 +1431,7 @@ export const LOTS = [
   {
     number: 107,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4361,
     cadastralNumber: 41129,
     cadastralJurisdiction: 7,
@@ -1336,6 +1444,7 @@ export const LOTS = [
   {
     number: 108,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41128,
     cadastralJurisdiction: 7,
@@ -1348,6 +1457,7 @@ export const LOTS = [
   {
     number: 109,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4660,
     cadastralNumber: 41127,
     cadastralJurisdiction: 7,
@@ -1360,6 +1470,7 @@ export const LOTS = [
   {
     number: 110,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4668,
     cadastralNumber: 41126,
     cadastralJurisdiction: 7,
@@ -1372,6 +1483,7 @@ export const LOTS = [
   {
     number: 111,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41125,
     cadastralJurisdiction: 7,
@@ -1384,6 +1496,7 @@ export const LOTS = [
   {
     number: 112,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41124,
     cadastralJurisdiction: 7,
@@ -1396,6 +1509,7 @@ export const LOTS = [
   {
     number: 113,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4682,
     cadastralNumber: 41123,
     cadastralJurisdiction: 7,
@@ -1408,6 +1522,7 @@ export const LOTS = [
   {
     number: 114,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41122,
     cadastralJurisdiction: 7,
@@ -1420,6 +1535,7 @@ export const LOTS = [
   {
     number: 115,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: 4692,
     cadastralNumber: 41121,
     cadastralJurisdiction: 7,
@@ -1432,6 +1548,7 @@ export const LOTS = [
   {
     number: 116,
     district: 114,
+    description: '171 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41120,
     cadastralJurisdiction: 7,
@@ -1444,6 +1561,7 @@ export const LOTS = [
   {
     number: 117,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 29850,
     cadastralJurisdiction: 7,
@@ -1456,6 +1574,7 @@ export const LOTS = [
   {
     number: 118,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4658,
     cadastralNumber: 41111,
     cadastralJurisdiction: 7,
@@ -1468,6 +1587,7 @@ export const LOTS = [
   {
     number: 119,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4659,
     cadastralNumber: 41112,
     cadastralJurisdiction: 7,
@@ -1480,6 +1600,7 @@ export const LOTS = [
   {
     number: 120,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4669,
     cadastralNumber: 41113,
     cadastralJurisdiction: 7,
@@ -1492,6 +1613,7 @@ export const LOTS = [
   {
     number: 121,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4671,
     cadastralNumber: 41114,
     cadastralJurisdiction: 7,
@@ -1504,6 +1626,7 @@ export const LOTS = [
   {
     number: 122,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4758,
     cadastralNumber: 41115,
     cadastralJurisdiction: 7,
@@ -1516,6 +1639,7 @@ export const LOTS = [
   {
     number: 123,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41116,
     cadastralJurisdiction: 7,
@@ -1528,6 +1652,7 @@ export const LOTS = [
   {
     number: 124,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4687,
     cadastralNumber: 41117,
     cadastralJurisdiction: 7,
@@ -1540,6 +1665,7 @@ export const LOTS = [
   {
     number: 125,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41118,
     cadastralJurisdiction: 7,
@@ -1552,6 +1678,7 @@ export const LOTS = [
   {
     number: 126,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4697,
     cadastralNumber: 41119,
     cadastralJurisdiction: 7,
@@ -1564,6 +1691,7 @@ export const LOTS = [
   {
     number: 127,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4652,
     cadastralNumber: 41072,
     cadastralJurisdiction: 7,
@@ -1576,6 +1704,7 @@ export const LOTS = [
   {
     number: 128,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4656,
     cadastralNumber: 41071,
     cadastralJurisdiction: 7,
@@ -1588,6 +1717,7 @@ export const LOTS = [
   {
     number: 129,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4662,
     cadastralNumber: 41070,
     cadastralJurisdiction: 7,
@@ -1600,6 +1730,7 @@ export const LOTS = [
   {
     number: 130,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4666,
     cadastralNumber: 41069,
     cadastralJurisdiction: 7,
@@ -1612,6 +1743,7 @@ export const LOTS = [
   {
     number: 131,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41068,
     cadastralJurisdiction: 7,
@@ -1624,6 +1756,7 @@ export const LOTS = [
   {
     number: 132,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41067,
     cadastralJurisdiction: 7,
@@ -1636,6 +1769,7 @@ export const LOTS = [
   {
     number: 133,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4682,
     cadastralNumber: 41066,
     cadastralJurisdiction: 7,
@@ -1648,6 +1782,7 @@ export const LOTS = [
   {
     number: 134,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4686,
     cadastralNumber: 41065,
     cadastralJurisdiction: 7,
@@ -1660,6 +1795,7 @@ export const LOTS = [
   {
     number: 135,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41064,
     cadastralJurisdiction: 7,
@@ -1672,6 +1808,7 @@ export const LOTS = [
   {
     number: 136,
     district: 114,
+    description: '172 e/46 Este y 47',
     houseNumber: 4696,
     cadastralNumber: 41063,
     cadastralJurisdiction: 7,
@@ -1684,6 +1821,7 @@ export const LOTS = [
   {
     number: 137,
     district: 114,
+    description: '172 Norte e/46 Este y 47',
     houseNumber: 4681,
     cadastralNumber: 41059,
     cadastralJurisdiction: 7,
@@ -1696,6 +1834,7 @@ export const LOTS = [
   {
     number: 138,
     district: 114,
+    description: '172 Norte e/46 Este y 47',
     houseNumber: 4687,
     cadastralNumber: 41060,
     cadastralJurisdiction: 7,
@@ -1708,6 +1847,7 @@ export const LOTS = [
   {
     number: 139,
     district: 114,
+    description: '172 Norte e/46 Este y 47',
     houseNumber: 4689,
     cadastralNumber: 41061,
     cadastralJurisdiction: 7,
@@ -1720,6 +1860,7 @@ export const LOTS = [
   {
     number: 140,
     district: 114,
+    description: '172 Norte e/46 Este y 47',
     houseNumber: null,
     cadastralNumber: 41062,
     cadastralJurisdiction: 7,
@@ -1732,6 +1873,7 @@ export const LOTS = [
   {
     number: 141,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4708,
     cadastralNumber: 41247,
     cadastralJurisdiction: 7,
@@ -1744,6 +1886,7 @@ export const LOTS = [
   {
     number: 142,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4711,
     cadastralNumber: 41248,
     cadastralJurisdiction: 7,
@@ -1756,6 +1899,7 @@ export const LOTS = [
   {
     number: 143,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41249,
     cadastralJurisdiction: 7,
@@ -1768,6 +1912,7 @@ export const LOTS = [
   {
     number: 144,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4729,
     cadastralNumber: 41250,
     cadastralJurisdiction: 7,
@@ -1780,6 +1925,7 @@ export const LOTS = [
   {
     number: 145,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41251,
     cadastralJurisdiction: 7,
@@ -1792,6 +1938,7 @@ export const LOTS = [
   {
     number: 146,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4745,
     cadastralNumber: 41252,
     cadastralJurisdiction: 7,
@@ -1804,6 +1951,7 @@ export const LOTS = [
   {
     number: 147,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41253,
     cadastralJurisdiction: 7,
@@ -1816,6 +1964,7 @@ export const LOTS = [
   {
     number: 148,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4761,
     cadastralNumber: 41254,
     cadastralJurisdiction: 7,
@@ -1828,6 +1977,7 @@ export const LOTS = [
   {
     number: 149,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4771,
     cadastralNumber: 41255,
     cadastralJurisdiction: 7,
@@ -1840,6 +1990,7 @@ export const LOTS = [
   {
     number: 150,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4779,
     cadastralNumber: 41256,
     cadastralJurisdiction: 7,
@@ -1852,6 +2003,7 @@ export const LOTS = [
   {
     number: 151,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41257,
     cadastralJurisdiction: 7,
@@ -1864,6 +2016,7 @@ export const LOTS = [
   {
     number: 152,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41258,
     cadastralJurisdiction: 7,
@@ -1876,6 +2029,7 @@ export const LOTS = [
   {
     number: 153,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41210,
     cadastralJurisdiction: 7,
@@ -1888,6 +2042,7 @@ export const LOTS = [
   {
     number: 154,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41209,
     cadastralJurisdiction: 7,
@@ -1900,6 +2055,7 @@ export const LOTS = [
   {
     number: 155,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4720,
     cadastralNumber: 41208,
     cadastralJurisdiction: 7,
@@ -1912,6 +2068,7 @@ export const LOTS = [
   {
     number: 156,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41207,
     cadastralJurisdiction: 7,
@@ -1924,6 +2081,7 @@ export const LOTS = [
   {
     number: 157,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4736,
     cadastralNumber: 41206,
     cadastralJurisdiction: 7,
@@ -1936,6 +2094,7 @@ export const LOTS = [
   {
     number: 158,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4746,
     cadastralNumber: 41205,
     cadastralJurisdiction: 7,
@@ -1948,6 +2107,7 @@ export const LOTS = [
   {
     number: 159,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4754,
     cadastralNumber: 41204,
     cadastralJurisdiction: 7,
@@ -1960,6 +2120,7 @@ export const LOTS = [
   {
     number: 160,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4762,
     cadastralNumber: 41203,
     cadastralJurisdiction: 7,
@@ -1972,6 +2133,7 @@ export const LOTS = [
   {
     number: 161,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4776,
     cadastralNumber: 41202,
     cadastralJurisdiction: 7,
@@ -1984,6 +2146,7 @@ export const LOTS = [
   {
     number: 162,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4778,
     cadastralNumber: 41201,
     cadastralJurisdiction: 7,
@@ -1996,6 +2159,7 @@ export const LOTS = [
   {
     number: 163,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4786,
     cadastralNumber: 41200,
     cadastralJurisdiction: 7,
@@ -2008,6 +2172,7 @@ export const LOTS = [
   {
     number: 164,
     district: 114,
+    description: '171 e/47 y 48',
     houseNumber: 4796,
     cadastralNumber: 41199,
     cadastralJurisdiction: 7,
@@ -2020,6 +2185,7 @@ export const LOTS = [
   {
     number: 165,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 29851,
     cadastralJurisdiction: 7,
@@ -2032,6 +2198,7 @@ export const LOTS = [
   {
     number: 166,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41188,
     cadastralJurisdiction: 7,
@@ -2044,6 +2211,7 @@ export const LOTS = [
   {
     number: 167,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4721,
     cadastralNumber: 41189,
     cadastralJurisdiction: 7,
@@ -2056,6 +2224,7 @@ export const LOTS = [
   {
     number: 168,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4728,
     cadastralNumber: 41190,
     cadastralJurisdiction: 7,
@@ -2068,6 +2237,7 @@ export const LOTS = [
   {
     number: 169,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41191,
     cadastralJurisdiction: 7,
@@ -2080,6 +2250,7 @@ export const LOTS = [
   {
     number: 170,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41192,
     cadastralJurisdiction: 7,
@@ -2092,6 +2263,7 @@ export const LOTS = [
   {
     number: 171,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4753,
     cadastralNumber: 41193,
     cadastralJurisdiction: 7,
@@ -2104,6 +2276,7 @@ export const LOTS = [
   {
     number: 172,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4761,
     cadastralNumber: 41194,
     cadastralJurisdiction: 7,
@@ -2116,6 +2289,7 @@ export const LOTS = [
   {
     number: 173,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4769,
     cadastralNumber: 41195,
     cadastralJurisdiction: 7,
@@ -2128,6 +2302,7 @@ export const LOTS = [
   {
     number: 174,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4779,
     cadastralNumber: 41196,
     cadastralJurisdiction: 7,
@@ -2140,6 +2315,7 @@ export const LOTS = [
   {
     number: 175,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41197,
     cadastralJurisdiction: 7,
@@ -2152,6 +2328,7 @@ export const LOTS = [
   {
     number: 176,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41198,
     cadastralJurisdiction: 7,
@@ -2164,6 +2341,7 @@ export const LOTS = [
   {
     number: 177,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41153,
     cadastralJurisdiction: 7,
@@ -2176,6 +2354,7 @@ export const LOTS = [
   {
     number: 178,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4712,
     cadastralNumber: 41152,
     cadastralJurisdiction: 7,
@@ -2188,6 +2367,7 @@ export const LOTS = [
   {
     number: 179,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41151,
     cadastralJurisdiction: 7,
@@ -2200,6 +2380,7 @@ export const LOTS = [
   {
     number: 180,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4722,
     cadastralNumber: 41150,
     cadastralJurisdiction: 7,
@@ -2212,6 +2393,7 @@ export const LOTS = [
   {
     number: 181,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4736,
     cadastralNumber: 41149,
     cadastralJurisdiction: 7,
@@ -2224,6 +2406,7 @@ export const LOTS = [
   {
     number: 182,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41148,
     cadastralJurisdiction: 7,
@@ -2236,6 +2419,7 @@ export const LOTS = [
   {
     number: 183,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41147,
     cadastralJurisdiction: 7,
@@ -2248,6 +2432,7 @@ export const LOTS = [
   {
     number: 184,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4758,
     cadastralNumber: 41146,
     cadastralJurisdiction: 7,
@@ -2260,6 +2445,7 @@ export const LOTS = [
   {
     number: 185,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41145,
     cadastralJurisdiction: 7,
@@ -2272,6 +2458,7 @@ export const LOTS = [
   {
     number: 186,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4778,
     cadastralNumber: 41144,
     cadastralJurisdiction: 7,
@@ -2284,6 +2471,7 @@ export const LOTS = [
   {
     number: 187,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4786,
     cadastralNumber: 41143,
     cadastralJurisdiction: 7,
@@ -2296,6 +2484,7 @@ export const LOTS = [
   {
     number: 188,
     district: 114,
+    description: '171 Norte e/47 y 48',
     houseNumber: 4790,
     cadastralNumber: 41142,
     cadastralJurisdiction: 7,
@@ -2308,6 +2497,7 @@ export const LOTS = [
   {
     number: 189,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4703,
     cadastralNumber: 41130,
     cadastralJurisdiction: 7,
@@ -2320,6 +2510,7 @@ export const LOTS = [
   {
     number: 190,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41131,
     cadastralJurisdiction: 7,
@@ -2332,6 +2523,7 @@ export const LOTS = [
   {
     number: 191,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4719,
     cadastralNumber: 41132,
     cadastralJurisdiction: 7,
@@ -2344,6 +2536,7 @@ export const LOTS = [
   {
     number: 192,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41133,
     cadastralJurisdiction: 7,
@@ -2356,6 +2549,7 @@ export const LOTS = [
   {
     number: 193,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41134,
     cadastralJurisdiction: 7,
@@ -2368,6 +2562,7 @@ export const LOTS = [
   {
     number: 194,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41135,
     cadastralJurisdiction: 7,
@@ -2380,6 +2575,7 @@ export const LOTS = [
   {
     number: 195,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41136,
     cadastralJurisdiction: 7,
@@ -2392,6 +2588,7 @@ export const LOTS = [
   {
     number: 196,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41137,
     cadastralJurisdiction: 7,
@@ -2404,6 +2601,7 @@ export const LOTS = [
   {
     number: 197,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4770,
     cadastralNumber: 41138,
     cadastralJurisdiction: 7,
@@ -2416,6 +2614,7 @@ export const LOTS = [
   {
     number: 198,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41139,
     cadastralJurisdiction: 7,
@@ -2428,6 +2627,7 @@ export const LOTS = [
   {
     number: 199,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4787,
     cadastralNumber: 41140,
     cadastralJurisdiction: 7,
@@ -2440,6 +2640,7 @@ export const LOTS = [
   {
     number: 200,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4795,
     cadastralNumber: 41141,
     cadastralJurisdiction: 7,
@@ -2452,6 +2653,7 @@ export const LOTS = [
   {
     number: 201,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4702,
     cadastralNumber: 41095,
     cadastralJurisdiction: 7,
@@ -2464,6 +2666,7 @@ export const LOTS = [
   {
     number: 202,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4712,
     cadastralNumber: 41094,
     cadastralJurisdiction: 7,
@@ -2476,6 +2679,7 @@ export const LOTS = [
   {
     number: 203,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4714,
     cadastralNumber: 41093,
     cadastralJurisdiction: 7,
@@ -2488,6 +2692,7 @@ export const LOTS = [
   {
     number: 204,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4728,
     cadastralNumber: 41092,
     cadastralJurisdiction: 7,
@@ -2500,6 +2705,7 @@ export const LOTS = [
   {
     number: 205,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4736,
     cadastralNumber: 41091,
     cadastralJurisdiction: 7,
@@ -2512,6 +2718,7 @@ export const LOTS = [
   {
     number: 206,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41090,
     cadastralJurisdiction: 7,
@@ -2524,6 +2731,7 @@ export const LOTS = [
   {
     number: 207,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41089,
     cadastralJurisdiction: 7,
@@ -2536,6 +2744,7 @@ export const LOTS = [
   {
     number: 208,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41088,
     cadastralJurisdiction: 7,
@@ -2548,6 +2757,7 @@ export const LOTS = [
   {
     number: 209,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41087,
     cadastralJurisdiction: 7,
@@ -2560,6 +2770,7 @@ export const LOTS = [
   {
     number: 210,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41086,
     cadastralJurisdiction: 7,
@@ -2572,6 +2783,7 @@ export const LOTS = [
   {
     number: 211,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4786,
     cadastralNumber: 41085,
     cadastralJurisdiction: 7,
@@ -2584,6 +2796,7 @@ export const LOTS = [
   {
     number: 212,
     district: 114,
+    description: '172 e/47 y 48',
     houseNumber: 4794,
     cadastralNumber: 41084,
     cadastralJurisdiction: 7,
@@ -2596,6 +2809,7 @@ export const LOTS = [
   {
     number: 213,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: 4447,
     cadastralNumber: 29843,
     cadastralJurisdiction: 7,
@@ -2608,6 +2822,7 @@ export const LOTS = [
   {
     number: 214,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41073,
     cadastralJurisdiction: 7,
@@ -2620,6 +2835,7 @@ export const LOTS = [
   {
     number: 215,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41074,
     cadastralJurisdiction: 7,
@@ -2632,6 +2848,7 @@ export const LOTS = [
   {
     number: 216,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41075,
     cadastralJurisdiction: 7,
@@ -2644,6 +2861,7 @@ export const LOTS = [
   {
     number: 217,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41076,
     cadastralJurisdiction: 7,
@@ -2656,6 +2874,7 @@ export const LOTS = [
   {
     number: 218,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41077,
     cadastralJurisdiction: 7,
@@ -2668,6 +2887,7 @@ export const LOTS = [
   {
     number: 219,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41078,
     cadastralJurisdiction: 7,
@@ -2680,6 +2900,7 @@ export const LOTS = [
   {
     number: 220,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41079,
     cadastralJurisdiction: 7,
@@ -2692,6 +2913,7 @@ export const LOTS = [
   {
     number: 221,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41080,
     cadastralJurisdiction: 7,
@@ -2704,6 +2926,7 @@ export const LOTS = [
   {
     number: 222,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41081,
     cadastralJurisdiction: 7,
@@ -2716,6 +2939,7 @@ export const LOTS = [
   {
     number: 223,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41082,
     cadastralJurisdiction: 7,
@@ -2728,6 +2952,7 @@ export const LOTS = [
   {
     number: 224,
     district: 114,
+    description: '172 Norte e/47 y 48',
     houseNumber: null,
     cadastralNumber: 41083,
     cadastralJurisdiction: 7,

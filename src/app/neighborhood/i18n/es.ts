@@ -10,6 +10,9 @@ export const locale = {
       NEIGHBORS: {
         TITLE: 'Vecinos/as'
       },
+      DESCRIPTION: {
+        TITLE: 'Descripción'
+      },
       ALARM: {
         TITLE: 'Alarma',
         NUMBER: 'Número',

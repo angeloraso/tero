@@ -2,6 +2,7 @@ import { INeighbor } from '@core/model';
 
 interface ILot {
   number: number;
+  description: string;
   houseNumber: number | null;
   neighbors: Array<INeighbor>;
   cadastralNumber: number;

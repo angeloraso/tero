@@ -131,6 +131,7 @@ export class NeighborhoodComponent implements OnInit, AfterViewInit {
         _name: this.#translate.get('CORE.FORM.FIELD.NAME'),
         _surname: this.#translate.get('CORE.FORM.FIELD.SURNAME'),
         _email: this.#translate.get('CORE.FORM.FIELD.EMAIL'),
+        description: this.#translate.get('NEIGHBORHOOD.DESCRIPTION.TITLE'),
         houseNumber: this.#translate.get('CORE.FORM.FIELD.HOUSE_NUMBER'),
         cadastralNumber: this.#translate.get('NEIGHBORHOOD.DATA.CADASTRAL_NUMBER'),
         district: this.#translate.get('NEIGHBORHOOD.DATA.DISTRICT'),
