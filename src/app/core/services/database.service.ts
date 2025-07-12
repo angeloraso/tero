@@ -418,6 +418,11 @@ export class DatabaseService implements OnDestroy {
         if (error) {
           reject(error);
         } else {
+          if (event && event.snapshot.metadata.fromCache) {
+            reject(new Error(ERROR.NETWORK));
+            return;
+          }
+
           const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
           this.#currentUser.next(currentUser);
 
