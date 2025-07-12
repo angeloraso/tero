@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedModules } from '@app/shared';
 import { BizyPopupService } from '@bizy/core';
-import { LONG_TEXT_MAX_LENGTH } from '@core/constants';
+import { BODY_MAX_LENGTH } from '@core/constants';
 @Component({
   selector: 'tero-topic-milestone-popup',
   templateUrl: 'topic-milestone-popup.html',
@@ -14,10 +14,10 @@ export class TopicMilestonePopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #fb = inject(FormBuilder);
 
-  readonly LONG_TEXT_MAX_LENGTH = LONG_TEXT_MAX_LENGTH;
+  readonly BODY_MAX_LENGTH = BODY_MAX_LENGTH;
 
   #form = this.#fb.group({
-    description: ['', [Validators.maxLength(LONG_TEXT_MAX_LENGTH), Validators.required]]
+    description: ['', [Validators.maxLength(BODY_MAX_LENGTH), Validators.required]]
   });
 
   get description() {
