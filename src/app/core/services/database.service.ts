@@ -60,9 +60,7 @@ export class DatabaseService implements OnDestroy {
   #topics = new BehaviorSubject<Array<ITopic> | undefined>(undefined);
   #accountMessages = new BehaviorSubject<Array<IAccountMessage> | undefined>(undefined);
 
-  start() {
-    return FirebaseFirestore.clearPersistence();
-  }
+  start = () => FirebaseFirestore.clearPersistence();
 
   getNeighbors(): Promise<Array<INeighbor>> {
     if (typeof this.#neighbors.value !== 'undefined' && this.#neighbors.value !== null) {
@@ -171,7 +169,7 @@ export class DatabaseService implements OnDestroy {
 
   getContactTags(): Promise<Array<string>> {
     if (typeof this.#contactData.value !== 'undefined' && this.#contactData.value !== null) {
-      Promise.resolve(this.#contactData.value.tags);
+      return Promise.resolve(this.#contactData.value.tags);
     }
 
     return new Promise<Array<string>>((resolve, reject) => {
@@ -180,12 +178,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
         if (error) {
-          return reject(error);
+          reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#contactData.next(event.snapshot.data);
-          return resolve(event.snapshot.data.tags ?? []);
+          resolve(event.snapshot.data.tags ?? []);
         } else {
-          return resolve([]);
+          resolve([]);
         }
       });
     });
@@ -202,12 +200,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.CONTACTS}` }, (event, error) => {
         if (error) {
-          return reject(error);
+          reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#contactData.next(event.snapshot.data);
-          return resolve(event.snapshot.data.data ?? []);
+          resolve(event.snapshot.data.data ?? []);
         } else {
-          return resolve([]);
+          resolve([]);
         }
       });
     });
@@ -220,7 +218,7 @@ export class DatabaseService implements OnDestroy {
         throw new Error(ERROR.ITEM_NOT_FOUND);
       }
 
-      return Promise.resolve(contact);
+      return contact;
     }
 
     const data = await this.getContacts();
@@ -229,7 +227,7 @@ export class DatabaseService implements OnDestroy {
       throw new Error(ERROR.ITEM_NOT_FOUND);
     }
 
-    return Promise.resolve(contact);
+    return contact;
   }
 
   async postContact(contact: IContact): Promise<void> {
@@ -292,11 +290,11 @@ export class DatabaseService implements OnDestroy {
     return new Promise<ISecurity | null>((resolve, reject) => {
       FirebaseFirestore.addDocumentSnapshotListener<ISecurity>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.SECURITY}` }, (event, error) => {
         if (error) {
-          return reject(error);
+          reject(error);
         } else {
           const security = event && event.snapshot.data ? event.snapshot.data : undefined;
           this.#security.next(security);
-          return resolve(security ?? null);
+          resolve(security || null);
         }
       });
     });
@@ -412,22 +410,23 @@ export class DatabaseService implements OnDestroy {
 
   getCurrentUser(email: string): Promise<IUser> {
     if (typeof this.#currentUser.value !== 'undefined' && this.#currentUser.value !== null) {
-      Promise.resolve(this.#currentUser.value);
+      return Promise.resolve(this.#currentUser.value);
     }
 
     return new Promise<IUser>((resolve, reject) => {
       FirebaseFirestore.addDocumentSnapshotListener<IUser>({ reference: `${COLLECTION.USERS}/${email}` }, (event, error) => {
         if (error) {
-          return reject(error);
+          reject(error);
         } else {
           const currentUser = event && event.snapshot.data ? event.snapshot.data : undefined;
           this.#currentUser.next(currentUser);
 
           if (!currentUser) {
-            return reject(new Error(ERROR.ITEM_NOT_FOUND));
+            reject(new Error(ERROR.ITEM_NOT_FOUND));
+            return;
           }
 
-          return resolve(currentUser);
+          resolve(currentUser);
         }
       });
     });
@@ -500,12 +499,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
         if (error) {
-          return reject(error);
+          reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#ecommerceData.next(event.snapshot.data);
-          return resolve(event.snapshot.data.tags ?? []);
+          resolve(event.snapshot.data.tags ?? []);
         } else {
-          return resolve([]);
+          resolve([]);
         }
       });
     });
@@ -522,12 +521,12 @@ export class DatabaseService implements OnDestroy {
         tags: Array<string>;
       }>({ reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.ECOMMERCE}` }, (event, error) => {
         if (error) {
-          return reject(error);
+          reject(error);
         } else if (event && event.snapshot && event.snapshot.data) {
           this.#ecommerceData.next(event.snapshot.data);
-          return resolve(event.snapshot.data.data ?? []);
+          resolve(event.snapshot.data.data ?? []);
         } else {
-          return resolve([]);
+          resolve([]);
         }
       });
     });
@@ -540,7 +539,7 @@ export class DatabaseService implements OnDestroy {
         throw new Error(ERROR.ITEM_NOT_FOUND);
       }
 
-      return Promise.resolve(product);
+      return product;
     }
 
     const data = await this.getEcommerceProducts();
@@ -614,11 +613,11 @@ export class DatabaseService implements OnDestroy {
         { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.GARBAGE}` },
         (event, error) => {
           if (error) {
-            return reject(error);
+            reject(error);
           } else {
             const garbageTruckRecords = event && event.snapshot.data ? event.snapshot.data.data : [];
             this.#garbageTruckRecords.next(garbageTruckRecords);
-            return resolve(garbageTruckRecords ?? []);
+            resolve(garbageTruckRecords ?? []);
           }
         }
       );
@@ -653,11 +652,11 @@ export class DatabaseService implements OnDestroy {
         { reference: `${COLLECTION.CORE}/${CORE_DOCUMENT.TOPICS}` },
         (event, error) => {
           if (error) {
-            return reject(error);
+            reject(error);
           } else {
             const topics = event && event.snapshot.data && event.snapshot.data.data ? event.snapshot.data.data : [];
             this.#topics.next(topics);
-            return resolve(topics);
+            resolve(topics);
           }
         }
       );
@@ -671,7 +670,7 @@ export class DatabaseService implements OnDestroy {
         throw new Error(ERROR.ITEM_NOT_FOUND);
       }
 
-      return Promise.resolve(topic);
+      return topic;
     }
 
     const topics = await this.getTopics();
@@ -680,7 +679,7 @@ export class DatabaseService implements OnDestroy {
       throw new Error(ERROR.ITEM_NOT_FOUND);
     }
 
-    return Promise.resolve(topic);
+    return topic;
   }
 
   async postTopic(topic: ITopic): Promise<void> {
@@ -803,11 +802,11 @@ export class DatabaseService implements OnDestroy {
         { reference: `${COLLECTION.USERS}/${accountEmail}/${SUB_COLLECTION.MESSAGES}` },
         (event, error) => {
           if (error) {
-            return reject(error);
+            reject(error);
           } else {
             const messages = event && event.snapshots ? event.snapshots.map(_snapshot => _snapshot.data).filter(_message => _message !== null) : [];
             this.#accountMessages.next(messages);
-            return resolve(messages);
+            resolve(messages);
           }
         }
       );
