@@ -42,7 +42,7 @@
                 [value]="activatedFilters ? ((invoices 
                                                 | bizyRangeFilter : 'timestamp' : filterTimestamp
                                                 | bizySearch: search : searchKeys
-                                                | bizyFilter : 'group' : filterGroups).length + '/' + invoices.length) : invoices.length">
+                                                | bizyFilter : 'group' : filterGroups).length + '/' + invoices.length) : (invoices | bizyRangeFilter : 'timestamp' : filterTimestamp).length">
                 <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
