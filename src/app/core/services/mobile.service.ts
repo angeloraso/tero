@@ -94,7 +94,7 @@ export class MobileService {
       await this.#initializeFirebaseMessaging();
     }
 
-    return FirebaseMessaging.subscribeToTopic({ topic: topicId });
+    return FirebaseMessaging.subscribeToTopic({ topic: this.#keepFirebaseMessagingAllowedChars(topicId) });
   };
 
   unsubscribeFromTopic = async (topicId: string) => {
@@ -106,7 +106,7 @@ export class MobileService {
       await this.#initializeFirebaseMessaging();
     }
 
-    return FirebaseMessaging.unsubscribeFromTopic({ topic: topicId });
+    return FirebaseMessaging.unsubscribeFromTopic({ topic: this.#keepFirebaseMessagingAllowedChars(topicId) });
   };
 
   async sendPushNotification(data: { topicId: string; title: string; body: string }) {
@@ -121,12 +121,14 @@ export class MobileService {
     await FirebaseFunctions.callByName({
       name: FIREBASE_FUNCTION.PUSH_NOTIFICATION,
       data: {
-        topic: data.topicId,
+        topic: this.#keepFirebaseMessagingAllowedChars(data.topicId),
         title: data.title,
         body: data.body
       }
     });
   }
+
+  #keepFirebaseMessagingAllowedChars = (topic: string) => topic.replace(/[^a-zA-Z0-9._~%-]+/g, '');
 
   exit = () => App.exitApp();
 }
