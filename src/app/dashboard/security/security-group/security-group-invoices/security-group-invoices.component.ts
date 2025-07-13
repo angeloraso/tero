@@ -18,7 +18,7 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
-import { DEFAULT_USER_PICTURE, IMG_PATH } from '@core/constants';
+import { DEFAULT_USER_PICTURE, IMG_PATH, MONTHS } from '@core/constants';
 import { ISecurityNeighborInvoice, IUser, USER_ROLE } from '@core/model';
 import { MobileService, NeighborsService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -29,6 +29,7 @@ import { es } from './i18n';
 
 interface ISecurityInvoiceRow extends ISecurityNeighborInvoice {
   _date: string;
+  _lot: number | null;
   _nameSurname: string;
 }
 
@@ -70,11 +71,14 @@ export class SecurityGroupInvoicesComponent implements OnInit {
   invoices: Array<ISecurityInvoiceRow> = [];
   search: string | number = '';
   nameSearch: string = '';
-  searchKeys = ['_nameSurname', '_date', 'description', 'transactionId'];
+  searchKeys = ['_nameSurname', '_lot', '_date', 'description', 'transactionId'];
   order: 'asc' | 'desc' = 'desc';
   orderBy = 'timestamp';
   isDesktop = this.#device.isDesktop();
   activatedFilters: number = 0;
+  filterTimestamp: { min: number | null; max: number | null } = { min: null, max: null };
+  viewDate: number = Date.now();
+  currentDate: string = this.#getCurrentDate(this.viewDate);
 
   async ngOnInit() {
     try {
@@ -104,13 +108,18 @@ export class SecurityGroupInvoicesComponent implements OnInit {
               .map(_invoice => {
                 const _neighbor = neighbors.find(_neighbor => _neighbor.id === _invoice.neighborId);
                 const _nameSurname = _neighbor ? `${_neighbor.name}${_neighbor.surname ? ' ' + _neighbor.surname : ''}` : '';
+                const _lot = _neighbor ? _neighbor.lot : null;
                 return {
                   ..._invoice,
+                  _lot,
                   _nameSurname,
                   _date: this.#datePipe.transform(_invoice.timestamp, 'yyyy/MM/dd HH:mm')!
                 };
               })
           : [];
+
+      const date = this.#getMonthBounds(this.viewDate);
+      this.filterTimestamp = { min: date.start, max: date.end };
     } catch (error) {
       this.#log.error({
         fileName: 'security-group-invoices.component',
@@ -204,6 +213,20 @@ export class SecurityGroupInvoicesComponent implements OnInit {
     this.invoices = [...this.invoices];
   }
 
+  previousDate() {
+    this.viewDate = this.#subtractOneMonth(this.viewDate);
+    this.currentDate = this.#getCurrentDate(this.viewDate);
+    const date = this.#getMonthBounds(this.viewDate);
+    this.filterTimestamp = { min: date.start, max: date.end };
+  }
+
+  nextDate() {
+    this.viewDate = this.#addOneMonth(this.viewDate);
+    this.currentDate = this.#getCurrentDate(this.viewDate);
+    const date = this.#getMonthBounds(this.viewDate);
+    this.filterTimestamp = { min: date.start, max: date.end };
+  }
+
   async export() {
     try {
       if (this.csvLoading || this.loading || !this.invoices || this.invoices.length === 0 || !this.isConfig) {
@@ -241,6 +264,47 @@ export class SecurityGroupInvoicesComponent implements OnInit {
       this.csvLoading = false;
     }
   }
+
+  #addOneMonth(timestamp: number) {
+    const date = new Date(timestamp);
+    const currentDay = date.getDate();
+    date.setMonth(date.getMonth() + 1);
+    // Handle cases like Jan 31 -> Feb 28/29
+    if (date.getDate() < currentDay) {
+      // Set to last day of previous month if the day overflowed
+      date.setDate(0);
+    }
+
+    return date.getTime();
+  }
+
+  #subtractOneMonth(timestamp: number) {
+    const date = new Date(timestamp);
+    const currentDay = date.getDate();
+    date.setMonth(date.getMonth() - 1);
+    // Handle overflow (e.g., March 31 -> February 28/29)
+    if (date.getDate() < currentDay) {
+      date.setDate(0); // Set to the last day of the previous month
+    }
+
+    return date.getTime();
+  }
+
+  #getCurrentDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    return `${this.#translate.get('CORE.MONTH.' + MONTHS[date.getMonth()])} - ${date.getFullYear()}`;
+  }
+
+  #getMonthBounds = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const y = date.getFullYear();
+    const m = date.getMonth();
+
+    const start = new Date(y, m, 1, 0, 0, 0, 0).getTime();
+    const end = new Date(y, m + 1, 0, 23, 59, 59, 999).getTime();
+
+    return { start, end };
+  };
 
   #filter(items: Array<ISecurityInvoiceRow>): Array<ISecurityInvoiceRow> {
     let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);

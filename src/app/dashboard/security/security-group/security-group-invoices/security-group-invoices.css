@@ -4,5 +4,21 @@
   flex-direction: column;
 
   --bizy-list-row-gap: 0.2rem;
-  --bizy-grid-row-height: 6.8rem;
+  --bizy-grid-row-height: 6rem;
+
+  --bizy-button-min-width: 2rem;
+}
+
+.security-group-invoices__current-date {
+  width: 14rem;
+  height: 2.2rem;
+  background-color: #fff;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.security-group-invoices__lot {
+  align-self: flex-end;
 }

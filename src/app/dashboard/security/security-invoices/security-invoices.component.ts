@@ -15,6 +15,7 @@ import {
   BizyTranslateService
 } from '@bizy/core';
 import { PopupComponent } from '@components/popup';
+import { MONTHS } from '@core/constants';
 import { ISecurityInvoice } from '@core/model';
 import { MobileService, SecurityService, UsersService } from '@core/services';
 import { PATH as DASHBOARD_PATH } from '@dashboard/dashboard.routing';
@@ -60,7 +61,10 @@ export class SecurityInvoicesComponent implements OnInit {
   orderBy = '_date';
   isDesktop = this.#device.isDesktop();
   filterGroups: Array<{ id: number | boolean; value: number | string; selected: boolean }> = [];
+  filterTimestamp: { min: number | null; max: number | null } = { min: null, max: null };
   activatedFilters: number = 0;
+  viewDate: number = Date.now();
+  currentDate: string = this.#getCurrentDate(this.viewDate);
 
   async ngOnInit() {
     try {
@@ -89,6 +93,9 @@ export class SecurityInvoicesComponent implements OnInit {
               };
             })
           : [];
+
+      const date = this.#getMonthBounds(this.viewDate);
+      this.filterTimestamp = { min: date.start, max: date.end };
 
       this.filterGroups = Array.from(groups).map(_group => {
         return { id: _group, value: _group, selected: true };
@@ -172,6 +179,20 @@ export class SecurityInvoicesComponent implements OnInit {
     this.invoices = [...this.invoices];
   }
 
+  previousDate() {
+    this.viewDate = this.#subtractOneMonth(this.viewDate);
+    this.currentDate = this.#getCurrentDate(this.viewDate);
+    const date = this.#getMonthBounds(this.viewDate);
+    this.filterTimestamp = { min: date.start, max: date.end };
+  }
+
+  nextDate() {
+    this.viewDate = this.#addOneMonth(this.viewDate);
+    this.currentDate = this.#getCurrentDate(this.viewDate);
+    const date = this.#getMonthBounds(this.viewDate);
+    this.filterTimestamp = { min: date.start, max: date.end };
+  }
+
   async export() {
     try {
       if (this.csvLoading || this.loading || !this.invoices || this.invoices.length === 0) {
@@ -208,6 +229,47 @@ export class SecurityInvoicesComponent implements OnInit {
       this.csvLoading = false;
     }
   }
+
+  #addOneMonth(timestamp: number) {
+    const date = new Date(timestamp);
+    const currentDay = date.getDate();
+    date.setMonth(date.getMonth() + 1);
+    // Handle cases like Jan 31 -> Feb 28/29
+    if (date.getDate() < currentDay) {
+      // Set to last day of previous month if the day overflowed
+      date.setDate(0);
+    }
+
+    return date.getTime();
+  }
+
+  #subtractOneMonth(timestamp: number) {
+    const date = new Date(timestamp);
+    const currentDay = date.getDate();
+    date.setMonth(date.getMonth() - 1);
+    // Handle overflow (e.g., March 31 -> February 28/29)
+    if (date.getDate() < currentDay) {
+      date.setDate(0); // Set to the last day of the previous month
+    }
+
+    return date.getTime();
+  }
+
+  #getCurrentDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    return `${this.#translate.get('CORE.MONTH.' + MONTHS[date.getMonth()])} - ${date.getFullYear()}`;
+  }
+
+  #getMonthBounds = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const y = date.getFullYear();
+    const m = date.getMonth();
+
+    const start = new Date(y, m, 1, 0, 0, 0, 0).getTime();
+    const end = new Date(y, m + 1, 0, 23, 59, 59, 999).getTime();
+
+    return { start, end };
+  };
 
   #filter(items: Array<ISecurityInvoiceRow>): Array<ISecurityInvoiceRow> {
     let _items = this.#searchPipe.transform(items, this.search, this.searchKeys);

@@ -4,6 +4,7 @@
   flex-direction: column;
 
   --bizy-card-height: 20rem;
+  --bizy-button-min-width: 2rem;
 }
 
 .garbage-history__current-date {

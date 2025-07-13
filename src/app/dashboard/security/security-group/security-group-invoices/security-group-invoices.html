@@ -12,6 +12,28 @@
 
     <bizy-section>
 
+        <bizy-section-center>
+    
+            <bizy-button class="tero-button--info" (onSelect)="previousDate()" [disabled]="loading">
+                <h5><i class="fa-solid fa-chevron-left"></i></h5>
+            </bizy-button>
+    
+            <span class="security-group-invoices__current-date">
+    
+                <h5><strong>{{currentDate}}</strong></h5>
+    
+            </span>
+    
+            <bizy-button class="tero-button--info" (onSelect)="nextDate()" [disabled]="loading">
+                <h5><i class="fa-solid fa-chevron-right"></i></h5>
+            </bizy-button>
+    
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-section>
+
         <bizy-section-end>
 
             <bizy-input 
@@ -19,7 +41,8 @@
                 [readonly]="true"
                 [value]="activatedFilters ? ((invoices
                                                 | bizySearch: search : searchKeys
-                                                | bizySearch: nameSearch : 'name').length + '/' + invoices.length) : invoices.length">
+                                                | bizyRangeFilter : 'timestamp' : filterTimestamp
+                                                | bizySearch: nameSearch : '_nameSurname').length + '/' + invoices.length) : (invoices | bizyRangeFilter : 'timestamp' : filterTimestamp).length">
                 <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
             </bizy-input>
 
@@ -45,12 +68,15 @@
         <bizy-card 
             class="animated fade-in"
             *gridFor="let invoice of invoices 
+                                        | bizyRangeFilter : 'timestamp' : filterTimestamp
                                         | bizySearch: search : searchKeys
                                         | bizySearch: nameSearch : '_nameSurname'
                                         | bizyOrderBy: order : orderBy">
 
-
-            <h6 slot="header-start"><strong>{{invoice._date}}</strong></h6>
+            <bizy-tag slot="header-start">
+                <h6><i class="fa-solid fa-calendar-day"></i></h6>
+                <h6>{{invoice._date}}</h6>
+            </bizy-tag>
 
             <bizy-button 
                 slot="header-end"
@@ -59,7 +85,7 @@
                 <h5><i class="fa-solid fa-trash-alt"></i></h5>
             </bizy-button>
 
-            <bizy-list>
+            <bizy-list slot="footer-start">
                 
                 <h6 bizyTooltip [tooltipLineClamp]="1"><strong>{{'CORE.FORM.FIELD.NAME' | translate}}: </strong>{{invoice._nameSurname}}</h6>
 
@@ -78,6 +104,11 @@
                 <h6 bizyTooltip [tooltipLineClamp]="2"><strong>{{'CORE.FORM.FIELD.COMMENT' | translate}}:</strong> {{invoice.description || '---'}}</h6>
 
             </bizy-list>
+
+            <bizy-tag *ngIf="invoice._lot" class="security-group-invoices__lot" slot="footer-end" [type]="BIZY_TAG_TYPE.INFO">
+                <h6><i class="fa-solid fa-location-dot"></i></h6>
+                <h6>{{invoice._lot}}</h6>
+            </bizy-tag>
 
         </bizy-card>
 
@@ -110,6 +141,7 @@
         class="animated fade-in tero-no-matches"
         *ngIf="invoices.length !== 0 && (invoices 
                                             | bizySearch: search : searchKeys
+                                            | bizyRangeFilter : 'timestamp' : filterTimestamp
                                             | bizySearch: nameSearch : '_nameSurname').length === 0">
         <h4 class="tero-text--center">{{'CORE.NO_MATCHES' | translate}}</h4>
     </bizy-tag>

@@ -12,12 +12,35 @@
 
     <bizy-section>
 
+        <bizy-section-center>
+    
+            <bizy-button class="tero-button--info" (onSelect)="previousDate()" [disabled]="loading">
+                <h5><i class="fa-solid fa-chevron-left"></i></h5>
+            </bizy-button>
+    
+            <span class="security-invoices__current-date">
+    
+                <h5><strong>{{currentDate}}</strong></h5>
+    
+            </span>
+    
+            <bizy-button class="tero-button--info" (onSelect)="nextDate()" [disabled]="loading">
+                <h5><i class="fa-solid fa-chevron-right"></i></h5>
+            </bizy-button>
+    
+        </bizy-section-center>
+
+    </bizy-section>
+
+    <bizy-section>
+
         <bizy-section-end>
 
             <bizy-input 
                 class="tero-counter"
                 [readonly]="true"
                 [value]="activatedFilters ? ((invoices 
+                                                | bizyRangeFilter : 'timestamp' : filterTimestamp
                                                 | bizySearch: search : searchKeys
                                                 | bizyFilter : 'group' : filterGroups).length + '/' + invoices.length) : invoices.length">
                 <h6 slot="header" class="tero--info"><strong>{{'CORE.TOTAL' | translate}}</strong></h6>
@@ -78,6 +101,7 @@
     
         <bizy-table-row 
             *tableFor="let invoice in: invoices 
+                | bizyRangeFilter : 'timestamp' : filterTimestamp
                 | bizySearch: search : searchKeys
                 | bizyFilter : 'group' : filterGroups
                 | bizyOrderBy: order : orderBy">

@@ -2,4 +2,16 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  --bizy-button-min-width: 2rem;
+}
+
+.security-invoices__current-date {
+  width: 14rem;
+  height: 2.2rem;
+  background-color: #fff;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
