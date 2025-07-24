@@ -18,8 +18,8 @@
 
 .neighborhood--downloading {
   display: block !important;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   opacity: 0.6;
   background-color: #fff;
   pointer-events: none;
