@@ -35,6 +35,6 @@
   color: var(--bizy-warning-color);
 }
 
-.rating-history-popup__stars .rating-history-popup__stars__star--selected~.rating-history-popup__stars__star {
+.rating-history-popup__stars .rating-history-popup__stars__star--selected ~ .rating-history-popup__stars__star {
   color: var(--bizy-warning-color);
 }
