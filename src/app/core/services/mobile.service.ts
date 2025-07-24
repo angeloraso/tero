@@ -7,7 +7,6 @@ import { App } from '@capacitor/app';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { StatusBar } from '@capacitor/status-bar';
 import { ERROR } from '@core/model';
 import { ENV } from '@env/environment';
 import { Observable, Subject } from 'rxjs';
@@ -38,9 +37,6 @@ export class MobileService {
     App.addListener('backButton', () => {
       this.#backButton.next();
     });
-
-    await StatusBar.setBackgroundColor({ color: '#666666' });
-    await StatusBar.setOverlaysWebView({ overlay: false });
   }
 
   hideSplash = () => SplashScreen.hide();
