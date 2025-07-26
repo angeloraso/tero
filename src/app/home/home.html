@@ -1,76 +1,72 @@
-<div class="home">
+<bizy-sidebar class="home__sidebar" [(toggle)]="closedSidebar" (onToggle)="onToggle()">
 
-  <bizy-sidebar class="home__sidebar" [(toggle)]="closedSidebar" (onToggle)="onToggle()">
+  <bizy-sidebar-option slot="start">
 
-    <bizy-sidebar-option slot="start">
+    <span class="home__sidebar__header" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
 
-      <span class="home__sidebar__header" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
+      <img class="home__sidebar__header__logo" [src]="LOGO_PATH" alt="logo"/>
 
-        <img class="home__sidebar__header__logo" [src]="LOGO_PATH" alt="logo"/>
+      <h1 class="home__sidebar__header__name" *ngIf="!closedSidebar">{{DESCRIPTION}}</h1>
+    </span>
 
-        <h1 class="home__sidebar__header__name" *ngIf="!closedSidebar">{{DESCRIPTION}}</h1>
-      </span>
+  </bizy-sidebar-option>
 
-    </bizy-sidebar-option>
+  <bizy-sidebar-option 
+    *ngFor="let option of options"
+    [(selected)]="option.selected"
+    (onSelect)="onSelect(option)">
 
-    <bizy-sidebar-option 
-      *ngFor="let option of options"
-      [(selected)]="option.selected"
-      (onSelect)="onSelect(option)">
+    <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
 
-      <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
+      <h4 [ngClass]="{'home__sidebar__option--selected': option.selected}"><i class="fa-solid {{option.icon}}"></i></h4>
 
-        <h4 [ngClass]="{'home__sidebar__option--selected': option.selected}"><i class="fa-solid {{option.icon}}"></i></h4>
+      <h4 class="home__sidebar__option__label" [ngClass]="{'home__sidebar__option--selected': option.selected}" *ngIf="!closedSidebar">{{option.label | translate}}</h4>
+    </span>
 
-        <h4 class="home__sidebar__option__label" [ngClass]="{'home__sidebar__option--selected': option.selected}" *ngIf="!closedSidebar">{{option.label | translate}}</h4>
-      </span>
+  </bizy-sidebar-option>
 
-    </bizy-sidebar-option>
+  <bizy-sidebar-option slot="end">
 
-    <bizy-sidebar-option slot="end">
+    <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
+      <i *ngIf="!profilePic" class="fa-solid fa-user-circle"></i>
+
+      <img 
+          class="home__sidebar__option__profile-pic"
+          slot="header-start"
+          loading="lazy"
+          [bizyLoading]="loading"
+          [src]="profilePic"
+          onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
+          alt="Imagen de usuario"/>
+
+      <h6 class="home__sidebar__option__label" *ngIf="!closedSidebar">{{email}}</h6>
+    </span>
+
+  </bizy-sidebar-option>
+
+</bizy-sidebar>
   
-      <span class="home__sidebar__option__content" [ngClass]="{'home__sidebar__option--closed': closedSidebar}">
-        <i *ngIf="!profilePic" class="fa-solid fa-user-circle"></i>
+<div class="home__content">
 
-        <img 
-            class="home__sidebar__option__profile-pic"
-            slot="header-start"
-            loading="lazy"
-            [bizyLoading]="loading"
-            [src]="profilePic"
-            onerror="this.onerror=null; this.src='/assets/img/picture_user.svg'"
-            alt="Imagen de usuario"/>
-  
-        <h6 class="home__sidebar__option__label" *ngIf="!closedSidebar">{{email}}</h6>
-      </span>
+    <span class="hone__content__router-outlet">
+      <router-outlet></router-outlet>
+    </span>
 
-    </bizy-sidebar-option>
+    <bizy-tabs class="home__tabs" *ngIf="showTabs()">
 
-  </bizy-sidebar>
-    
-  <div class="home__content">
+      <bizy-tab 
+          *ngFor="let option of options"
+          linePosition="top"
+          [ngClass]="{'home__tabs__tab--selected': option.selected}"
+          [(selected)]="option.selected"
+          (onSelect)="onSelect(option)">
 
-      <span class="home__content__router-outlet">
-          <router-outlet></router-outlet>
-      </span>
-
-      <bizy-tabs class="home__tabs" *ngIf="showTabs()">
-
-        <bizy-tab 
-            *ngFor="let option of options"
-            linePosition="top"
-            [ngClass]="{'home__tabs__tab--selected': option.selected}"
-            [(selected)]="option.selected"
-            (onSelect)="onSelect(option)">
-
-            <h5 [ngClass]="{'home__tabs__tab__icon--selected': option.selected}"><i class="{{option.icon}}"></i></h5>
-        
-            <h6 [ngClass]="{'home__tabs__tab__label--selected': option.selected}">{{option.label | translate}}</h6>
-        
-        </bizy-tab>
-        
-      </bizy-tabs>
-  
-  </div>
+          <h5 [ngClass]="{'home__tabs__tab__icon--selected': option.selected}"><i class="{{option.icon}}"></i></h5>
+      
+          <h6 [ngClass]="{'home__tabs__tab__label--selected': option.selected}">{{option.label | translate}}</h6>
+      
+      </bizy-tab>
+      
+    </bizy-tabs>
 
 </div>
