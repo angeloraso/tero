@@ -12,10 +12,6 @@
       "launchAutoHide": false,
       "splashFullScreen": true
     },
-    "StatusBar": {
-      "overlaysWebView": false,
-      "backgroundColor": "#666666"
-    },
     "FirebaseAuthentication": {
       "skipNativeAuth": false,
       "providers": ["google.com"]

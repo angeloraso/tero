@@ -7,6 +7,8 @@ import { App } from '@capacitor/app';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar } from '@capacitor/status-bar';
+import { EdgeToEdge } from '@capawesome/capacitor-android-edge-to-edge-support';
 import { ERROR } from '@core/model';
 import { ENV } from '@env/environment';
 import { Observable, Subject } from 'rxjs';
@@ -37,6 +39,11 @@ export class MobileService {
     App.addListener('backButton', () => {
       this.#backButton.next();
     });
+
+    await EdgeToEdge.enable();
+    await EdgeToEdge.setBackgroundColor({ color: '#fdc921' });
+    await StatusBar.setOverlaysWebView({ overlay: true });
+    await StatusBar.setBackgroundColor({ color: '#fdc921' });
   }
 
   hideSplash = () => SplashScreen.hide();
