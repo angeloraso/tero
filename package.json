@@ -26,7 +26,7 @@
     "@angular/service-worker": "20.0.5",
     "@awesome-cordova-plugins/call-number": "8.0.2",
     "@awesome-cordova-plugins/core": "8.0.2",
-    "@bizy/core": "20.1.0",
+    "@bizy/core": "20.1.3",
     "@capacitor-community/file-opener": "7.0.1",
     "@capacitor-firebase/analytics": "7.2.0",
     "@capacitor-firebase/authentication": "7.2.0",
