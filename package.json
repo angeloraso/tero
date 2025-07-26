@@ -9,7 +9,7 @@
     "build:mobile": "ng build --configuration=mobile",
     "android:resources": "capacitor-assets generate --android",
     "android:config": "VERSION_NAME=$npm_package_version npx trapeze run config.yaml --android -y",
-    "android": "rm -rf ./android && npm run build:mobile && capacitor add android && capacitor sync android && npm run android:resources && npm run android:config && capacitor open android",
+    "android": "rm -rf ./android && rm -rf ./.angular && rm -rf ./dist && npm run build:mobile && capacitor add android && capacitor sync android && npm run android:resources && npm run android:config && capacitor open android",
     "lint": "eslint . --ext .ts, --fix",
     "format": "prettier --write \"src/**/*.{ts,html,scss,css,json,md}\"",
     "analyze": "ng build --configuration=production && esbuild-visualizer --metadata ./dist/stats.json && npx open stats.html"
